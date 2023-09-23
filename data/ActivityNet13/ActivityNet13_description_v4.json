@@ -1,0 +1,2172 @@
+{
+    "Applying sunscreen": {
+        "idx": 0,
+        "Elaboration": {
+            "Description": [
+                "A person applies a lotion to their skin to protect it from the sun's rays",
+                "Someone spreads a cream onto their body to prevent sunburn",
+                "A person rubs sunscreen onto their exposed skin to protect it from the sun"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person applies a lotion to their skin to protect it from the sun's rays\", \"Someone spreads a cream onto their body to prevent sunburn\", \"A person rubs sunscreen onto their exposed skin to protect it from the sun\"]}"
+    },
+    "Arm wrestling": {
+        "idx": 1,
+        "Elaboration": {
+            "Description": [
+                "Two people sit opposite each other and clasp hands, then try to push each other's hand down onto the table.",
+                "Two people compete by trying to force each other's arm down onto a surface, using their hand strength.",
+                "Two people engage in a test of strength by wrestling their arms against each other, trying to overpower their opponent's arm."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two people sit opposite each other and clasp hands, then try to push each other's hand down onto the table.\", \"Two people compete by trying to force each other's arm down onto a surface, using their hand strength.\", \"Two people engage in a test of strength by wrestling their arms against each other, trying to overpower their opponent's arm.\"]}"
+    },
+    "Assembling bicycle": {
+        "idx": 2,
+        "Elaboration": {
+            "Description": [
+                "A person puts the wheels on the frame and tightens the bolts.",
+                "Someone attaches the handlebars to the frame and secures them in place.",
+                "Individual connects the chain to the pedals and attaches them to the bike."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person puts the wheels on the frame and tightens the bolts.\", \n                \"Someone attaches the handlebars to the frame and secures them in place.\", \n                \"Individual connects the chain to the pedals and attaches them to the bike.\"] }"
+    },
+    "BMX": {
+        "idx": 3,
+        "Elaboration": {
+            "Description": [
+                "A person riding a bicycle and performing tricks.",
+                "A person on a bicycle doing stunts and jumps in a bike park.",
+                "A cyclist performing flips and spins on a BMX bike."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person riding a bicycle and performing tricks.\", \"A person on a bicycle doing stunts and jumps in a bike park.\", \"A cyclist performing flips and spins on a BMX bike.\"] }"
+    },
+    "Baking cookies": {
+        "idx": 4,
+        "Elaboration": {
+            "Description": [
+                "A person mixes ingredients in a bowl and shapes the dough into small circles before baking them in the oven.",
+                "A person adds flour, sugar, and butter into a bowl and mixes them together. They then use a cookie cutter to shape the dough and bake it in the oven.",
+                "Somebody combines butter, sugar, and flour in a bowl and stirs until a dough forms. They then scoop small portions of the dough onto a baking sheet and bake them until golden brown."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": \n[\"A person mixes ingredients in a bowl and shapes the dough into small circles before baking them in the oven.\",\n\"A person adds flour, sugar, and butter into a bowl and mixes them together. They then use a cookie cutter to shape the dough and bake it in the oven.\",\n\"Somebody combines butter, sugar, and flour in a bowl and stirs until a dough forms. They then scoop small portions of the dough onto a baking sheet and bake them until golden brown.\"] }"
+    },
+    "Baton twirling": {
+        "idx": 5,
+        "Elaboration": {
+            "Description": [
+                "A person twirls a baton in various patterns and throws it in the air",
+                "A performer spins a baton in their hand, creating different shapes and tossing it up into the air",
+                "Someone gracefully maneuvers a baton in different movements, flipping and tossing it"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person twirls a baton in various patterns and throws it in the air\", \"A performer spins a baton in their hand, creating different shapes and tossing it up into the air\", \"Someone gracefully maneuvers a baton in different movements, flipping and tossing it\"]}"
+    },
+    "Beach soccer": {
+        "idx": 6,
+        "Elaboration": {
+            "Description": [
+                "A group of people play soccer on the beach.",
+                "People kick a soccer ball on the sand at the beach."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A group of people play soccer on the beach.\", \"People kick a soccer ball on the sand at the beach.\"] }"
+    },
+    "Beer pong": {
+        "idx": 7,
+        "Elaboration": {
+            "Description": [
+                "A person throws a ping pong ball into a cup filled with beer.",
+                "Two players take turns throwing ping pong balls into cups filled with beer.",
+                "Players try to throw a ping pong ball into cups filled with beer on the opposite side of the table."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person throws a ping pong ball into a cup filled with beer.\",\"Two players take turns throwing ping pong balls into cups filled with beer.\",\"Players try to throw a ping pong ball into cups filled with beer on the opposite side of the table.\"] }"
+    },
+    "Blow-drying hair": {
+        "idx": 8,
+        "Elaboration": {
+            "Description": [
+                "A person uses a hairdryer to dry their hair.",
+                "Someone points a hairdryer at their wet hair to make it dry.",
+                "Using a dryer, a person dries their wet hair by blowing hot air onto it."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person uses a hairdryer to dry their hair.\",\"Someone points a hairdryer at their wet hair to make it dry.\",\"Using a dryer, a person dries their wet hair by blowing hot air onto it.\"] }"
+    },
+    "Blowing leaves": {
+        "idx": 9,
+        "Elaboration": {
+            "Description": [
+                "A person uses a machine to blow leaves away.",
+                "Someone blows air onto leaves to move them."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a machine to blow leaves away.\", \"Someone blows air onto leaves to move them.\"] }"
+    },
+    "Playing ten pins": {
+        "idx": 10,
+        "Elaboration": {
+            "Description": [
+                "A person rolls a ball towards a group of pins and tries to knock them down.",
+                "A person throws a ball at a set of pins, aiming to knock them over."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person rolls a ball towards a group of pins and tries to knock them down.\", \n                 \"A person throws a ball at a set of pins, aiming to knock them over.\"] }"
+    },
+    "Braiding hair": {
+        "idx": 11,
+        "Elaboration": {
+            "Description": [
+                "A person divides the hair into three sections and crosses them over each other in a repeating pattern.",
+                "A person weaves strands of hair together by crossing them over each other in a pattern.",
+                "A person interlaces strands of hair to create a woven pattern."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person divides the hair into three sections and crosses them over each other in a repeating pattern.\", \"A person weaves strands of hair together by crossing them over each other in a pattern.\", \"A person interlaces strands of hair to create a woven pattern.\"] }"
+    },
+    "Building sandcastles": {
+        "idx": 12,
+        "Elaboration": {
+            "Description": [
+                "A person uses their hands to shape sand into a castle",
+                "Someone builds structures with wet sand at the beach",
+                "A child creates a sandcastle by piling and molding sand"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses their hands to shape sand into a castle\", \"Someone builds structures with wet sand at the beach\", \"A child creates a sandcastle by piling and molding sand\"]}"
+    },
+    "Bullfighting": {
+        "idx": 13,
+        "Elaboration": {
+            "Description": [
+                "A person wearing a matador outfit waves a red cloth and avoids being attacked by a charging bull.",
+                "A person wearing a traditional Spanish outfit waves a red flag to distract a bull and performs daring movements to avoid being hit.",
+                "A person dressed as a matador uses a red cloth to attract and dodge a charging bull in a traditional Spanish bullfight."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person wearing a matador outfit waves a red cloth and avoids being attacked by a charging bull.\",\n                \"A person wearing a traditional Spanish outfit waves a red flag to distract a bull and performs daring movements to avoid being hit.\",\n                \"A person dressed as a matador uses a red cloth to attract and dodge a charging bull in a traditional Spanish bullfight.\"] }"
+    },
+    "Calf roping": {
+        "idx": 14,
+        "Elaboration": {
+            "Description": [
+                "A person on a horse throws a looped rope at a calf and tries to catch its hind legs",
+                "A rider throws a lasso around a calf's hind legs while riding a horse"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person on a horse throws a looped rope at a calf and tries to catch its hind legs\", \"A rider throws a lasso around a calf's hind legs while riding a horse\"]}"
+    },
+    "Camel ride": {
+        "idx": 15,
+        "Elaboration": {
+            "Description": [
+                "A person sits on a camel and rides it through the desert.",
+                "A camel carries a person on its back as they traverse the sandy landscape.",
+                "A passenger climbs onto a camel's hump and enjoys a ride across the sandy terrain."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sits on a camel and rides it through the desert.\",\n                  \"A camel carries a person on its back as they traverse the sandy landscape.\",\n                  \"A passenger climbs onto a camel's hump and enjoys a ride across the sandy terrain.\"]}"
+    },
+    "Canoeing": {
+        "idx": 16,
+        "Elaboration": {
+            "Description": [
+                "A person propels a long narrow boat with a paddle in water.",
+                "A person paddles a boat in a river or a lake."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person propels a long narrow boat with a paddle in water.\", \"A person paddles a boat in a river or a lake.\"] }"
+    },
+    "Capoeira": {
+        "idx": 17,
+        "Elaboration": {
+            "Description": [
+                "Two people in a circular movement, kicking and dodging each other in a martial arts dance.",
+                "Two individuals performing acrobatic moves while striking and evading each other in a rhythmic martial arts dance."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Two people in a circular movement, kicking and dodging each other in a martial arts dance.\", \"Two individuals performing acrobatic moves while striking and evading each other in a rhythmic martial arts dance.\"] }"
+    },
+    "Carving jack-o-lanterns": {
+        "idx": 18,
+        "Elaboration": {
+            "Description": [
+                "A person cuts a face into a pumpkin",
+                "Using a knife, someone removes the top of a pumpkin and carves a scary face on it",
+                "A person hollows out a pumpkin and uses a knife to create a face with eyes, a nose, and a mouth"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person cuts a face into a pumpkin\", \"Using a knife, someone removes the top of a pumpkin and carves a scary face on it\", \"A person hollows out a pumpkin and uses a knife to create a face with eyes, a nose, and a mouth\"]}"
+    },
+    "Changing car wheel": {
+        "idx": 19,
+        "Elaboration": {
+            "Description": [
+                "A person removes the flat tire from the car and places a new one on",
+                "A person uses a jack to lift the car, removes the damaged wheel, and replaces it with a new wheel"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person removes the flat tire from the car and places a new one on\", \"A person uses a jack to lift the car, removes the damaged wheel, and replaces it with a new wheel\"]}"
+    },
+    "Cleaning sink": {
+        "idx": 20,
+        "Elaboration": {
+            "Description": [
+                "A person uses a sponge to wipe the sink clean",
+                "Someone sprays water and detergent on the sink, then uses a brush to scrub it",
+                "A cloth is used to wipe the sink and remove any dirt or stains"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a sponge to wipe the sink clean\", \"Someone sprays water and detergent on the sink, then uses a brush to scrub it\", \"A cloth is used to wipe the sink and remove any dirt or stains\"]}"
+    },
+    "Clipping cat claws": {
+        "idx": 21,
+        "Elaboration": {
+            "Description": [
+                "A person uses a special tool to trim the sharp ends of a cat's claws.",
+                "Someone carefully cuts the tips of a cat's claws to make them shorter and less sharp.",
+                "Using a small device, a person gently removes the pointed part of a cat's claws."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a special tool to trim the sharp ends of a cat's claws.\", \"Someone carefully cuts the tips of a cat's claws to make them shorter and less sharp.\", \"Using a small device, a person gently removes the pointed part of a cat's claws.\"]}"
+    },
+    "Croquet": {
+        "idx": 22,
+        "Elaboration": {
+            "Description": [
+                "A person hits a small ball with a long mallet to score points",
+                "Players take turns to hit balls through small hoops using a mallet",
+                "A game where players try to hit balls through hoops by using a wooden mallet"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person hits a small ball with a long mallet to score points\", \"Players take turns to hit balls through small hoops using a mallet\", \"A game where players try to hit balls through hoops by using a wooden mallet\"]}"
+    },
+    "Curling": {
+        "idx": 23,
+        "Elaboration": {
+            "Description": [
+                "A person slides a large round stone on ice towards a target",
+                "Players take turns pushing a heavy stone along the ice while teammates use brooms to direct the stone's path",
+                "A game where players slide stones on ice and try to get them as close as possible to a target"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person slides a large round stone on ice towards a target\", \n                \"Players take turns pushing a heavy stone along the ice while teammates use brooms to direct the stone's path\", \n                \"A game where players slide stones on ice and try to get them as close as possible to a target\"]}"
+    },
+    "Cutting the grass": {
+        "idx": 24,
+        "Elaboration": {
+            "Description": [
+                "A person uses a lawn mower to trim the grass",
+                "Someone pushes a machine over the lawn to make the grass short",
+                "Using a motorized tool, someone makes the tall grass shorter on a piece of land"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a lawn mower to trim the grass\", \"Someone pushes a machine over the lawn to make the grass short\", \"Using a motorized tool, someone makes the tall grass shorter on a piece of land\"]}"
+    },
+    "Decorating the Christmas tree": {
+        "idx": 25,
+        "Elaboration": {
+            "Description": [
+                "A person puts ornaments on a Christmas tree",
+                "A person hangs decorations on a Christmas tree"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person puts ornaments on a Christmas tree\", \"A person hangs decorations on a Christmas tree\"]}"
+    },
+    "Disc dog": {
+        "idx": 26,
+        "Elaboration": {
+            "Description": [
+                "A person throws a frisbee and a dog catches it in the air.",
+                "A dog jumps and catches a frisbee thrown by a person."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a frisbee and a dog catches it in the air.\", \"A dog jumps and catches a frisbee thrown by a person.\"] }"
+    },
+    "Doing a powerbomb": {
+        "idx": 27,
+        "Elaboration": {
+            "Description": [
+                "A person lifts another person and slams them forcefully on the ground.",
+                "A wrestler picks up their opponent and forcefully slams them on the canvas."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person lifts another person and slams them forcefully on the ground.\", \"A wrestler picks up their opponent and forcefully slams them on the canvas.\"] }"
+    },
+    "Doing crunches": {
+        "idx": 28,
+        "Elaboration": {
+            "Description": [
+                "A person lies on their back and repeatedly lifts their upper body towards their knees",
+                "Someone lays on their back and repeatedly lifts their torso up towards their legs",
+                "A person performs a sit-up exercise by repeatedly lifting their upper body towards their knees"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person lies on their back and repeatedly lifts their upper body towards their knees\", \"Someone lays on their back and repeatedly lifts their torso up towards their legs\", \"A person performs a sit-up exercise by repeatedly lifting their upper body towards their knees\"]}"
+    },
+    "Drum corps": {
+        "idx": 29,
+        "Elaboration": {
+            "Description": [
+                "A group of people marching and playing musical instruments in synchronized movements.",
+                "A marching band performing complex formations and playing music with drums and other instruments.",
+                "A team of performers moving in unison while playing various musical instruments, creating a visual and auditory spectacle."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A group of people marching and playing musical instruments in synchronized movements.\", \n                \"A marching band performing complex formations and playing music with drums and other instruments.\", \n                \"A team of performers moving in unison while playing various musical instruments, creating a visual and auditory spectacle.\"] }"
+    },
+    "Elliptical trainer": {
+        "idx": 30,
+        "Elaboration": {
+            "Description": [
+                "A person stands on a machine and moves their legs back and forth.",
+                "Someone exercises by stepping on pedals and moving their arms in a circular motion."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person stands on a machine and moves their legs back and forth.\", \"Someone exercises by stepping on pedals and moving their arms in a circular motion.\"] }"
+    },
+    "Doing fencing": {
+        "idx": 31,
+        "Elaboration": {
+            "Description": [
+                "A person holds a long stick and moves it back and forth with another person.",
+                "Two people wearing protective gear swing long sticks at each other.",
+                "Two people wearing protective gear try to touch each other with long sticks.",
+                "Two people wearing protective gear have a sword fight with long sticks."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person holds a long stick and moves it back and forth with another person.\",\"Two people wearing protective gear swing long sticks at each other.\",\"Two people wearing protective gear try to touch each other with long sticks.\",\"Two people wearing protective gear have a sword fight with long sticks.\"]}"
+    },
+    "Fixing the roof": {
+        "idx": 32,
+        "Elaboration": {
+            "Description": [
+                "A person repairs the roof using tools and materials",
+                "Someone climbs up the ladder and fixes the damaged parts of the roof"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person repairs the roof using tools and materials\", \"Someone climbs up the ladder and fixes the damaged parts of the roof\"] }"
+    },
+    "Fun sliding down": {
+        "idx": 33,
+        "Elaboration": {
+            "Description": [
+                "A person slides down a slide.",
+                "Someone goes down a slide.",
+                "A child glides down a slide."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person slides down a slide.\", \"Someone goes down a slide.\", \"A child glides down a slide.\"] }"
+    },
+    "Futsal": {
+        "idx": 34,
+        "Elaboration": {
+            "Description": [
+                "A group of people playing indoor soccer",
+                "Players dribbling, passing, and shooting a small ball in a confined space",
+                "A fast-paced game played on a small court with five players on each team"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A group of people playing indoor soccer\", \"Players dribbling, passing, and shooting a small ball in a confined space\", \"A fast-paced game played on a small court with five players on each team\"]}"
+    },
+    "Gargling mouthwash": {
+        "idx": 35,
+        "Elaboration": {
+            "Description": [
+                "A person rinses their mouth with liquid from a bottle and spits it out",
+                "Someone swishes liquid in their mouth and then spits it out",
+                "A person washes their mouth using a liquid and then spits it out"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person rinses their mouth with liquid from a bottle and spits it out\", \n               \"Someone swishes liquid in their mouth and then spits it out\",\n               \"A person washes their mouth using a liquid and then spits it out\"]}"
+    },
+    "Grooming dog": {
+        "idx": 36,
+        "Elaboration": {
+            "Description": [
+                "A person brushes a dog's fur with a comb",
+                "A person trims a dog's nails with a nail clipper",
+                "A person bathes a dog with water and shampoo"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person brushes a dog's fur with a comb\",\"A person trims a dog's nails with a nail clipper\",\"A person bathes a dog with water and shampoo\"]}"
+    },
+    "Hand car wash": {
+        "idx": 37,
+        "Elaboration": {
+            "Description": [
+                "A person uses a sponge and water to clean a car by hand",
+                "Someone rinses a car with a hose and soap",
+                "A person scrubbing a car with a cloth and water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person uses a sponge and water to clean a car by hand\",\"Someone rinses a car with a hose and soap\",\"A person scrubbing a car with a cloth and water\"] }"
+    },
+    "Hanging wallpaper": {
+        "idx": 38,
+        "Elaboration": {
+            "Description": [
+                "A person applies adhesive to the wall and places sheets of wallpaper on it.",
+                "Someone uses a brush to spread glue on the wall and sticks wallpaper onto it.",
+                "A person pastes wallpaper onto a wall using glue and smoothes it with a brush.",
+                "Someone attaches wallpaper to the wall with adhesive and smooths out any wrinkles."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person applies adhesive to the wall and places sheets of wallpaper on it.\", \"Someone uses a brush to spread glue on the wall and sticks wallpaper onto it.\", \"A person pastes wallpaper onto a wall using glue and smoothes it with a brush.\", \"Someone attaches wallpaper to the wall with adhesive and smooths out any wrinkles.\"]}"
+    },
+    "Having an ice cream": {
+        "idx": 39,
+        "Elaboration": {
+            "Description": [
+                "A person eats a cold and sweet frozen dessert.",
+                "Someone enjoys a frozen treat made of milk, sugar, and flavors.",
+                "A individual indulges in an ice-cold confectionary made from dairy products and sugar."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person eats a cold and sweet frozen dessert.\", \"Someone enjoys a frozen treat made of milk, sugar, and flavors.\", \"A individual indulges in an ice-cold confectionary made from dairy products and sugar.\"] }"
+    },
+    "Hitting a pinata": {
+        "idx": 40,
+        "Elaboration": {
+            "Description": [
+                "A person swings a stick and hits a hanging pinata",
+                "Someone takes a swing at a pinata with a stick",
+                "A stick is used to hit a hanging pinata"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person swings a stick and hits a hanging pinata\", \"Someone takes a swing at a pinata with a stick\", \"A stick is used to hit a hanging pinata\"]}"
+    },
+    "Hula hoop": {
+        "idx": 41,
+        "Elaboration": {
+            "Description": [
+                "A person rotates a round object around their waist",
+                "A person swings a circular object around their body",
+                "A person twirls a hoop around their waist"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person rotates a round object around their waist\", \"A person swings a circular object around their body\", \"A person twirls a hoop around their waist\"]}"
+    },
+    "Hurling": {
+        "idx": 42,
+        "Elaboration": {
+            "Description": [
+                "Two teams with 15 players each hit a small ball with a stick, trying to score goals by hitting it between the posts",
+                "Players use a stick to hit a small ball and try to score by getting the ball into the opponent's goal",
+                "Teams hit a ball with sticks, aiming to score by getting the ball into the opponent's goal between two posts"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two teams with 15 players each hit a small ball with a stick, trying to score goals by hitting it between the posts\", \"Players use a stick to hit a small ball and try to score by getting the ball into the opponent's goal\", \"Teams hit a ball with sticks, aiming to score by getting the ball into the opponent's goal between two posts\"]}"
+    },
+    "Ice fishing": {
+        "idx": 43,
+        "Elaboration": {
+            "Description": [
+                "A person uses a fishing rod to catch fish through a hole in the ice.",
+                "Someone sits on a chair and drops a fishing line into a hole in the ice to catch fish."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a fishing rod to catch fish through a hole in the ice.\", \"Someone sits on a chair and drops a fishing line into a hole in the ice to catch fish.\"] }"
+    },
+    "Installing carpet": {
+        "idx": 44,
+        "Elaboration": {
+            "Description": [
+                "A person rolls out a carpet and spreads it on the floor, smoothing out any wrinkles",
+                "Someone cuts the carpet to fit the room dimensions and uses adhesive to secure it to the floor"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person rolls out a carpet and spreads it on the floor, smoothing out any wrinkles\", \"Someone cuts the carpet to fit the room dimensions and uses adhesive to secure it to the floor\"]}"
+    },
+    "Kite flying": {
+        "idx": 45,
+        "Elaboration": {
+            "Description": [
+                "A person holds a string attached to a colorful kite and runs with it in an open field.",
+                "A kite with a long string is flown in the sky by a person.",
+                "A person runs while holding a string and a kite flies high in the air."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds a string attached to a colorful kite and runs with it in an open field.\", \"A kite with a long string is flown in the sky by a person.\", \"A person runs while holding a string and a kite flies high in the air.\"] }"
+    },
+    "Kneeling": {
+        "idx": 46,
+        "Elaboration": {
+            "Description": [
+                "A person is bending their knees and touching the ground with them.",
+                "Someone is lowering their body to the ground by bending their knees.",
+                "A person is bringing their knees down to the ground while keeping their feet flat."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person is bending their knees and touching the ground with them.\", \"Someone is lowering their body to the ground by bending their knees.\", \"A person is bringing their knees down to the ground while keeping their feet flat.\"] }"
+    },
+    "Knitting": {
+        "idx": 47,
+        "Elaboration": {
+            "Description": [
+                "A person repeatedly loops yarn with needles to create fabric",
+                "A person uses two needles to weave yarn together into a pattern",
+                "A person uses needles to interweave yarn into a fabric",
+                "A person creates fabric by looping yarn with needles"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person repeatedly loops yarn with needles to create fabric\", \"A person uses two needles to weave yarn together into a pattern\", \"A person uses needles to interweave yarn into a fabric\", \"A person creates fabric by looping yarn with needles\"]}"
+    },
+    "Laying tile": {
+        "idx": 48,
+        "Elaboration": {
+            "Description": [
+                "A person places square tiles in a pattern on the floor.",
+                "Someone arranges tiles on the ground to create a pattern."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person places square tiles in a pattern on the floor.\", \"Someone arranges tiles on the ground to create a pattern.\"] }"
+    },
+    "Longboarding": {
+        "idx": 49,
+        "Elaboration": {
+            "Description": [
+                "A person rides a long skateboard downhill",
+                "Someone cruises on a longboard",
+                "A person skates down a road on a longboard"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person rides a long skateboard downhill\", \"Someone cruises on a longboard\", \"A person skates down a road on a longboard\"]}"
+    },
+    "Making a cake": {
+        "idx": 50,
+        "Elaboration": {
+            "Description": [
+                "A person mixes ingredients in a bowl and bakes them in an oven",
+                "Someone combines ingredients, pours them into a baking pan, and puts it in the oven",
+                "Mixing ingredients and baking them in an oven to make a cake"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person mixes ingredients in a bowl and bakes them in an oven\",\n                \"Someone combines ingredients, pours them into a baking pan, and puts it in the oven\",\n                \"Mixing ingredients and baking them in an oven to make a cake\"]}"
+    },
+    "Making a lemonade": {
+        "idx": 51,
+        "Elaboration": {
+            "Description": [
+                "A person squeezes lemon into water and adds sugar",
+                "Someone mixes lemon juice, water, and sugar together",
+                "Lemons are squeezed into a glass of water with added sugar",
+                "A glass of water is mixed with lemon juice and sugar"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person squeezes lemon into water and adds sugar\", \"Someone mixes lemon juice, water, and sugar together\", \"Lemons are squeezed into a glass of water with added sugar\", \"A glass of water is mixed with lemon juice and sugar\"]}"
+    },
+    "Making an omelette": {
+        "idx": 52,
+        "Elaboration": {
+            "Description": [
+                "A person cracks eggs into a pan and cooks them with oil",
+                "Cracking eggs into a pan and frying them",
+                "Breaking eggs, cooking them in a pan"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person cracks eggs into a pan and cooks them with oil\", \"Cracking eggs into a pan and frying them\", \"Breaking eggs, cooking them in a pan\"]}"
+    },
+    "Mooping floor": {
+        "idx": 53,
+        "Elaboration": {
+            "Description": [
+                "A person uses a broom to sweep the floor",
+                "A person pushes a mop back and forth on the floor to clean it",
+                "A person uses a vacuum cleaner to remove dirt and dust from the floor"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a broom to sweep the floor\", \"A person pushes a mop back and forth on the floor to clean it\", \"A person uses a vacuum cleaner to remove dirt and dust from the floor\"]}"
+    },
+    "Painting fence": {
+        "idx": 54,
+        "Elaboration": {
+            "Description": [
+                "A person uses a brush to apply paint to a wooden fence.",
+                "Someone dips a brush into a container of paint, then moves the brush back and forth over a fence to cover it with paint."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a brush to apply paint to a wooden fence.\", \"Someone dips a brush into a container of paint, then moves the brush back and forth over a fence to cover it with paint.\"] }"
+    },
+    "Painting furniture": {
+        "idx": 55,
+        "Elaboration": {
+            "Description": [
+                "A person uses a brush to apply paint onto furniture",
+                "Someone uses a roller to coat furniture with paint",
+                "A paintbrush is used to add color to furniture",
+                "A person dips a brush into paint and applies it onto furniture"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a brush to apply paint onto furniture\", \"Someone uses a roller to coat furniture with paint\", \"A paintbrush is used to add color to furniture\", \"A person dips a brush into paint and applies it onto furniture\"]}"
+    },
+    "Peeling potatoes": {
+        "idx": 56,
+        "Elaboration": {
+            "Description": [
+                "A person uses a knife to remove the skin from potatoes.",
+                "Someone removes the outer layer of potatoes with a peeler.",
+                "Potatoes are being peeled using a sharp tool."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a knife to remove the skin from potatoes.\", \"Someone removes the outer layer of potatoes with a peeler.\", \"Potatoes are being peeled using a sharp tool.\"] }"
+    },
+    "Plastering": {
+        "idx": 57,
+        "Elaboration": {
+            "Description": [
+                "A person applies wet plaster on a wall using a trowel.",
+                "A person spreads sticky plaster on a wall and smooths it with a flat tool.",
+                "Using a flat tool, a person covers a wall with wet plaster."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person applies wet plaster on a wall using a trowel.\", \"A person spreads sticky plaster on a wall and smooths it with a flat tool.\", \"Using a flat tool, a person covers a wall with wet plaster.\"] }"
+    },
+    "Playing beach volleyball": {
+        "idx": 58,
+        "Elaboration": {
+            "Description": [
+                "A group of people hitting a ball over a net while standing on the sand.",
+                "Two teams hitting a ball back and forth over a net on a sandy beach."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A group of people hitting a ball over a net while standing on the sand.\", \"Two teams hitting a ball back and forth over a net on a sandy beach.\"] }"
+    },
+    "Playing blackjack": {
+        "idx": 59,
+        "Elaboration": {
+            "Description": [
+                "A person draws cards and tries to reach a total of 21.",
+                "A player receives cards and aims to have a sum of 21 without going over.",
+                "Someone plays a card game where they try to get the highest hand value without going over 21."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person draws cards and tries to reach a total of 21.\", \"A player receives cards and aims to have a sum of 21 without going over.\", \"Someone plays a card game where they try to get the highest hand value without going over 21.\"]}"
+    },
+    "Playing congas": {
+        "idx": 60,
+        "Elaboration": {
+            "Description": [
+                "A person sitting down, hitting drums with their hands",
+                "Someone playing congas by striking the drums with their hands",
+                "A person rhythmically hitting conga drums with their hands"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sitting down, hitting drums with their hands\", \"Someone playing congas by striking the drums with their hands\", \"A person rhythmically hitting conga drums with their hands\"]}"
+    },
+    "Playing drums": {
+        "idx": 61,
+        "Elaboration": {
+            "Description": [
+                "A person sitting on a stool hitting different drums with sticks.",
+                "Someone using sticks to strike drums and make rhythmic sounds.",
+                "A drummer sitting behind a set of drums and playing them with drumsticks."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sitting on a stool hitting different drums with sticks.\", \"Someone using sticks to strike drums and make rhythmic sounds.\", \"A drummer sitting behind a set of drums and playing them with drumsticks.\"]}"
+    },
+    "Playing ice hockey": {
+        "idx": 62,
+        "Elaboration": {
+            "Description": [
+                "Players wearing ice skates and holding hockey sticks chase a puck on an icy surface.",
+                "Teams of players on ice skates compete to shoot a small rubber disk into the opposing team's net.",
+                "Ice skaters wearing protective gear and hockey sticks pass and shoot a puck to score goals on a frozen surface."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Players wearing ice skates and holding hockey sticks chase a puck on an icy surface.\", \"Teams of players on ice skates compete to shoot a small rubber disk into the opposing team's net.\", \"Ice skaters wearing protective gear and hockey sticks pass and shoot a puck to score goals on a frozen surface.\"] }"
+    },
+    "Playing pool": {
+        "idx": 63,
+        "Elaboration": {
+            "Description": [
+                "A person hits balls with a long stick on a table",
+                "Balls are hit with a stick on a pool table"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person hits balls with a long stick on a table\", \"Balls are hit with a stick on a pool table\"]}"
+    },
+    "Playing rubik cube": {
+        "idx": 64,
+        "Elaboration": {
+            "Description": [
+                "A person holds a cube and twists its smaller pieces to mix colors. They then solve the cube by arranging the colors on each face.",
+                "A person rotates the sides of a cube to scramble the colors and then solves it by arranging the colors on each face."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds a cube and twists its smaller pieces to mix colors. They then solve the cube by arranging the colors on each face.\", \"A person rotates the sides of a cube to scramble the colors and then solves it by arranging the colors on each face.\"]}"
+    },
+    "Powerbocking": {
+        "idx": 65,
+        "Elaboration": {
+            "Description": [
+                "A person with spring-loaded stilts jumps and bounces around",
+                "Someone wearing bouncy shoes leaps and bounds with each step",
+                "An individual propels themselves into the air using special boots with springs"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person with spring-loaded stilts jumps and bounces around\", \"Someone wearing bouncy shoes leaps and bounds with each step\", \"An individual propels themselves into the air using special boots with springs\"]}"
+    },
+    "Putting in contact lenses": {
+        "idx": 66,
+        "Elaboration": {
+            "Description": [
+                "A person uses their fingertips to insert small, clear discs onto their eyes to improve vision.",
+                "Someone gently places thin, circular objects onto their eyes so they can see better without glasses.",
+                "A person puts small, transparent discs onto their eyes to help them see more clearly.",
+                "Someone carefully puts small, clear circles onto their eyes to correct their vision."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person uses their fingertips to insert small, clear discs onto their eyes to improve vision.\",\n                \"Someone gently places thin, circular objects onto their eyes so they can see better without glasses.\",\n                \"A person puts small, transparent discs onto their eyes to help them see more clearly.\",\n                \"Someone carefully puts small, clear circles onto their eyes to correct their vision.\"]}"
+    },
+    "Putting on shoes": {
+        "idx": 67,
+        "Elaboration": {
+            "Description": [
+                "A person bends down, puts their feet inside the shoes, pulls the laces or straps, and ties them.",
+                "A person grasps their shoes, slides their feet inside, tightens the shoelaces, and ties them securely."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person bends down, puts their feet inside the shoes, pulls the laces or straps, and ties them.\", \n                 \"A person grasps their shoes, slides their feet inside, tightens the shoelaces, and ties them securely.\"]}"
+    },
+    "Rafting": {
+        "idx": 68,
+        "Elaboration": {
+            "Description": [
+                "People sitting in a long, inflatable boat and paddling through fast-moving water.",
+                "Group of people on a boat maneuvering through rapids and splashing water.",
+                "A team of paddlers navigating a raft through rough white-water while avoiding obstacles."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"People sitting in a long, inflatable boat and paddling through fast-moving water.\", \n\"Group of people on a boat maneuvering through rapids and splashing water.\",\n \"A team of paddlers navigating a raft through rough white-water while avoiding obstacles.\"] }"
+    },
+    "Raking leaves": {
+        "idx": 69,
+        "Elaboration": {
+            "Description": [
+                "A person uses a rake to gather fallen leaves into a neat pile.",
+                "Someone moves a rake back and forth to collect and organize fallen leaves."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a rake to gather fallen leaves into a neat pile.\", \"Someone moves a rake back and forth to collect and organize fallen leaves.\"] }"
+    },
+    "Removing ice from car": {
+        "idx": 70,
+        "Elaboration": {
+            "Description": [
+                "A person uses a scraper tool to remove ice from the car's windshield",
+                "Someone sprays de-icer on the car windows and wipes away the ice using a cloth"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a scraper tool to remove ice from the car's windshield\", \"Someone sprays de-icer on the car windows and wipes away the ice using a cloth\"]}"
+    },
+    "Riding bumper cars": {
+        "idx": 71,
+        "Elaboration": {
+            "Description": [
+                "People sitting in small colorful cars driving around in a closed space, bumping into each other.",
+                "Kids and adults enjoying a ride in small cars, crashing and bumping into each other in an enclosed area."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"People sitting in small colorful cars driving around in a closed space, bumping into each other.\", \"Kids and adults enjoying a ride in small cars, crashing and bumping into each other in an enclosed area.\"] }"
+    },
+    "River tubing": {
+        "idx": 72,
+        "Elaboration": {
+            "Description": [
+                "A person floating down a river on an inflatable tube.",
+                "Someone riding down a river on a tube with the current.",
+                "A person enjoying a leisurely ride on an air-filled tube in a river."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person floating down a river on an inflatable tube.\", \"Someone riding down a river on a tube with the current.\", \"A person enjoying a leisurely ride on an air-filled tube in a river.\"]}"
+    },
+    "Rock-paper-scissors": {
+        "idx": 73,
+        "Elaboration": {
+            "Description": [
+                "Two people each shape their hand into a rock, paper, or scissor. They reveal their hand simultaneously and the winner is determined based on the rules: rock beats scissors, scissors beats paper, and paper beats rock.",
+                "Two people play a hand game where they select one of three options: rock, paper, or scissors. The winner is decided by the hand gestures: rock crushes scissors, scissors cuts paper, and paper covers rock."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two people each shape their hand into a rock, paper, or scissor. They reveal their hand simultaneously and the winner is determined based on the rules: rock beats scissors, scissors beats paper, and paper beats rock.\", \"Two people play a hand game where they select one of three options: rock, paper, or scissors. The winner is decided by the hand gestures: rock crushes scissors, scissors cuts paper, and paper covers rock.\"] }"
+    },
+    "Rollerblading": {
+        "idx": 74,
+        "Elaboration": {
+            "Description": [
+                "A person glides on wheels attached to their feet.",
+                "Someone moves smoothly on inline skates.",
+                "A person skates on a road or surface using rollerblades."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person glides on wheels attached to their feet.\",\"Someone moves smoothly on inline skates.\",\"A person skates on a road or surface using rollerblades.\"]}"
+    },
+    "Roof shingle removal": {
+        "idx": 75,
+        "Elaboration": {
+            "Description": [
+                "A person removes shingles from a roof",
+                "Someone takes off the shingles on a roof",
+                "Shingles are being lifted off a roof",
+                "Someone peels off roof shingles"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person removes shingles from a roof\", \"Someone takes off the shingles on a roof\", \"Shingles are being lifted off a roof\", \"Someone peels off roof shingles\"]}"
+    },
+    "Rope skipping": {
+        "idx": 76,
+        "Elaboration": {
+            "Description": [
+                "A person swings a jump rope over their head and jumps over it repeatedly.",
+                "Someone repeatedly jumps over a swinging rope while holding onto the handles.",
+                "A person hops over a rotating rope as it swings around their body."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person swings a jump rope over their head and jumps over it repeatedly.\", \"Someone repeatedly jumps over a swinging rope while holding onto the handles.\", \"A person hops over a rotating rope as it swings around their body.\"]}"
+    },
+    "Running a marathon": {
+        "idx": 77,
+        "Elaboration": {
+            "Description": [
+                "A person runs a very long race without stopping",
+                "A person runs for a very long time until they reach a finish line"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person runs a very long race without stopping\", \"A person runs for a very long time until they reach a finish line\"]}"
+    },
+    "Scuba diving": {
+        "idx": 78,
+        "Elaboration": {
+            "Description": [
+                "A person wearing a scuba diving suit and breathing through a tube explores the underwater world with the help of fins.",
+                "Someone wearing a diving gear swims beneath the water, equipped with a mask and an air supply system."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person wearing a scuba diving suit and breathing through a tube explores the underwater world with the help of fins.\", \"Someone wearing a diving gear swims beneath the water, equipped with a mask and an air supply system.\"] }"
+    },
+    "Sharpening knives": {
+        "idx": 79,
+        "Elaboration": {
+            "Description": [
+                "A person uses a tool to make a knife sharper.",
+                "Someone rubs a knife against a hard surface to make it sharper.",
+                "A blade is scraped against a rough object to improve its sharpness."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a tool to make a knife sharper.\", \"Someone rubs a knife against a hard surface to make it sharper.\", \"A blade is scraped against a rough object to improve its sharpness.\"]}"
+    },
+    "Shuffleboard": {
+        "idx": 80,
+        "Elaboration": {
+            "Description": [
+                "A person slides a puck across a smooth surface towards a target area.",
+                "Two players alternately push a puck along a board with the goal of getting it into a scoring area.",
+                "A game where players use long sticks to slide weighted pucks on a smooth board into scoring zones."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person slides a puck across a smooth surface towards a target area.\",\n\"Two players alternately push a puck along a board with the goal of getting it into a scoring area.\", \n\"A game where players use long sticks to slide weighted pucks on a smooth board into scoring zones.\"] }"
+    },
+    "Skiing": {
+        "idx": 81,
+        "Elaboration": {
+            "Description": [
+                "A person sliding downhill on snow using skis.",
+                "A person gliding on snow using long boards called skis.",
+                "Someone moving down a snowy slope using skis.",
+                "A person propelling themselves on skis across snowy terrain.",
+                "A person sliding smoothly on snow with skis attached to their feet."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sliding downhill on snow using skis.\",\n                  \"A person gliding on snow using long boards called skis.\",\n                  \"Someone moving down a snowy slope using skis.\",\n                  \"A person propelling themselves on skis across snowy terrain.\",\n                  \"A person sliding smoothly on snow with skis attached to their feet.\"]}"
+    },
+    "Slacklining": {
+        "idx": 82,
+        "Elaboration": {
+            "Description": [
+                "A person walks on a tightrope-like line",
+                "Someone balances on a thin rope and moves forward"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person walks on a tightrope-like line\", \"Someone balances on a thin rope and moves forward\"] }"
+    },
+    "Snow tubing": {
+        "idx": 83,
+        "Elaboration": {
+            "Description": [
+                "A person sits on a donut-shaped tube and slides down a snowy hill",
+                "Someone rides a tube down a snow-covered slope",
+                "A person enjoys sliding on a tube in the snow"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sits on a donut-shaped tube and slides down a snowy hill\", \"Someone rides a tube down a snow-covered slope\", \"A person enjoys sliding on a tube in the snow\"]}"
+    },
+    "Snowboarding": {
+        "idx": 84,
+        "Elaboration": {
+            "Description": [
+                "A person slides down a snowy slope on a board.",
+                "A rider glides through the snow on a board.",
+                "A snowboarder moves down a hill on a snow-covered slope.",
+                "Someone snowboards by riding a board over snowy terrain."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person slides down a snowy slope on a board.\", \"A rider glides through the snow on a board.\", \"A snowboarder moves down a hill on a snow-covered slope.\", \"Someone snowboards by riding a board over snowy terrain.\"] }"
+    },
+    "Spread mulch": {
+        "idx": 85,
+        "Elaboration": {
+            "Description": [
+                "A person scatters wood chips on the ground with a rake",
+                "Someone evenly distributes a layer of shredded materials on the soil surface",
+                "A worker spreads a protective covering over the ground using a tool"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person scatters wood chips on the ground with a rake\", \"Someone evenly distributes a layer of shredded materials on the soil surface\", \"A worker spreads a protective covering over the ground using a tool\"]}"
+    },
+    "Sumo": {
+        "idx": 86,
+        "Elaboration": {
+            "Description": [
+                "Two large men in traditional costumes push each other out of a ring.",
+                "Two wrestlers try to push each other out of a small circle.",
+                "Men in loincloths collide and grapple in a circular arena."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Two large men in traditional costumes push each other out of a ring.\",\"Two wrestlers try to push each other out of a small circle.\",\"Men in loincloths collide and grapple in a circular arena.\"] }"
+    },
+    "Surfing": {
+        "idx": 87,
+        "Elaboration": {
+            "Description": [
+                "A person stands on a surfboard and rides on waves",
+                "Someone rides on a board in the ocean and glides on top of the water",
+                "A person balances on a board while riding waves in the sea"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person stands on a surfboard and rides on waves\", \"Someone rides on a board in the ocean and glides on top of the water\", \"A person balances on a board while riding waves in the sea\"]}"
+    },
+    "Swimming": {
+        "idx": 88,
+        "Elaboration": {
+            "Description": [
+                "A person in water moving their arms and legs to stay afloat.",
+                "A person moving through water by kicking their legs and moving their arms.",
+                "A person using their arms and legs to propel themselves in water."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person in water moving their arms and legs to stay afloat.\", \"A person moving through water by kicking their legs and moving their arms.\", \"A person using their arms and legs to propel themselves in water.\"]}"
+    },
+    "Swinging at the playground": {
+        "idx": 89,
+        "Elaboration": {
+            "Description": [
+                "A child moves back and forth on a swing at the playground",
+                "Someone is swinging on a swing at the playground",
+                "A person swings on a swing at the playground"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A child moves back and forth on a swing at the playground\", \n\"Someone is swinging on a swing at the playground\", \n\"A person swings on a swing at the playground\"]}"
+    },
+    "Table soccer": {
+        "idx": 90,
+        "Elaboration": {
+            "Description": [
+                "Two players control a ball on a small table using their hands.",
+                "Players use rods to move a small ball on a table to score goals.",
+                "A game with small players attached to rods, trying to score goals by hitting a small ball on a table."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two players control a ball on a small table using their hands.\", \"Players use rods to move a small ball on a table to score goals.\", \"A game with small players attached to rods, trying to score goals by hitting a small ball on a table.\"]}"
+    },
+    "Throwing darts": {
+        "idx": 91,
+        "Elaboration": {
+            "Description": [
+                "A person aims and throws small pointed objects at a target board.",
+                "Someone throws sharp objects towards a circular board.",
+                "A player throws pointy projectiles at a round target board."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person aims and throws small pointed objects at a target board.\", \"Someone throws sharp objects towards a circular board.\", \"A player throws pointy projectiles at a round target board.\"] }"
+    },
+    "Trimming branches or hedges": {
+        "idx": 92,
+        "Elaboration": {
+            "Description": [
+                "A person uses a tool to cut branches or hedges.",
+                "Someone trims the branches or hedges using sharp clippers or shears.",
+                "Using a gardening tool, branches or hedges are trimmed by a person."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a tool to cut branches or hedges.\", \"Someone trims the branches or hedges using sharp clippers or shears.\", \"Using a gardening tool, branches or hedges are trimmed by a person.\"] }"
+    },
+    "Tug of war": {
+        "idx": 93,
+        "Elaboration": {
+            "Description": [
+                "Two teams pull a rope in opposite directions trying to make the opposite team cross a certain line.",
+                "A group of people divided into two teams pull on opposite ends of a rope, with the goal of trying to make the other team move towards them.",
+                "Two groups of people compete by pulling on a rope, each team trying to overpower the other."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two teams pull a rope in opposite directions trying to make the opposite team cross a certain line.\", \n                \"A group of people divided into two teams pull on opposite ends of a rope, with the goal of trying to make the other team move towards them.\", \n                \"Two groups of people compete by pulling on a rope, each team trying to overpower the other.\"] }"
+    },
+    "Using the monkey bar": {
+        "idx": 94,
+        "Elaboration": {
+            "Description": [
+                "A person hangs and swings on a metal bar",
+                "A person holds onto a bar and moves their body back and forth",
+                "Someone grips a bar and moves their body in a swinging motion"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person hangs and swings on a metal bar\",\n                \"A person holds onto a bar and moves their body back and forth\",\n                \"Someone grips a bar and moves their body in a swinging motion\"]}"
+    },
+    "Using the rowing machine": {
+        "idx": 95,
+        "Elaboration": {
+            "Description": [
+                "A person sits on a seat and pulls the handle with both hands in a repetitive motion",
+                "Someone exercises by sitting on a machine and pulling a handle back and forth",
+                "A person mimics rowing a boat by pulling a handle towards their body while sitting on a machine"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sits on a seat and pulls the handle with both hands in a repetitive motion\", \"Someone exercises by sitting on a machine and pulling a handle back and forth\", \"A person mimics rowing a boat by pulling a handle towards their body while sitting on a machine\"]}"
+    },
+    "Wakeboarding": {
+        "idx": 96,
+        "Elaboration": {
+            "Description": [
+                "A person balances on a board and skims the water's surface",
+                "A person rides a board while being pulled by a boat",
+                "A person glides on water while holding onto a rope attached to a boat"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person balances on a board and skims the water's surface\", \"A person rides a board while being pulled by a boat\", \"A person glides on water while holding onto a rope attached to a boat\"]}"
+    },
+    "Waterskiing": {
+        "idx": 97,
+        "Elaboration": {
+            "Description": [
+                "A person glides on water using skis and is pulled by a boat",
+                "A person stands on skis while being pulled by a boat on water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person glides on water using skis and is pulled by a boat\", \"A person stands on skis while being pulled by a boat on water\"]}"
+    },
+    "Waxing skis": {
+        "idx": 98,
+        "Elaboration": {
+            "Description": [
+                "A person applies wax on the skis and rubs it on the surface to make it smooth.",
+                "Someone puts wax on the skis and makes them shiny.",
+                "A person uses wax to make the skis glide smoothly on the snow."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person applies wax on the skis and rubs it on the surface to make it smooth.\",\"Someone puts wax on the skis and makes them shiny.\",\"A person uses wax to make the skis glide smoothly on the snow.\"] }"
+    },
+    "Welding": {
+        "idx": 99,
+        "Elaboration": {
+            "Description": [
+                "A person uses heat and metal filler to join two pieces of metal together",
+                "A worker melts metal pieces with a torch and adds filler material to create a strong bond",
+                "Someone uses a welding machine to connect two metal objects by melting them together"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses heat and metal filler to join two pieces of metal together\", \"A worker melts metal pieces with a torch and adds filler material to create a strong bond\", \"Someone uses a welding machine to connect two metal objects by melting them together\"]}"
+    },
+    "Drinking coffee": {
+        "idx": 100,
+        "Elaboration": {
+            "Description": [
+                "A person holds a cup and sips liquid from it.",
+                "Someone lifts a mug to their lips and takes small sips.",
+                "A hand grasps a coffee cup and tilts it towards the mouth.",
+                "A person takes a sip from a mug.",
+                "A person drinks from a coffee cup."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person holds a cup and sips liquid from it.\",\"Someone lifts a mug to their lips and takes small sips.\",\"A hand grasps a coffee cup and tilts it towards the mouth.\",\"A person takes a sip from a mug.\",\"A person drinks from a coffee cup.\"]}"
+    },
+    "Zumba": {
+        "idx": 101,
+        "Elaboration": {
+            "Description": [
+                "A group of people dancing and following a choreography with fast-paced movements and music.",
+                "People moving their bodies energetically to loud music in a synchronized manner.",
+                "A lively dance class with participants performing vigorous exercises and hip shaking movements."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A group of people dancing and following a choreography with fast-paced movements and music.\", \n                \"People moving their bodies energetically to loud music in a synchronized manner.\", \n                \"A lively dance class with participants performing vigorous exercises and hip shaking movements.\"]}"
+    },
+    "Doing kickboxing": {
+        "idx": 102,
+        "Elaboration": {
+            "Description": [
+                "A person is performing a series of kicks and punches in a combat sports setting.",
+                "Someone is engaging in a physical activity involving punches, kicks, and defensive moves.",
+                "An individual is executing a combination of punches and kicks in a boxing or martial arts training session."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person is performing a series of kicks and punches in a combat sports setting.\", \"Someone is engaging in a physical activity involving punches, kicks, and defensive moves.\", \"An individual is executing a combination of punches and kicks in a boxing or martial arts training session.\"]}"
+    },
+    "Doing karate": {
+        "idx": 103,
+        "Elaboration": {
+            "Description": [
+                "A person performs martial arts moves with punches and kicks",
+                "A person executes powerful strikes and kicks in a martial arts style",
+                "A person practices fighting techniques by performing various punches and kicks"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person performs martial arts moves with punches and kicks\", \"A person executes powerful strikes and kicks in a martial arts style\", \"A person practices fighting techniques by performing various punches and kicks\"]}"
+    },
+    "Tango": {
+        "idx": 104,
+        "Elaboration": {
+            "Description": [
+                "Two people stand facing each other. They hold hands and move their feet in a rhythmic pattern.",
+                "A man and a woman dance close to each other, stepping forward and back in time with the music."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two people stand facing each other. They hold hands and move their feet in a rhythmic pattern.\", \"A man and a woman dance close to each other, stepping forward and back in time with the music.\"]}"
+    },
+    "Putting on makeup": {
+        "idx": 105,
+        "Elaboration": {
+            "Description": [
+                "A person applies various cosmetics on their face to enhance their appearance.",
+                "Using brushes and makeup products, a person transforms their face by applying colorful cosmetics.",
+                "A person uses brushes, powders, and lipstick to beautify their face and create a desired look."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person applies various cosmetics on their face to enhance their appearance.\", \"Using brushes and makeup products, a person transforms their face by applying colorful cosmetics.\", \"A person uses brushes, powders, and lipstick to beautify their face and create a desired look.\"]}"
+    },
+    "High jump": {
+        "idx": 106,
+        "Elaboration": {
+            "Description": [
+                "A person jumps over a bar",
+                "A person uses a lot of energy to jump very high",
+                "A person lifts their body off the ground and clears a bar"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person jumps over a bar\", \"A person uses a lot of energy to jump very high\", \"A person lifts their body off the ground and clears a bar\"] }"
+    },
+    "Playing bagpipes": {
+        "idx": 107,
+        "Elaboration": {
+            "Description": [
+                "A person blows into a musical instrument with their hands and fingers moving on different holes and pipes.",
+                "Someone holds a large musical instrument made of several pipes and plays it by blowing into it."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person blows into a musical instrument with their hands and fingers moving on different holes and pipes.\", \"Someone holds a large musical instrument made of several pipes and plays it by blowing into it.\"] }"
+    },
+    "Cheerleading": {
+        "idx": 108,
+        "Elaboration": {
+            "Description": [
+                "A group of people performing synchronized movements and cheering loudly",
+                "A team of individuals doing acrobatic stunts, dancing, and shouting encouraging words",
+                "A group of cheerleaders showing enthusiastic support for a team by using synchronized movements and shouts",
+                "A team of people performing energetic routines and loud cheers to motivate and entertain spectators"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A group of people performing synchronized movements and cheering loudly\", \"A team of individuals doing acrobatic stunts, dancing, and shouting encouraging words\", \"A group of cheerleaders showing enthusiastic support for a team by using synchronized movements and shouts\", \"A team of people performing energetic routines and loud cheers to motivate and entertain spectators\"]}"
+    },
+    "Wrapping presents": {
+        "idx": 109,
+        "Elaboration": {
+            "Description": [
+                "A person folds a piece of paper around a gift and tapes it closed",
+                "Someone wraps a gift with colorful paper and ties a ribbon around it",
+                "A person covers a present with wrapping paper and seals it with tape"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person folds a piece of paper around a gift and tapes it closed\", \"Someone wraps a gift with colorful paper and ties a ribbon around it\", \"A person covers a present with wrapping paper and seals it with tape\"]}"
+    },
+    "Cricket": {
+        "idx": 110,
+        "Elaboration": {
+            "Description": [
+                "A person throws a ball and another person hits it with a bat.",
+                "Two teams play a game with a ball and bat, where one team tries to score runs and the other team tries to get them out.",
+                "Players run between two sets of wickets and try to score runs by hitting the ball with a bat."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a ball and another person hits it with a bat.\", \"Two teams play a game with a ball and bat, where one team tries to score runs and the other team tries to get them out.\", \"Players run between two sets of wickets and try to score runs by hitting the ball with a bat.\"] }"
+    },
+    "Clean and jerk": {
+        "idx": 111,
+        "Elaboration": {
+            "Description": [
+                "A person lifts a barbell from the ground to their shoulders and then lifts it overhead in a single motion.",
+                "A weightlifter lifts a barbell from the floor to their shoulders and then raises it above their head in one fluid movement.",
+                "Someone powerfully lifts a barbell from the ground and swiftly moves it to their shoulders, before thrusting it upwards and extending their arms fully above their head."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person lifts a barbell from the ground to their shoulders and then lifts it overhead in a single motion.\", \"A weightlifter lifts a barbell from the floor to their shoulders and then raises it above their head in one fluid movement.\", \"Someone powerfully lifts a barbell from the ground and swiftly moves it to their shoulders, before thrusting it upwards and extending their arms fully above their head.\"]}"
+    },
+    "Preparing pasta": {
+        "idx": 112,
+        "Elaboration": {
+            "Description": [
+                "A person boils pasta in water and adds sauce",
+                "A person cooks pasta in boiling water and mixes it with sauce",
+                "Someone boils pasta noodles and mixes them with sauce"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\n   \"A person boils pasta in water and adds sauce\",\n   \"A person cooks pasta in boiling water and mixes it with sauce\",\n   \"Someone boils pasta noodles and mixes them with sauce\"\n]}"
+    },
+    "Bathing dog": {
+        "idx": 113,
+        "Elaboration": {
+            "Description": [
+                "A person sprays water on a dog and applies soap",
+                "A person rinses the dog with water and dries it with a towel",
+                "A person brushes the dog's fur and applies shampoo"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sprays water on a dog and applies soap\", \"A person rinses the dog with water and dries it with a towel\", \"A person brushes the dog's fur and applies shampoo\"]}"
+    },
+    "Discus throw": {
+        "idx": 114,
+        "Elaboration": {
+            "Description": [
+                "A person spins around and then throws a heavy discus into the air.",
+                "A person rotates their body and hurls a circular object into the distance."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person spins around and then throws a heavy discus into the air.\", \"A person rotates their body and hurls a circular object into the distance.\"] }"
+    },
+    "Playing field hockey": {
+        "idx": 115,
+        "Elaboration": {
+            "Description": [
+                "Two teams compete by using sticks to hit a small ball into the opposing team's goal to score points.",
+                "Players on each team use long sticks to hit a ball and score points by getting the ball into the opposing team's goal.",
+                "Two teams play a game with sticks and a ball, aiming to score points by hitting the ball into the opposing team's goal."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Two teams compete by using sticks to hit a small ball into the opposing team's goal to score points.\",\n\"Players on each team use long sticks to hit a ball and score points by getting the ball into the opposing team's goal.\",\n\"Two teams play a game with sticks and a ball, aiming to score points by hitting the ball into the opposing team's goal.\"] }"
+    },
+    "Grooming horse": {
+        "idx": 116,
+        "Elaboration": {
+            "Description": [
+                "A person brushes a horse's coat with a comb and removes dirt and debris.",
+                "Someone cleans a horse's hooves with a hoof pick and removes any dirt or rocks.",
+                "A person uses a bristle brush to groom a horse's mane and tail, making them neat and tangle-free.",
+                "Someone trims a horse's overgrown hooves with a hoof knife, ensuring they are properly maintained and balanced.",
+                "A person carefully trims a horse's long, unruly hair with clippers, giving them a neat and tidy appearance."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person brushes a horse's coat with a comb and removes dirt and debris.\",\n               \"Someone cleans a horse's hooves with a hoof pick and removes any dirt or rocks.\",\n               \"A person uses a bristle brush to groom a horse's mane and tail, making them neat and tangle-free.\",\n               \"Someone trims a horse's overgrown hooves with a hoof knife, ensuring they are properly maintained and balanced.\",\n               \"A person carefully trims a horse's long, unruly hair with clippers, giving them a neat and tidy appearance.\"]}"
+    },
+    "Preparing salad": {
+        "idx": 117,
+        "Elaboration": {
+            "Description": [
+                "A person washes and cuts various vegetables, and then mixes them together in a bowl with dressing.",
+                "A chef chops vegetables into small pieces and tosses them together in a bowl with some dressing.",
+                "Someone cuts up vegetables and then combines them in a bowl with dressing, creating a colorful and healthy salad."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person washes and cuts various vegetables, and then mixes them together in a bowl with dressing.\",\n\"A chef chops vegetables into small pieces and tosses them together in a bowl with some dressing.\",\n\"Someone cuts up vegetables and then combines them in a bowl with dressing, creating a colorful and healthy salad.\"]}"
+    },
+    "Playing harmonica": {
+        "idx": 118,
+        "Elaboration": {
+            "Description": [
+                "A person blows into a small instrument with holes.",
+                "Someone breathes into a metal device and creates music."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person blows into a small instrument with holes.\", \"Someone breathes into a metal device and creates music.\"] }"
+    },
+    "Playing saxophone": {
+        "idx": 119,
+        "Elaboration": {
+            "Description": [
+                "A person blows into a saxophone to make music.",
+                "Someone uses their fingers to press different keys on a saxophone, creating music."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person blows into a saxophone to make music.\", \"Someone uses their fingers to press different keys on a saxophone, creating music.\"] }"
+    },
+    "Chopping wood": {
+        "idx": 120,
+        "Elaboration": {
+            "Description": [
+                "A person uses an axe to split logs into smaller pieces.",
+                "A person swings an axe to cut a log into smaller parts.",
+                "A person hits a log with an axe to make it break into smaller pieces."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses an axe to split logs into smaller pieces.\", \"A person swings an axe to cut a log into smaller parts.\", \"A person hits a log with an axe to make it break into smaller pieces.\"]}"
+    },
+    "Washing face": {
+        "idx": 121,
+        "Elaboration": {
+            "Description": [
+                "A person splashes water on their face and rubs it with soap",
+                "Someone wets their face and cleans it with their hands and soap",
+                "A person pours water onto their face and cleans it with their hands and soap"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person splashes water on their face and rubs it with soap\", \"Someone wets their face and cleans it with their hands and soap\", \"A person pours water onto their face and cleans it with their hands and soap\"]}"
+    },
+    "Using the pommel horse": {
+        "idx": 122,
+        "Elaboration": {
+            "Description": [
+                "A person jumps and balances on a horse-shaped apparatus with handles.",
+                "Someone performs gymnastic moves on a horse-shaped equipment with handles."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person jumps and balances on a horse-shaped apparatus with handles.\", \"Someone performs gymnastic moves on a horse-shaped equipment with handles.\"] }"
+    },
+    "Javelin throw": {
+        "idx": 123,
+        "Elaboration": {
+            "Description": [
+                "A person throws a javelin as fast as they can.",
+                "Someone runs and throws a long spear into the air."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a javelin as fast as they can.\", \"Someone runs and throws a long spear into the air.\"] }"
+    },
+    "Spinning": {
+        "idx": 124,
+        "Elaboration": {
+            "Description": [
+                "A person rapidly rotates their body in a circle.",
+                "A dancer twirls in circles with their arms extended.",
+                "A figure skater spins on one foot with their arms stretched out.",
+                "A child spins around with their arms open wide."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person rapidly rotates their body in a circle.\",\"A dancer twirls in circles with their arms extended.\",\"A figure skater spins on one foot with their arms stretched out.\",\"A child spins around with their arms open wide.\"] }"
+    },
+    "Ping-pong": {
+        "idx": 125,
+        "Elaboration": {
+            "Description": [
+                "Two players hit a small ball back and forth over a table with paddles.",
+                "A small ball is hit back and forth by two players using paddles on a table."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two players hit a small ball back and forth over a table with paddles.\", \"A small ball is hit back and forth by two players using paddles on a table.\"] }"
+    },
+    "Making a sandwich": {
+        "idx": 126,
+        "Elaboration": {
+            "Description": [
+                "A person spreads butter on bread and puts ham and cheese on top",
+                "A person layers bread with ham and cheese and then spreads butter on top",
+                "Bread is topped with ham and cheese, and then butter is spread on it by a person"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person spreads butter on bread and puts ham and cheese on top\", \"A person layers bread with ham and cheese and then spreads butter on top\", \"Bread is topped with ham and cheese, and then butter is spread on it by a person\"]}"
+    },
+    "Brushing hair": {
+        "idx": 127,
+        "Elaboration": {
+            "Description": [
+                "A person moves a brush through their hair to make it smooth and free of tangles.",
+                "Using a brush, a person combs through their hair to make it neat and tidy.",
+                "Someone runs a brush through their hair to remove knots and make it look presentable."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person moves a brush through their hair to make it smooth and free of tangles.\",\n               \"Using a brush, a person combs through their hair to make it neat and tidy.\",\n               \"Someone runs a brush through their hair to remove knots and make it look presentable.\"]}"
+    },
+    "Playing guitarra": {
+        "idx": 128,
+        "Elaboration": {
+            "Description": [
+                "A person strums the strings of a guitar",
+                "Someone holds a guitar and plucks the strings",
+                "Fingers move on the fretboard of a guitar"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person strums the strings of a guitar\", \"Someone holds a guitar and plucks the strings\", \"Fingers move on the fretboard of a guitar\"]}"
+    },
+    "Doing step aerobics": {
+        "idx": 129,
+        "Elaboration": {
+            "Description": [
+                "A person follows along with an instructor's movements on a raised platform.",
+                "A person steps up and down on a raised platform in rhythm with music.",
+                "A person performs a series of aerobic exercises on a raised platform, following an instructor's cues."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person follows along with an instructor's movements on a raised platform.\", \n                \"A person steps up and down on a raised platform in rhythm with music.\", \n                \"A person performs a series of aerobic exercises on a raised platform, following an instructor's cues.\"]}"
+    },
+    "Drinking beer": {
+        "idx": 130,
+        "Elaboration": {
+            "Description": [
+                "A person raises a glass to their mouth and takes a sip.",
+                "A person lifts a bottle to their lips and drinks from it.",
+                "A person holds a glass and tips it back to drink the beer."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person raises a glass to their mouth and takes a sip.\",\"A person lifts a bottle to their lips and drinks from it.\",\"A person holds a glass and tips it back to drink the beer.\"] }"
+    },
+    "Playing polo": {
+        "idx": 131,
+        "Elaboration": {
+            "Description": [
+                "Two teams on horses hit a ball with mallets and aim to score goals",
+                "Riders on horses compete to score by hitting a ball with long-handled mallets"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two teams on horses hit a ball with mallets and aim to score goals\", \"Riders on horses compete to score by hitting a ball with long-handled mallets\"]}"
+    },
+    "Snatch": {
+        "idx": 132,
+        "Elaboration": {
+            "Description": [
+                "A person quickly grabs an object and moves it with force.",
+                "Someone swiftly takes away an item from its original location."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person quickly grabs an object and moves it with force.\", \"Someone swiftly takes away an item from its original location.\"] }"
+    },
+    "Paintball": {
+        "idx": 133,
+        "Elaboration": {
+            "Description": [
+                "People wearing protective gear shoot colorful paint-filled balls at each other",
+                "A group of individuals wearing masks and goggles play a game, shooting paintballs at each other using special guns"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"People wearing protective gear shoot colorful paint-filled balls at each other\", \n\"A group of individuals wearing masks and goggles play a game, shooting paintballs at each other using special guns\"] }"
+    },
+    "Long jump": {
+        "idx": 134,
+        "Elaboration": {
+            "Description": [
+                "A person runs and then jumps as far as possible",
+                "Someone sprints and then catapults themselves into the air to cover a great distance"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person runs and then jumps as far as possible\", \n                \"Someone sprints and then catapults themselves into the air to cover a great distance\"]}"
+    },
+    "Cleaning windows": {
+        "idx": 135,
+        "Elaboration": {
+            "Description": [
+                "A person wipes a cloth on a transparent surface to remove dirt and stains",
+                "Someone sprays a liquid cleaning solution on a glass surface and uses a cloth to wipe it clean"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person wipes a cloth on a transparent surface to remove dirt and stains\", \"Someone sprays a liquid cleaning solution on a glass surface and uses a cloth to wipe it clean\"]}"
+    },
+    "Brushing teeth": {
+        "idx": 136,
+        "Elaboration": {
+            "Description": [
+                "A person brushes their teeth with a toothbrush and toothpaste.",
+                "Someone puts toothpaste on a toothbrush and cleans their teeth.",
+                "Using a toothbrush and toothpaste, a person cleans their teeth."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person brushes their teeth with a toothbrush and toothpaste.\", \n                \"Someone puts toothpaste on a toothbrush and cleans their teeth.\", \n                \"Using a toothbrush and toothpaste, a person cleans their teeth.\"] }"
+    },
+    "Playing flauta": {
+        "idx": 137,
+        "Elaboration": {
+            "Description": [
+                "A person blows air into a flute and moves their fingers on the holes to create music",
+                "Using a flute, someone blows air and presses down different holes with their fingers to make melodious sounds"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person blows air into a flute and moves their fingers on the holes to create music\", \n                \"Using a flute, someone blows air and presses down different holes with their fingers to make melodious sounds\"]}"
+    },
+    "Tennis serve with ball bouncing": {
+        "idx": 138,
+        "Elaboration": {
+            "Description": [
+                "A person throws a ball up and hits it with a racket.",
+                "Someone tosses a ball in the air and swings a racket to hit it.",
+                "A player bounces a ball and strikes it with a racket to start a tennis game."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a ball up and hits it with a racket.\", \"Someone tosses a ball in the air and swings a racket to hit it.\", \"A player bounces a ball and strikes it with a racket to start a tennis game.\"] }"
+    },
+    "Bungee jumping": {
+        "idx": 139,
+        "Elaboration": {
+            "Description": [
+                "A person jumps off a high platform with a harness attached to a long elastic cord",
+                "Someone leaps from a tall structure while secured by a stretchy cord",
+                "Jumping off a height with a flexible cord attached to ensure a safe fall"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person jumps off a high platform with a harness attached to a long elastic cord\", \"Someone leaps from a tall structure while secured by a stretchy cord\", \"Jumping off a height with a flexible cord attached to ensure a safe fall\"]}"
+    },
+    "Triple jump": {
+        "idx": 140,
+        "Elaboration": {
+            "Description": [
+                "A person takes three consecutive jumps in a row",
+                "A person jumps three times successively in a straight line",
+                "A person hops thrice in a continuous motion"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person takes three consecutive jumps in a row\", \"A person jumps three times successively in a straight line\", \"A person hops thrice in a continuous motion\"] }"
+    },
+    "Horseback riding": {
+        "idx": 141,
+        "Elaboration": {
+            "Description": [
+                "A person rides on a horse.",
+                "A horse with a person on its back is moving."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person rides on a horse.\",\"A horse with a person on its back is moving.\"]}"
+    },
+    "Layup drill in basketball": {
+        "idx": 142,
+        "Elaboration": {
+            "Description": [
+                "A player dribbles towards the basket and jumps off one foot for a layup.",
+                "A person runs towards the hoop while bouncing the ball and shoots it upwards for a score."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A player dribbles towards the basket and jumps off one foot for a layup.\", \"A person runs towards the hoop while bouncing the ball and shoots it upwards for a score.\"]}"
+    },
+    "Vacuuming floor": {
+        "idx": 143,
+        "Elaboration": {
+            "Description": [
+                "A person moves a vacuum cleaner back and forth on the floor to clean it.",
+                "Someone uses a vacuum cleaner to suck up dirt and debris from the floor."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person moves a vacuum cleaner back and forth on the floor to clean it.\", \"Someone uses a vacuum cleaner to suck up dirt and debris from the floor.\"] }"
+    },
+    "Cleaning shoes": {
+        "idx": 144,
+        "Elaboration": {
+            "Description": [
+                "A person removes dirt from shoes using a brush.",
+                "A person wipes shoes with a cloth to make them clean.",
+                "A person uses water and soap to clean shoes and removes dirt."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person removes dirt from shoes using a brush.\", \"A person wipes shoes with a cloth to make them clean.\", \"A person uses water and soap to clean shoes and removes dirt.\"] }"
+    },
+    "Doing nails": {
+        "idx": 145,
+        "Elaboration": {
+            "Description": [
+                "A person applies nail polish on their nails",
+                "A person files their nails with a nail file",
+                "A person shapes their nails with a nail clipper"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person applies nail polish on their nails\", \"A person files their nails with a nail file\", \"A person shapes their nails with a nail clipper\"]}"
+    },
+    "Shot put": {
+        "idx": 146,
+        "Elaboration": {
+            "Description": [
+                "A person throws a heavy object as far as they can",
+                "A person holds a heavy object and flings it as far as possible",
+                "A person launches a heavy object into the air with great force"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a heavy object as far as they can\", \"A person holds a heavy object and flings it as far as possible\", \"A person launches a heavy object into the air with great force\"]}"
+    },
+    "Fixing bicycle": {
+        "idx": 147,
+        "Elaboration": {
+            "Description": [
+                "A person adjusts the seat and pedals of a bicycle to the right height.",
+                "A person tightens the screws and bolts on a bicycle to make sure everything is secure.",
+                "A person pumps air into the tires of a bicycle to make them firm and ready to ride."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person adjusts the seat and pedals of a bicycle to the right height.\", \"A person tightens the screws and bolts on a bicycle to make sure everything is secure.\", \"A person pumps air into the tires of a bicycle to make them firm and ready to ride.\"]}"
+    },
+    "Washing hands": {
+        "idx": 148,
+        "Elaboration": {
+            "Description": [
+                "A person wets their hands, applies soap, rubs their hands together, rinses off the soap with water, and dries their hands with a towel.",
+                "A person uses water, soap, and a towel to clean their hands.",
+                "A person cleans their hands by wetting them, lathering with soap, rinsing, and drying with a towel."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person wets their hands, applies soap, rubs their hands together, rinses off the soap with water, and dries their hands with a towel.\", \"A person uses water, soap, and a towel to clean their hands.\", \"A person cleans their hands by wetting them, lathering with soap, rinsing, and drying with a towel.\"]}"
+    },
+    "Ironing clothes": {
+        "idx": 149,
+        "Elaboration": {
+            "Description": [
+                "A person presses a hot iron on wrinkled clothes to make them smooth.",
+                "Using a hot iron, a person flattens creases and wrinkles on clothes.",
+                "Someone runs a hot iron on fabric to remove wrinkles and make clothes flat."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person presses a hot iron on wrinkled clothes to make them smooth.\",\"Using a hot iron, a person flattens creases and wrinkles on clothes.\",\"Someone runs a hot iron on fabric to remove wrinkles and make clothes flat.\"] }"
+    },
+    "Using the balance beam": {
+        "idx": 150,
+        "Elaboration": {
+            "Description": [
+                "A person walks across a narrow beam without falling",
+                "A person balances on a long, thin beam without slipping",
+                "Someone stays steady and moves carefully on a raised beam"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person walks across a narrow beam without falling\", \"A person balances on a long, thin beam without slipping\", \"Someone stays steady and moves carefully on a raised beam\"]}"
+    },
+    "Shoveling snow": {
+        "idx": 151,
+        "Elaboration": {
+            "Description": [
+                "A person uses a shovel to scoop snow from the ground and throw it to the side.",
+                "A person clears snow from the ground using a shovel and moves it to another place.",
+                "A person lifts snow from the ground using a shovel and removes it by throwing it aside."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a shovel to scoop snow from the ground and throw it to the side.\", \"A person clears snow from the ground using a shovel and moves it to another place.\", \"A person lifts snow from the ground using a shovel and removes it by throwing it aside.\"]}"
+    },
+    "Tumbling": {
+        "idx": 152,
+        "Elaboration": {
+            "Description": [
+                "A person flips and spins in the air",
+                "Someone performs acrobatic movements with flips and twists",
+                "A person somersaults and does gymnastics stunts"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person flips and spins in the air\", \"Someone performs acrobatic movements with flips and twists\", \"A person somersaults and does gymnastics stunts\"]}"
+    },
+    "Using parallel bars": {
+        "idx": 153,
+        "Elaboration": {
+            "Description": [
+                "A person holds onto two bars and lifts their body up and down",
+                "Someone grips two bars and raises and lowers their body using their arms",
+                "A person supports their weight with their arms on two parallel bars and moves their body up and down"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds onto two bars and lifts their body up and down\", \"Someone grips two bars and raises and lowers their body using their arms\", \"A person supports their weight with their arms on two parallel bars and moves their body up and down\"]}"
+    },
+    "Getting a tattoo": {
+        "idx": 154,
+        "Elaboration": {
+            "Description": [
+                "A person gets a permanent design on their skin using a needle and ink",
+                "Someone chooses a design, sits in a chair, and endures small, repetitive needle pricks on their skin to create a permanent artwork"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person gets a permanent design on their skin using a needle and ink\", \"Someone chooses a design, sits in a chair, and endures small, repetitive needle pricks on their skin to create a permanent artwork\"]}"
+    },
+    "Rock climbing": {
+        "idx": 155,
+        "Elaboration": {
+            "Description": [
+                "A person climbs up a rock using their hands and feet.",
+                "A person ascends a rock by gripping the holds and stepping on footholds.",
+                "A climber scales a rock wall using their body strength and agility."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person climbs up a rock using their hands and feet.\", \"A person ascends a rock by gripping the holds and stepping on footholds.\", \"A climber scales a rock wall using their body strength and agility.\"]}"
+    },
+    "Smoking hookah": {
+        "idx": 156,
+        "Elaboration": {
+            "Description": [
+                "A person inhales smoke from a water pipe",
+                "Someone takes puffs from a hookah",
+                "A person smokes flavored tobacco with a long pipe"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person inhales smoke from a water pipe\", \"Someone takes puffs from a hookah\", \"A person smokes flavored tobacco with a long pipe\"]}"
+    },
+    "Shaving": {
+        "idx": 157,
+        "Elaboration": {
+            "Description": [
+                "A person uses a razor to remove hair from their face",
+                "A man takes a sharp blade and removes hair from his face",
+                "A person glides a razor over their skin to remove facial hair"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a razor to remove hair from their face\", \"A man takes a sharp blade and removes hair from his face\", \"A person glides a razor over their skin to remove facial hair\"]}"
+    },
+    "Getting a piercing": {
+        "idx": 158,
+        "Elaboration": {
+            "Description": [
+                "A person gets a metal jewelry inserted into their body part.",
+                "Someone allows a needle to pass through their skin and places a decorative item in the hole created."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person gets a metal jewelry inserted into their body part.\", \"Someone allows a needle to pass through their skin and places a decorative item in the hole created.\"] }"
+    },
+    "Springboard diving": {
+        "idx": 159,
+        "Elaboration": {
+            "Description": [
+                "A person jumps off a diving board and performs acrobatic movements in mid-air before entering the water",
+                "A diver launches from a springboard, twirls and flips in the air, before elegantly diving into the water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person jumps off a diving board and performs acrobatic movements in mid-air before entering the water\", \"A diver launches from a springboard, twirls and flips in the air, before elegantly diving into the water\"] }"
+    },
+    "Playing squash": {
+        "idx": 160,
+        "Elaboration": {
+            "Description": [
+                "Two players hit a small rubber ball against a wall using racquets",
+                "A person hits a small ball against a wall using a racquet",
+                "Two players volley a small ball back and forth using racquets"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Two players hit a small rubber ball against a wall using racquets\",\"A person hits a small ball against a wall using a racquet\",\"Two players volley a small ball back and forth using racquets\"]}"
+    },
+    "Playing piano": {
+        "idx": 161,
+        "Elaboration": {
+            "Description": [
+                "A person uses their hands to press keys on a musical instrument with black and white keys",
+                "Fingers of a person move across the keys of a musical instrument",
+                "Someone plays music using a keyboard instrument with 88 keys"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses their hands to press keys on a musical instrument with black and white keys\", \"Fingers of a person move across the keys of a musical instrument\", \"Someone plays music using a keyboard instrument with 88 keys\"]}"
+    },
+    "Dodgeball": {
+        "idx": 162,
+        "Elaboration": {
+            "Description": [
+                "Players throw balls at each other to try to avoid getting hit",
+                "People dodge and throw balls to eliminate opponents",
+                "Participants try to dodge incoming balls while targeting opponents with throws",
+                "Players dodge and throw balls to eliminate opponents and be the last person standing"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Players throw balls at each other to try to avoid getting hit\", \"People dodge and throw balls to eliminate opponents\", \"Participants try to dodge incoming balls while targeting opponents with throws\", \"Players dodge and throw balls to eliminate opponents and be the last person standing\"]}"
+    },
+    "Smoking a cigarette": {
+        "idx": 163,
+        "Elaboration": {
+            "Description": [
+                "A person holds a cigarette, lights it with a lighter, inhales the smoke, and exhales it.",
+                "A person takes out a cigarette, puts it in their mouth, lights it, and blows smoke out."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds a cigarette, lights it with a lighter, inhales the smoke, and exhales it.\", \"A person takes out a cigarette, puts it in their mouth, lights it, and blows smoke out.\"]}."
+    },
+    "Sailing": {
+        "idx": 164,
+        "Elaboration": {
+            "Description": [
+                "A person controls a boat using a large sheet of fabric.",
+                "Someone directs a boat by moving a stick and adjusting a sail.",
+                "A boat glides through water as wind fills a large piece of cloth.",
+                "A person maneuvers a boat by adjusting a sail that catches the wind."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person controls a boat using a large sheet of fabric.\",\"Someone directs a boat by moving a stick and adjusting a sail.\",\"A boat glides through water as wind fills a large piece of cloth.\",\"A person maneuvers a boat by adjusting a sail that catches the wind.\"] }"
+    },
+    "Getting a haircut": {
+        "idx": 165,
+        "Elaboration": {
+            "Description": [
+                "A person sits in a chair while someone else cuts their hair.",
+                "Someone uses scissors to cut a person's hair.",
+                "A person's hair is trimmed by a hairstylist."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person sits in a chair while someone else cuts their hair.\", \n                \"Someone uses scissors to cut a person's hair.\", \n                \"A person's hair is trimmed by a hairstylist.\"] }"
+    },
+    "Playing lacrosse": {
+        "idx": 166,
+        "Elaboration": {
+            "Description": [
+                "A person throws a ball with a long stick",
+                "Players pass a ball using sticks and try to score goals",
+                "People run on a field and use a stick to catch and throw a ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a ball with a long stick\", \"Players pass a ball using sticks and try to score goals\", \"People run on a field and use a stick to catch and throw a ball\"]}"
+    },
+    "Cumbia": {
+        "idx": 167,
+        "Elaboration": {
+            "Description": [
+                "People dancing to lively music with a Latin American rhythm",
+                "A group of individuals moving their bodies in sync to upbeat music",
+                "Dancers enjoying traditional Latin American music with energetic movements"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"People dancing to lively music with a Latin American rhythm\", \"A group of individuals moving their bodies in sync to upbeat music\", \"Dancers enjoying traditional Latin American music with energetic movements\"]}"
+    },
+    "Tai chi": {
+        "idx": 168,
+        "Elaboration": {
+            "Description": [
+                "A person moves slowly and gracefully, performing a series of flowing movements.",
+                "Someone practicing tai chi performs gentle and deliberate movements that promote balance and relaxation.",
+                "In tai chi, a person performs slow, controlled movements while focusing on their breath and alignment."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person moves slowly and gracefully, performing a series of flowing movements.\", \"Someone practicing tai chi performs gentle and deliberate movements that promote balance and relaxation.\", \"In tai chi, a person performs slow, controlled movements while focusing on their breath and alignment.\"] }"
+    },
+    "Painting": {
+        "idx": 169,
+        "Elaboration": {
+            "Description": [
+                "A person holds a brush and applies colorful strokes on a canvas.",
+                "Someone dips a brush in paint and makes patterns on a surface.",
+                "A hand moves a brush across a surface with different colors.",
+                "An artist uses a brush to create pictures on a canvas."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds a brush and applies colorful strokes on a canvas.\", \"Someone dips a brush in paint and makes patterns on a surface.\", \"A hand moves a brush across a surface with different colors.\", \"An artist uses a brush to create pictures on a canvas.\"] }"
+    },
+    "Mowing the lawn": {
+        "idx": 170,
+        "Elaboration": {
+            "Description": [
+                "A person pushes a lawnmower in the yard to cut the grass.",
+                "Someone uses a machine to trim the grass in their yard."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person pushes a lawnmower in the yard to cut the grass.\",\"Someone uses a machine to trim the grass in their yard.\"] }"
+    },
+    "Shaving legs": {
+        "idx": 171,
+        "Elaboration": {
+            "Description": [
+                "A person applies shaving cream on their legs and then uses a razor to remove the hair",
+                "A person spreads cream on their legs and uses a sharp tool to remove the hair"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person applies shaving cream on their legs and then uses a razor to remove the hair\", \n                \"A person spreads cream on their legs and uses a sharp tool to remove the hair\"]}"
+    },
+    "Walking the dog": {
+        "idx": 172,
+        "Elaboration": {
+            "Description": [
+                "A person holds a leash while a dog walks beside them.",
+                "A person walks with a dog on a leash.",
+                "Someone walks a dog on a leash."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds a leash while a dog walks beside them.\", \"A person walks with a dog on a leash.\", \"Someone walks a dog on a leash.\"] }"
+    },
+    "Hammer throw": {
+        "idx": 173,
+        "Elaboration": {
+            "Description": [
+                "A person swings a hammer around and throws it as far as possible.",
+                "Someone holds a long handle with a heavy metal ball attached to it, spins around rapidly, and releases the ball to fly through the air."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person swings a hammer around and throws it as far as possible.\", \"Someone holds a long handle with a heavy metal ball attached to it, spins around rapidly, and releases the ball to fly through the air.\"] }"
+    },
+    "Skateboarding": {
+        "idx": 174,
+        "Elaboration": {
+            "Description": [
+                "A person rides a board with wheels and performs tricks.",
+                "Someone balances on a moving board and does cool stunts.",
+                "A person glides on a skateboard and does tricks and flips."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person rides a board with wheels and performs tricks.\",\"Someone balances on a moving board and does cool stunts.\",\"A person glides on a skateboard and does tricks and flips.\"] }"
+    },
+    "Polishing shoes": {
+        "idx": 175,
+        "Elaboration": {
+            "Description": [
+                "A person rubs a brush with shoe polish on the shoes in a circular motion.",
+                "A person applies shoe polish onto a shoe using a brush and buffs the shoe with a cloth to make it shiny.",
+                "Using a brush, a person applies shoe polish to the shoes and rubs it in until the shoes are polished.",
+                "A person buffs shoes with a cloth after applying shoe polish with a brush to make them shiny."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person rubs a brush with shoe polish on the shoes in a circular motion.\", \"A person applies shoe polish onto a shoe using a brush and buffs the shoe with a cloth to make it shiny.\", \"Using a brush, a person applies shoe polish to the shoes and rubs it in until the shoes are polished.\", \"A person buffs shoes with a cloth after applying shoe polish with a brush to make them shiny.\"]}"
+    },
+    "Ballet": {
+        "idx": 176,
+        "Elaboration": {
+            "Description": [
+                "A person performs graceful movements to classical music.",
+                "Dancers perform elegant and precise movements on stage.",
+                "A group of dancers perform intricate and graceful routines to music.",
+                "Dancers in tutus gracefully leap, twirl and glide on stage.",
+                "Performers in ballet shoes and tutus execute precise and elegant movements to music."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person performs graceful movements to classical music.\", \n \"Dancers perform elegant and precise movements on stage.\", \n \"A group of dancers perform intricate and graceful routines to music.\",\n \"Dancers in tutus gracefully leap, twirl and glide on stage.\",\n \"Performers in ballet shoes and tutus execute precise and elegant movements to music.\"] }"
+    },
+    "Hand washing clothes": {
+        "idx": 177,
+        "Elaboration": {
+            "Description": [
+                "A person rubs clothes together with soap and water to clean them",
+                "Someone scrubs dirty clothes with their hands in soapy water to remove dirt and stains",
+                "A person dips clothes in soapy water and agitates them to wash them",
+                "Someone uses their hands to scrub clothes in soapy water to remove dirt and grime"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person rubs clothes together with soap and water to clean them\", \"Someone scrubs dirty clothes with their hands in soapy water to remove dirt and stains\", \"A person dips clothes in soapy water and agitates them to wash them\", \"Someone uses their hands to scrub clothes in soapy water to remove dirt and grime\"]}"
+    },
+    "Plataform diving": {
+        "idx": 178,
+        "Elaboration": {
+            "Description": [
+                "A person jumps off a high platform and dives into water",
+                "Someone leaps from a tall platform and enters the water headfirst",
+                "A diver jumps from a platform into a pool, performing acrobatic flips and twists"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person jumps off a high platform and dives into water\", \"Someone leaps from a tall platform and enters the water headfirst\", \"A diver jumps from a platform into a pool, performing acrobatic flips and twists\"]}"
+    },
+    "Playing violin": {
+        "idx": 179,
+        "Elaboration": {
+            "Description": [
+                "A person holds a violin and moves the bow across the strings.",
+                "A person uses a violin to make music by sliding their fingers on the strings and drawing the bow across them.",
+                "Someone plays a violin by pressing their fingers on the strings and moving a bow back and forth to create music."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds a violin and moves the bow across the strings.\", \"A person uses a violin to make music by sliding their fingers on the strings and drawing the bow across them.\", \"Someone plays a violin by pressing their fingers on the strings and moving a bow back and forth to create music.\"]}"
+    },
+    "Breakdancing": {
+        "idx": 180,
+        "Elaboration": {
+            "Description": [
+                "A person performs acrobatic moves and dances to hip-hop music.",
+                "A dancer spins, flips, and freezes in rhythm to the beat of music."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person performs acrobatic moves and dances to hip-hop music.\", \"A dancer spins, flips, and freezes in rhythm to the beat of music.\"] }"
+    },
+    "Windsurfing": {
+        "idx": 181,
+        "Elaboration": {
+            "Description": [
+                "A person stands on a board and uses a sail to ride on water.",
+                "An individual balances on a board while moving through water using a sail.",
+                "Someone glides on water using a sail attached to a board."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person stands on a board and uses a sail to ride on water.\", \"An individual balances on a board while moving through water using a sail.\", \"Someone glides on water using a sail attached to a board.\"]}"
+    },
+    "Hopscotch": {
+        "idx": 182,
+        "Elaboration": {
+            "Description": [
+                "A person jumps from one square to another on a grid drawn on the ground.",
+                "A player hops on one leg and throws a small object into various numbered squares on the ground.",
+                "Someone jumps with alternating feet on a pattern drawn on the ground."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person jumps from one square to another on a grid drawn on the ground.\", \"A player hops on one leg and throws a small object into various numbered squares on the ground.\", \"Someone jumps with alternating feet on a pattern drawn on the ground.\"]}"
+    },
+    "Doing motocross": {
+        "idx": 183,
+        "Elaboration": {
+            "Description": [
+                "A person rides a motorbike on a track and performs tricks in the air.",
+                "A rider on a motorcycle jumps over hills and obstacles on a dirt track.",
+                "A motorcyclist races through a bumpy terrain and jumps over ramps and obstacles.",
+                "A rider on a dirt bike speeds through a muddy track, jumping and maneuvering over obstacles.",
+                "A person on a motorcycle performs high jumps and stunts on a rough off-road course."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person rides a motorbike on a track and performs tricks in the air.\",\n\"A rider on a motorcycle jumps over hills and obstacles on a dirt track.\",\n\"A motorcyclist races through a bumpy terrain and jumps over ramps and obstacles.\",\n\"A rider on a dirt bike speeds through a muddy track, jumping and maneuvering over obstacles.\",\n\"A person on a motorcycle performs high jumps and stunts on a rough off-road course.\"]}."
+    },
+    "Mixing drinks": {
+        "idx": 184,
+        "Elaboration": {
+            "Description": [
+                "A person pours different drinks into a glass and stirs them together",
+                "Someone mixes various liquids in a cup or shaker",
+                "A glass is filled with different beverages and then stirred or shaken"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person pours different drinks into a glass and stirs them together\",\"Someone mixes various liquids in a cup or shaker\",\"A glass is filled with different beverages and then stirred or shaken\"]}"
+    },
+    "Starting a campfire": {
+        "idx": 185,
+        "Elaboration": {
+            "Description": [
+                "A person gathers dry twigs and arranged them in a pile. They then strike a match and light the twigs on fire.",
+                "Using a fire starter, a person ignites the kindling wood in a fire pit, and carefully adds larger logs to build up the campfire."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person gathers dry twigs and arranged them in a pile. They then strike a match and light the twigs on fire.\", \"Using a fire starter, a person ignites the kindling wood in a fire pit, and carefully adds larger logs to build up the campfire.\"] }"
+    },
+    "Belly dance": {
+        "idx": 186,
+        "Elaboration": {
+            "Description": [
+                "A person standing and moving their belly in a rhythmic manner",
+                "A dancer shaking and swaying their midsection to music",
+                "Someone gracefully moving their hips and torso in a fluid motion"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person standing and moving their belly in a rhythmic manner\", \"A dancer shaking and swaying their midsection to music\", \"Someone gracefully moving their hips and torso in a fluid motion\"] }"
+    },
+    "Removing curlers": {
+        "idx": 187,
+        "Elaboration": {
+            "Description": [
+                "A person takes out the curlers from the hair",
+                "Someone removes the rollers from the hair",
+                "Curlers are being taken out from the hair"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person takes out the curlers from the hair\", \"Someone removes the rollers from the hair\", \"Curlers are being taken out from the hair\"]}"
+    },
+    "Archery": {
+        "idx": 188,
+        "Elaboration": {
+            "Description": [
+                "A person shoots arrows at a target using a bow.",
+                "Using a bow, someone aims and shoots arrows at a target.",
+                "People try to hit a target by shooting arrows with a bow."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person shoots arrows at a target using a bow.\", \"Using a bow, someone aims and shoots arrows at a target.\", \"People try to hit a target by shooting arrows with a bow.\"] }"
+    },
+    "Volleyball": {
+        "idx": 189,
+        "Elaboration": {
+            "Description": [
+                "Players hit a ball back and forth over a net using their hands",
+                "Teams of players pass a ball to each other without letting it touch the ground",
+                "Two teams of players bump, set, and spike a ball over a net"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Players hit a ball back and forth over a net using their hands\", \"Teams of players pass a ball to each other without letting it touch the ground\", \"Two teams of players bump, set, and spike a ball over a net\"]}"
+    },
+    "Playing water polo": {
+        "idx": 190,
+        "Elaboration": {
+            "Description": [
+                "Two teams of swimmers try to throw a ball into the opponent's net while swimming in a pool.",
+                "Swimmers in a pool throw a ball to score goals, trying to prevent the other team from doing the same."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two teams of swimmers try to throw a ball into the opponent's net while swimming in a pool.\", \"Swimmers in a pool throw a ball to score goals, trying to prevent the other team from doing the same.\"] }"
+    },
+    "Playing racquetball": {
+        "idx": 191,
+        "Elaboration": {
+            "Description": [
+                "Two players hitting a small ball against a wall using a racquet",
+                "A game where two players hit a small ball against a wall with a racquet",
+                "Two people hitting a ball with a racquet in a small court"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two players hitting a small ball against a wall using a racquet\", \"A game where two players hit a small ball against a wall with a racquet\", \"Two people hitting a ball with a racquet in a small court\"]}"
+    },
+    "Kayaking": {
+        "idx": 192,
+        "Elaboration": {
+            "Description": [
+                "A person paddles a kayak in water",
+                "Someone sits in a kayak and moves through the water using a paddle",
+                "A person navigates a kayak using a paddle",
+                "Someone propels themselves on a kayak using a paddle"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person paddles a kayak in water\", \"Someone sits in a kayak and moves through the water using a paddle\", \"A person navigates a kayak using a paddle\", \"Someone propels themselves on a kayak using a paddle\"]}"
+    },
+    "Polishing forniture": {
+        "idx": 193,
+        "Elaboration": {
+            "Description": [
+                "A person rubs a cloth against a table in circular motion to make it clean and shiny",
+                "Using a soft cloth, someone wipes a surface continuously and briskly to remove dirt and improve its appearance"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person rubs a cloth against a table in circular motion to make it clean and shiny\", \"Using a soft cloth, someone wipes a surface continuously and briskly to remove dirt and improve its appearance\"]}"
+    },
+    "Playing kickball": {
+        "idx": 194,
+        "Elaboration": {
+            "Description": [
+                "A group of children kick a ball on a field.",
+                "Kids take turns kicking a ball towards a target.",
+                "Children play a game where they use their feet to kick a ball."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A group of children kick a ball on a field.\", \"Kids take turns kicking a ball towards a target.\", \"Children play a game where they use their feet to kick a ball.\"] }"
+    },
+    "Using uneven bars": {
+        "idx": 195,
+        "Elaboration": {
+            "Description": [
+                "A person swings between two parallel bars",
+                "A gymnast performs acrobatic moves on two uneven parallel bars"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person swings between two parallel bars\", \"A gymnast performs acrobatic moves on two uneven parallel bars\"]}"
+    },
+    "Washing dishes": {
+        "idx": 196,
+        "Elaboration": {
+            "Description": [
+                "A person cleans dirty dishes with water and soap.",
+                "Someone scrubs plates and glasses with soapy sponges.",
+                "Dishes are washed using water and detergent.",
+                "Dirty dishes are cleaned using soap and water."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person cleans dirty dishes with water and soap.\",\"Someone scrubs plates and glasses with soapy sponges.\",\"Dishes are washed using water and detergent.\",\"Dirty dishes are cleaned using soap and water.\"] }"
+    },
+    "Pole vault": {
+        "idx": 197,
+        "Elaboration": {
+            "Description": [
+                "A person runs with a pole and jumps over a high bar.",
+                "A person uses a long stick to jump over a raised bar.",
+                "A person sprints and propels themselves over a bar using a long pole."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person runs with a pole and jumps over a high bar.\", \"A person uses a long stick to jump over a raised bar.\", \"A person sprints and propels themselves over a bar using a long pole.\"] }"
+    },
+    "Playing accordion": {
+        "idx": 198,
+        "Elaboration": {
+            "Description": [
+                "A person holds an accordion and moves their hands on the buttons and keys",
+                "Someone plays musical notes on an accordion by pressing buttons and moving their hands",
+                "A musician plays a portable musical instrument with buttons and bellows, producing melodic sounds"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person holds an accordion and moves their hands on the buttons and keys\", \"Someone plays musical notes on an accordion by pressing buttons and moving their hands\", \"A musician plays a portable musical instrument with buttons and bellows, producing melodic sounds\"]}"
+    },
+    "Playing badminton": {
+        "idx": 199,
+        "Elaboration": {
+            "Description": [
+                "Two people hit a shuttlecock back and forth over a net with rackets.",
+                "A person uses a racket to hit a small feathered ball over a net to the other person.",
+                "Two individuals take turns hitting a small feathered ball using rackets over a net."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Two people hit a shuttlecock back and forth over a net with rackets.\", \"A person uses a racket to hit a small feathered ball over a net to the other person.\", \"Two individuals take turns hitting a small feathered ball using rackets over a net.\"]}"
+    }
+}

@@ -1,0 +1,563 @@
+env: tadtr
+model: ZeroShotTAL
+
+Close-Set:
+    one-hot target:
+        i3d: 
+            activitynet1.3:
+        clip:
+            activitynet1.3:
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 24.07
+                CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_none_1" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --batch_size 16 --target_type "none" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 3e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 0.023
+                CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_none_2" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --batch_size 16 --target_type "none" --lr 3e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 5 --rescale_length 500 :: val: 21.81
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_none_3" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 500
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 15 :: val: 2.605
+                CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_none_4" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 100 --num_queries 15 --postprocess_type "class_agnostic" --postprocess_topk 100
+
+            thumos14:
+                # lr 1e-3 --postprocess_type "class_specific" --postprocess_topk 1 :: val: 0.057
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_1" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 1e-3 --epochs 100 --postprocess_type "class_specific" --postprocess_topk 1
+                # lr 1e-3 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 0.115
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_2" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 1e-3 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 2.553
+                CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_none_3" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 1e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 4.259
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_4" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 1e-6 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 3.12
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_5" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 1e-6 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 5e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 3.841
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_6" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 5e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 3e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 3.597
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_7" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 3e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 7e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 3.398
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_8" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 7e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 5e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --batch_size 4 :: val: 3.883
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_none_9" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 4 --target_type "none" --lr 5e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 5e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --batch_size 4 --epochs 500 :: val: 3.906
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_none_10" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 4 --target_type "none" --lr 5e-5 --epochs 500 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 5e-5 --postprocess_type "class_specific" --postprocess_topk 1 :: val: 3.64 被覆盖了，有机会重跑一遍
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_11" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 2 --target_type "none" --lr 5e-5 --epochs 100 --postprocess_type "class_specific" --postprocess_topk 1
+                # lr 1e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --enable_backbone :: val: 4.043
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_12" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --enable_backbone --batch_size 2 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 --batch_size 4 --epochs 200 --num_queries 40 :: val: 4.989
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_none_13" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 4 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40
+                # lr 1e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --epochs 200 :: val: 5.558
+                CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_none_14" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --batch_size 2 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40
+                # 【base-14】 --enable_backbone :: val: 5.925
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_15" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --enable_backbone --batch_size 2 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40
+                # 【same as 15】 :: val: 5.56
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_none_16" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --enable_backbone --batch_size 2 --target_type "none" --lr 1e-5 --epochs 50 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40
+                
+                # 【base-14】 --batch_size 4 --epochs 200 :: val: 6.26
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_17" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 4 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40
+                # 【base-17】 --enable_backbone  :: val: 5.795
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_18" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --enable_backbone --batch_size 4 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40
+                
+                # 【base-14】lr 1e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enable_backbone --epochs 200 --lr_drop 10 :: val: 5.473
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_19" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --enable_backbone --batch_size 2 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --lr_drop 10
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enable_backbone --epochs 200 --lr_drop 10 :: val: 1.097
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_20" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --enable_backbone --batch_size 2 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --lr_drop 10
+                
+                # lr 1e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enable_backbone --epochs 200 :: val: 4.621
+                CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_none_21" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --enable_backbone --batch_size 2 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20
+                # lr 1e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 30 --enable_backbone --epochs 200 :: val: 5.864
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_22" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --enable_backbone --batch_size 2 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 30
+                # lr 1e-5 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 50 --enable_backbone --epochs 200 :: val: 6.361
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_23" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --enable_backbone --batch_size 2 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 50
+                
+                # 【base-18】 --enable_backbone --epochs 100 :: val: 5.795
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_24" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --enable_backbone --batch_size 4 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40
+                # 【base-17】 --set_cost_giou 5 --giou_loss_coef 5 :: val: 5.773
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_25" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 4 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --set_cost_giou 5 --giou_loss_coef 5
+                # 【base-17】 --batch_size 4 --rescale_length 560 :: val: 6.05
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_26" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 4 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560
+                # 【base-14】 --rescale_length 560 :: val: 5.576
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_27" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 2 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560
+                # 【base-14】 --lr 5e-5 --rescale_length 560 --epochs 200 :: val: 5.065
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_28" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 2 --target_type "none" --lr 5e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560
+                # 【base-14】 --rescale_length 1120 :: val: 5.724
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_29" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 2 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 1120
+                
+                # 【base-29】 --rescale_length 560 --batch_size 16:: val: 6.001
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_none_30" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560
+                # 【base-29】 lr 1e-4 --rescale_length 560 --batch_size 16:: val: 5.712
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_31" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560
+                # 【base-31】 --epochs 500 :: val: 5.747
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_32" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 500 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560
+                
+                # 【base-29】 lr 1e-5 --rescale_length 560 --batch_size 16 --bbox_loss_coef 8 --set_cost_bbox 8 :: val:5.922
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_33" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 8 --set_cost_bbox 8
+                # 【base-29】 lr 1e-5 --rescale_length 560 --batch_size 16 --bbox_loss_coef 10 --set_cost_bbox 10 :: val: 6.054
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_34" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 10 --set_cost_bbox 10
+                # 【base-29】 lr 1e-5 --rescale_length 560 --batch_size 16 --cls_loss_coef 1 --set_cost_class 1 :: val: 5.95
+                CUDA_VISIBLE_DEVICES=6 python main.py --model_name "Thumos14_CLIP_none_35" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --cls_loss_coef 1 --set_cost_class 1 
+                # 【base-29】 lr 1e-5 --rescale_length 560 --batch_size 16 --cls_loss_coef 1 --set_cost_class 1 --giou_loss_coef 5 --set_cost_giou 5 :: val: 5.67
+                CUDA_VISIBLE_DEVICES=5 python main.py --model_name "Thumos14_CLIP_none_36" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --cls_loss_coef 1 --set_cost_class 1 --giou_loss_coef 5 --set_cost_giou 5 
+                # 【base-29】 lr 1e-5 --rescale_length 560 --batch_size 16 --bbox_loss_coef 20 --set_cost_bbox 20 :: val: 5.638
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_37" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 20 --set_cost_bbox 20
+                # 【base-29】 lr 1e-5 --rescale_length 560 --batch_size 16 --bbox_loss_coef 30 --set_cost_bbox 30 :: val: 5.698
+                CUDA_VISIBLE_DEVICES=5 python main.py --model_name "Thumos14_CLIP_none_38" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 30 --set_cost_bbox 30
+                # 【base-29】 lr 1e-5 --rescale_length 560 --batch_size 16 --bbox_loss_coef 40 --set_cost_bbox 40 :: val: 5.645
+                CUDA_VISIBLE_DEVICES=6 python main.py --model_name "Thumos14_CLIP_none_39" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 40 --set_cost_bbox 40
+                
+                # 【base-34】 --nheads 4 :: val: 6.003
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_none_40" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 10 --set_cost_bbox 10 --nheads 4
+                # 【base-34】 --enc_layers 4 --dec_layers 4 :: val: 5.75
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_none_41" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 10 --set_cost_bbox 10 --enc_layers 4 --dec_layers 4
+                # 【base-34】 --enc_layers 3 --dec_layers 3 :: val: 5.767
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_42" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 10 --set_cost_bbox 10 --enc_layers 3 --dec_layers 3
+
+                # 【base-34】--postprocess_type 'class_one' --postprocess_topk 1 :: 4.914
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_43" --cfg_path "./config/Thumos14_CLIP.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --rescale_length 560 --bbox_loss_coef 10 --set_cost_bbox 10 --postprocess_type 'class_one' --postprocess_topk 1
+                
+
+                ################ 采用TadTR的数据增广方式 #####################
+                # lr 1e-4 :: val: 34.08
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_8frame_1" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4
+                # lr 1e-4 --batch_size 32 :: val: 35.2
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_8frame_2" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 32 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4
+                # lr 3e-4 --batch_size 64 :: val: 14.08
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_8frame_3" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 64 --target_type "none" --lr 3e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4
+                # lr 1e-4 --num_queries 20 :: val: 34.64
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_8frame_4" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 4 --dec_layers 4
+                # lr 1e-4 --enc_layers 3 --dec_layers 3 --num_queries 20 :: val: 34.67
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_8frame_5" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 3 --dec_layers 3
+                # lr 1e-4 --enc_layers 2 --dec_layers 2 --num_queries 20 :: val: 34.2
+                CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_none_8frame_6" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 2 --dec_layers 2
+                # lr 1e-4 --enc_layers 1 --dec_layers 1 --num_queries 20 :: val: 23.75
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_8frame_7" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 1 --dec_layers 1
+                # lr 1e-4 --enc_layers 2 --dec_layers 4 --num_queries 20 :: val: 34.29
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_8frame_8" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 2 --dec_layers 4
+                # lr 1e-4 --enc_layers 1 --dec_layers 4 --num_queries 20 :: val: 33.49
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_8frame_9" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 1 --dec_layers 4
+                # 【base-2] --lr_drop 80 :: val: 36.15
+                CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_none_8frame_10" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 32 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --lr_drop 80
+                
+    prompt target:
+        i3d:
+            activitynet1.3: 
+            
+            thumos14:
+        clip:
+            activitynet1.3:
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 --enc_layers 4 --dec_layers 4 --rescale_length 300 :: val: 24.45
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_1" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --save_result --rescale_length 300 --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --enc_layers 4 --dec_layers 4 
+                # lr 1e-4 --postprocess_type "class_agnostic" --postprocess_topk 100 --enc_layers 4 --dec_layers 4 --norm_embed --rescale_length 300 :: val: 0.028
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_2" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --save_result --rescale_length 300 --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --enc_layers 4 --dec_layers 4 --norm_embed
+                # 【base-2】lr 3e-4 
+                CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_3" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --save_result --rescale_length 300 --batch_size 16 --target_type "prompt" --lr 3e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --enc_layers 4 --dec_layers 4 --norm_embed
+
+            thumos14:
+                # lr 1e-4 :: val: 36.63
+                CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_8frame_1" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4
+                # lr 1e-4 --norm_embed :: val: 31.66
+                CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_8frame_2" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed
+              
+
+    description target:
+        i3d:
+            activitynet1.3:
+
+
+        clip:
+            activitynet1.3:
+
+            thumos14:
+
+Binary Classification in CLIP feature:
+    close-set:
+
+    zero-shot:
+        split_75:
+            clip: 
+                activitynet1.3:
+
+                thumos14:
+                    #  :: 
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_1" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary
+                    # --enable_backbone :: 
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_2" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone
+                    # 【base-2】--backbone_layers 2 :: 
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_3" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --backbone_layers 2
+                    # 【base-2】--backbone_layers 3 :: 
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_4" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --backbone_layers 3
+                    # 【base-2】--lr_backbone 1e-4 :: 
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_5" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4
+                    # 【base-5】--backbone_layers 2 :: 
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_6" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4 --backbone_layers 2
+                    # 【base-5】--backbone_layers 3 :: 
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_7" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4 --backbone_layers 3
+                    
+
+
+
+Zero-Shot:
+    split_75:
+        clip:
+            activitynet1.3: 
+                description:
+                    # lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --enc_layers 2 --dec_layers 2 --norm_embed :: val: 13.21
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_description_zs_1" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-1】--enc_layers 1 --dec_layers 1 :: val: 11.26
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_description_zs_2" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 1 --dec_layers 1 --norm_embed
+                    # 【base-1】--disable_scale :: val: 0.223 
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_description_zs_3" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --disable_scale
+                    # 【base-1】--enc_layers 6 --dec_layers 6 :: val: 0.362
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_description_zs_4" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 6 --dec_layers 6 --norm_embed
+                    # 【base-1】--enc_layers 4 --dec_layers 4 :: val: 8.307
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_description_zs_5" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】--enc_layers 1 --dec_layers 1 :: val: 11.26
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_description_zs_6" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 1 --dec_layers 1 --norm_embed
+                    # 【base-1】--cls_loss_coef 1 :: val: 12.13
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_description_zs_7" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 1
+                    # 【base-1】--cls_loss_coef 3 :: val: 14.55
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_description_zs_8" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-1】--cls_loss_coef 4 :: val: 13.24
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_description_zs_9" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 4
+                    
+                prompt: 
+                    # lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 10.17
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_1" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100
+                    # lr 1e-4 --epochs 100 --num_queries 10 --postprocess_type "class_agnostic" --postprocess_topk 100 :: val: 7.448
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_2" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 10 --postprocess_type "class_agnostic" --postprocess_topk 100
+                    # 【base-1】--rescale_length 200 :: val: 9.542
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_3" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 200
+                    # 【base-1】--rescale_length 300 :: val: 9.612
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_4" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300
+                    # 【base-1】--rescale_length 300 --cls_loss_coef 3 --set_cost_class 3 :: val: 9.395
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_5" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --cls_loss_coef 3 --set_cost_class 3
+                    # 【base-1】--rescale_length 300 --enc_layers 4 --dec_layers 4 :: val: 11.19
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_6" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4
+                    # 【same as-6】--rescale_length 300 --enc_layers 4 --dec_layers 4 :: val: 10.71
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_7" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4
+                    # 【same as-6】--rescale_length 300 --enc_layers 4 --dec_layers 4 :: val: 11.699
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_8" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4
+                    # 【base-6】--enc_layers 3 --dec_layers 3 :: val: 11.68
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_9" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 3 --dec_layers 3
+                    # 【base-6】--enc_layers 2 --dec_layers 2 :: val: 11.57
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_10" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2
+                    # 【base-6】--nheads 4 :: val: 10.95
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_11" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4 --nheads 4
+                    # 【base-6】--norm_embed :: val: 1.415
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_12" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-10】--norm_embed :: val: 18.01
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_13" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-6】--enc_layers 1 --dec_layers 1 :: val: 12.02
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_14" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 1 --dec_layers 1
+                    # 【base-6】--enc_layers 1 --dec_layers 1 --norm_embed :: val: 15.09
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_15" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 1 --dec_layers 1 --norm_embed
+                    # 【base-10】--norm_embed --disable_scale :: val: 0.199
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_16" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --disable_scale
+                    
+                    # 【base-10】--enable_wrapper :: val: 0.351
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_17" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_wrapper
+                    
+                    # 【base-13】 --batch_size 32 :: val: 18.17
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_18" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 32 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-13】 --lr 3e-4 :: val: 0.135
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_19" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 3e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-13】 --lr 3e-4 --batch_size 32 :: val: 0.239
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_20" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 32 --target_type "prompt" --lr 3e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-13】 --num_queries 2 :: val: 12.51
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_21" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 2 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-13】 --postprocess_topk 50 :: val: 18.26
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_22" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 50 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-13】 --postprocess_topk 10 :: val: 18.26
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_23" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 10 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-13】--cls_loss_coef 3 :: val: 19.31
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_24" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-13】--set_cost_class 3 :: val: 17.58
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_25" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --set_cost_class 3
+                    # 【base-13】--cls_loss_coef 3 --set_cost_class 3 :: val: 18.5
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_26" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --set_cost_class 3
+                    
+                    # 【base-13】--postprocess_type 'class_one' --postprocess_topk 1 :: val: 15.04
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_27" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type 'class_one' --postprocess_topk 1 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-24】--cls_loss_coef 4 :: val: 19.17
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_28" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 4
+                    # 【base-24】--cls_loss_coef 5 :: val: 18.19
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_29" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 5
+                    # 【base-24】--num_queries 3 :: val: 16.68
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_30" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 3 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--num_queries 7 :: val: 18.66
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_31" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 7 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 1 --dec_layers 2 :: val: 18.37
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_32" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 1 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 2 --dec_layers 1 :: val: 17.28
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_33" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 1 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 2 --dec_layers 3 :: val: 18.4
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_34" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 3 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 3 --dec_layers 2 :: val: 0.274
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_35" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 3 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 1 --dec_layers 4 :: val: 18.57
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_36" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 1 --dec_layers 4 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 2 --dec_layers 2 --cls_loss_coef 4 :: val: 19.17
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_37" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 4
+                    # 【base-24】--enc_layers 2 --dec_layers 3 --cls_loss_coef 1 :: val: 7.05
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_38" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 3 --norm_embed --cls_loss_coef 1
+                    # 【base-24】--enc_layers 3 --dec_layers 4 --cls_loss_coef 4 :: val: 17.55
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_39" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 3 --dec_layers 4 --norm_embed --cls_loss_coef 4
+                    # 【base-24】--enc_layers 4 --dec_layers 4 --cls_loss_coef 4 :: val: 13.81
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_40" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4 --norm_embed --cls_loss_coef 4
+                    # 【base-24】--enc_layers 4 --dec_layers 3 :: val: 0.178
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_41" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 3 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 4 --dec_layers 2 --cls_loss_coef 2 :: val: 0.462
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_42" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 2 --norm_embed --cls_loss_coef 2
+                    # 【base-24】--enc_layers 3 --dec_layers 3 --cls_loss_coef 2 :: val: 0.818
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_43" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 3 --dec_layers 3 --norm_embed --cls_loss_coef 2
+                    # 【base-24】--enc_layers 2 --dec_layers 2 :: val: 19.31
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_44" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 2 --dec_layers 3 :: val: 18.4
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_45" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 3 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 3 --dec_layers 4 :: val: 16.77
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_46" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 3 --dec_layers 4 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 4 --dec_layers 4 :: val: 11.08
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_47" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 4 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 4 --dec_layers 2 :: val: 0.22
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_48" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 4 --dec_layers 2 --norm_embed --cls_loss_coef 3
+                    # 【base-24】--enc_layers 3 --dec_layers 3 :: val: 16.84
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_49" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 3 --dec_layers 3 --norm_embed --cls_loss_coef 3
+                    # 【base-44】 --seed 355 :: val: 18.79
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_50" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --seed 355
+                    # 【base-44】 --seed 35 :: val: 18.29
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_51" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --seed 35
+                    
+                    # 【base-10】--enable_wrapper(v2) :: val: 0.54
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_52" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_wrapper
+                    
+                    # 【base-44】--aux_loss :: val: 17.39
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_53" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --aux_loss
+                    # 【base-44】--bbox_loss_coef 1 :: val: 18.97
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_54" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --bbox_loss_coef 1
+                    # 【base-44】--bbox_loss_coef 3 :: val: 19.23
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_55" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --bbox_loss_coef 3
+                    # 【base-44】--bbox_loss_coef 6 :: val: 19
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_56" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --bbox_loss_coef 6
+                    # 【base-44】--bbox_loss_coef 9 :: val: 16.99
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_57" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --bbox_loss_coef 9
+                    # 【base-44】--giou_loss_coef 1 :: val: 18.14
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_58" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --giou_loss_coef 1
+                    # 【base-44】--giou_loss_coef 3 :: val: 18.97
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_59" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --giou_loss_coef 3
+                    # 【base-44】--giou_loss_coef 6 :: val: 18.62
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_60" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --giou_loss_coef 6
+                    # 【base-44】--giou_loss_coef 9 :: val: 13.61
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_61" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --giou_loss_coef 9
+                    # 【base-44】--gamma 4 :: val: 16.72
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_62" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --gamma 4
+                    # 【base-44】--focal_alpha 0.1 :: val: 16.63
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_63" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --focal_alpha 0.1
+                    
+                    # 【base-44】--enable_ROIalign --fuse_rate 0.2 :: val: 17.49
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_64" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --fuse_rate 0.2
+                    # 【base-44】--enable_ROIalign --fuse_rate 0.5 :: val: 20.52
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_65" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --fuse_rate 0.5
+                    # 【base-44】--enable_ROIalign --fuse_rate 0.8 :: val: 19.78
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_66" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --fuse_rate 0.8
+                    # 【base-44】--enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.2 :: val: 16.52
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_67" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.2
+                    # 【base-44】--enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.5 :: val: 20.57
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_68" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.5
+                    # 【base-44】--enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.8 :: val: 20.06
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_69" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.8
+                    
+                    # 【base-44】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_rate 0.2 :: val: 7.814
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_70" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_rate 0.2
+                    # 【base-44】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_rate 0.8 :: val: 10.79
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_71" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_rate 0.8
+                    # 【base-44】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.2 :: val: 8.346
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_72" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.2
+                    # 【base-44】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.5 :: val: 9.992
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_73" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.5
+                    # 【base-44】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.8 :: val: 11
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_74" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.8
+                    # 【base-44】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 2 :: val: 9.636
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_75" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 2
+                    # 【base-44】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 3 :: val: 8.788
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_76" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 3
+                    
+                    # 【base-44】--enable_backbone:: val: 18.69
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_77" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_backbone 
+                    # 【base-44】--enable_backbone --backbone_layers 2 :: val: 17.48
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_78" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_backbone --backbone_layers 2
+                    # 【base-44】--enable_backbone --backbone_layers 3 :: val: 17.03
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_79" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --enable_backbone --backbone_layers 3
+                    # 【base-44】--segmentation_loss --enable_backbone :: 
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_80" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --segmentation_loss --enable_backbone 
+                    # 【base-44】--segmentation_loss --enable_backbone --backbone_layers 2 :: 
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_81" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --segmentation_loss --enable_backbone --backbone_layers 2
+                    # 【base-44】--segmentation_loss --enable_backbone --backbone_layers 3 :: 
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_82" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 3 --segmentation_loss --enable_backbone --backbone_layers 3
+                    
+
+            thumos14:
+                description:
+                    # 【base-1】--enc_layers 2 --dec_layers 2 :: val: 17.88
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_description_zs_8frame_1" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "description" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed
+                    
+                prompt: 
+                    # --lr 1e-4 --batch_size 16 --norm_embed --enc_layers 4 --dec_layers 4 :: val: 15.96
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_1" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # --lr 1e-4 --batch_size 16 :: val: 14.5
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_2" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 
+                    # --lr 1e-4 --batch_size 16 --norm_embed :: val: 3.421
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_3" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --norm_embed
+                    # 【base-1】--enc_layers 2 --dec_layers 2 :: val: 17.88
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_4" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-1】--lr 1e-5 :: val: 4.36
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_5" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】--lr 5e-5 :: val: 16.46
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_6" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 5e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】--cls_loss_coef 3 :: val: 15.6
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_7" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 5e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed --cls_loss_coef 3
+                    # 【base-1】 --num_queries 30 :: val: 16.61
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_8" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 30 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】 --num_queries 20 :: val: 16.33
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_9" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】 --num_queries 15 :: val: 15.54
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_10" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 15 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】 --num_queries 10 :: val: 14.47
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_11" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 10 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】 --lr_drop 80 :: val: 15.53
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_12" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed --lr_drop 80
+                    # 【base-1】 --batch_size 32 :: val: 15.78
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_13" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 32 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed
+                    # 【base-1】 --giou_loss_coef 3 :: val: 15.72
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_14" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed --giou_loss_coef 3
+                    # 【base-1】 --set_cost_giou 3 :: val: 13.98
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_15" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed --set_cost_giou 3
+                    # 【base-2】--enc_layers 2 --dec_layers 2 :: val: 11.39
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_16" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2
+                    # 【base-4】--aux_loss :: val: 15.16
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_17" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --aux_loss
+                    # 【base-4】--bbox_loss_coef 1 :: val: 18.18
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_18" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1
+                    # 【base-4】--bbox_loss_coef 3 :: val: 15.72
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_19" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 3
+                    # 【base-4】--bbox_loss_coef 6 :: val: 16.19
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_20" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 6
+                    # 【base-4】--bbox_loss_coef 9 :: val: 15.21
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_21" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 9
+                    # 【base-4】--giou_loss_coef 1 :: val: 15.68
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_22" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --giou_loss_coef 1
+                    # 【base-4】--giou_loss_coef 3 :: val: 16.98
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_23" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --giou_loss_coef 3
+                    # 【base-4】--giou_loss_coef 6 :: val: 15.56
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_24" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --giou_loss_coef 6
+                    # 【base-4】--giou_loss_coef 9 :: val: 13.48
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_25" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --giou_loss_coef 9
+                    
+                    # 【base-4】--enable_ROIalign :: val: 17.14
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_26" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --enable_ROIalign
+                    # 【base-4】--enable_ROIalign --fuse_rate 0.2 :: val: 10.51
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_27" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --enable_ROIalign --fuse_rate 0.2
+                    # 【base-4】--enable_ROIalign --fuse_rate 0.8 :: val: 16.7
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_28" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --enable_ROIalign --fuse_rate 0.8
+                    # 【base-4】--enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.2 :: val: 10.42
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_29" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.2
+                    # 【base-4】--enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.5 :: val: 17.41
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_30" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.5
+                    # 【base-4】--enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.8 :: val: 16.82
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_31" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --enable_ROIalign --fuse_strategy "geometric" --fuse_rate 0.8
+                    
+                    # 【base-4】去掉了dataset padding的部分 :: val: 15.77
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_32" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed
+                    # 【base-18】--slice_size 64 :: val: 12.81
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_33" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --slice_size 64
+                    # 【base-18】--slice_size 256 :: val: 12.86
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_34" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --slice_size 256
+                    # 【base-18】--slice_overlap 0.5 :: val: 16.5
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_35" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --slice_overlap 0.5
+                    # 【base-18】--slice_overlap 0.8 :: val: 16.04
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_36" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --slice_overlap 0.8
+                    # 【base-18】--slice_overlap 0.3 :: val: 17.08
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_37" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --slice_overlap 0.3
+                    # 【base-18】--inference_slice_overlap 0.1 :: val: 14.37
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_38" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --inference_slice_overlap 0.1
+                    # 【base-18】--inference_slice_overlap 0.5 :: val: 15.25
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_39" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --inference_slice_overlap 0.5
+                    # 【base-18】--inference_slice_overlap 0.75 :: val: 5.801
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_40" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --inference_slice_overlap 0.75
+                    
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss :: val: 10.44
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_41" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss
+                    # 【base-26】--segmentation_loss :: val: 14.11
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_42" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --segmentation_loss
+                    
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --fuse_rate 0.2 :: val: 6.307
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_43" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_rate 0.2
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --fuse_rate 0.8 :: val: 14.15
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_44" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_rate 0.8
+                    
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.2 :: val: 5.859
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_45" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.2
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.5 :: val: 12.15
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_46" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.5
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.8 :: val: 14.04
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_47" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.8
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred"  :: val: 13.01
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_48" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" 
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred"  :: val: 13.01
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_49" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" 
+                    # 【base-26】--enable_backbone:: val: 16.4
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_50" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_backbone 
+                    # 【base-26】--enable_backbone --backbone_layers 2 :: val: 14.87
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_51" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_backbone --backbone_layers 2
+                    # 【base-26】--enable_backbone --backbone_layers 3 :: val: 14.8
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_52" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_backbone --backbone_layers 3
+                    # 【base-26】--segmentation_loss --enable_backbone :: val: 12.68
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_53" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --segmentation_loss --enable_backbone 
+                    # 【base-26】--segmentation_loss --enable_backbone --backbone_layers 2 :: val: 11.68
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_54" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --segmentation_loss --enable_backbone --backbone_layers 2
+                    # 【base-26】--segmentation_loss --enable_backbone --backbone_layers 3 :: val: 12.07
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_55" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --segmentation_loss --enable_backbone --backbone_layers 3
+                    
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_rate 0.2 :: val: 8.932
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_56" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_rate 0.2 --segmentation_loss 
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_rate 0.8 :: val: 12.31
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_57" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_rate 0.8 --segmentation_loss 
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.2 :: val: 9.047
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_58" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.2 --segmentation_loss 
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.5 :: val: 10.62
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_59" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.5 --segmentation_loss 
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --fuse_strategy "geometric" --fuse_rate 0.8 :: val: 12.49
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_60" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --fuse_strategy "geometric" --fuse_rate 0.8 --segmentation_loss 
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 2 :: val: 10.07
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_61" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 2
+                    # 【base-26】--enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 3 :: val: 10.07
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_62" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --bbox_loss_coef 1 --enable_ROIalign --ROIalign_strategy "after_pred" --segmentation_loss --segmentation_loss_coef 2
+                    
+   
+
+        i3d:
+            activitynet1.3: 
+            thumos14:
+    split_50:
+        clip:
+            activitynet1.3: 
+                description:
+                prompt:
+                    # --save_result --batch_size 16 --lr 1e-4 --epochs 100 --num_queries 5 --enc_layers 2 --dec_layers 2 --norm_embed :: val: 11.42
+                    CUDA_VISIBLE_DEVICES=4 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_split50_1" --cfg_path "./config/ActivityNet13_CLIP_zs_50.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed
+                    
+            thumos14:
+        i3d:
+            activitynet1.3: 
+            thumos14:
+
+
+
+debug:     
+# 【base-28】
+CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_debug" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --norm_embed --cls_loss_coef 4
+
+
+# Thumos14
+# lr 1e-5
+CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_none_8frame_debug" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --target_type "none" --lr 1e-5 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4
+# lr 1e-4
+CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_none_8frame_debug_1" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --target_type "none" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4
+# 【base-2】--enc_layers 2 --dec_layers 2 :: 
+CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_debug" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --train_interval 1

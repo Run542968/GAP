@@ -1,0 +1,2491 @@
+{
+    "Applying sunscreen": {
+        "idx": 0,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the bottle of sunscreen",
+                "the exposed skin"
+            ],
+            "Description": "the person squeezing the sunscreen lotion from the bottle onto their hand, and then rubbing and applying it to their exposed skin thoroughly"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the person\", \"the bottle of sunscreen\", \"the exposed skin\"],\"Description\":\"the person squeezing the sunscreen lotion from the bottle onto their hand, and then rubbing and applying it to their exposed skin thoroughly\"}"
+    },
+    "Arm wrestling": {
+        "idx": 1,
+        "Elaboration": {
+            "Entity": [
+                "two people",
+                "their arms",
+                "a table"
+            ],
+            "Description": "Two people sitting across from each other at a table, each placing one arm on the table and interlocking fingers, then trying to force each other's arm down to the table while using their other hand to grip the table for leverage."
+        },
+        "Origin_Chat": "{\"Entity\": [\"two people\", \"their arms\", \"a table\"], \"Description\": \"Two people sitting across from each other at a table, each placing one arm on the table and interlocking fingers, then trying to force each other's arm down to the table while using their other hand to grip the table for leverage.\"}"
+    },
+    "Assembling bicycle": {
+        "idx": 2,
+        "Elaboration": {
+            "Entity": [
+                "the bicycle parts",
+                "the person",
+                "the tools"
+            ],
+            "Description": "the person using the tools to connect the bicycle parts together to assemble the bicycle"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the bicycle parts\", \"the person\", \"the tools\"], \"Description\": \"the person using the tools to connect the bicycle parts together to assemble the bicycle\"}"
+    },
+    "BMX": {
+        "idx": 3,
+        "Elaboration": {
+            "Entity": [
+                "the BMX rider",
+                "the bike",
+                "the ramp"
+            ],
+            "Description": "the BMX rider riding their bike off a ramp and performing various tricks in the air before landing back on the ground"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the BMX rider\",\"the bike\",\"the ramp\"],\"Description\":\"the BMX rider riding their bike off a ramp and performing various tricks in the air before landing back on the ground\"}"
+    },
+    "Baking cookies": {
+        "idx": 4,
+        "Elaboration": {
+            "Entity": [
+                "rolling pin",
+                "cookie dough",
+                "cookie cutter",
+                "baking tray",
+                "oven"
+            ],
+            "Description": "a person using a rolling pin to flatten cookie dough, then cutting out cookie shapes with a cookie cutter and placing them on a baking tray before baking them in an oven."
+        },
+        "Origin_Chat": "{\"Entity\": [\"rolling pin\", \"cookie dough\", \"cookie cutter\", \"baking tray\", \"oven\"], \"Description\": \"a person using a rolling pin to flatten cookie dough, then cutting out cookie shapes with a cookie cutter and placing them on a baking tray before baking them in an oven.\"}"
+    },
+    "Baton twirling": {
+        "idx": 5,
+        "Elaboration": {
+            "Entity": [
+                "a baton"
+            ],
+            "Description": "a person tossing, twirling, and manipulating a baton with skill and dexterity while performing a choreographed routine"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a baton\"], \"Description\": \"a person tossing, twirling, and manipulating a baton with skill and dexterity while performing a choreographed routine\"}"
+    },
+    "Beach soccer": {
+        "idx": 6,
+        "Elaboration": {
+            "Entity": [
+                "the soccer ball",
+                "the sand",
+                "the soccer players",
+                "the soccer goal"
+            ],
+            "Description": "The soccer players are playing a game on the sand beach with a soccer ball and trying to score a goal into the soccer goal."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the soccer ball\", \"the sand\", \"the soccer players\", \"the soccer goal\"], \"Description\": \"The soccer players are playing a game on the sand beach with a soccer ball and trying to score a goal into the soccer goal.\"}"
+    },
+    "Beer pong": {
+        "idx": 7,
+        "Elaboration": {
+            "Entity": [
+                "the table",
+                "cups",
+                "ping pong ball",
+                "players"
+            ],
+            "Description": "Two or more players stand on opposite sides of the table with cups partially filled with beer arranged in a triangular formation at either end. The players take turns trying to throw a ping pong ball into their opponent's cups. If the ball lands in a cup, that cup is removed from the table. The game continues until one team has no cups remaining on their side."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the table\",\"cups\",\"ping pong ball\",\"players\"],\"Description\":\"Two or more players stand on opposite sides of the table with cups partially filled with beer arranged in a triangular formation at either end. The players take turns trying to throw a ping pong ball into their opponent's cups. If the ball lands in a cup, that cup is removed from the table. The game continues until one team has no cups remaining on their side.\"}"
+    },
+    "Blow-drying hair": {
+        "idx": 8,
+        "Elaboration": {
+            "Entity": [
+                "hair dryer",
+                "hair",
+                "person"
+            ],
+            "Description": "a person using a hair dryer to blow hot air onto their hair to dry it."
+        },
+        "Origin_Chat": "{\"Entity\": [\"hair dryer\", \"hair\", \"person\"], \"Description\": \"a person using a hair dryer to blow hot air onto their hair to dry it.\"}"
+    },
+    "Blowing leaves": {
+        "idx": 9,
+        "Elaboration": {
+            "Entity": [
+                "leaves",
+                "wind"
+            ],
+            "Description": "Leaves are being blown by the wind in different directions"
+        },
+        "Origin_Chat": "{\"Entity\":[\"leaves\", \"wind\"],\"Description\":\"Leaves are being blown by the wind in different directions\"}"
+    },
+    "Playing ten pins": {
+        "idx": 10,
+        "Elaboration": {
+            "Entity": [
+                "the bowling ball",
+                "the ten pins",
+                "the bowling alley"
+            ],
+            "Description": "a person rolling a bowling ball down a lane in an attempt to knock over all ten pins standing at the end of the lane"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the bowling ball\", \"the ten pins\", \"the bowling alley\"],\"Description\":\"a person rolling a bowling ball down a lane in an attempt to knock over all ten pins standing at the end of the lane\"}"
+    },
+    "Braiding hair": {
+        "idx": 11,
+        "Elaboration": {
+            "Entity": [
+                "hair",
+                "hands"
+            ],
+            "Description": "Interweaving strands of hair using fingers."
+        },
+        "Origin_Chat": "{\"Entity\": [\"hair\", \"hands\"], \"Description\": \"Interweaving strands of hair using fingers.\"}"
+    },
+    "Building sandcastles": {
+        "idx": 12,
+        "Elaboration": {
+            "Entity": [
+                "sand",
+                "a bucket",
+                "a shovel",
+                "hands",
+                "a beach"
+            ],
+            "Description": "A person uses a bucket and a shovel to gather sand, then they use their hands to create a castle-like structure on the beach."
+        },
+        "Origin_Chat": "{\"Entity\": [\"sand\", \"a bucket\", \"a shovel\", \"hands\", \"a beach\"], \"Description\": \"A person uses a bucket and a shovel to gather sand, then they use their hands to create a castle-like structure on the beach.\"}"
+    },
+    "Bullfighting": {
+        "idx": 13,
+        "Elaboration": {
+            "Entity": [
+                "the bullfighter",
+                "the bull",
+                "the cape",
+                "the sword"
+            ],
+            "Description": "the bullfighter waving the cape to taunt the bull, then attempting to stab it with a sword during the bullfighting event"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the bullfighter\", \"the bull\", \"the cape\", \"the sword\"], \"Description\": \"the bullfighter waving the cape to taunt the bull, then attempting to stab it with a sword during the bullfighting event\"}"
+    },
+    "Calf roping": {
+        "idx": 14,
+        "Elaboration": {
+            "Entity": [
+                "the horse",
+                "the calf",
+                "the lariat",
+                "the cowboy"
+            ],
+            "Description": "The cowboy on horseback chases after the calf, throws a lariat over its head, dismounts from the horse, and runs towards the calf to throw it on the ground and tie three of its legs together. "
+        },
+        "Origin_Chat": "{\"Entity\": [\"the horse\", \"the calf\", \"the lariat\", \"the cowboy\"], \"Description\": \"The cowboy on horseback chases after the calf, throws a lariat over its head, dismounts from the horse, and runs towards the calf to throw it on the ground and tie three of its legs together. \"}"
+    },
+    "Camel ride": {
+        "idx": 15,
+        "Elaboration": {
+            "Entity": [
+                "the camel",
+                "the rider",
+                "the saddle"
+            ],
+            "Description": "A person riding a camel while the animal walks through the desert"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the camel\", \"the rider\", \"the saddle\"], \"Description\": \"A person riding a camel while the animal walks through the desert\"}"
+    },
+    "Canoeing": {
+        "idx": 16,
+        "Elaboration": {
+            "Entity": [
+                "the canoe",
+                "the canoeist",
+                "the paddle"
+            ],
+            "Description": "the person maneuvering the canoe with a paddle while on water"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the canoe\",\"the canoeist\",\"the paddle\"],\"Description\":\"the person maneuvering the canoe with a paddle while on water\"}"
+    },
+    "Capoeira": {
+        "idx": 17,
+        "Elaboration": {
+            "Entity": [
+                "two individuals",
+                "an open area"
+            ],
+            "Description": "two individuals performing a dance-like martial art, characterized by agile and acrobatic movements with kicks, sweeps, and spins, often accompanied by traditional music and singing, in an open area"
+        },
+        "Origin_Chat": "{\"Entity\":[\"two individuals\",\"an open area\"],\"Description\":\"two individuals performing a dance-like martial art, characterized by agile and acrobatic movements with kicks, sweeps, and spins, often accompanied by traditional music and singing, in an open area\"}"
+    },
+    "Carving jack-o-lanterns": {
+        "idx": 18,
+        "Elaboration": {
+            "Entity": [
+                "a pumpkin",
+                "a carving knife",
+                "candles"
+            ],
+            "Description": "cutting off the top of a pumpkin, scooping out the flesh and seeds, carving a face onto the pumpkin with a carving knife, and placing a candle inside to light up the pumpkin as a jack-o-lantern"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a pumpkin\", \"a carving knife\", \"candles\"], \"Description\": \"cutting off the top of a pumpkin, scooping out the flesh and seeds, carving a face onto the pumpkin with a carving knife, and placing a candle inside to light up the pumpkin as a jack-o-lantern\"}"
+    },
+    "Changing car wheel": {
+        "idx": 19,
+        "Elaboration": {
+            "Entity": [
+                "car",
+                "wheel",
+                "jack",
+                "wrench"
+            ],
+            "Description": "lifting the car with a jack and removing the damaged wheel with a wrench, then replacing it with a new wheel and lowering the car back down"
+        },
+        "Origin_Chat": "{\"Entity\": [\"car\", \"wheel\", \"jack\", \"wrench\"], \"Description\": \"lifting the car with a jack and removing the damaged wheel with a wrench, then replacing it with a new wheel and lowering the car back down\"}"
+    },
+    "Cleaning sink": {
+        "idx": 20,
+        "Elaboration": {
+            "Entity": [
+                "sponge",
+                "soap",
+                "water",
+                "sink",
+                "hands"
+            ],
+            "Description": "Someone is using a sponge with soap to clean the interior of a sink while water flows. Hands are visible in the video."
+        },
+        "Origin_Chat": "{\"Entity\": [\"sponge\", \"soap\", \"water\", \"sink\", \"hands\"], \"Description\": \"Someone is using a sponge with soap to clean the interior of a sink while water flows. Hands are visible in the video.\"}"
+    },
+    "Clipping cat claws": {
+        "idx": 21,
+        "Elaboration": {
+            "Entity": [
+                "the cat",
+                "clippers"
+            ],
+            "Description": "Someone using a clipper to trim the tips of a cat's claws, with the cat being held firmly and gently while sitting on a flat surface."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the cat\",\"clippers\"],\"Description\":\"Someone using a clipper to trim the tips of a cat's claws, with the cat being held firmly and gently while sitting on a flat surface.\"}"
+    },
+    "Croquet": {
+        "idx": 22,
+        "Elaboration": {
+            "Entity": [
+                "the croquet mallet",
+                "the croquet ball",
+                "the wicket"
+            ],
+            "Description": "the player using the croquet mallet to hit the croquet ball and pass it through the wicket"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the croquet mallet\",\"the croquet ball\",\"the wicket\"],\"Description\":\"the player using the croquet mallet to hit the croquet ball and pass it through the wicket\"}"
+    },
+    "Curling": {
+        "idx": 23,
+        "Elaboration": {
+            "Entity": [
+                "the curling stone",
+                "the curling broom",
+                "the curling sheet",
+                "the curlers"
+            ],
+            "Description": "The curlers slide the curling stone along the curling sheet towards the target while sweeping the path in front of the curling stone with the curling broom to control its speed and direction."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the curling stone\", \"the curling broom\", \"the curling sheet\", \"the curlers\"], \"Description\": \"The curlers slide the curling stone along the curling sheet towards the target while sweeping the path in front of the curling stone with the curling broom to control its speed and direction.\"}"
+    },
+    "Cutting the grass": {
+        "idx": 24,
+        "Elaboration": {
+            "Entity": [
+                "the lawnmower",
+                "the grass"
+            ],
+            "Description": "A person or machine moving over an area covered in vegetation with a tool or machine designed to cut the grass to a desired height."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the lawnmower\",\"the grass\"],\"Description\":\"A person or machine moving over an area covered in vegetation with a tool or machine designed to cut the grass to a desired height.\"}"
+    },
+    "Decorating the Christmas tree": {
+        "idx": 25,
+        "Elaboration": {
+            "Entity": [
+                "the Christmas tree",
+                "ornaments",
+                "lights",
+                "garlands",
+                "tinsel",
+                "the person decorating the tree"
+            ],
+            "Description": "A person adding ornaments, lights, garlands, tinsel, and other decorations onto a Christmas tree to create a festive decoration."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the Christmas tree\",\"ornaments\",\"lights\",\"garlands\",\"tinsel\",\"the person decorating the tree\"],\"Description\":\"A person adding ornaments, lights, garlands, tinsel, and other decorations onto a Christmas tree to create a festive decoration.\"}"
+    },
+    "Disc dog": {
+        "idx": 26,
+        "Elaboration": {
+            "Entity": [
+                "the dog",
+                "the flying disc",
+                "the handler"
+            ],
+            "Description": "a dog catching a flying disc thrown by a handler and possibly performing jumps or tricks in the process"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the dog\", \"the flying disc\", \"the handler\"], \"Description\": \"a dog catching a flying disc thrown by a handler and possibly performing jumps or tricks in the process\"}"
+    },
+    "Doing a powerbomb": {
+        "idx": 27,
+        "Elaboration": {
+            "Entity": [
+                "wrestler",
+                "opponent",
+                "upper body",
+                "legs"
+            ],
+            "Description": "A wrestler lifts the opponent's upper body and drops them forward onto the mat with their legs in a V-shape position"
+        },
+        "Origin_Chat": "Here's a strict JSON format output that describes the 'Doing a powerbomb' action:\n\n{\"Entity\": [\"wrestler\", \"opponent\", \"upper body\", \"legs\"], \"Description\":\"A wrestler lifts the opponent's upper body and drops them forward onto the mat with their legs in a V-shape position\"}.\n\nNote that while the 'Doing a powerbomb' action can have different variations and techniques, this description provides a general idea of the key visual nouns and movements involved in this type of wrestling maneuver."
+    },
+    "Doing crunches": {
+        "idx": 28,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the exercise mat",
+                "the abdominal muscles"
+            ],
+            "Description": "the person performs a series of abdominal muscle exercises by lying down on the exercise mat, raising the chest towards the knees repeatedly, and then lowering back down to complete one cycle of the exercise, also known as crunches."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"the exercise mat\", \"the abdominal muscles\"], \"Description\": \"the person performs a series of abdominal muscle exercises by lying down on the exercise mat, raising the chest towards the knees repeatedly, and then lowering back down to complete one cycle of the exercise, also known as crunches.\"}"
+    },
+    "Drum corps": {
+        "idx": 29,
+        "Elaboration": {
+            "Entity": [
+                "drum",
+                "drumsticks",
+                "marching band members"
+            ],
+            "Description": "A group of marching band members playing drums while marching in unison."
+        },
+        "Origin_Chat": "{\"Entity\": [\"drum\", \"drumsticks\", \"marching band members\"], \"Description\":\"A group of marching band members playing drums while marching in unison.\"}"
+    },
+    "Elliptical trainer": {
+        "idx": 30,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "an elliptical machine"
+            ],
+            "Description": "a person performing a cardio exercise by simulating running or walking on an elliptical machine"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a person\", \"an elliptical machine\"], \"Description\": \"a person performing a cardio exercise by simulating running or walking on an elliptical machine\"}"
+    },
+    "Doing fencing": {
+        "idx": 31,
+        "Elaboration": {
+            "Entity": [
+                "the fencer",
+                "the fencing sword",
+                "the protective gear",
+                "the fencing strip"
+            ],
+            "Description": "the fencer using a fencing sword while wearing protective gear and fence on a fencing strip"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the fencer\", \"the fencing sword\", \"the protective gear\", \"the fencing strip\"], \"Description\": \"the fencer using a fencing sword while wearing protective gear and fence on a fencing strip\"}"
+    },
+    "Fixing the roof": {
+        "idx": 32,
+        "Elaboration": {
+            "Entity": [
+                "the roofer",
+                "the ladder",
+                "the tool belt",
+                "the hammer",
+                "the nails",
+                "the shingles",
+                "the roof"
+            ],
+            "Description": "The roofer is using a hammer and nails to attach shingles to the roof, while standing on a ladder to access the damaged or missing portions of the roof surface, in order to fix the roof."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the roofer\", \"the ladder\", \"the tool belt\", \"the hammer\", \"the nails\", \"the shingles\", \"the roof\"], \"Description\": \"The roofer is using a hammer and nails to attach shingles to the roof, while standing on a ladder to access the damaged or missing portions of the roof surface, in order to fix the roof.\"}"
+    },
+    "Fun sliding down": {
+        "idx": 33,
+        "Elaboration": {
+            "Entity": [
+                "the slider",
+                "the slide"
+            ],
+            "Description": "a person sliding down a smooth surface in a playful and enjoyable manner."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the slider\",\"the slide\"],\"Description\":\"a person sliding down a smooth surface in a playful and enjoyable manner.\"}"
+    },
+    "Futsal": {
+        "idx": 34,
+        "Elaboration": {
+            "Entity": [
+                "players",
+                "futsal court",
+                "ball"
+            ],
+            "Description": "Several players playing indoor soccer in a designated futsal court using a smaller ball and with a limited number of substitutions"
+        },
+        "Origin_Chat": "{\"Entity\": [\"players\", \"futsal court\", \"ball\"], \"Description\": \"Several players playing indoor soccer in a designated futsal court using a smaller ball and with a limited number of substitutions\"}"
+    },
+    "Gargling mouthwash": {
+        "idx": 35,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the mouthwash bottle",
+                "water",
+                "sink"
+            ],
+            "Description": "The person squirts the mouthwash into their mouth and gargles it before spitting it out into the sink with water running."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"the mouthwash bottle\", \"water\", \"sink\"], \"Description\": \"The person squirts the mouthwash into their mouth and gargles it before spitting it out into the sink with water running.\"}"
+    },
+    "Grooming dog": {
+        "idx": 36,
+        "Elaboration": {
+            "Entity": [
+                "the dog",
+                "the groomer",
+                "the grooming tools (e.g., brush, scissors)"
+            ],
+            "Description": "The groomer is using tools to brush and trim the dog's fur, nails, and other body parts for hygiene and aesthetic purposes."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the dog\", \"the groomer\", \"the grooming tools (e.g., brush, scissors)\"], \"Description\":\"The groomer is using tools to brush and trim the dog's fur, nails, and other body parts for hygiene and aesthetic purposes.\"}"
+    },
+    "Hand car wash": {
+        "idx": 37,
+        "Elaboration": {
+            "Entity": [
+                "car",
+                "water hose",
+                "soap",
+                "sponge",
+                "bucket",
+                "person"
+            ],
+            "Description": "A person cleaning a car with soap and sponge using a hose and a bucket of water, typically done in an outdoor setting."
+        },
+        "Origin_Chat": "{\"Entity\": [\"car\", \"water hose\", \"soap\", \"sponge\", \"bucket\", \"person\"], \"Description\": \"A person cleaning a car with soap and sponge using a hose and a bucket of water, typically done in an outdoor setting.\"}"
+    },
+    "Hanging wallpaper": {
+        "idx": 38,
+        "Elaboration": {
+            "Entity": [
+                "wallpaper",
+                "brush",
+                "paste",
+                "scissors",
+                "wall",
+                "person"
+            ],
+            "Description": "A person applies paste onto the wallpaper using a brush, cuts the wallpaper to size using scissors, and hangs it on the wall by sticking it using the brush."
+        },
+        "Origin_Chat": "{\"Entity\": [\"wallpaper\", \"brush\", \"paste\", \"scissors\", \"wall\", \"person\"], \"Description\": \"A person applies paste onto the wallpaper using a brush, cuts the wallpaper to size using scissors, and hangs it on the wall by sticking it using the brush.\"}"
+    },
+    "Having an ice cream": {
+        "idx": 39,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the ice cream cone"
+            ],
+            "Description": "the person holding and licking an ice cream cone"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"the ice cream cone\"], \"Description\": \"the person holding and licking an ice cream cone\"}"
+    },
+    "Hitting a pinata": {
+        "idx": 40,
+        "Elaboration": {
+            "Entity": [
+                "a pinata",
+                "a stick",
+                "people"
+            ],
+            "Description": "A person using a stick to hit a pinata suspended from a height while others gather around to celebrate and await for candies or treats to fall out."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a pinata\", \"a stick\", \"people\"], \"Description\": \"A person using a stick to hit a pinata suspended from a height while others gather around to celebrate and await for candies or treats to fall out.\"}"
+    },
+    "Hula hoop": {
+        "idx": 41,
+        "Elaboration": {
+            "Entity": [
+                "a hula hoop",
+                "a person"
+            ],
+            "Description": "a person rotating a hula hoop around their waist"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a hula hoop\", \"a person\"], \"Description\": \"a person rotating a hula hoop around their waist\"}"
+    },
+    "Hurling": {
+        "idx": 42,
+        "Elaboration": {
+            "Entity": [
+                "a hurley stick",
+                "a sliotar",
+                "players"
+            ],
+            "Description": "Players using a hurley stick to hit a small ball called a sliotar towards the opponent's goal post in an effort to score while the opposing team defends and tries to prevent the ball from entering their goal area."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a hurley stick\", \"a sliotar\", \"players\"], \"Description\": \"Players using a hurley stick to hit a small ball called a sliotar towards the opponent's goal post in an effort to score while the opposing team defends and tries to prevent the ball from entering their goal area.\"}"
+    },
+    "Ice fishing": {
+        "idx": 43,
+        "Elaboration": {
+            "Entity": [
+                "an ice hole",
+                "a fishing rod",
+                "a fisherman"
+            ],
+            "Description": "a fisherman using a fishing rod to catch fish through an ice hole in a frozen body of water"
+        },
+        "Origin_Chat": "{\"Entity\":[\"an ice hole\",\"a fishing rod\",\"a fisherman\"],\"Description\":\"a fisherman using a fishing rod to catch fish through an ice hole in a frozen body of water\"}"
+    },
+    "Installing carpet": {
+        "idx": 44,
+        "Elaboration": {
+            "Entity": [
+                "the carpet",
+                "the floor",
+                "the installer",
+                "the adhesive"
+            ],
+            "Description": "the installer laying the carpet on the floor and using adhesive to fix it in place"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the carpet\", \"the floor\", \"the installer\", \"the adhesive\"], \"Description\": \"the installer laying the carpet on the floor and using adhesive to fix it in place\"}"
+    },
+    "Kite flying": {
+        "idx": 45,
+        "Elaboration": {
+            "Entity": [
+                "a kite",
+                "a kite string",
+                "a person"
+            ],
+            "Description": "a person holding a string and maneuvering a kite in the air"
+        },
+        "Origin_Chat": "{\"Entity\":[\"a kite\",\"a kite string\",\"a person\"],\"Description\":\"a person holding a string and maneuvering a kite in the air\"}"
+    },
+    "Kneeling": {
+        "idx": 46,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "their legs"
+            ],
+            "Description": "A person lowering and resting one or both knees on the ground while keeping their back straight and posture upright."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a person\", \"their legs\"],\n\"Description\":\"A person lowering and resting one or both knees on the ground while keeping their back straight and posture upright.\"}"
+    },
+    "Knitting": {
+        "idx": 47,
+        "Elaboration": {
+            "Entity": [
+                "yarn",
+                "knitting needles",
+                "hands"
+            ],
+            "Description": "a person interweaving yarn loops with 2 needles by hand, forming fabric or clothing"
+        },
+        "Origin_Chat": "{\"Entity\": [\"yarn\", \"knitting needles\", \"hands\"], \"Description\": \"a person interweaving yarn loops with 2 needles by hand, forming fabric or clothing\"}"
+    },
+    "Laying tile": {
+        "idx": 48,
+        "Elaboration": {
+            "Entity": [
+                "the tile",
+                "the floor",
+                "the adhesive",
+                "the trowel",
+                "the tile cutter",
+                "the tile spacers",
+                "the level"
+            ],
+            "Description": "Arranging rectangular or square ceramic or stone pieces over a surface covered with adhesive using a trowel. The tiles are evenly spaced with the help of tile spacers, and cut to fit at the edges with a tile cutter. The level instrument is used to ensure that the tiles are flat and even."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the tile\", \"the floor\", \"the adhesive\", \"the trowel\", \"the tile cutter\", \"the tile spacers\", \"the level\"], \"Description\": \"Arranging rectangular or square ceramic or stone pieces over a surface covered with adhesive using a trowel. The tiles are evenly spaced with the help of tile spacers, and cut to fit at the edges with a tile cutter. The level instrument is used to ensure that the tiles are flat and even.\"}"
+    },
+    "Longboarding": {
+        "idx": 49,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "a longboard"
+            ],
+            "Description": "a person riding a long skateboard on a smooth surface, performing maneuvers such as carving, sliding or riding down hills."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a person\", \"a longboard\"], \"Description\":\"a person riding a long skateboard on a smooth surface, performing maneuvers such as carving, sliding or riding down hills.\"}"
+    },
+    "Making a cake": {
+        "idx": 50,
+        "Elaboration": {
+            "Entity": [
+                "flour",
+                "eggs",
+                "sugar",
+                "butter",
+                "mixing bowl",
+                "mixer",
+                "cake tin",
+                "oven"
+            ],
+            "Description": "Mixing flour, eggs, sugar and butter in a mixing bowl using a mixer, pouring the mixture into a cake tin and baking it in the oven until it is thoroughly cooked and golden brown."
+        },
+        "Origin_Chat": "{\"Entity\": [\"flour\", \"eggs\", \"sugar\", \"butter\", \"mixing bowl\", \"mixer\", \"cake tin\", \"oven\"], \"Description\": \"Mixing flour, eggs, sugar and butter in a mixing bowl using a mixer, pouring the mixture into a cake tin and baking it in the oven until it is thoroughly cooked and golden brown.\"}"
+    },
+    "Making a lemonade": {
+        "idx": 51,
+        "Elaboration": {
+            "Entity": [
+                "lemons",
+                "sugar",
+                "water",
+                "juicer",
+                "pitcher"
+            ],
+            "Description": "Squeezing the juice from the lemons using a juicer, mixing it with sugar and water in a pitcher to create a lemonade drink."
+        },
+        "Origin_Chat": "{\"Entity\": [\"lemons\", \"sugar\", \"water\", \"juicer\", \"pitcher\"], \"Description\": \"Squeezing the juice from the lemons using a juicer, mixing it with sugar and water in a pitcher to create a lemonade drink.\"}"
+    },
+    "Making an omelette": {
+        "idx": 52,
+        "Elaboration": {
+            "Entity": [
+                "eggs",
+                "butter",
+                "milk",
+                "salt",
+                "pepper",
+                "pan",
+                "spatula",
+                "fillings"
+            ],
+            "Description": "Crack eggs into a bowl, whisk them together, heat up a frying pan with oil, pour the egg mixture into the pan, cook until the bottom is set, use a spatula to fold one side of the egg over the other and cook until fully set."
+        },
+        "Origin_Chat": "{\"Entity\": [\"eggs\", \"butter\", \"milk\", \"salt\", \"pepper\", \"pan\", \"spatula\", \"fillings\"], \"Description\": \"Crack the eggs into a bowl, add milk, salt and pepper, whisk them together. Melt butter in a pan over medium heat, pour the egg mixture into the pan. Once the edges start to cook, use spatula to lift the edges and let uncooked eggs go underneath. When the top of the omelette is still a bit runny, add fillings to one side, then gently fold the other side over the fillings. Cook for a few more seconds until the fillings are heated through and the omelette is cooked to your liking.\"}"
+    },
+    "Mooping floor": {
+        "idx": 53,
+        "Elaboration": {
+            "Entity": [
+                "a person with a broom",
+                "the floor"
+            ],
+            "Description": "A person sweeping the floor with a broom and collecting debris into a dustpan or waste bin."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a person with a broom\",\"the floor\"],\"Description\":\"A person sweeping the floor with a broom and collecting debris into a dustpan or waste bin.\"}"
+    },
+    "Painting fence": {
+        "idx": 54,
+        "Elaboration": {
+            "Entity": [
+                "paint roller",
+                "paint tray",
+                "fence"
+            ],
+            "Description": "A person using a paint roller to apply paint from a paint tray onto a fence, covering its surface with a new layer of paint."
+        },
+        "Origin_Chat": "{\"Entity\":[\"paint roller\",\"paint tray\",\"fence\"],\"Description\":\"A person using a paint roller to apply paint from a paint tray onto a fence, covering its surface with a new layer of paint.\"}"
+    },
+    "Painting furniture": {
+        "idx": 55,
+        "Elaboration": {
+            "Entity": [
+                "the furniture",
+                "the paint roller",
+                "the paint can",
+                "the painter"
+            ],
+            "Description": "Applying paint to surfaces of furniture using a paint roller or brush by a painter."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the furniture\", \"the paint roller\", \"the paint can\", \"the painter\"], \"Description\": \"Applying paint to surfaces of furniture using a paint roller or brush by a painter.\"}"
+    },
+    "Peeling potatoes": {
+        "idx": 56,
+        "Elaboration": {
+            "Entity": [
+                "potatoes",
+                "peeler"
+            ],
+            "Description": "a person using a peeler to remove the skin from potatoes"
+        },
+        "Origin_Chat": "{\"Entity\":[\"potatoes\",\"peeler\"],\"Description\":\"a person using a peeler to remove the skin from potatoes\"}"
+    },
+    "Plastering": {
+        "idx": 57,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "a trowel",
+                "a bucket",
+                "a wall"
+            ],
+            "Description": "a person applying plaster onto a wall surface using a trowel, by scooping it from a bucket"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a person\", \"a trowel\", \"a bucket\", \"a wall\"], \"Description\": \"a person applying plaster onto a wall surface using a trowel, by scooping it from a bucket\"}"
+    },
+    "Playing beach volleyball": {
+        "idx": 58,
+        "Elaboration": {
+            "Entity": [
+                "beach volleyball",
+                "players",
+                "beach"
+            ],
+            "Description": "A group of players hitting a ball back and forth over a net on a sandy beach."
+        },
+        "Origin_Chat": "{\"Entity\": [\"beach volleyball\", \"players\", \"beach\"], \"Description\": \"A group of players hitting a ball back and forth over a net on a sandy beach.\"}"
+    },
+    "Playing blackjack": {
+        "idx": 59,
+        "Elaboration": {
+            "Entity": [
+                "cards",
+                "chips",
+                "dealer",
+                "players",
+                "blackjack table"
+            ],
+            "Description": "Several players sitting around a blackjack table, each receiving two cards from the dealer and trying to get a combination of cards with a value of 21, or as close to 21 as possible without exceeding it. Players can also place chips as bets on their chances of winning."
+        },
+        "Origin_Chat": "{\"Entity\": [\"cards\", \"chips\", \"dealer\", \"players\", \"blackjack table\"], \"Description\": \"Several players sitting around a blackjack table, each receiving two cards from the dealer and trying to get a combination of cards with a value of 21, or as close to 21 as possible without exceeding it. Players can also place chips as bets on their chances of winning.\"}"
+    },
+    "Playing congas": {
+        "idx": 60,
+        "Elaboration": {
+            "Entity": [
+                "congas",
+                "player"
+            ],
+            "Description": "A person sitting and rhythmically striking congas with their hands to create music."
+        },
+        "Origin_Chat": "{\"Entity\":[\"congas\", \"player\"], \"Description\":\"A person sitting and rhythmically striking congas with their hands to create music.\"}"
+    },
+    "Playing drums": {
+        "idx": 61,
+        "Elaboration": {
+            "Entity": [
+                "the drummer",
+                "the drum set"
+            ],
+            "Description": "The drummer is sitting behind the drum set, striking the drums with sticks in a rhythmic pattern to produce a musical sound."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the drummer\", \"the drum set\"],\"Description\":\"The drummer is sitting behind the drum set, striking the drums with sticks in a rhythmic pattern to produce a musical sound.\"}"
+    },
+    "Playing ice hockey": {
+        "idx": 62,
+        "Elaboration": {
+            "Entity": [
+                "the hockey stick",
+                "the puck",
+                "the ice rink",
+                "the players"
+            ],
+            "Description": "Two teams of players, each equipped with a hockey stick and a puck, skate on an ice rink and try to score a goal by shooting the puck into the opposing team's net guarded by a goalie."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the hockey stick\",\"the puck\",\"the ice rink\",\"the players\"],\"Description\":\"Two teams of players, each equipped with a hockey stick and a puck, skate on an ice rink and try to score a goal by shooting the puck into the opposing team's net guarded by a goalie.\"}"
+    },
+    "Playing pool": {
+        "idx": 63,
+        "Elaboration": {
+            "Entity": [
+                "pool table",
+                "pool cue",
+                "pool balls",
+                "pool players"
+            ],
+            "Description": "The pool players use a pool cue to hit the pool balls on the pool table, with the goal of pocketing the colored balls in designated pockets on the table."
+        },
+        "Origin_Chat": "{\"Entity\": [\"pool table\", \"pool cue\", \"pool balls\", \"pool players\"], \"Description\": \"The pool players use a pool cue to hit the pool balls on the pool table, with the goal of pocketing the colored balls in designated pockets on the table.\"}"
+    },
+    "Playing rubik cube": {
+        "idx": 64,
+        "Elaboration": {
+            "Entity": [
+                "a Rubik's Cube",
+                "a person's hands"
+            ],
+            "Description": "A person manipulating the faces of a Rubik's Cube with the intention of solving it"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a Rubik's Cube\", \"a person's hands\"], \"Description\": \"A person manipulating the faces of a Rubik's Cube with the intention of solving it\"}"
+    },
+    "Powerbocking": {
+        "idx": 65,
+        "Elaboration": {
+            "Entity": [
+                "Powerbocks",
+                "Performer"
+            ],
+            "Description": "The performer using spring-loaded stilts (powerbocks) to jump and perform acrobatic movements."
+        },
+        "Origin_Chat": "{\"Entity\": [\"Powerbocks\", \"Performer\"], \"Description\": \"The performer using spring-loaded stilts (powerbocks) to jump and perform acrobatic movements.\"}"
+    },
+    "Putting in contact lenses": {
+        "idx": 66,
+        "Elaboration": {
+            "Entity": [
+                "the contact lenses",
+                "the fingers"
+            ],
+            "Description": "Using the fingers to put the contact lenses on the eyes."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the contact lenses\", \"the fingers\"], \"Description\": \"Using the fingers to put the contact lenses on the eyes.\"}"
+    },
+    "Putting on shoes": {
+        "idx": 67,
+        "Elaboration": {
+            "Entity": [
+                "a pair of shoes",
+                "a person's feet",
+                "hands"
+            ],
+            "Description": "A person sitting or standing takes a shoe and slides the foot inside. Then, he repeats the same action with the other shoe until both are properly secured on the feet."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a pair of shoes\", \"a person's feet\", \"hands\"],\"Description\":\"A person sitting or standing takes a shoe and slides the foot inside. Then, he repeats the same action with the other shoe until both are properly secured on the feet.\"}"
+    },
+    "Rafting": {
+        "idx": 68,
+        "Elaboration": {
+            "Entity": [
+                "the river",
+                "the raft",
+                "the paddles",
+                "the rafters"
+            ],
+            "Description": "the group of people on a raft navigating through the rapids of a river using paddles"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the river\",\"the raft\",\"the paddles\",\"the rafters\"],\"Description\":\"the group of people on a raft navigating through the rapids of a river using paddles\"}"
+    },
+    "Raking leaves": {
+        "idx": 69,
+        "Elaboration": {
+            "Entity": [
+                "a rake",
+                "leaves",
+                "a person"
+            ],
+            "Description": "A person using a rake to gather fallen leaves into a pile. This action is often done in a yard or garden during the fall season to clean up the leaves."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a rake\", \"leaves\", \"a person\"], \"Description\": \"A person using a rake to gather fallen leaves into a pile. This action is often done in a yard or garden during the fall season to clean up the leaves.\"}"
+    },
+    "Removing ice from car": {
+        "idx": 70,
+        "Elaboration": {
+            "Entity": [
+                "car",
+                "ice",
+                "ice scraper"
+            ],
+            "Description": "a person using an ice scraper to remove ice from the car windows and windshield"
+        },
+        "Origin_Chat": "{\"Entity\": [\"car\", \"ice\", \"ice scraper\"], \"Description\": \"a person using an ice scraper to remove ice from the car windows and windshield\"}"
+    },
+    "Riding bumper cars": {
+        "idx": 71,
+        "Elaboration": {
+            "Entity": [
+                "the bumper car",
+                "the riders",
+                "the bumper car arena"
+            ],
+            "Description": "The riders driving or riding on bumper cars while bumping into each other in a designated bumper car arena."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the bumper car\", \"the riders\", \"the bumper car arena\"], \"Description\": \"The riders driving or riding on bumper cars while bumping into each other in a designated bumper car arena.\"}"
+    },
+    "River tubing": {
+        "idx": 72,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "an inflatable inner tube",
+                "a river"
+            ],
+            "Description": "A person floating down a river while sitting on an inflatable inner tube."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a person\", \"an inflatable inner tube\", \"a river\"], \"Description\": \"A person floating down a river while sitting on an inflatable inner tube.\"}"
+    },
+    "Rock-paper-scissors": {
+        "idx": 73,
+        "Elaboration": {
+            "Entity": [
+                "two hands"
+            ],
+            "Description": "Two people facing each other and simultaneously showing their hands with one of them forming a rock, another one forming a paper, and the last one forming a scissors. Then, they determine the winner by comparing their hand signs based on the rule that rock beats scissors, scissors beats paper, and paper beats rock."
+        },
+        "Origin_Chat": "{\"Entity\":[\"two hands\"],\"Description\":\"Two people facing each other and simultaneously showing their hands with one of them forming a rock, another one forming a paper, and the last one forming a scissors. Then, they determine the winner by comparing their hand signs based on the rule that rock beats scissors, scissors beats paper, and paper beats rock.\"}"
+    },
+    "Rollerblading": {
+        "idx": 74,
+        "Elaboration": {
+            "Entity": [
+                "the rollerblader",
+                "the rollerblades",
+                "the path"
+            ],
+            "Description": "the person wearing rollerblades gliding smoothly forward on a path"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the rollerblader\",\"the rollerblades\",\"the path\"],\"Description\":\"the person wearing rollerblades gliding smoothly forward on a path\"}"
+    },
+    "Roof shingle removal": {
+        "idx": 75,
+        "Elaboration": {
+            "Entity": [
+                "roof shingles",
+                "roofing tool"
+            ],
+            "Description": "a person using a roofing tool to remove the roof shingles from the roof"
+        },
+        "Origin_Chat": "{\"Entity\": [\"roof shingles\", \"roofing tool\"], \"Description\": \"a person using a roofing tool to remove the roof shingles from the roof\"}"
+    },
+    "Rope skipping": {
+        "idx": 76,
+        "Elaboration": {
+            "Entity": [
+                "a skipping rope",
+                "the skipper"
+            ],
+            "Description": "the skipper swinging the skipping rope and jumping through it repeatedly"
+        },
+        "Origin_Chat": "{\"Entity\":[\"a skipping rope\", \"the skipper\"], \"Description\":\"the skipper swinging the skipping rope and jumping through it repeatedly\"}"
+    },
+    "Running a marathon": {
+        "idx": 77,
+        "Elaboration": {
+            "Entity": [
+                "the runner",
+                "the track",
+                "the distance markers"
+            ],
+            "Description": "the runner covering a long distance on foot, usually in a competition with other runners, following a determined track and periodically passing distance markers"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the runner\",\"the track\",\"the distance markers\"],\"Description\":\"the runner covering a long distance on foot, usually in a competition with other runners, following a determined track and periodically passing distance markers\"}"
+    },
+    "Scuba diving": {
+        "idx": 78,
+        "Elaboration": {
+            "Entity": [
+                "the scuba diver",
+                "the scuba tank",
+                "the diving equipment",
+                "the underwater environment"
+            ],
+            "Description": "the scuba diver exploring the underwater environment using scuba tanks and diving equipment."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the scuba diver\", \"the scuba tank\", \"the diving equipment\", \"the underwater environment\"], \"Description\": \"the scuba diver exploring the underwater environment using scuba tanks and diving equipment.\"}"
+    },
+    "Sharpening knives": {
+        "idx": 79,
+        "Elaboration": {
+            "Entity": [
+                "the knife",
+                "the sharpening tool",
+                "the surface"
+            ],
+            "Description": "The person holding the knife firmly with one hand, while sliding and rubbing its edge against the sharpening tool placed on the surface, in order to make the blade sharp."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the knife\", \"the sharpening tool\", \"the surface\"],\"Description\":\"The person holding the knife firmly with one hand, while sliding and rubbing its edge against the sharpening tool placed on the surface, in order to make the blade sharp.\"}"
+    },
+    "Shuffleboard": {
+        "idx": 80,
+        "Elaboration": {
+            "Entity": [
+                "the shuffleboard puck",
+                "the shuffleboard table",
+                "the players"
+            ],
+            "Description": "The players slide the shuffleboard puck on the shuffleboard table, aiming to reach and score points in designated areas."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the shuffleboard puck\", \"the shuffleboard table\", \"the players\"], \"Description\": \"The players slide the shuffleboard puck on the shuffleboard table, aiming to reach and score points in designated areas.\"}"
+    },
+    "Skiing": {
+        "idx": 81,
+        "Elaboration": {
+            "Entity": [
+                "the skier",
+                "the ski poles",
+                "the ski boots",
+                "the ski goggles",
+                "the slope"
+            ],
+            "Description": "the skier sliding down a snow-covered slope using ski poles and ski boots while wearing ski goggles"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the skier\",\"the ski poles\",\"the ski boots\",\"the ski goggles\",\"the slope\"],\"Description\":\"the skier sliding down a snow-covered slope using ski poles and ski boots while wearing ski goggles\"}"
+    },
+    "Slacklining": {
+        "idx": 82,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "a slackline"
+            ],
+            "Description": "a person balancing and walking on a slender, flat webbing that is tensioned between two anchor points, typically trees or poles, using only his or her own body awareness and balance to prevent falling off"
+        },
+        "Origin_Chat": "{\"Entity\":[\"a person\", \"a slackline\"],\"Description\":\"a person balancing and walking on a slender, flat webbing that is tensioned between two anchor points, typically trees or poles, using only his or her own body awareness and balance to prevent falling off\"}"
+    },
+    "Snow tubing": {
+        "idx": 83,
+        "Elaboration": {
+            "Entity": [
+                "the tube",
+                "the snow"
+            ],
+            "Description": "the person riding in a tube sliding down a snow-covered slope"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the tube\",\"the snow\"],\"Description\":\"the person riding in a tube sliding down a snow-covered slope\"}"
+    },
+    "Snowboarding": {
+        "idx": 84,
+        "Elaboration": {
+            "Entity": [
+                "the snowboard",
+                "the snowboarder"
+            ],
+            "Description": "the snowboarder descending a snow-covered slope while standing on a snowboard"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the snowboard\",\"the snowboarder\"],\"Description\":\"the snowboarder descending a snow-covered slope while standing on a snowboard\"}"
+    },
+    "Spread mulch": {
+        "idx": 85,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "mulch",
+                "wheelbarrow",
+                "garden bed"
+            ],
+            "Description": "A person spreading mulch from a wheelbarrow onto a garden bed."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a person\", \"mulch\", \"wheelbarrow\", \"garden bed\"], \"Description\": \"A person spreading mulch from a wheelbarrow onto a garden bed.\"}"
+    },
+    "Sumo": {
+        "idx": 86,
+        "Elaboration": {
+            "Entity": [
+                "two Sumo wrestlers"
+            ],
+            "Description": "two Sumo wrestlers engaging in a traditional Japanese sport where the objective is to force the opponent out of a circular ring or to force the opponent to touch the ground with any part of their body other than the soles of their feet"
+        },
+        "Origin_Chat": "{\"Entity\":[\"two Sumo wrestlers\"],\"Description\":\"two Sumo wrestlers engaging in a traditional Japanese sport where the objective is to force the opponent out of a circular ring or to force the opponent to touch the ground with any part of their body other than the soles of their feet\"}"
+    },
+    "Surfing": {
+        "idx": 87,
+        "Elaboration": {
+            "Entity": [
+                "the surfer",
+                "the surfboard",
+                "the ocean waves"
+            ],
+            "Description": "the surfer riding and maneuvering on the ocean waves using a surfboard"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the surfer\", \"the surfboard\", \"the ocean waves\"], \"Description\": \"the surfer riding and maneuvering on the ocean waves using a surfboard\"}"
+    },
+    "Swimming": {
+        "idx": 88,
+        "Elaboration": {
+            "Entity": [
+                "a swimmer",
+                "a body of water"
+            ],
+            "Description": "A person propelling themselves through water using their limbs"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a swimmer\", \"a body of water\"], \"Description\": \"A person propelling themselves through water using their limbs\"}"
+    },
+    "Swinging at the playground": {
+        "idx": 89,
+        "Elaboration": {
+            "Entity": [
+                "a swing",
+                "a playground",
+                "a child"
+            ],
+            "Description": "a child sitting on a swing at a playground and being pushed back and forth in a pendulum motion"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a swing\", \"a playground\", \"a child\"], \"Description\": \"a child sitting on a swing at a playground and being pushed back and forth in a pendulum motion\"}"
+    },
+    "Table soccer": {
+        "idx": 90,
+        "Elaboration": {
+            "Entity": [
+                "table soccer players",
+                "table soccer ball",
+                "table soccer table"
+            ],
+            "Description": "Players use miniature figures attached to rods to simulate the game of soccer on a small table. The objective is to move small figures to pass the ball to the opposing team\u2019s goal."
+        },
+        "Origin_Chat": "{\"Entity\":[\"table soccer players\", \"table soccer ball\", \"table soccer table\"], \"Description\":\"Players use miniature figures attached to rods to simulate the game of soccer on a small table. The objective is to move small figures to pass the ball to the opposing team\u2019s goal.\"}"
+    },
+    "Throwing darts": {
+        "idx": 91,
+        "Elaboration": {
+            "Entity": [
+                "the person throwing the dart",
+                "the dartboard",
+                "the darts"
+            ],
+            "Description": "The person throws a dart towards the dartboard in an attempt to hit a specific target."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person throwing the dart\", \"the dartboard\", \"the darts\"], \"Description\": \"The person throws a dart towards the dartboard in an attempt to hit a specific target.\"}"
+    },
+    "Trimming branches or hedges": {
+        "idx": 92,
+        "Elaboration": {
+            "Entity": [
+                "gardener",
+                "scissors",
+                "branches",
+                "hedges"
+            ],
+            "Description": "A gardener using scissors to cut back and shape the branches or hedges of a plant."
+        },
+        "Origin_Chat": "{\"Entity\":[\"gardener\",\"scissors\", \"branches\", \"hedges\"],\"Description\":\"A gardener using scissors to cut back and shape the branches or hedges of a plant.\"}"
+    },
+    "Tug of war": {
+        "idx": 93,
+        "Elaboration": {
+            "Entity": [
+                "two teams of people",
+                "a long rope"
+            ],
+            "Description": "Two teams of people each hold opposite ends of a long rope and pull against each other to see which team can drag the other across a central line"
+        },
+        "Origin_Chat": "{\"Entity\":[\"two teams of people\",\"a long rope\"],\"Description\":\"Two teams of people each hold opposite ends of a long rope and pull against each other to see which team can drag the other across a central line\"}"
+    },
+    "Using the monkey bar": {
+        "idx": 94,
+        "Elaboration": {
+            "Entity": [
+                "the monkey bars",
+                "a person"
+            ],
+            "Description": "a person holding onto and moving along the horizontal bars of the monkey bars"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the monkey bars\",\"a person\"],\"Description\":\"a person holding onto and moving along the horizontal bars of the monkey bars\"}"
+    },
+    "Using the rowing machine": {
+        "idx": 95,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the rowing machine",
+                "the rowing handle",
+                "the seat"
+            ],
+            "Description": "the person sits on the seat of the rowing machine, grabs the rowing handle with both hands, pulls it towards their chest while pushing their legs and then extends their arms and returns to the initial position, repeating this movement in a continuous motion"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"the rowing machine\", \"the rowing handle\", \"the seat\"], \"Description\": \"the person sits on the seat of the rowing machine, grabs the rowing handle with both hands, pulls it towards their chest while pushing their legs and then extends their arms and returns to the initial position, repeating this movement in a continuous motion\"}"
+    },
+    "Wakeboarding": {
+        "idx": 96,
+        "Elaboration": {
+            "Entity": [
+                "the wakeboarder",
+                "the wakeboard",
+                "the boat",
+                "the body of water"
+            ],
+            "Description": "a person riding on a board while being towed behind a boat, gliding across the surface of the water and performing various jumps and tricks"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the wakeboarder\", \"the wakeboard\", \"the boat\", \"the body of water\"], \"Description\": \"a person riding on a board while being towed behind a boat, gliding across the surface of the water and performing various jumps and tricks\"}"
+    },
+    "Waterskiing": {
+        "idx": 97,
+        "Elaboration": {
+            "Entity": [
+                "the skier",
+                "the waterski",
+                "the boat"
+            ],
+            "Description": "a skier being towed by a boat while standing on a single or double water ski board and making turns and jumps on the surface of the water."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the skier\",\"the waterski\",\"the boat\"],\"Description\":\"a skier being towed by a boat while standing on a single or double water ski board and making turns and jumps on the surface of the water.\"}"
+    },
+    "Waxing skis": {
+        "idx": 98,
+        "Elaboration": {
+            "Entity": [
+                "skis",
+                "wax",
+                "scraper"
+            ],
+            "Description": "Applying wax to the base of the skis, using a waxing iron and then scraping off the excess wax with a scraper."
+        },
+        "Origin_Chat": "{\"Entity\":[\"skis\",\"wax\",\"scraper\"],\"Description\":\"Applying wax to the base of the skis, using a waxing iron and then scraping off the excess wax with a scraper.\"}"
+    },
+    "Welding": {
+        "idx": 99,
+        "Elaboration": {
+            "Entity": [
+                "the welding machine",
+                "the welding helmet",
+                "the metal pieces"
+            ],
+            "Description": "the welding machine creating an electric arc that melts the metal pieces, fusing them together"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the welding machine\", \"the welding helmet\", \"the metal pieces\"],\"Description\":\"the welding machine creating an electric arc that melts the metal pieces, fusing them together\"}"
+    },
+    "Drinking coffee": {
+        "idx": 100,
+        "Elaboration": {
+            "Entity": [
+                "a cup",
+                "coffee",
+                "a person"
+            ],
+            "Description": "A person holding a cup of coffee and bringing it to their mouth to take a sip, then putting the cup back down on a surface."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a cup\", \"coffee\", \"a person\"], \"Description\": \"A person holding a cup of coffee and bringing it to their mouth to take a sip, then putting the cup back down on a surface.\"}"
+    },
+    "Zumba": {
+        "idx": 101,
+        "Elaboration": {
+            "Entity": [
+                "a group of people",
+                "dancers",
+                "a Zumba instructor",
+                "a spacious room with music playing"
+            ],
+            "Description": "a group of people following a choreographed dance led by a Zumba instructor in a spacious room with music playing"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a group of people\", \"dancers\", \"a Zumba instructor\", \"a spacious room with music playing\"], \"Description\": \"a group of people following a choreographed dance led by a Zumba instructor in a spacious room with music playing\"}"
+    },
+    "Doing kickboxing": {
+        "idx": 102,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "a punching bag",
+                "boxing gloves"
+            ],
+            "Description": "a person wearing boxing gloves performing a combination of punches and kicks on a punching bag in a rhythmic and forceful manner, resembling the sport of kickboxing."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a person\", \"a punching bag\", \"boxing gloves\"], \"Description\":\"a person wearing boxing gloves performing a combination of punches and kicks on a punching bag in a rhythmic and forceful manner, resembling the sport of kickboxing.\"}"
+    },
+    "Doing karate": {
+        "idx": 103,
+        "Elaboration": {
+            "Entity": [
+                "the karateka",
+                "kicking",
+                "punching",
+                "striking",
+                "blocking",
+                "karategi"
+            ],
+            "Description": "a person in a karategi performing a set of martial arts techniques including kicking, punching, striking, and blocking"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the karateka\", \"kicking\", \"punching\", \"striking\", \"blocking\", \"karategi\"], \"Description\": \"a person in a karategi performing a set of martial arts techniques including kicking, punching, striking, and blocking\"}"
+    },
+    "Tango": {
+        "idx": 104,
+        "Elaboration": {
+            "Entity": [
+                "two people"
+            ],
+            "Description": "Two people in close proximity performing a dance with a series of elegant and fluid movements, often characterized by a close embrace and intricate footwork, traditionally accompanied by tango music."
+        },
+        "Origin_Chat": "{\"Entity\":[\"two people\"],\"Description\":\"Two people in close proximity performing a dance with a series of elegant and fluid movements, often characterized by a close embrace and intricate footwork, traditionally accompanied by tango music.\"}"
+    },
+    "Putting on makeup": {
+        "idx": 105,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "makeup products (e.g. lipstick, eyeshadow, etc.)",
+                "mirror",
+                "brushes",
+                "sponges"
+            ],
+            "Description": "The person applying makeup on their face using brushes, sponges, and various makeup products while looking at themselves in a mirror."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"makeup products (e.g. lipstick, eyeshadow, etc.)\", \"mirror\", \"brushes\", \"sponges\"], \"Description\": \"The person applying makeup on their face using brushes, sponges, and various makeup products while looking at themselves in a mirror.\"}"
+    },
+    "High jump": {
+        "idx": 106,
+        "Elaboration": {
+            "Entity": [
+                "the high jumper",
+                "the bar",
+                "the landing mat"
+            ],
+            "Description": "The participant runs towards the bar and jumps over it, twisting their body to clear the height, and then lands safely on the mat."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the high jumper\",\"the bar\",\"the landing mat\"],\"Description\":\"The participant runs towards the bar and jumps over it, twisting their body to clear the height, and then lands safely on the mat.\"}"
+    },
+    "Playing bagpipes": {
+        "idx": 107,
+        "Elaboration": {
+            "Entity": [
+                "the bagpipes",
+                "the player"
+            ],
+            "Description": "the player blowing into the bagpipes and playing a tune with their fingers on the holes of the pipes."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the bagpipes\",\"the player\"],\"Description\":\"the player blowing into the bagpipes and playing a tune with their fingers on the holes of the pipes.\"}"
+    },
+    "Cheerleading": {
+        "idx": 108,
+        "Elaboration": {
+            "Entity": [
+                "the cheerleader",
+                "the crowd",
+                "the pom-poms"
+            ],
+            "Description": "the cheerleader performing a synchronized routine of dance, tumbling, jumps, and cheers to support and encourage their team, usually accompanied by a group of spectators and using pom-poms"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the cheerleader\", \"the crowd\", \"the pom-poms\"],\"Description\":\"the cheerleader performing a synchronized routine of dance, tumbling, jumps, and cheers to support and encourage their team, usually accompanied by a group of spectators and using pom-poms\"}"
+    },
+    "Wrapping presents": {
+        "idx": 109,
+        "Elaboration": {
+            "Entity": [
+                "gift boxes",
+                "wrapping paper",
+                "scissors",
+                "tape"
+            ],
+            "Description": "A person wrapping a gift box with wrapping paper, cutting the excess paper and securing it in place with tape."
+        },
+        "Origin_Chat": "{\"Entity\": [\"gift boxes\", \"wrapping paper\", \"scissors\", \"tape\"], \"Description\": \"A person wrapping a gift box with wrapping paper, cutting the excess paper and securing it in place with tape.\"}"
+    },
+    "Cricket": {
+        "idx": 110,
+        "Elaboration": {
+            "Entity": [
+                "cricket bat",
+                "ball",
+                "pitch",
+                "stumps",
+                "batsman",
+                "bowler",
+                "fielders"
+            ],
+            "Description": "The batsman hits the ball thrown by the bowler with a cricket bat, aiming to score runs by running back and forth between two sets of stumps on the pitch while the fielders try to catch the ball and get the batsman out."
+        },
+        "Origin_Chat": "{\"Entity\": [\"cricket bat\", \"ball\", \"pitch\", \"stumps\", \"batsman\", \"bowler\", \"fielders\"], \"Description\": \"The batsman hits the ball thrown by the bowler with a cricket bat, aiming to score runs by running back and forth between two sets of stumps on the pitch while the fielders try to catch the ball and get the batsman out.\"}"
+    },
+    "Clean and jerk": {
+        "idx": 111,
+        "Elaboration": {
+            "Entity": [
+                "the lifter",
+                "the barbell",
+                "the weights",
+                "the platform"
+            ],
+            "Description": "The lifter lifts the barbell with weights from the platform to their shoulders and then quickly raises it overhead while dropping into a squat, before standing back up to complete the lift"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the lifter\",\"the barbell\",\"the weights\",\"the platform\"],\"Description\":\"The lifter lifts the barbell with weights from the platform to their shoulders and then quickly raises it overhead while dropping into a squat, before standing back up to complete the lift\"}"
+    },
+    "Preparing pasta": {
+        "idx": 112,
+        "Elaboration": {
+            "Entity": [
+                "the chef",
+                "the pasta",
+                "a pot",
+                "water",
+                "a stove",
+                "a colander",
+                "a fork",
+                "a timer"
+            ],
+            "Description": "The chef boils the water in the pot on the stove, adds the pasta to cook it for a certain length of time indicated by the timer, and then drains the pasta using a colander before serving it or adding other ingredients to it."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the chef\", \"the pasta\", \"a pot\", \"water\", \"a stove\", \"a colander\", \"a fork\", \"a timer\"],\n\"Description\":\"The chef boils the water in the pot on the stove, adds the pasta to cook it for a certain length of time indicated by the timer, and then drains the pasta using a colander before serving it or adding other ingredients to it.\"}"
+    },
+    "Bathing dog": {
+        "idx": 113,
+        "Elaboration": {
+            "Entity": [
+                "the dog",
+                "water",
+                "shampoo",
+                "bath tub",
+                "towel"
+            ],
+            "Description": "The dog being washed with shampoo and water in a bathtub, before being dried with a towel."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the dog\", \"water\", \"shampoo\", \"bath tub\", \"towel\"], \"Description\": \"The dog being washed with shampoo and water in a bathtub, before being dried with a towel.\"}"
+    },
+    "Discus throw": {
+        "idx": 114,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the discus",
+                "the throwing circle"
+            ],
+            "Description": "the athlete throwing the discus from the throwing circle"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the athlete\", \"the discus\", \"the throwing circle\"], \"Description\":\"the athlete throwing the discus from the throwing circle\"}"
+    },
+    "Playing field hockey": {
+        "idx": 115,
+        "Elaboration": {
+            "Entity": [
+                "hockey stick",
+                "ball",
+                "field",
+                "players"
+            ],
+            "Description": "Players hitting a small, hard ball with hockey sticks on a grass or turf field, trying to score goals in the opposing team's net."
+        },
+        "Origin_Chat": "{\"Entity\":[\"hockey stick\", \"ball\", \"field\", \"players\"],\"Description\":\"Players hitting a small, hard ball with hockey sticks on a grass or turf field, trying to score goals in the opposing team's net.\"}"
+    },
+    "Grooming horse": {
+        "idx": 116,
+        "Elaboration": {
+            "Entity": [
+                "the horse",
+                "the groomer",
+                "the brush",
+                "the grooming kit"
+            ],
+            "Description": "The groomer uses a brush and other grooming tools to clean, comb, and remove dirt and debris from the horse's coat, mane, tail, and hooves."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the horse\", \"the groomer\", \"the brush\", \"the grooming kit\"], \"Description\": \"The groomer uses a brush and other grooming tools to clean, comb, and remove dirt and debris from the horse's coat, mane, tail, and hooves.\"}"
+    },
+    "Preparing salad": {
+        "idx": 117,
+        "Elaboration": {
+            "Entity": [
+                "the chef",
+                "the cutting board",
+                "knife",
+                "lettuce",
+                "tomato",
+                "carrot",
+                "cucumber",
+                "bowl"
+            ],
+            "Description": "the chef slicing and chopping various vegetables such as lettuce, tomato, carrot, and cucumber on a cutting board and then mixing them in a bowl to prepare salad"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the chef\", \"the cutting board\", \"knife\", \"lettuce\", \"tomato\", \"carrot\", \"cucumber\", \"bowl\"], \"Description\": \"the chef slicing and chopping various vegetables such as lettuce, tomato, carrot, and cucumber on a cutting board and then mixing them in a bowl to prepare salad\"}"
+    },
+    "Playing harmonica": {
+        "idx": 118,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the harmonica"
+            ],
+            "Description": "the person inhaling and exhaling air into the harmonica while manipulating the notes with their mouth to produce music"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the person\",\"the harmonica\"],\"Description\":\"the person inhaling and exhaling air into the harmonica while manipulating the notes with their mouth to produce music\"}"
+    },
+    "Playing saxophone": {
+        "idx": 119,
+        "Elaboration": {
+            "Entity": [
+                "a saxophone",
+                "a musician"
+            ],
+            "Description": "a musician blowing into the saxophone and pressing different keys to produce musical notes"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a saxophone\", \"a musician\"], \"Description\": \"a musician blowing into the saxophone and pressing different keys to produce musical notes\"}"
+    },
+    "Chopping wood": {
+        "idx": 120,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the axe",
+                "the log"
+            ],
+            "Description": "a person using an axe to strike a log, splitting it into smaller pieces of wood"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"the axe\", \"the log\"], \"Description\": \"a person using an axe to strike a log, splitting it into smaller pieces of wood\"}"
+    },
+    "Washing face": {
+        "idx": 121,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the sink",
+                "the water",
+                "the soap"
+            ],
+            "Description": "The person applies water and soap to their face, rubs gently to remove dirt and then rinses their face with water from the sink."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the person\",\"the sink\",\"the water\",\"the soap\"],\"Description\":\"The person applies water and soap to their face, rubs gently to remove dirt and then rinses their face with water from the sink.\"}"
+    },
+    "Using the pommel horse": {
+        "idx": 122,
+        "Elaboration": {
+            "Entity": [
+                "the gymnast",
+                "the pommel horse"
+            ],
+            "Description": "the gymnast performing various gymnastic moves while using the pommel horse for support"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the gymnast\", \"the pommel horse\"],\"Description\":\"the gymnast performing various gymnastic moves while using the pommel horse for support\"}"
+    },
+    "Javelin throw": {
+        "idx": 123,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the javelin",
+                "the throwing area"
+            ],
+            "Description": "The athlete runs up to the throwing area with the javelin in hand and, using a forward motion and a quick release, throws the javelin as far as possible before landing on the ground."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the athlete\", \"the javelin\", \"the throwing area\"], \"Description\": \"The athlete runs up to the throwing area with the javelin in hand and, using a forward motion and a quick release, throws the javelin as far as possible before landing on the ground.\"}"
+    },
+    "Spinning": {
+        "idx": 124,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "an object (e.g. a toy, a ball, a wheel, etc.)"
+            ],
+            "Description": "a person or an object rotating continuously around an axis, causing a circular motion"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a person\", \"an object (e.g. a toy, a ball, a wheel, etc.)\"], \"Description\": \"a person or an object rotating continuously around an axis, causing a circular motion\"}"
+    },
+    "Ping-pong": {
+        "idx": 125,
+        "Elaboration": {
+            "Entity": [
+                "ping-pong ball",
+                "table tennis racket",
+                "table tennis table",
+                "players"
+            ],
+            "Description": "Two players hitting a small ball back and forth over a table divided by a net."
+        },
+        "Origin_Chat": "{\"Entity\":[\"ping-pong ball\", \"table tennis racket\", \"table tennis table\", \"players\"],\"Description\":\"Two players hitting a small ball back and forth over a table divided by a net.\"}"
+    },
+    "Making a sandwich": {
+        "idx": 126,
+        "Elaboration": {
+            "Entity": [
+                "bread",
+                "cheese",
+                "ham",
+                "lettuce",
+                "tomato",
+                "mayonnaise",
+                "knife",
+                "plate"
+            ],
+            "Description": "Spreading mayonnaise on a slice of bread, then placing sliced ham, cheese, lettuce and tomato on top of the bread. Covering with the other slice of bread and slicing the sandwich with a knife. Placing the sandwich on a plate."
+        },
+        "Origin_Chat": "{\"Entity\": [\"bread\", \"cheese\", \"ham\", \"lettuce\", \"tomato\", \"mayonnaise\", \"knife\", \"plate\"],\n \"Description\": \"Spreading mayonnaise on a slice of bread, then placing sliced ham, cheese, lettuce and tomato on top of the bread. Covering with the other slice of bread and slicing the sandwich with a knife. Placing the sandwich on a plate.\" }"
+    },
+    "Brushing hair": {
+        "idx": 127,
+        "Elaboration": {
+            "Entity": [
+                "a hairbrush",
+                "the person brushing their hair"
+            ],
+            "Description": "The person groom themselves by using a hairbrush or comb to arrange their hair."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a hairbrush\", \"the person brushing their hair\"], \"Description\": \"The person groom themselves by using a hairbrush or comb to arrange their hair.\"}"
+    },
+    "Playing guitarra": {
+        "idx": 128,
+        "Elaboration": {
+            "Entity": [
+                "the guitarist",
+                "the guitar"
+            ],
+            "Description": "The guitarist holding the guitar and creating music by strumming or picking its strings with their fingers."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the guitarist\", \"the guitar\"], \"Description\": \"The guitarist holding the guitar and creating music by strumming or picking its strings with their fingers.\"}"
+    },
+    "Doing step aerobics": {
+        "idx": 129,
+        "Elaboration": {
+            "Entity": [
+                "a stepper",
+                "a step aerobics instructor",
+                "step platforms"
+            ],
+            "Description": "A person is performing a cardio workout routine by stepping up and down on a platform under the guidance of an instructor, possibly accompanied by music."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a stepper\", \"a step aerobics instructor\", \"step platforms\"], \"Description\": \"A person is performing a cardio workout routine by stepping up and down on a platform under the guidance of an instructor, possibly accompanied by music.\"}"
+    },
+    "Drinking beer": {
+        "idx": 130,
+        "Elaboration": {
+            "Entity": [
+                "a beer glass",
+                "a person's hand"
+            ],
+            "Description": "A person holding a beer glass and drinking from it."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a beer glass\", \"a person's hand\"], \"Description\": \"A person holding a beer glass and drinking from it.\"}"
+    },
+    "Playing polo": {
+        "idx": 131,
+        "Elaboration": {
+            "Entity": [
+                "the horse",
+                "the mallet",
+                "the ball",
+                "the polo field",
+                "the players"
+            ],
+            "Description": "Two teams of four players ride horses while using mallets to hit a small ball towards the opposing team's goal post."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the horse\",\"the mallet\",\"the ball\",\"the polo field\",\"the players\"],\"Description\":\"Two teams of four players ride horses while using mallets to hit a small ball towards the opposing team's goal post.\"}"
+    },
+    "Snatch": {
+        "idx": 132,
+        "Elaboration": {
+            "Entity": [
+                "a weightlifting barbell",
+                "a lifter"
+            ],
+            "Description": "the lifter quickly lifts the weightlifting barbell from the ground up to their shoulders in one motion, using a combination of lower and upper body strength"
+        },
+        "Origin_Chat": "{\"Entity\":[\"a weightlifting barbell\",\"a lifter\"],\"Description\":\"the lifter quickly lifts the weightlifting barbell from the ground up to their shoulders in one motion, using a combination of lower and upper body strength\"}"
+    },
+    "Paintball": {
+        "idx": 133,
+        "Elaboration": {
+            "Entity": [
+                "a paintball gun",
+                "a paintball mask",
+                "a paintball player",
+                "paintballs"
+            ],
+            "Description": "A paintball player using a paintball gun to shoot paintballs at opposing players while wearing a paintball mask to protect their face and eyes."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a paintball gun\", \"a paintball mask\", \"a paintball player\", \"paintballs\"], \"Description\": \"A paintball player using a paintball gun to shoot paintballs at opposing players while wearing a paintball mask to protect their face and eyes.\"}"
+    },
+    "Long jump": {
+        "idx": 134,
+        "Elaboration": {
+            "Entity": [
+                "the long jumper",
+                "the take-off board",
+                "the sandpit"
+            ],
+            "Description": "The long jumper sprints towards the take-off board, jumps off it, propelling forward into the air with their body extended, before landing on their feet in the sandpit."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the long jumper\", \"the take-off board\", \"the sandpit\"], \"Description\": \"The long jumper sprints towards the take-off board, jumps off it, propelling forward into the air with their body extended, before landing on their feet in the sandpit.\"}"
+    },
+    "Cleaning windows": {
+        "idx": 135,
+        "Elaboration": {
+            "Entity": [
+                "the window",
+                "glass cleaner",
+                "squeegee",
+                "cleaning cloth"
+            ],
+            "Description": "a person using a cleaning cloth to apply glass cleaner on the window, and then using a squeegee to remove the cleaner, leaving the window clean and streak-free"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the window\", \"glass cleaner\", \"squeegee\", \"cleaning cloth\"], \"Description\": \"a person using a cleaning cloth to apply glass cleaner on the window, and then using a squeegee to remove the cleaner, leaving the window clean and streak-free\"}"
+    },
+    "Brushing teeth": {
+        "idx": 136,
+        "Elaboration": {
+            "Entity": [
+                "toothbrush",
+                "toothpaste",
+                "mouth",
+                "sink"
+            ],
+            "Description": "A person putting toothpaste on a toothbrush, brushing their teeth in circular motions, spitting into the sink, and rinsing their mouth."
+        },
+        "Origin_Chat": "{\"Entity\":[\"toothbrush\",\"toothpaste\",\"mouth\",\"sink\"],\"Description\":\"A person putting toothpaste on a toothbrush, brushing their teeth in circular motions, spitting into the sink, and rinsing their mouth.\"}"
+    },
+    "Playing flauta": {
+        "idx": 137,
+        "Elaboration": {
+            "Entity": [
+                "the flautist",
+                "the flute"
+            ],
+            "Description": "the person blowing into the opening of the flute to create music"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the flautist\",\"the flute\"],\"Description\":\"the person blowing into the opening of the flute to create music\"}"
+    },
+    "Tennis serve with ball bouncing": {
+        "idx": 138,
+        "Elaboration": {
+            "Entity": [
+                "the tennis player",
+                "the tennis court",
+                "the tennis racket",
+                "the tennis ball"
+            ],
+            "Description": "the tennis player drops the ball and hits it with the racket as it bounces on the court, starting the serve"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the tennis player\", \"the tennis court\", \"the tennis racket\", \"the tennis ball\"], \"Description\": \"the tennis player drops the ball and hits it with the racket as it bounces on the court, starting the serve\"}"
+    },
+    "Bungee jumping": {
+        "idx": 139,
+        "Elaboration": {
+            "Entity": [
+                "the bungee cord",
+                "the jumper",
+                "the platform"
+            ],
+            "Description": "The jumper, attached to a bungee cord, jumps off from a high platform and falls down rapidly towards the ground, until the bungee cord recoils and pulls the jumper back up again into the air, repeating the process several times."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the bungee cord\", \"the jumper\", \"the platform\"], \"Description\": \"The jumper, attached to a bungee cord, jumps off from a high platform and falls down rapidly towards the ground, until the bungee cord recoils and pulls the jumper back up again into the air, repeating the process several times.\"}"
+    },
+    "Triple jump": {
+        "idx": 140,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the runway",
+                "the takeoff board",
+                "the hop",
+                "the step",
+                "the jump",
+                "the sandpit"
+            ],
+            "Description": "The athlete runs down the runway, hops with one foot, then takes a step with the same foot, before jumping off the other foot and lands in a sandpit."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the athlete\",\"the runway\",\"the takeoff board\",\"the hop\",\"the step\",\"the jump\",\"the sandpit\"],\"Description\":\"The athlete runs down the runway, hops with one foot, then takes a step with the same foot, before jumping off the other foot and lands in a sandpit.\"}"
+    },
+    "Horseback riding": {
+        "idx": 141,
+        "Elaboration": {
+            "Entity": [
+                "the horse",
+                "the rider"
+            ],
+            "Description": "The rider sitting on the horse's back, controlling its movements and direction."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the horse\",\"the rider\"],\"Description\":\"The rider sitting on the horse's back, controlling its movements and direction.\"}"
+    },
+    "Layup drill in basketball": {
+        "idx": 142,
+        "Elaboration": {
+            "Entity": [
+                "basketball",
+                "player",
+                "hoop",
+                "basketball court"
+            ],
+            "Description": "A basketball player dribbles the ball towards the hoop, jumps, releases the ball before their feet touch the ground again, and guides the ball off the backboard and through the hoop."
+        },
+        "Origin_Chat": "{\"Entity\": [\"basketball\", \"player\", \"hoop\", \"basketball court\"], \"Description\": \"A basketball player dribbles the ball towards the hoop, jumps, releases the ball before their feet touch the ground again, and guides the ball off the backboard and through the hoop.\"}"
+    },
+    "Vacuuming floor": {
+        "idx": 143,
+        "Elaboration": {
+            "Entity": [
+                "the vacuum cleaner",
+                "the floor",
+                "the person"
+            ],
+            "Description": "the person using the vacuum cleaner to clean the floor"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the vacuum cleaner\", \"the floor\", \"the person\"], \"Description\": \"the person using the vacuum cleaner to clean the floor\"}"
+    },
+    "Cleaning shoes": {
+        "idx": 144,
+        "Elaboration": {
+            "Entity": [
+                "shoes",
+                "water",
+                "brush",
+                "cloth"
+            ],
+            "Description": "A person wiping or scrubbing shoes with a damp cloth or brush to remove dirt and stains."
+        },
+        "Origin_Chat": "{\"Entity\": [\"shoes\", \"water\", \"brush\", \"cloth\"],\"Description\": \"A person wiping or scrubbing shoes with a damp cloth or brush to remove dirt and stains.\"}"
+    },
+    "Doing nails": {
+        "idx": 145,
+        "Elaboration": {
+            "Entity": [
+                "fingers",
+                "nail polish",
+                "cotton balls",
+                "nail file"
+            ],
+            "Description": "Applying nail polish on the fingernails after cleaning and shaping them using a nail file and cotton balls."
+        },
+        "Origin_Chat": "{\"Entity\":[\"fingers\", \"nail polish\", \"cotton balls\", \"nail file\"],\"Description\":\"Applying nail polish on the fingernails after cleaning and shaping them using a nail file and cotton balls.\"}"
+    },
+    "Shot put": {
+        "idx": 146,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the shot put",
+                "the throwing circle"
+            ],
+            "Description": "The athlete rotating and propelling the shot put from the throwing circle"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the athlete\", \"the shot put\", \"the throwing circle\"],\"Description\":\"The athlete rotating and propelling the shot put from the throwing circle\"}"
+    },
+    "Fixing bicycle": {
+        "idx": 147,
+        "Elaboration": {
+            "Entity": [
+                "bicycle",
+                "wrench",
+                "screwdriver",
+                "pliers",
+                "pump",
+                "tire",
+                "chain",
+                "pedal",
+                "bike stand"
+            ],
+            "Description": "A person using tools such as wrench, screwdriver and pliers to fix a bicycle on a bike stand. The person may adjust the tire pressure with a pump, fix a broken chain, tighten the pedals or make any necessary repairs to ensure the bicycle is in working condition."
+        },
+        "Origin_Chat": "{\"Entity\": [\"bicycle\", \"wrench\", \"screwdriver\", \"pliers\", \"pump\", \"tire\", \"chain\", \"pedal\", \"bike stand\"], \"Description\": \"A person using tools such as wrench, screwdriver and pliers to fix a bicycle on a bike stand. The person may adjust the tire pressure with a pump, fix a broken chain, tighten the pedals or make any necessary repairs to ensure the bicycle is in working condition.\"}"
+    },
+    "Washing hands": {
+        "idx": 148,
+        "Elaboration": {
+            "Entity": [
+                "a person's hands",
+                "soap",
+                "water",
+                "sink"
+            ],
+            "Description": "A person rubbing and lathering their hands with soap under the flowing water from a sink and then rinsing it off."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a person's hands\", \"soap\", \"water\", \"sink\"], \"Description\": \"A person rubbing and lathering their hands with soap under the flowing water from a sink and then rinsing it off.\"}"
+    },
+    "Ironing clothes": {
+        "idx": 149,
+        "Elaboration": {
+            "Entity": [
+                "the iron",
+                "the ironing board",
+                "the clothes"
+            ],
+            "Description": "Using an iron on a flat surface to remove wrinkles from clothes."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the iron\",\"the ironing board\",\"the clothes\"],\"Description\":\"Using an iron on a flat surface to remove wrinkles from clothes.\"}"
+    },
+    "Using the balance beam": {
+        "idx": 150,
+        "Elaboration": {
+            "Entity": [
+                "the balance beam",
+                "the gymnast"
+            ],
+            "Description": "the gymnast performs a series of acrobatic moves and balance poses on the narrow and elevated beam, while maintaining stability and control of her body movements"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the balance beam\", \"the gymnast\"],\"Description\":\"the gymnast performs a series of acrobatic moves and balance poses on the narrow and elevated beam, while maintaining stability and control of her body movements\"}"
+    },
+    "Shoveling snow": {
+        "idx": 151,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "a shovel",
+                "snow"
+            ],
+            "Description": "a person using a shovel to remove the snow from a surface, such as a sidewalk, driveway or road."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a person\", \"a shovel\", \"snow\"],\"Description\":\"a person using a shovel to remove the snow from a surface, such as a sidewalk, driveway or road.\"}"
+    },
+    "Tumbling": {
+        "idx": 152,
+        "Elaboration": {
+            "Entity": [
+                "the gymnast",
+                "the mat"
+            ],
+            "Description": "The gymnast performs a series of acrobatic movements, such as backflips, somersaults, and twists, on a mat."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the gymnast\", \"the mat\"],\"Description\":\"The gymnast performs a series of acrobatic movements, such as backflips, somersaults, and twists, on a mat.\"}"
+    },
+    "Using parallel bars": {
+        "idx": 153,
+        "Elaboration": {
+            "Entity": [
+                "the parallel bars",
+                "the performer"
+            ],
+            "Description": "The performer holds onto the parallel bars with their hands and lifts and swings their legs over the bars, performing a variety of exercises and acrobatics while suspending themselves in the air."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the parallel bars\",\"the performer\"],\"Description\":\"The performer holds onto the parallel bars with their hands and lifts and swings their legs over the bars, performing a variety of exercises and acrobatics while suspending themselves in the air.\"}"
+    },
+    "Getting a tattoo": {
+        "idx": 154,
+        "Elaboration": {
+            "Entity": [
+                "the person getting the tattoo",
+                "the tattoo artist",
+                "the tattoo machine",
+                "the tattoo design"
+            ],
+            "Description": "The person getting a tattoo as the tattoo artist uses a tattoo machine to apply a design onto their skin."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person getting the tattoo\", \"the tattoo artist\", \"the tattoo machine\", \"the tattoo design\"], \"Description\": \"The person getting a tattoo as the tattoo artist uses a tattoo machine to apply a design onto their skin.\"}"
+    },
+    "Rock climbing": {
+        "idx": 155,
+        "Elaboration": {
+            "Entity": [
+                "the rock",
+                "the climber",
+                "the rope",
+                "the harness",
+                "the carabiners"
+            ],
+            "Description": "The climber using ropes, harness, and carabiners is ascending a rocky surface, gripping and stepping on different edges and holds to reach the top of the rock."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the rock\", \"the climber\", \"the rope\", \"the harness\", \"the carabiners\"], \"Description\": \"The climber using ropes, harness, and carabiners is ascending a rocky surface, gripping and stepping on different edges and holds to reach the top of the rock.\"}"
+    },
+    "Smoking hookah": {
+        "idx": 156,
+        "Elaboration": {
+            "Entity": [
+                "a hookah",
+                "a person's mouth",
+                "smoke"
+            ],
+            "Description": "A person inhaling smoke from a hookah through their mouth."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a hookah\", \"a person's mouth\", \"smoke\"],\n\"Description\": \"A person inhaling smoke from a hookah through their mouth.\"}"
+    },
+    "Shaving": {
+        "idx": 157,
+        "Elaboration": {
+            "Entity": [
+                "razor",
+                "shaving cream",
+                "sink",
+                "mirror",
+                "hand"
+            ],
+            "Description": "A person using a razor tool with shaving cream on their face to remove hair, while standing in front of a mirror and rinsing the razor in the sink with their hand."
+        },
+        "Origin_Chat": "{\"Entity\":[\"razor\",\"shaving cream\",\"sink\",\"mirror\",\"hand\"],\"Description\":\"A person using a razor tool with shaving cream on their face to remove hair, while standing in front of a mirror and rinsing the razor in the sink with their hand.\"}"
+    },
+    "Getting a piercing": {
+        "idx": 158,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "a needle",
+                "a piercing gun",
+                "a sterilized environment"
+            ],
+            "Description": "A person having a needle or piercing gun inserted into their skin, typically in an area such as their ear, nose, or belly button, in a sterilized environment to create a permanent hole for jewelry."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a person\",\"a needle\",\"a piercing gun\",\"a sterilized environment\"],\"Description\":\"A person having a needle or piercing gun inserted into their skin, typically in an area such as their ear, nose, or belly button, in a sterilized environment to create a permanent hole for jewelry.\"}"
+    },
+    "Springboard diving": {
+        "idx": 159,
+        "Elaboration": {
+            "Entity": [
+                "the diver",
+                "the springboard"
+            ],
+            "Description": "The diver jumping or flipping from the springboard into the water in a graceful manner"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the diver\",\"the springboard\"],\"Description\":\"The diver jumping or flipping from the springboard into the water in a graceful manner\"}"
+    },
+    "Playing squash": {
+        "idx": 160,
+        "Elaboration": {
+            "Entity": [
+                "squash racket",
+                "squash ball",
+                "squash court",
+                "athlete"
+            ],
+            "Description": "An athlete hitting a small rubber ball back and forth with a racket in a closed court, attempting to make it land in the opposite side of the court while preventing the opponent from doing so. This action involves quick movements, reactions, and changes in direction."
+        },
+        "Origin_Chat": "{\"Entity\": [\"squash racket\", \"squash ball\", \"squash court\", \"athlete\"], \"Description\": \"An athlete hitting a small rubber ball back and forth with a racket in a closed court, attempting to make it land in the opposite side of the court while preventing the opponent from doing so. This action involves quick movements, reactions, and changes in direction.\"}"
+    },
+    "Playing piano": {
+        "idx": 161,
+        "Elaboration": {
+            "Entity": [
+                "a piano",
+                "a pianist"
+            ],
+            "Description": "a person using their fingers to press the keys of a piano and creating musical notes and melodies"
+        },
+        "Origin_Chat": "{\"Entity\":[\"a piano\",\"a pianist\"],\"Description\":\"a person using their fingers to press the keys of a piano and creating musical notes and melodies\"}"
+    },
+    "Dodgeball": {
+        "idx": 162,
+        "Elaboration": {
+            "Entity": [
+                "the dodgeball",
+                "the players"
+            ],
+            "Description": "Players throwing a ball at each other while trying to avoid being hit"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the dodgeball\",\"the players\"],\"Description\":\"Players throwing a ball at each other while trying to avoid being hit\"}"
+    },
+    "Smoking a cigarette": {
+        "idx": 163,
+        "Elaboration": {
+            "Entity": [
+                "person",
+                "cigarette"
+            ],
+            "Description": "A person inhaling and exhaling smoke from a lit cigarette held between their fingers."
+        },
+        "Origin_Chat": "{\"Entity\":[\"person\", \"cigarette\"],\"Description\":\"A person inhaling and exhaling smoke from a lit cigarette held between their fingers.\"}"
+    },
+    "Sailing": {
+        "idx": 164,
+        "Elaboration": {
+            "Entity": [
+                "sailboat",
+                "sails",
+                "wind",
+                "water",
+                "person"
+            ],
+            "Description": "A person manipulating the sails of a sailboat in order to catch the wind and move across the water."
+        },
+        "Origin_Chat": "{\"Entity\":[\"sailboat\",\"sails\",\"wind\",\"water\",\"person\"],\"Description\":\"A person manipulating the sails of a sailboat in order to catch the wind and move across the water.\"}"
+    },
+    "Getting a haircut": {
+        "idx": 165,
+        "Elaboration": {
+            "Entity": [
+                "the customer",
+                "the barber",
+                "scissors",
+                "hair clippers",
+                "hair",
+                "barber chair"
+            ],
+            "Description": "The customer sitting on a barber chair while the barber cuts and trims their hair using scissors or hair clippers."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the customer\", \"the barber\", \"scissors\", \"hair clippers\", \"hair\", \"barber chair\"], \"Description\": \"The customer sitting on a barber chair while the barber cuts and trims their hair using scissors or hair clippers.\"}"
+    },
+    "Playing lacrosse": {
+        "idx": 166,
+        "Elaboration": {
+            "Entity": [
+                "the lacrosse stick",
+                "the ball",
+                "the players"
+            ],
+            "Description": "The players using their lacrosse sticks to catch, carry, pass and shoot the ball towards the goal."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the lacrosse stick\",\"the ball\",\"the players\"],\"Description\":\"The players using their lacrosse sticks to catch, carry, pass and shoot the ball towards the goal.\"}"
+    },
+    "Cumbia": {
+        "idx": 167,
+        "Elaboration": {
+            "Entity": [
+                "a group of people",
+                "a dance floor",
+                "Latin music",
+                "the Cumbia rhythm"
+            ],
+            "Description": "A group of people dancing on a dance floor to the Latin music with the Cumbia rhythm."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a group of people\", \"a dance floor\", \"Latin music\", \"the Cumbia rhythm\"],\"Description\":\"A group of people dancing on a dance floor to the Latin music with the Cumbia rhythm.\"}"
+    },
+    "Tai chi": {
+        "idx": 168,
+        "Elaboration": {
+            "Entity": [
+                "a person",
+                "an open space"
+            ],
+            "Description": "A person performing slow, graceful movements as a form of meditation, typically in an open space."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a person\", \"an open space\"], \"Description\":\"A person performing slow, graceful movements as a form of meditation, typically in an open space.\"}"
+    },
+    "Painting": {
+        "idx": 169,
+        "Elaboration": {
+            "Entity": [
+                "the painter",
+                "the canvas",
+                "the paintbrush",
+                "the paint",
+                "the palette"
+            ],
+            "Description": "the painter applying paint onto the canvas using a paintbrush or other tool, creating an image or design."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the painter\", \"the canvas\", \"the paintbrush\", \"the paint\", \"the palette\"],\"Description\":\"the painter applying paint onto the canvas using a paintbrush or other tool, creating an image or design.\"}"
+    },
+    "Mowing the lawn": {
+        "idx": 170,
+        "Elaboration": {
+            "Entity": [
+                "a lawnmower",
+                "a lawn",
+                "a person"
+            ],
+            "Description": "a person using a lawnmower to cut the grass on a lawn"
+        },
+        "Origin_Chat": "{\"Entity\":[\"a lawnmower\",\"a lawn\",\"a person\"],\"Description\":\"a person using a lawnmower to cut the grass on a lawn\"}"
+    },
+    "Shaving legs": {
+        "idx": 171,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the razor",
+                "the water",
+                "the shaving cream",
+                "the bathtub/shower"
+            ],
+            "Description": "The person applies shaving cream to their legs, uses a razor to remove the hair while rinsing the razor in water, and repeats until all hair has been removed. This is usually done in a bathtub or shower."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"the razor\", \"the water\", \"the shaving cream\", \"the bathtub/shower\"], \"Description\":\"The person applies shaving cream to their legs, uses a razor to remove the hair while rinsing the razor in water, and repeats until all hair has been removed. This is usually done in a bathtub or shower.\"}"
+    },
+    "Walking the dog": {
+        "idx": 172,
+        "Elaboration": {
+            "Entity": [
+                "person",
+                "dog",
+                "leash"
+            ],
+            "Description": "a person walking a dog while holding a leash"
+        },
+        "Origin_Chat": "{\"Entity\": [\"person\", \"dog\", \"leash\"], \"Description\": \"a person walking a dog while holding a leash\"}"
+    },
+    "Hammer throw": {
+        "idx": 173,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the hammer",
+                "the throwing circle",
+                "the field"
+            ],
+            "Description": "An athlete rotating several times inside a throwing circle and then releasing the hammer, which is connected to a wire, in a forceful and spinning motion to launch it as far as possible into the field."
+        },
+        "Origin_Chat": "{\"Entity\":[\"the athlete\",\"the hammer\",\"the throwing circle\",\"the field\"],\"Description\":\"An athlete rotating several times inside a throwing circle and then releasing the hammer, which is connected to a wire, in a forceful and spinning motion to launch it as far as possible into the field.\"}"
+    },
+    "Skateboarding": {
+        "idx": 174,
+        "Elaboration": {
+            "Entity": [
+                "the skateboard",
+                "the skateboarder",
+                "the street"
+            ],
+            "Description": "The skateboarder performs tricks on the skateboard while riding on the street."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the skateboard\", \"the skateboarder\", \"the street\"], \"Description\": \"The skateboarder performs tricks on the skateboard while riding on the street.\"}"
+    },
+    "Polishing shoes": {
+        "idx": 175,
+        "Elaboration": {
+            "Entity": [
+                "shoes",
+                "polishing cloth",
+                "polishing cream",
+                "person"
+            ],
+            "Description": "a person applying polishing cream to a pair of shoes and rubbing them with a polishing cloth to make them shiny"
+        },
+        "Origin_Chat": "{\"Entity\": [\"shoes\", \"polishing cloth\", \"polishing cream\", \"person\"], \"Description\": \"a person applying polishing cream to a pair of shoes and rubbing them with a polishing cloth to make them shiny\"}"
+    },
+    "Ballet": {
+        "idx": 176,
+        "Elaboration": {
+            "Entity": [
+                "ballerina",
+                "ballet shoes",
+                "stage"
+            ],
+            "Description": "A ballerina performing graceful and precise movements on stage wearing ballet shoes."
+        },
+        "Origin_Chat": "{\"Entity\": [\"ballerina\", \"ballet shoes\", \"stage\"], \"Description\": \"A ballerina performing graceful and precise movements on stage wearing ballet shoes.\"}"
+    },
+    "Hand washing clothes": {
+        "idx": 177,
+        "Elaboration": {
+            "Entity": [
+                "a pair of hands",
+                "a basin",
+                "clothes"
+            ],
+            "Description": "A person using their hands to rub and agitate clothes in a basin of water to remove dirt and stains, and then rinsing and squeezing out excess water to clean the clothes."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a pair of hands\", \"a basin\", \"clothes\"], \"Description\": \"A person using their hands to rub and agitate clothes in a basin of water to remove dirt and stains, and then rinsing and squeezing out excess water to clean the clothes.\"}"
+    },
+    "Plataform diving": {
+        "idx": 178,
+        "Elaboration": {
+            "Entity": [
+                "the diver",
+                "the diving platform",
+                "the water"
+            ],
+            "Description": "The diver jumping or flipping off a diving platform into the water below."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the diver\", \"the diving platform\", \"the water\"], \"Description\": \"The diver jumping or flipping off a diving platform into the water below.\"}"
+    },
+    "Playing violin": {
+        "idx": 179,
+        "Elaboration": {
+            "Entity": [
+                "the violin",
+                "the violinist"
+            ],
+            "Description": "the violinist holding and moving a bow across the strings of the violin to create music"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the violin\", \"the violinist\"], \"Description\": \"the violinist holding and moving a bow across the strings of the violin to create music\"}"
+    },
+    "Breakdancing": {
+        "idx": 180,
+        "Elaboration": {
+            "Entity": [
+                "a breakdancer",
+                "a dancefloor",
+                "music"
+            ],
+            "Description": "A breakdancer performing a sequence of acrobatic and rhythmic movements to the beat of music on a dance floor."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a breakdancer\", \"a dancefloor\", \"music\"], \"Description\": \"A breakdancer performing a sequence of acrobatic and rhythmic movements to the beat of music on a dance floor.\"}"
+    },
+    "Windsurfing": {
+        "idx": 181,
+        "Elaboration": {
+            "Entity": [
+                "the windsurfer",
+                "the windsurf board",
+                "the wind",
+                "the waves"
+            ],
+            "Description": "The windsurfer stands on the board and uses the wind to glide across the water while controlling the board with the sail and making turns on the waves."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the windsurfer\", \"the windsurf board\", \"the wind\", \"the waves\"], \"Description\": \"The windsurfer stands on the board and uses the wind to glide across the water while controlling the board with the sail and making turns on the waves.\"}"
+    },
+    "Hopscotch": {
+        "idx": 182,
+        "Elaboration": {
+            "Entity": [
+                "a hopscotch court",
+                "a player",
+                "a small stone or a beanbag"
+            ],
+            "Description": "The player throws the stone or beanbag onto a numbered spot on the hopscotch court, and he or she then hops through the court to retrieve the stone or beanbag following a specific sequence of jumps that avoid stepping on lines or losing balance."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a hopscotch court\",\"a player\",\"a small stone or a beanbag\"],\"Description\":\"The player throws the stone or beanbag onto a numbered spot on the hopscotch court, and he or she then hops through the court to retrieve the stone or beanbag following a specific sequence of jumps that avoid stepping on lines or losing balance.\"}"
+    },
+    "Doing motocross": {
+        "idx": 183,
+        "Elaboration": {
+            "Entity": [
+                "a motocross bike",
+                "the rider",
+                "a motocross track"
+            ],
+            "Description": "The rider maneuvering a motocross bike on a dirt track with obstacles such as ramps and jumps"
+        },
+        "Origin_Chat": "{\"Entity\": [\"a motocross bike\", \"the rider\", \"a motocross track\"], \"Description\": \"The rider maneuvering a motocross bike on a dirt track with obstacles such as ramps and jumps\"}"
+    },
+    "Mixing drinks": {
+        "idx": 184,
+        "Elaboration": {
+            "Entity": [
+                "a bartender",
+                "a cocktail shaker",
+                "various alcoholic beverages",
+                "fruit juices",
+                "ice",
+                "garnishes"
+            ],
+            "Description": "the bartender shaking different alcoholic and non-alcoholic beverages with ice and garnishes in a cocktail shaker to create a mixed drink."
+        },
+        "Origin_Chat": "{\"Entity\":[\"a bartender\", \"a cocktail shaker\", \"various alcoholic beverages\", \"fruit juices\", \"ice\", \"garnishes\"],\"Description\":\"the bartender shaking different alcoholic and non-alcoholic beverages with ice and garnishes in a cocktail shaker to create a mixed drink.\"}"
+    },
+    "Starting a campfire": {
+        "idx": 185,
+        "Elaboration": {
+            "Entity": [
+                "firewood",
+                "matches",
+                "fire pit",
+                "lighter fluid (optional)",
+                "kindling (optional)"
+            ],
+            "Description": "Arranging firewood in a pit and using matches or a lighter to ignite it, optionally using some lighter fluid or kindling to start and sustain the fire."
+        },
+        "Origin_Chat": "{\"Entity\": [\"firewood\", \"matches\", \"fire pit\", \"lighter fluid (optional)\", \"kindling (optional)\"], \"Description\": \"Arranging firewood in a pit and using matches or a lighter to ignite it, optionally using some lighter fluid or kindling to start and sustain the fire.\"}"
+    },
+    "Belly dance": {
+        "idx": 186,
+        "Elaboration": {
+            "Entity": [
+                "a female dancer",
+                "hip scarf",
+                "belly",
+                "arms"
+            ],
+            "Description": "A female dancer wearing a hip scarf performing a dance characterized by fluid movements of the belly and arms."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a female dancer\", \"hip scarf\", \"belly\", \"arms\"], \"Description\": \"A female dancer wearing a hip scarf performing a dance characterized by fluid movements of the belly and arms.\"}"
+    },
+    "Removing curlers": {
+        "idx": 187,
+        "Elaboration": {
+            "Entity": [
+                "the person",
+                "the curlers"
+            ],
+            "Description": "The person gently removes the curlers from their hair."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the person\", \"the curlers\"], \"Description\": \"The person gently removes the curlers from their hair.\"}"
+    },
+    "Archery": {
+        "idx": 188,
+        "Elaboration": {
+            "Entity": [
+                "the archer",
+                "the bow",
+                "the arrow",
+                "the target"
+            ],
+            "Description": "the archer pulling the bowstring and releasing the arrow towards the target"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the archer\", \"the bow\", \"the arrow\", \"the target\"], \"Description\": \"the archer pulling the bowstring and releasing the arrow towards the target\"}"
+    },
+    "Volleyball": {
+        "idx": 189,
+        "Elaboration": {
+            "Entity": [
+                "volleyball",
+                "players",
+                "net",
+                "court"
+            ],
+            "Description": "Two teams of six players each, separated by a net, try to score points by grounding a ball on the other team's court under organized rules."
+        },
+        "Origin_Chat": "{\"Entity\":[\"volleyball\",\"players\",\"net\",\"court\"],\"Description\":\"Two teams of six players each, separated by a net, try to score points by grounding a ball on the other team's court under organized rules.\"}"
+    },
+    "Playing water polo": {
+        "idx": 190,
+        "Elaboration": {
+            "Entity": [
+                "Water polo ball",
+                "Swimmers"
+            ],
+            "Description": "Swimmers passing, shooting, and trying to score goals while maneuvering a water polo ball with their hands"
+        },
+        "Origin_Chat": "{\"Entity\":[\"Water polo ball\",\"Swimmers\"],\"Description\":\"Swimmers passing, shooting, and trying to score goals while maneuvering a water polo ball with their hands\"}"
+    },
+    "Playing racquetball": {
+        "idx": 191,
+        "Elaboration": {
+            "Entity": [
+                "the player",
+                "the racquet",
+                "the ball",
+                "the racquetball court"
+            ],
+            "Description": "The player hitting the ball with the racquet, back and forth across the court with the goal of making it difficult for the opponent to return the ball"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the player\",\"the racquet\",\"the ball\",\"the racquetball court\"],\"Description\":\"The player hitting the ball with the racquet, back and forth across the court with the goal of making it difficult for the opponent to return the ball\"}"
+    },
+    "Kayaking": {
+        "idx": 192,
+        "Elaboration": {
+            "Entity": [
+                "the kayaker",
+                "the kayak",
+                "the paddle",
+                "the water"
+            ],
+            "Description": "the kayaker propelling a kayak through the water using a paddle"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the kayaker\", \"the kayak\", \"the paddle\", \"the water\"], \"Description\": \"the kayaker propelling a kayak through the water using a paddle\"}"
+    },
+    "Polishing forniture": {
+        "idx": 193,
+        "Elaboration": {
+            "Entity": [
+                "furniture",
+                "polisher"
+            ],
+            "Description": "A person repeatedly moving a polisher over the surface of a piece of furniture to make it shiny"
+        },
+        "Origin_Chat": "{\"Entity\":[\"furniture\",\"polisher\"],\"Description\":\"A person repeatedly moving a polisher over the surface of a piece of furniture to make it shiny\"}"
+    },
+    "Playing kickball": {
+        "idx": 194,
+        "Elaboration": {
+            "Entity": [
+                "a kickball",
+                "a kicker",
+                "field",
+                "bases",
+                "other players"
+            ],
+            "Description": "A player kicking a large inflated ball, called a kickball, with the intention of hitting it into the field and running around a series of bases while the other players attempt to retrieve the ball and throw it to tag the player out."
+        },
+        "Origin_Chat": "{\"Entity\": [\"a kickball\", \"a kicker\", \"field\", \"bases\", \"other players\"], \"Description\": \"A player kicking a large inflated ball, called a kickball, with the intention of hitting it into the field and running around a series of bases while the other players attempt to retrieve the ball and throw it to tag the player out.\"}"
+    },
+    "Using uneven bars": {
+        "idx": 195,
+        "Elaboration": {
+            "Entity": [
+                "the gymnast",
+                "the uneven bars"
+            ],
+            "Description": "the gymnast performs a routine using the uneven bars, swinging back and forth, performing flips, and release moves, while transitioning between the high and low bars."
+        },
+        "Origin_Chat": "{\"Entity\": [\"the gymnast\", \"the uneven bars\"], \"Description\": \"the gymnast performs a routine using the uneven bars, swinging back and forth, performing flips, and release moves, while transitioning between the high and low bars.\"}"
+    },
+    "Washing dishes": {
+        "idx": 196,
+        "Elaboration": {
+            "Entity": [
+                "the sink",
+                "the faucet",
+                "the sponge",
+                "the dish soap",
+                "the dishes"
+            ],
+            "Description": "a person cleaning dishes using a sponge and dish soap under the running water from the faucet"
+        },
+        "Origin_Chat": "{\"Entity\":[\"the sink\", \"the faucet\", \"the sponge\", \"the dish soap\", \"the dishes\"],\"Description\":\"a person cleaning dishes using a sponge and dish soap under the running water from the faucet\"}"
+    },
+    "Pole vault": {
+        "idx": 197,
+        "Elaboration": {
+            "Entity": [
+                "the pole",
+                "the vaulter",
+                "the bar",
+                "the landing mat"
+            ],
+            "Description": "The vaulter holding the pole and using it to jump over a high bar, then releasing the pole and falling onto a soft landing mat"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the pole\", \"the vaulter\", \"the bar\", \"the landing mat\"], \"Description\": \"The vaulter holding the pole and using it to jump over a high bar, then releasing the pole and falling onto a soft landing mat\"}"
+    },
+    "Playing accordion": {
+        "idx": 198,
+        "Elaboration": {
+            "Entity": [
+                "the accordion",
+                "the musician"
+            ],
+            "Description": "the musician holding and squeezing the accordion to produce music by moving the bellows and pressing the keys or buttons with their fingers"
+        },
+        "Origin_Chat": "{\"Entity\": [\"the accordion\", \"the musician\"], \"Description\": \"the musician holding and squeezing the accordion to produce music by moving the bellows and pressing the keys or buttons with their fingers\"}."
+    },
+    "Playing badminton": {
+        "idx": 199,
+        "Elaboration": {
+            "Entity": [
+                "badminton racket",
+                "badminton shuttlecock",
+                "badminton court",
+                "players"
+            ],
+            "Description": "The two players hitting the shuttlecock back and forth over the badminton net, trying to prevent it from falling onto their side of the court."
+        },
+        "Origin_Chat": "{\"Entity\":[\"badminton racket\", \"badminton shuttlecock\", \"badminton court\", \"players\"],\"Description\":\"The two players hitting the shuttlecock back and forth over the badminton net, trying to prevent it from falling onto their side of the court.\"}"
+    }
+}

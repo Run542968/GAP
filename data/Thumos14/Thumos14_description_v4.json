@@ -1,0 +1,223 @@
+{
+    "BaseballPitch": {
+        "idx": 0,
+        "Elaboration": {
+            "Description": [
+                "A person throws a ball with their hand.",
+                "A player hurls a ball towards a batter.",
+                "Someone pitches a ball towards home plate."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a ball with their hand.\", \"A player hurls a ball towards a batter.\", \"Someone pitches a ball towards home plate.\"] }"
+    },
+    "BasketballDunk": {
+        "idx": 1,
+        "Elaboration": {
+            "Description": [
+                "A player jumps in the air and throws the basketball downwards into the hoop.",
+                "Someone leaps and puts the ball into the hoop.",
+                "An athlete soars through the air and slams the ball into the basket.",
+                "A person jumps high and forcefully puts the ball in the basket."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A player jumps in the air and throws the basketball downwards into the hoop.\", \"Someone leaps and puts the ball into the hoop.\", \"An athlete soars through the air and slams the ball into the basket.\", \"A person jumps high and forcefully puts the ball in the basket.\"] }"
+    },
+    "Billiards": {
+        "idx": 2,
+        "Elaboration": {
+            "Description": [
+                "A person uses a cue stick to hit colored balls into pockets on a table.",
+                "A player hits balls into pockets on a table using a long stick.",
+                "Someone uses a long stick to hit balls and make them go into holes on a table."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person uses a cue stick to hit colored balls into pockets on a table.\", \"A player hits balls into pockets on a table using a long stick.\", \"Someone uses a long stick to hit balls and make them go into holes on a table.\"]}"
+    },
+    "CleanAndJerk": {
+        "idx": 3,
+        "Elaboration": {
+            "Description": [
+                "A person lifts a barbell from the ground to their shoulders, then explosively lifts it over their head.",
+                "A person performs a weightlifting maneuver where they lift a barbell from the ground, bring it to their shoulders, and then raise it overhead in a fluid motion."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person lifts a barbell from the ground to their shoulders, then explosively lifts it over their head.\", \"A person performs a weightlifting maneuver where they lift a barbell from the ground, bring it to their shoulders, and then raise it overhead in a fluid motion.\"] }"
+    },
+    "CliffDiving": {
+        "idx": 4,
+        "Elaboration": {
+            "Description": [
+                "A person jumps off a high cliff into water.",
+                "Someone dives off a cliff into the ocean.",
+                "A thrill-seeker somersaults into the sea from a tall rocky ledge."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person jumps off a high cliff into water.\", \"Someone dives off a cliff into the ocean.\", \"A thrill-seeker somersaults into the sea from a tall rocky ledge.\"] }"
+    },
+    "CricketBowling": {
+        "idx": 5,
+        "Elaboration": {
+            "Description": [
+                "A person throws the ball towards the batsman.",
+                "A player runs and releases the ball towards the batsman.",
+                "Someone hurls the ball towards the batsman.",
+                "A bowler delivers the ball towards the batsman."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person throws the ball towards the batsman.\",\"A player runs and releases the ball towards the batsman.\",\"Someone hurls the ball towards the batsman.\",\"A bowler delivers the ball towards the batsman.\"] }"
+    },
+    "CricketShot": {
+        "idx": 6,
+        "Elaboration": {
+            "Description": [
+                "A person hits a ball with a bat.",
+                "A batter strikes a cricket ball with a bat.",
+                "Someone swings a bat to hit a cricket ball."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person hits a ball with a bat.\", \"A batter strikes a cricket ball with a bat.\", \"Someone swings a bat to hit a cricket ball.\"] }"
+    },
+    "Diving": {
+        "idx": 7,
+        "Elaboration": {
+            "Description": [
+                "A person jumps headfirst into water",
+                "Someone performs a graceful leap into a pool",
+                "A diver plunges into the water from a high platform"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person jumps headfirst into water\", \"Someone performs a graceful leap into a pool\", \"A diver plunges into the water from a high platform\"]}"
+    },
+    "FrisbeeCatch": {
+        "idx": 8,
+        "Elaboration": {
+            "Description": [
+                "A person catches a flying frisbee with their hand.",
+                "Someone reaches out and grabs a frisbee mid-air.",
+                "A frisbee is caught by a person in motion."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person catches a flying frisbee with their hand.\", \"Someone reaches out and grabs a frisbee mid-air.\", \"A frisbee is caught by a person in motion.\"] }"
+    },
+    "GolfSwing": {
+        "idx": 9,
+        "Elaboration": {
+            "Description": [
+                "A person swings a golf club.",
+                "A golfer hits a golf ball with a club.",
+                "Someone makes a swinging motion with a golf club.",
+                "A golfer practices their swing with a club."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person swings a golf club.\", \"A golfer hits a golf ball with a club.\", \"Someone makes a swinging motion with a golf club.\", \"A golfer practices their swing with a club.\"] }"
+    },
+    "HammerThrow": {
+        "idx": 10,
+        "Elaboration": {
+            "Description": [
+                "A person spins around in circles and throws a heavy hammer as far as possible.",
+                "Someone twirls in a circle and hurls a heavy hammer into the distance."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person spins around in circles and throws a heavy hammer as far as possible.\", \"Someone twirls in a circle and hurls a heavy hammer into the distance.\"] }"
+    },
+    "HighJump": {
+        "idx": 11,
+        "Elaboration": {
+            "Description": [
+                "A person jumps over a high obstacle.",
+                "Someone leaps with great force and clears a tall bar.",
+                "A person uses a lot of energy to jump to a great height and successfully lands on the other side.",
+                "Someone jumps up as high as possible and reaches a significantly higher elevation."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person jumps over a high obstacle.\", \"Someone leaps with great force and clears a tall bar.\", \"A person uses a lot of energy to jump to a great height and successfully lands on the other side.\", \"Someone jumps up as high as possible and reaches a significantly higher elevation.\"]}"
+    },
+    "JavelinThrow": {
+        "idx": 12,
+        "Elaboration": {
+            "Description": [
+                "A person throws a long stick as far as possible",
+                "Someone launches a long spear in a throwing motion",
+                "An athlete hurls a long stick through the air with great force"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person throws a long stick as far as possible\", \"Someone launches a long spear in a throwing motion\", \"An athlete hurls a long stick through the air with great force\"]}"
+    },
+    "LongJump": {
+        "idx": 13,
+        "Elaboration": {
+            "Description": [
+                "A person runs as fast as possible and then leaps as far as they can in a single jump.",
+                "Someone sprints and jumps as far as they can in one try.",
+                "A person takes a long run and then jumps as far forward as they can."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person runs as fast as possible and then leaps as far as they can in a single jump.\", \"Someone sprints and jumps as far as they can in one try.\", \"A person takes a long run and then jumps as far forward as they can.\"] }"
+    },
+    "PoleVault": {
+        "idx": 14,
+        "Elaboration": {
+            "Description": [
+                "A person runs and jumps over a bar using a long pole to propel themselves higher.",
+                "Someone leaps high in the air using a pole to clear a horizontal bar.",
+                "A person uses a long pole to launch themselves over a high bar while running."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person runs and jumps over a bar using a long pole to propel themselves higher.\", \"Someone leaps high in the air using a pole to clear a horizontal bar.\", \"A person uses a long pole to launch themselves over a high bar while running.\"] }"
+    },
+    "Shotput": {
+        "idx": 15,
+        "Elaboration": {
+            "Description": [
+                "A person holds a heavy metal ball and throws it as far as they can.",
+                "A person throws a heavy ball.",
+                "A person throws a ball with great force.",
+                "A person hurls a heavy ball."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person holds a heavy metal ball and throws it as far as they can.\",\"A person throws a heavy ball.\",\"A person throws a ball with great force.\",\"A person hurls a heavy ball.\"]}"
+    },
+    "SoccerPenalty": {
+        "idx": 16,
+        "Elaboration": {
+            "Description": [
+                "A player kicks the ball towards the goal in a soccer match.",
+                "A person takes a penalty kick by shooting the ball towards the goal in a soccer game."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A player kicks the ball towards the goal in a soccer match.\", \"A person takes a penalty kick by shooting the ball towards the goal in a soccer game.\"] }"
+    },
+    "TennisSwing": {
+        "idx": 17,
+        "Elaboration": {
+            "Description": [
+                "A person swings a tennis racket to hit a ball.",
+                "Player hits a tennis ball with a racket.",
+                "Someone hits a ball with a tennis racket."
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"A person swings a tennis racket to hit a ball.\", \"Player hits a tennis ball with a racket.\", \"Someone hits a ball with a tennis racket.\"] }"
+    },
+    "ThrowDiscus": {
+        "idx": 18,
+        "Elaboration": {
+            "Description": [
+                "A person spins in a circle and throws a heavy circular object.",
+                "Someone spins around and hurls a round object through the air.",
+                "A person rotates and launches a round weighted object into the distance."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person spins in a circle and throws a heavy circular object.\",\"Someone spins around and hurls a round object through the air.\",\"A person rotates and launches a round weighted object into the distance.\"]}."
+    },
+    "VolleyballSpiking": {
+        "idx": 19,
+        "Elaboration": {
+            "Description": [
+                "A person jumps and hits the ball over the net with their hand.",
+                "A player forcefully hits the ball over the net with their hand while jumping."
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"A person jumps and hits the ball over the net with their hand.\", \"A player forcefully hits the ball over the net with their hand while jumping.\"]}"
+    }
+}

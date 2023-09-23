@@ -1,0 +1,87 @@
+#### 20230915
+- [x] 从Tad_eval.py保存下来的结果，看到start-time存在复数，需要debug
+  - [x] 问题应该是处在后处理，后处理有一步骤是把(center,width)格式的结果转换为(start,end)的步骤：`segment_cw_to_t1t2`，如果width>center, 那么就会出现负值
+  - [x] 解决方案是优化对`segment_cw_to_t1t2`的结果进行clamp()，如果出现负值或者超过最大值就截断
+  - [x] 考虑到`segment_cw_to_t1t2`总是对经过sigmoid()后的坐标值进行处理的，所以直接在每个用到`segment_cw_to_t1t2`的地方加`clamp(min=0,max=1)`
+- [x] CLIP模型的输出的half精度的(float16)，需要手动改成float(float32)
+- 发现condional DETR在Thumos14上，用CLIP特征，在close-set的情况下，不管用one-hot (target_type='none')还是prompt，性能都特别差。此时对视频特征的处理是拿整个video放进来训练，不做插值或者resize
+  - 推测可能以下原因：
+    1. 训练的batch_size太小（因为Thumos14视频太长了，batch_size设置为2），导致训练loss下不去
+        - [x] 换显存大的卡试试，同样的设置下，加大batch_size确实能涨点，目前只测试了从batch_size: 2->4 (Thumos14_CLIP_none_15->Thumos14_CLIP_none_17)，测试了batch_size=16的实验，发现影响也不是很大
+        - [ ] 添加梯度累积
+    2. detr在object detection的时候，输入图片是resize到统一的大小的，这样就使得query在**不同数据学到的位置尺寸是统一的**，输入大小是固定的，而不是一会大一会小
+        - [x] 最简单的方式，把特征线性插值到统一的长度，没什么太大影响，这种方式还是没解决小目标的问题
+        - [x] 对Thumos14的特征分段处理，参考TadTR
+          - 🚩因为Thumos14视频内部的实例数量太不均匀了，有的特别多，有的又特别少，这个问题可能才是根本原因。对于实例多的，负样本不足，对于实例少的，正样本不足
+          - 😀**非常有效**
+    3. 通过观察在Thumos14上的结果来看，分类是挺棒的，问题主要出现在定位上。考虑到thumos14有很多小目标，这应该是制约性能的主要因素
+        - [x] 测试一下re-scale到同一尺度
+          - 能有一定的作用，但不明显（Thumos14_CLIP_none_14->28,29）
+        - [x] 发现loss只有一开始下降，然后就不下降了，Giou loss一直比较高。试一下增加giou和bbox loss的权重，把学习重心放在回归上 (Thumos14_CLIP_none_17->Thumos14_CLIP_none_25)
+          - 没什么用，loss反而还下降了，性能也下降了
+          - 这个实验做错了，按照4的分析，应该是L1 loss没训练好，也就是中心没找对（这里分析错了，应该是IOU没学好，现在的结果大部分都是小框）
+          - [x] 增大L1 loss的权重
+            - 在Thumos14上影响不大Thumos14_CLIP_none_37，38，39
+        - [x] 增加一个local的Conv1D：确实是有效的(Thumos14_CLIP_none_17->18)，目前只增加了一层Conv1D (Thumos14_CLIP_none_14->15, Thumos14_CLIP_none_17->24)
+    4. 小目标的问题
+        - [x] 如果ActivityNet13上面的性能比较不错，那么说明Thumos14的小目标太多了，很难收敛。怪不得TadTR要重新crop
+          - 分析一下就是，一个动作实例只有1s(25s-26s)，而完整的视频duration是500s，这样归一化到[0,1]得到的width只有0.002，诶，但是center是正常的，现在的结果width预测的还行，center不正常
+          - 应该是IOU loss没学好
+    5. 探究一下模型结构
+       - [x] 把encoder和decoder放小点，轻量一点
+         - 在Thumos14上影响不大（Thumos14_CLIP_none_41，42，43），在ActivityNet13也只能说影响没那么大，是有影响的
+- Thumos14结果的观察
+  - 观察发现回归的结果，宽度预测的挺好的，但是中心点预测的不好（预测的时序区间的长度差不多是对的，但是开始时刻是有问题的，转换到(center,width)的格式就是center预测的不好）
+  - 分析一波，感觉是因为后处理得到proposal的时候只考虑到了分类置信度，所以得到的proposal没有考虑到位置的score
+- ActivityNet13结果的观察
+  - [ ] 在zero-shot的时候，分类仍然是个大问题，很多类别是直接分错的，**训练阶段应该很有必要融入文本，类似UnLoc**。仅仅作为target的话，肯定会让classification head在seen classes上过拟合
+- [x] 目前在visual feat和text feat计算相似度的时候还有一个scale_logits的参数没用，还需要计算normalization, 可以试一下
+  - [x] 😀有用的一批，正向作用：ActivityNet13_CLIP_prompt_zs_10->ActivityNet13_CLIP_prompt_zs_13；反向作用：ActivityNet13_CLIP_prompt_zs_6->ActivityNet13_CLIP_prompt_zs_12
+- [x] 测试一下随机种子能不能固定：可以固定
+- [x] 🚩探究一下不同显卡之间会不会有性能差异: ActivityNet13_CLIP_prompt_zs_6(4090), ActivityNet13_CLIP_prompt_zs_7(3090), ActivityNet13_CLIP_prompt_zs_8(1080 Ti)
+  - 😵确实有影响，在1080 Ti的性能最好？
+- 🎈添加一层transfer wrapper，用来直接的进行语义转换，也就是计算一个转移矩阵$A\in R^{u\times s}$，满足$(u,s)\times(s,dim)= (u,dim)$
+  - [x] 最简单的方式，$(u,s)=(u,dim)\times(dim,s)$
+    - 失败了，性能几乎没有。分析一下原因，因为这种简单方式计算得到的(u,s)可以说是标准答案，而训练过程中的semantic head是很难完美的把预测学成seen class的样子的
+  - [x] 重新分析了一下，现在改成了wrapper_v2，也就是先转换成seen的预测结果(完整的经过sigmoid的预测结果)，然后再映射到unseen
+    - 不出预料也很差
+- [ ] 研究一下clip_pkg.tokenize(act_prompt).long().to(device)的输出到底是什么
+- [x] 🚩注意现在用的description_v4，在conditional_detr.py获得文本描述的地方需要加一个索引，目前默认是0
+- [ ] 像actionCLIP一样进行prompt增广
+- [x] 后处理的时候先计算预测概率最大的类别，然后只获得这个类别的queries作为proposals，这是一个非常强的先验，--postprocess_type 'class_one' --postprocess_topk 1, `ActivityNet13_CLIP_prompt_zs_27`
+  - 有一些掉点
+- [x] 跑一下ActivityNet13在close_set用norm_scale->ActivityNet13_CLIP_prompt_2
+  - [ ] 反而训练崩了，不如去掉norm_scale，应该是参数的问题，调个学习率试一下
+- [x] ActivitiNet13跑多几个种子->ActivityNet13_CLIP_prompt_zs_44,50,51
+  - 差距不大，上下1个点的波动
+- [ ] 时序建模非常重要，EfficientPrompt那篇文章也说了，类别之间的差异会影响时序的建模。而且是在CLIP的特征上，CLIP的特征是用来做文本alignment的，Actionness很差。而我们的监督信号又是在seen classes的，这会导致一种class bias，也就是建模时序的时候会融入类别语义，从而导致在unseen class表现不好
+  - [ ] 训练的时候不只有时序监督，还有类别监督。类别监督的信息用到的不多，如何在训练的时候就和测试的情况一样，参考meta zero-shot detection那篇文章？
+- [ ] 语义的gap问题，训练得到的semantic head是偏向于seen classes的，怎么迁移这个语义gap
+  - [x] 之前的一个尝试是上面的transfer wrapper，但是失败了
+- [x] 增加在训练集上inference的结果
+- [ ] 目前存在的问题是时序建模会破坏CLIP原有的语义信息，导致语义特征出现问题，从而很难泛化的很好
+- [x] 😍不破坏原有的模型，仅仅在测试阶段引入了ROIalign，把box对应的原始CLIP特征提取出来，然后average pooling到一个embedding，再和文本计算相似度，进行分类。把ROIalign的classification score和detector的classification score通过加权聚合的方式ensemble一下作为最后的对这个proposal的分类预测得分
+  - 失败了，首先两个分数的scale不一致，融合存在问题，预测结果是NaN
+    - [x] 找到了预测结果是NaN的原因，因为数据中存在padding，应该用mask后的T, 而不是batch的T作为每个视频的长度 
+  - [x]几何平均的融合方式需要先sigmoid，保证值不为负数，然后再融合
+    - 在ActivityNet有一定提点，大概1个点ActivityNet13_CLIP_prompt_zs_64-69
+- 对dataset进行了删减处理
+  - [x] 删掉了get_feature那里padding 0的操作，没什么意义
+  - [x] 删掉了Thumos14在parse_anno中保存feature_length的操作，这个没什么用。如果非要加的话（会设置为slice_size），会存在误解，也就是slice < slice_size的时候特征长度并不是slice_size
+    - [x] 一个很棒的处理方式。在dataset调用__getitem__的时候，其实是拿到了这个视频的真实特征长度的（在padding之前），通过一个hook的方式在__getitem__的部分为valid_anno_dict添加一个['snippet_length']属性，虽然后续也没什么用的🤣
+  - [x] 处理完之后跑了一个实验`Thumos14_CLIP_prompt_zs_8frame_32`
+    - 没啥用
+- [x] 跑一下在Thumos14上不同overlap
+  - 有影响，但跑的几个参数都在掉点Thumos14_CLIP_prompt_zs_8frame_33-40
+- [x] 改了backbone，以后要加上backbone进行实验，时序建模应该是非常关键的，特别是对Thumos14来讲
+  - [ ] 实验效果记录一下
+- [ ] 添加一个语义分割的loss,直接作用在每一个snippet上
+  - [x] 需要在dataset那里生成target['segmentation_onehot_labels']作为segmentation的标签, 维度为[feat_length, num_classes]
+  - [x] 注意这里每个segmentation维度[T,num_classes]的T是严格按照特征长度的，所以会出现batch内部T不一致的情况，即 T < slice_size的情况，所以**计算loss的时候要先补全才能批处理**
+    - 好像没啥用啊，崩溃了😩
+- [ ] 借鉴一下ODISE的grounding loss, 完成segment和文本中word的相似度计算约束
+- [x] 完善方法的class-agnostic的二分类detector，完全解耦分类和定位
+  - 只进行二分类是非常有效的
+- [ ]完善二分类detector和语义分类两个头的代码
+  - 简单来讲就是detr的detector只用来检测前景框，完全不考虑分类，输出的是proposal的前景分数（也就是**质量分数**），这个分数应该要被用到
+  - 分类用另一个分支的语义来做

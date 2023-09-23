@@ -1,0 +1,242 @@
+{
+    "BaseballPitch": {
+        "idx": 0,
+        "Elaboration": {
+            "Entity": [
+                "the pitcher",
+                "the baseball",
+                "the mound",
+                "the batter",
+                "the catcher",
+                "the infield"
+            ],
+            "Description": "the pitcher throwing the baseball from the mound towards the batter while the catcher waits behind the batter, and other players are positioned in the infield"
+        }
+    },
+    "BasketballDunk": {
+        "idx": 1,
+        "Elaboration": {
+            "Entity": [
+                "the basketball",
+                "the player",
+                "the hoop",
+                "the court"
+            ],
+            "Description": "the player jumping near the hoop and forcefully putting the basketball through the hoop with one or both hands"
+        }
+    },
+    "Billiards": {
+        "idx": 2,
+        "Elaboration": {
+            "Entity": [
+                "the cue ball",
+                "the billiard balls",
+                "the billiard table",
+                "the player"
+            ],
+            "Description": "the player using a cue stick to hit the cue ball, which in turn strikes the other billiard balls on the table in an attempt to pocket them into the designated pockets"
+        }
+    },
+    "CleanAndJerk": {
+        "idx": 3,
+        "Elaboration": {
+            "Entity": [
+                "the weightlifting bar",
+                "the weights",
+                "the lifter",
+                "the platform"
+            ],
+            "Description": "the lifter lifting a loaded barbell from the ground to the shoulders (clean), then pushing it overhead in a single motion (jerk) to a fully extended position while standing on a platform"
+        }
+    },
+    "CliffDiving": {
+        "idx": 4,
+        "Elaboration": {
+            "Entity": [
+                "the diver",
+                "the cliff",
+                "the water"
+            ],
+            "Description": "the diver leaping or jumping from a high cliff or rock ledge into the water below"
+        }
+    },
+    "CricketBowling": {
+        "idx": 5,
+        "Elaboration": {
+            "Entity": [
+                "the bowler",
+                "the cricket ball",
+                "the batsman",
+                "the stumps",
+                "the pitch"
+            ],
+            "Description": "the bowler delivering the cricket ball towards the batsman, aiming to dismiss the batsman or prevent scoring by hitting the stumps or creating opportunities for fielders to catch the ball"
+        }
+    },
+    "CricketShot": {
+        "idx": 6,
+        "Elaboration": {
+            "Entity": [
+                "the batsman",
+                "the cricket ball",
+                "the bat",
+                "the fielders",
+                "the boundary"
+            ],
+            "Description": "the batsman hitting the cricket ball with the bat, attempting to score runs by placing it strategically on the field, avoiding fielders, and aiming to reach or cross the boundary"
+        }
+    },
+    "Diving": {
+        "idx": 7,
+        "Elaboration": {
+            "Entity": [
+                "the diver",
+                "the diving board",
+                "the water"
+            ],
+            "Description": "the diver performing a graceful jump or fall from a diving board into the water, showcasing various twists, somersaults, and artistic movements during the descent"
+        }
+    },
+    "FrisbeeCatch": {
+        "idx": 8,
+        "Elaboration": {
+            "Entity": [
+                "the catcher",
+                "the Frisbee",
+                "the thrower"
+            ],
+            "Description": "the catcher successfully intercepting and grasping the flying Frisbee, thrown by another player, using their hands or body to secure the catch"
+        }
+    },
+    "GolfSwing": {
+        "idx": 9,
+        "Elaboration": {
+            "Entity": [
+                "the golfer",
+                "the golf club",
+                "the golf ball",
+                "the tee",
+                "the fairway"
+            ],
+            "Description": "the golfer executing a controlled and rhythmic swing, striking the golf ball with the golf club from the tee or the fairway, aiming to send it towards the target, such as the hole on the green"
+        }
+    },
+    "HammerThrow": {
+        "idx": 10,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the hammer",
+                "the throwing circle"
+            ],
+            "Description": "the athlete spinning around in a circle to build momentum and then releasing the hammer into the air, using centrifugal force to achieve distance in the throw"
+        }
+    },
+    "HighJump": {
+        "idx": 11,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the high jump bar",
+                "the takeoff point",
+                "the landing mat"
+            ],
+            "Description": "the athlete sprinting towards the high jump bar, leaping off one foot at the takeoff point, arching their back to clear the bar, and landing on a soft mat on the other side"
+        }
+    },
+    "JavelinThrow": {
+        "idx": 12,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the javelin",
+                "the throwing area"
+            ],
+            "Description": "the athlete running with the javelin and forcefully launching it into the air, using a throwing technique to achieve maximum distance or accuracy in the throw"
+        }
+    },
+    "LongJump": {
+        "idx": 13,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the takeoff board",
+                "the sandpit"
+            ],
+            "Description": "the athlete sprinting towards the takeoff board and leaping with a single jump into the air, extending their body to achieve maximum horizontal distance before landing in the sandpit"
+        }
+    },
+    "PoleVault": {
+        "idx": 14,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the pole",
+                "the crossbar",
+                "the landing mat"
+            ],
+            "Description": "the athlete using a flexible pole to vault over the crossbar at increasing heights, gaining height and clearance with each attempt, and landing safely on a soft mat"
+        }
+    },
+    "Shotput": {
+        "idx": 15,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the shotput ball",
+                "the throwing circle",
+                "the landing area"
+            ],
+            "Description": "the athlete pushing or spinning with force and releasing the heavy shotput ball from the throwing circle, aiming to achieve maximum distance in the throw and land within the designated landing area"
+        }
+    },
+    "SoccerPenalty": {
+        "idx": 16,
+        "Elaboration": {
+            "Entity": [
+                "the kicker",
+                "the soccer ball",
+                "the goalkeeper",
+                "the penalty spot",
+                "the goal"
+            ],
+            "Description": "the kicker taking a penalty shot from the penalty spot, aiming to score a goal by kicking the soccer ball past the goalkeeper and into the net"
+        }
+    },
+    "TennisSwing": {
+        "idx": 17,
+        "Elaboration": {
+            "Entity": [
+                "the tennis player",
+                "the tennis racket",
+                "the tennis ball",
+                "the tennis court"
+            ],
+            "Description": "the tennis player making a controlled and coordinated motion with the tennis racket to hit the tennis ball over the net and into the opponent's court, aiming for accuracy, power, and strategic placement"
+        }
+    },
+    "ThrowDiscus": {
+        "idx": 18,
+        "Elaboration": {
+            "Entity": [
+                "the athlete",
+                "the discus",
+                "the throwing circle",
+                "the landing area"
+            ],
+            "Description": "the athlete spinning with force and releasing the discus from the throwing circle, aiming to achieve maximum distance in the throw and land within the designated landing area"
+        }
+    },
+    "VolleyballSpiking": {
+        "idx": 19,
+        "Elaboration": {
+            "Entity": [
+                "the volleyball player",
+                "the volleyball",
+                "the net",
+                "the spiking approach"
+            ],
+            "Description": "the volleyball player jumping near the net with a spiking approach and forcefully hitting the volleyball with one hand or forearm over the net, aiming to score a point by sending the ball to the opponent's court with power and precision"
+        }
+    }
+}
