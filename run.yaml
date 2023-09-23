@@ -173,7 +173,13 @@ Binary Classification in CLIP feature:
         split_75:
             clip: 
                 activitynet1.3:
-
+                    # 
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "ActivityNet13_CLIP_zs_75_binary_1" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --binary
+                    # --enable_backbone 
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_zs_75_binary_2" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --binary --enable_backbone
+                    # --enable_backbone --lr_backbone 1e-4
+                    CUDA_VISIBLE_DEVICES=6 python main.py --model_name "ActivityNet13_CLIP_zs_75_binary_3" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --save_result --batch_size 16 --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4
+                    
                 thumos14:
                     #  :: 
                     CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_1" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary
@@ -189,8 +195,26 @@ Binary Classification in CLIP feature:
                     CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_6" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4 --backbone_layers 2
                     # 【base-5】--backbone_layers 3 :: 
                     CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_7" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4 --backbone_layers 3
+        split_50:
+            clip: 
+                activitynet1.3:
+                    # 
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_zs_binary_1" --cfg_path "./config/ActivityNet13_CLIP_zs_50.yaml" --use_mlflow --save_result --batch_size 16 --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --binary
+                    # --enable_backbone 
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_zs_binary_2" --cfg_path "./config/ActivityNet13_CLIP_zs_50.yaml" --use_mlflow --save_result --batch_size 16 --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --binary --enable_backbone
+                    # --enable_backbone --lr_backbone 1e-4
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_zs_binary_3" --cfg_path "./config/ActivityNet13_CLIP_zs_50.yaml" --use_mlflow --save_result --batch_size 16 --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4
                     
-
+                thumos14:
+                    #  :: 
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_zs_8frame_binary_1" --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary
+                    # --enable_backbone :: 
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_zs_8frame_binary_2" --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone
+                    # 【base-2】--lr_backbone 1e-4 :: 
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_zs_8frame_binary_3" --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --binary --enable_backbone --lr_backbone 1e-4
+                    # 【same-3】--eval_proposal :: 
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_zs_8frame_binary_4" --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-4 --eval_proposal
+                    
 
 
 Zero-Shot:

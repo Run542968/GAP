@@ -1,4 +1,4 @@
-#### 20230915
+#### 20230923提交到github, 在comit=`firtst backup`之前的所有修改都是该版本
 - [x] 从Tad_eval.py保存下来的结果，看到start-time存在复数，需要debug
   - [x] 问题应该是处在后处理，后处理有一步骤是把(center,width)格式的结果转换为(start,end)的步骤：`segment_cw_to_t1t2`，如果width>center, 那么就会出现负值
   - [x] 解决方案是优化对`segment_cw_to_t1t2`的结果进行clamp()，如果出现负值或者超过最大值就截断
@@ -47,19 +47,19 @@
     - 不出预料也很差
 - [ ] 研究一下clip_pkg.tokenize(act_prompt).long().to(device)的输出到底是什么
 - [x] 🚩注意现在用的description_v4，在conditional_detr.py获得文本描述的地方需要加一个索引，目前默认是0
-- [ ] 像actionCLIP一样进行prompt增广
 - [x] 后处理的时候先计算预测概率最大的类别，然后只获得这个类别的queries作为proposals，这是一个非常强的先验，--postprocess_type 'class_one' --postprocess_topk 1, `ActivityNet13_CLIP_prompt_zs_27`
   - 有一些掉点
 - [x] 跑一下ActivityNet13在close_set用norm_scale->ActivityNet13_CLIP_prompt_2
-  - [ ] 反而训练崩了，不如去掉norm_scale，应该是参数的问题，调个学习率试一下
+  - [x] 反而训练崩了，不如去掉norm_scale，应该是参数的问题，调个学习率试一下
 - [x] ActivitiNet13跑多几个种子->ActivityNet13_CLIP_prompt_zs_44,50,51
   - 差距不大，上下1个点的波动
 - [ ] 时序建模非常重要，EfficientPrompt那篇文章也说了，类别之间的差异会影响时序的建模。而且是在CLIP的特征上，CLIP的特征是用来做文本alignment的，Actionness很差。而我们的监督信号又是在seen classes的，这会导致一种class bias，也就是建模时序的时候会融入类别语义，从而导致在unseen class表现不好
   - [ ] 训练的时候不只有时序监督，还有类别监督。类别监督的信息用到的不多，如何在训练的时候就和测试的情况一样，参考meta zero-shot detection那篇文章？
-- [ ] 语义的gap问题，训练得到的semantic head是偏向于seen classes的，怎么迁移这个语义gap
+- 语义的gap问题，训练得到的semantic head是偏向于seen classes的，怎么迁移这个语义gap
   - [x] 之前的一个尝试是上面的transfer wrapper，但是失败了
 - [x] 增加在训练集上inference的结果
-- [ ] 目前存在的问题是时序建模会破坏CLIP原有的语义信息，导致语义特征出现问题，从而很难泛化的很好
+- 目前存在的问题是时序建模会破坏CLIP原有的语义信息，导致语义特征出现问题，从而很难泛化的很好
+  - [x]所以后面决定分两个分支来做
 - [x] 😍不破坏原有的模型，仅仅在测试阶段引入了ROIalign，把box对应的原始CLIP特征提取出来，然后average pooling到一个embedding，再和文本计算相似度，进行分类。把ROIalign的classification score和detector的classification score通过加权聚合的方式ensemble一下作为最后的对这个proposal的分类预测得分
   - 失败了，首先两个分数的scale不一致，融合存在问题，预测结果是NaN
     - [x] 找到了预测结果是NaN的原因，因为数据中存在padding，应该用mask后的T, 而不是batch的T作为每个视频的长度 
@@ -74,14 +74,30 @@
 - [x] 跑一下在Thumos14上不同overlap
   - 有影响，但跑的几个参数都在掉点Thumos14_CLIP_prompt_zs_8frame_33-40
 - [x] 改了backbone，以后要加上backbone进行实验，时序建模应该是非常关键的，特别是对Thumos14来讲
-  - [ ] 实验效果记录一下
-- [ ] 添加一个语义分割的loss,直接作用在每一个snippet上
+  - [x] 实验效果记录一下
+  - 好像没什么大用，在二分类上加了都没效果，顶多保证不掉大点
+- [x] 添加一个语义分割的loss,直接作用在每一个snippet上
   - [x] 需要在dataset那里生成target['segmentation_onehot_labels']作为segmentation的标签, 维度为[feat_length, num_classes]
   - [x] 注意这里每个segmentation维度[T,num_classes]的T是严格按照特征长度的，所以会出现batch内部T不一致的情况，即 T < slice_size的情况，所以**计算loss的时候要先补全才能批处理**
     - 好像没啥用啊，崩溃了😩
-- [ ] 借鉴一下ODISE的grounding loss, 完成segment和文本中word的相似度计算约束
 - [x] 完善方法的class-agnostic的二分类detector，完全解耦分类和定位
   - 只进行二分类是非常有效的
-- [ ]完善二分类detector和语义分类两个头的代码
+- [x]🚀**代码总结**：
+  - 此时的代码主要基于DETR架构，每一个queries既要负责定位，也要负责语义分类
+  - args.binary的设置是把类别总数变为1，也就是训练一个class-agnostic的DETR
+  - 代码中还包含一些语义分割的结构，在memory上面构建一个snippet-level的分类
+
+#### 第二次大版本，在comit=`placeholder`之前的所有修改都是该版本
+- 代码结构大改，这一版本去除了--binary的参数，直接默认DETR的query只负责前景定位，预测得到的分数是proposal的质量分数。🧨不管是“close_set”还是“zero_shot”都改！！
+  - 🔒特别注意，除了`target_type="none"`，否则都默认DETR的query只定位前景
+  - `target_type="none"`就是传统的DETR范式用在TAL，那当然是“close_set”了
+- 分类用语义分割的结构来做，following `2023_ICCV_EdaDet`
+- 还去除了一些失败的尝试：`wrapper`
+- [x]完善二分类detector和语义分类两个头的代码
   - 简单来讲就是detr的detector只用来检测前景框，完全不考虑分类，输出的是proposal的前景分数（也就是**质量分数**），这个分数应该要被用到
   - 分类用另一个分支的语义来做
+- [ ] 借鉴一下ODISE的grounding loss, 完成segment和文本中word的相似度计算约束
+- [ ] 是否引入一个learnable的背景类？Following `DetPro`
+- [ ] 像actionCLIP一样进行prompt增广
+#### 第三次提交
+- 添加评估proposal质量的指标，参考`2022_ECCV_EfficientPrompt`

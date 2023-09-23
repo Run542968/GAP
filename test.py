@@ -23,11 +23,12 @@ def test(model,
     # action_evaluator = None
     action_evaluator = getattr(tad_eval,dataset_name+"Evaluator")(dataset_name=dataset_name, epoch=epoch, dataset=data_loader.dataset, iou_range=iou_range,
                                     nms_mode=['raw'],
-                                    binary=args.binary
+                                    eval_proposal=args.eval_proposal
                                     )
+
     epoch_loss_dict = {}
     count = 0
-    res_dict = {}
+    # res_dict = {}
     for samples, targets in data_loader:
         samples = samples.to(device)
         # targets = [{k: v.to(device) if k in ['segments', 'labels'] else v for k, v in t.items()} for t in targets] # Not Required in inferene stage
@@ -54,13 +55,13 @@ def test(model,
         
         # post process
         video_duration = torch.FloatTensor([t["video_duration"] for t in targets]).to(device)
-        results = postprocessor(outputs, video_duration)
+        results = postprocessor(outputs, video_duration, args.eval_proposal)
         res = {target['video_name']: output for target, output in zip(targets, results)}
-        res_dict.update(res)
+        # res_dict.update(res)
 
         if action_evaluator is not None:
             action_evaluator.update(res)
-    
+
     # epoch_loss_dict.update({k: v/count for k, v in epoch_loss_dict.items()})
     # logger.info(f"Inference Epoch: {epoch}, epoch_loss_dict:{epoch_loss_dict}")
 

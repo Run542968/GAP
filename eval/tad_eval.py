@@ -44,7 +44,7 @@ def apply_nms(dets_arr, nms_thr=0.4, use_soft_nms=False):
 class TADEvaluator(object):
     def __init__(self,dataset_name, subset, epoch, iou_range, classes, 
                  nms_mode=['raw'], 
-                 binary = False,
+                 eval_proposal = False,
                  num_workers = 8,
                  ):
         '''
@@ -55,7 +55,7 @@ class TADEvaluator(object):
         iou_range: [0.3:0.7:0.1] for thumos14; [0.5:0.95:0.05] for anet and hacs.
         task_setting: what setting the model for, ['close_set','zero_shot']
         split: how to split the classes in zero-shot setting
-        binary: whether to evaluate the class-agnostic proposal
+        eval_proposal: whether to evaluate the class-agnostic proposal
         '''
         self.dataset_name = dataset_name
         self.subset = subset
@@ -65,8 +65,8 @@ class TADEvaluator(object):
         self.nms_mode = nms_mode
         self.epoch = epoch
 
-        self.binary = binary
-        if self.binary:
+        self.eval_proposal = eval_proposal
+        if self.eval_proposal:
             self.classes = ['foreground']
             self.num_classes = len(self.classes)
 
@@ -179,7 +179,7 @@ def merge_distributed(all_pred):
 class ActivityNet13Evaluator(TADEvaluator):
     def __init__(self, dataset_name, epoch, dataset, iou_range,
                  nms_mode=['raw'], 
-                 binary = False,
+                 eval_proposal = False,
                  num_workers = 8,
                  ):
         '''
@@ -190,13 +190,13 @@ class ActivityNet13Evaluator(TADEvaluator):
         iou_range: [0.3:0.7:0.1] for thumos14; [0.5:0.95:0.05] for anet and hacs.
         task_setting: what setting the model for, ['close_set','zero_shot']
         split: how to split the classes in zero-shot setting
-        binary: whether to evaluate the class-agnostic proposal
+        eval_proposal: whether to evaluate the class-agnostic proposal
         '''
 
         self.valid_anno_dict = dataset.valid_anno_dict
         super(ActivityNet13Evaluator,self).__init__(dataset_name, dataset.subset, epoch, iou_range, dataset.classes,
                                                 nms_mode, 
-                                                binary,
+                                                eval_proposal,
                                                 num_workers)
 
     def summarize(self):
@@ -228,7 +228,7 @@ class ActivityNet13Evaluator(TADEvaluator):
         all_gt = []
         for viddo_name, value in self.valid_anno_dict.items():
             annotations = value['annotations']
-            if self.binary:
+            if self.eval_proposal:
                 all_gt += [[viddo_name, 0, x['segment'][0], x['segment'][1]] for x in annotations]
             else:
                 all_gt += [[viddo_name, self.classes.index(x['label']), x['segment'][0], x['segment'][1]] for x in annotations]
@@ -282,7 +282,7 @@ class ActivityNet13Evaluator(TADEvaluator):
 class Thumos14Evaluator(TADEvaluator):
     def __init__(self, dataset_name, epoch, dataset, iou_range,
                  nms_mode=['raw'], 
-                 binary = False,
+                 eval_proposal = False,
                  num_workers = 8,
                  ):
         '''
@@ -293,7 +293,7 @@ class Thumos14Evaluator(TADEvaluator):
         iou_range: [0.3:0.7:0.1] for thumos14; [0.5:0.95:0.05] for anet and hacs.
         task_setting: what setting the model for, ['close_set','zero_shot']
         split: how to split the classes in zero-shot setting
-        binary: whether to evaluate the class-agnostic proposal
+        eval_proposal: whether to evaluate the class-agnostic proposal
         '''
 
         self.src_valid_anno_dict = dataset.src_valid_anno_dict # The difference of ActivityNet13
@@ -301,7 +301,7 @@ class Thumos14Evaluator(TADEvaluator):
         self.slice_overlap = dataset.slice_overlap
         super(Thumos14Evaluator,self).__init__(dataset_name, dataset.subset, epoch, iou_range, dataset.classes,
                                                 nms_mode, 
-                                                binary,
+                                                eval_proposal,
                                                 num_workers)
 
     def summarize(self):
@@ -332,7 +332,7 @@ class Thumos14Evaluator(TADEvaluator):
         all_gt = []
         for viddo_name, value in self.src_valid_anno_dict.items():
             annotations = value['annotations']
-            if self.binary:
+            if self.eval_proposal:
                 all_gt += [[viddo_name, 0, x['segment'][0], x['segment'][1]] for x in annotations]
             else:
                 all_gt += [[viddo_name, self.classes.index(x['label']), x['segment'][0], x['segment'][1]] for x in annotations]

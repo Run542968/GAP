@@ -68,12 +68,12 @@ if __name__ == '__main__':
     if args.use_mlflow:
         #### mlflow ####
         if args.task == 'zero_shot':
-            if args.binary: 
+            if args.eval_proposal: 
                 experiment_name = "_".join([args.dataset_name,args.feature_type,args.task,str(args.split),"binary"])
             else:
                 experiment_name = "_".join([args.dataset_name,args.feature_type,args.target_type,args.task,str(args.split)])
         elif args.task == 'close_set':
-            if args.binary: 
+            if args.eval_proposal: 
                 experiment_name = "_".join([args.dataset_name,args.feature_type,args.task,"binary"])
             else:
                 experiment_name = "_".join([args.dataset_name,args.feature_type,args.target_type,args.task])

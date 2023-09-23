@@ -9,30 +9,40 @@ class PostProcess(nn.Module):
         super().__init__()
         self.type = args.postprocess_type
         self.topk = args.postprocess_topk
-        self.fuse_rate = args.fuse_rate
-        self.fuse_strategy = args.fuse_strategy
-        self.enable_ROIalign = args.enable_ROIalign
-        self.binary = args.binary
+        # self.fuse_rate = args.fuse_rate
+        # self.fuse_strategy = args.fuse_strategy
+        # self.enable_ROIalign = args.enable_ROIalign
+        # self.binary = args.binary
+        self.target_type = args.target_type
         
         
     @torch.no_grad()
-    def forward(self, outputs, target_sizes):
+    def forward(self, outputs, target_sizes, eval_proposal=False):
         """ Perform the computation
         Parameters:
             outputs: raw outputs of the model
             target_sizes: tensor of dimension [batch_size x 1] containing the size of each video of the batch
         """
-        if self.enable_ROIalign and not self.binary:
+        if self.target_type != "none":
             assert 'ROIalign_logits' in outputs
-            detector_logits, ROIalign_logits, out_bbox = outputs['pred_logits'], outputs['ROIalign_logits'], outputs['pred_boxes'] # [bs,num_queries,num_classes] [bs,num_queries,2]
-            
-            if self.fuse_strategy == "arithmetic":
-                prob = self.fuse_rate*detector_logits.softmax(-1) + (1-self.fuse_rate)*ROIalign_logits.softmax(-1)
+            foreground_logits, ROIalign_logits, out_bbox = outputs['pred_logits'], outputs['ROIalign_logits'], outputs['pred_boxes'] # [bs,num_queries,1] [bs,num_queries,num_classes] [bs,num_queries,2]
+            foreground_logits = foreground_logits.sigmoid()
+
+            if eval_proposal:
+                assert prob.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{prob.shape}"
+                prob = foreground_logits.sigmoid() # only evaluate the proposal
             else:
-                prob = torch.mul(detector_logits.softmax(-1).pow(self.fuse_rate),ROIalign_logits.softmax(-1).pow(1-self.fuse_rate))
-        else:
+                prob = torch.mul(foreground_logits*ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
+            # if self.fuse_strategy == "arithmetic":
+            #     prob = self.fuse_rate*detector_logits.softmax(-1) + (1-self.fuse_rate)*ROIalign_logits.softmax(-1)
+            # else:
+            #     prob = torch.mul(detector_logits.softmax(-1).pow(self.fuse_rate),ROIalign_logits.softmax(-1).pow(1-self.fuse_rate))
+        elif not eval_proposal:
+            assert 'pred_logits' in outputs
             out_logits, out_bbox = outputs['pred_logits'], outputs['pred_boxes'] # [bs,num_queries,num_classes] [bs,num_queries,2]
             prob = out_logits.sigmoid() # [bs,num_queries,num_classes]
+        else:
+            raise ValueError("Don't have this case.")
         
         B,Q,num_classes = prob.shape
         assert len(prob) == len(target_sizes)

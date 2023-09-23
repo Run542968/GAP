@@ -50,13 +50,14 @@ class Transformer(nn.Module):
     def __init__(self, d_model=512, nhead=8, num_encoder_layers=6,
                  num_decoder_layers=6, dim_feedforward=2048, dropout=0.1,
                  activation="relu", normalize_before=False,
+                 return_intermediate_enc=False,
                  return_intermediate_dec=False):
         super().__init__()
 
         encoder_layer = TransformerEncoderLayer(d_model, nhead, dim_feedforward,
                                                 dropout, activation, normalize_before)
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None
-        self.encoder = TransformerEncoder(encoder_layer, num_encoder_layers, encoder_norm)
+        self.encoder = TransformerEncoder(encoder_layer, num_encoder_layers, encoder_norm, return_intermediate=return_intermediate_enc)
 
         decoder_layer = TransformerDecoderLayer(d_model, nhead, dim_feedforward,
                                                 dropout, activation, normalize_before)
@@ -92,21 +93,22 @@ class Transformer(nn.Module):
         mask = mask # [b,t]
 
         tgt = torch.zeros_like(query_embed) # [num_queries,b,c]
-        memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed) # [t,b,c]
-        hs, references = self.decoder(tgt, memory, memory_key_padding_mask=mask, 
+        memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed) # [layers,t,b,c]
+        hs, references = self.decoder(tgt, memory[-1], memory_key_padding_mask=mask, 
                           pos=pos_embed, query_pos=query_embed) # [dec_layers,b,num_queries,c] [b,num_queries,1]
         # permute TxNxC to NxTxC
-        memory = memory.permute(1,0,2)
+        memory = memory.permute(0,2,1,3)
         return memory, hs, references
 
 
 class TransformerEncoder(nn.Module):
 
-    def __init__(self, encoder_layer, num_layers, norm=None):
+    def __init__(self, encoder_layer, num_layers, norm=None, return_intermediate=False):
         super().__init__()
         self.layers = _get_clones(encoder_layer, num_layers)
         self.num_layers = num_layers
         self.norm = norm
+        self.return_intermediate = return_intermediate
 
     def forward(self, src,
                 mask: Optional[Tensor] = None,
@@ -114,12 +116,21 @@ class TransformerEncoder(nn.Module):
                 pos: Optional[Tensor] = None):
         output = src
 
+        intermediate = []
         for layer in self.layers:
             output = layer(output, src_mask=mask,
                            src_key_padding_mask=src_key_padding_mask, pos=pos)
+            if self.return_intermediate:
+                intermediate.append(output)
 
         if self.norm is not None:
             output = self.norm(output)
+            if self.return_intermediate:
+                intermediate.pop()
+                intermediate.append(output)
+        
+        if self.return_intermediate:
+            return torch.stack(intermediate,dim=0) # [layers,t,b,c]
 
         return output
 
@@ -422,6 +433,7 @@ def build_transformer(args):
         num_encoder_layers=args.enc_layers,
         num_decoder_layers=args.dec_layers,
         normalize_before=args.pre_norm,
+        return_intermediate_enc=True,
         return_intermediate_dec=True
     )
 

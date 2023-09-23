@@ -37,13 +37,13 @@ class SetCriterion(nn.Module):
         1) we compute hungarian assignment between ground truth boxes and the outputs of the model
         2) we supervise each pair of matched ground-truth / prediction (supervise class and box)
     """
-    def __init__(self, num_classes, matcher, weight_dict, focal_alpha, losses, args):
+    def __init__(self, num_classes, matcher, weight_dict,focal_alpha, args, base_losses=['labels', 'boxes']):
         """ Create the criterion.
         Parameters:
             num_classes: number of object categories, omitting the special no-object category
             matcher: module able to compute a matching between targets and proposals
             weight_dict: dict containing as key the names of the losses and as values their relative weight.
-            losses: list of all the losses to be applied. See get_loss for list of available losses.
+            base_losses: list of all the losses to be applied. See get_loss for list of available losses.
             focal_alpha: alpha in Focal Loss
             gamma: gamma in Focal Loss
         """
@@ -51,9 +51,10 @@ class SetCriterion(nn.Module):
         self.num_classes = num_classes
         self.matcher = matcher
         self.weight_dict = weight_dict
-        self.losses = losses
+        self.base_losses = ['labels', 'boxes']
         self.focal_alpha = focal_alpha
         self.gamma = args.gamma
+        self.segmentation_loss = args.segmentation_loss
         
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
@@ -83,7 +84,6 @@ class SetCriterion(nn.Module):
         return losses
 
  
-
     def loss_boxes(self, outputs, targets, indices, num_boxes):
         """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
            targets dicts must contain the key "segments" containing a tensor of dim [nb_target_boxes, 4]
@@ -168,14 +168,14 @@ class SetCriterion(nn.Module):
 
         # Compute all the requested losses
         losses = {}
-        for loss in self.losses:
+        for loss in self.base_losses:
             losses.update(self.get_loss(loss, outputs, targets, indices, num_boxes))
 
         # In case of auxiliary losses, we repeat this process with the output of each intermediate layer.
         if 'aux_outputs' in outputs:
             for i, aux_outputs in enumerate(outputs['aux_outputs']):
                 indices = self.matcher(aux_outputs, targets)
-                for loss in self.losses:
+                for loss in self.base_losses:
                     if loss == 'masks':
                         # masks loss don't have intermediate feature of decoder, ignore it
                         continue
@@ -187,17 +187,16 @@ class SetCriterion(nn.Module):
                     l_dict = {k + f'_{i}': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
-        if 'segmentation_logits' in outputs:
+        if self.segmentation_loss: # adopt segmentation_loss
             segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
             losses.update(segmentation_loss)
         
         return losses
 
-def build_criterion(args,num_classes,matcher,weight_dict,losses):
+def build_criterion(args,num_classes,matcher,weight_dict):
     criterion = SetCriterion(num_classes, 
                              matcher=matcher, 
                              weight_dict=weight_dict,
-                             focal_alpha=args.focal_alpha, 
-                             losses=losses,
+                             focal_alpha=args.focal_alpha,
                              args=args)
     return criterion

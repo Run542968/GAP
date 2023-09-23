@@ -45,7 +45,7 @@ class BaseDataset(Dataset):
             description_file_path: in zero_shot setting, the description file includes the text description for class name
             split: the proportion of train/inference in classes name
             split_id: the id of split file is used
-            binary: whether to just distinguish foreground and background
+            # binary: whether to just distinguish foreground and background
         '''
 
         super(BaseDataset).__init__()
@@ -61,7 +61,8 @@ class BaseDataset(Dataset):
         self.rescale_length = args.rescale_length
         self.split = args.split
         self.split_id = args.split_id
-        self.binary = args.binary
+        self.target_type = args.target_type
+        # self.binary = args.binary
 
         self.slice_size = args.slice_size
         self.slice_overlap = args.slice_overlap if self.mode=="train" else args.inference_slice_overlap
@@ -69,10 +70,10 @@ class BaseDataset(Dataset):
         self.classes, self.valid_anno_dict, self.valid_video_list, self.anno_dict, self.feature_info, self.src_valid_anno_dict = self._prepare_gt()
         self.description_dict = self._get_description(self.description_file_path)
         
-        if self.binary:
-            logger.info(f"The num of valid videos is {len(self.valid_anno_dict)} in subset {subset}, there are {sum([len(v['annotations']) for k,v in self.valid_anno_dict.items()])} instances of {1} classes.")
-        else:
-            logger.info(f"The num of valid videos is {len(self.valid_anno_dict)} in subset {subset}, there are {sum([len(v['annotations']) for k,v in self.valid_anno_dict.items()])} instances of {len(self.classes)} classes.")
+        # if self.binary:
+        #     logger.info(f"The num of valid videos is {len(self.valid_anno_dict)} in subset {subset}, there are {sum([len(v['annotations']) for k,v in self.valid_anno_dict.items()])} instances of {1} classes.")
+        # else:
+        logger.info(f"The num of valid videos is {len(self.valid_anno_dict)} in subset {subset}, there are {sum([len(v['annotations']) for k,v in self.valid_anno_dict.items()])} instances of {len(self.classes)} classes.")
 
     def _get_description(self, description_file_path):
         description_dict = json.load(open(description_file_path))
@@ -167,7 +168,7 @@ class BaseDataset(Dataset):
             if seg_anno['label'] not in classes:
                 continue
 
-            if self.binary:
+            if self.target_type != "none":
                 label_id = 0
                 label_name = 'foreground'
             else:
@@ -544,4 +545,4 @@ if __name__ == "__main__":
     print(f"target[0]['segmentation_labels'].dtype:{target[0]['segmentation_labels']}")
 
 
-# CUDA_VISIBLE_DEVICES=0 python dataset.py --cfg_path "./config/Thumos14_CLIP_8frame.yaml"
+# CUDA_VISIBLE_DEVICES=0 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"
