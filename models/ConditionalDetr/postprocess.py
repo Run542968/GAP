@@ -29,10 +29,10 @@ class PostProcess(nn.Module):
             foreground_logits = foreground_logits.sigmoid()
 
             if eval_proposal:
-                assert prob.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{prob.shape}"
-                prob = foreground_logits.sigmoid() # only evaluate the proposal
+                assert foreground_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{foreground_logits.shape}"
+                prob = foreground_logits # only evaluate the proposal
             else:
-                prob = torch.mul(foreground_logits*ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
+                prob = torch.mul(foreground_logits,ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
             # if self.fuse_strategy == "arithmetic":
             #     prob = self.fuse_rate*detector_logits.softmax(-1) + (1-self.fuse_rate)*ROIalign_logits.softmax(-1)
             # else:

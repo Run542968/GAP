@@ -69,50 +69,41 @@ class ConditionalDETR(nn.Module):
         self.device = device
         self.num_classes = num_classes
         self.args = args
-        # self.binary = args.binary
 
         self.num_queries = args.num_queries
         self.target_type = args.target_type
         self.aux_loss = args.aux_loss
         self.norm_embed = args.norm_embed
-        # self.disable_scale = args.disable_scale
-        # self.enable_wrapper = args.enable_wrapper
         self.segmentation_loss = args.segmentation_loss
-        # self.enable_ROIalign = args.enable_ROIalign
+        self.segmentation_head_type = args.segmentation_head_type
         self.ROIalign_strategy = args.ROIalign_strategy
-
 
 
         hidden_dim = transformer.d_model
 
-        # if self.target_type != "none" and not self.binary:
-        #     self.class_embed = nn.Linear(hidden_dim,hidden_dim)
-        # else:
         self.class_embed = nn.Linear(hidden_dim, num_classes)
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
         self.query_embed = nn.Embedding(self.num_queries, hidden_dim)
         self.input_proj = nn.Conv1d(backbone.feat_dim, hidden_dim, kernel_size=1)
-
-
+        
+        if self.segmentation_loss: # segmentation head
+            if self.segmentation_head_type == "MLP":
+                self.segmentation_head = MLP(hidden_dim,hidden_dim,hidden_dim,3)
+            elif self.segmentation_head_type == "Conv":
+                self.segmentation_head = nn.Conv1d(hidden_dim,hidden_dim, kernel_size=3, padding=1)
+            elif self.segmentation_head_type == "MHA":
+                self.segmentation_head = nn.MultiheadAttention(hidden_dim,4,batch_first=True)
+            else:
+                raise ValueError(f"Don't have this segmentation_head_type:{self.segmentation_head_type}")
         # init prior_prob setting for focal loss
         prior_prob = 0.01
         bias_value = -math.log((1 - prior_prob) / prior_prob)
-        # if self.target_type != "none" and not self.binary:
-        #     self.class_embed.bias.data = torch.ones(hidden_dim) * bias_value
-        # else:
         self.class_embed.bias.data = torch.ones(num_classes) * bias_value
 
         # init bbox_mebed
         nn.init.constant_(self.bbox_embed.layers[-1].weight.data, 0)
         nn.init.constant_(self.bbox_embed.layers[-1].bias.data, 0)
 
-        # if self.binary:
-        #     logger.info(f"The detector is class-agnostic and only one category as target!")
-        # else:
-        #     if self.target_type != "none":
-        #         logger.info(f"The target_type is {self.target_type}, using text embedding as target!")
-        #     else:
-        #         logger.info(f"The target_type is {self.target_type}, using one-hot coding as target!")
 
         if self.target_type != "none":
             logger.info(f"The target_type is {self.target_type}, using text embedding as target, on task: {args.task}!")
@@ -199,10 +190,7 @@ class ConditionalDETR(nn.Module):
             # normalize feature
             roi_feat = roi_feat / roi_feat.norm(dim=-1,keepdim=True) # [B,T,dim]
             text_feats = text_feats / text_feats.norm(dim=-1,keepdim=True)
-            if self.disable_scale:
-                roi_logits = torch.einsum("bqd,cd->bqc",roi_feat,text_feats)
-            else: # default setting
-                roi_logits = torch.einsum("bqd,cd->bqc",self.logit_scale*roi_feat,text_feats)
+            roi_logits = torch.einsum("bqd,cd->bqc",self.logit_scale*roi_feat,text_feats)
         else:
             roi_logits = torch.einsum("bqd,cd->bqc",roi_feat,text_feats) # [b,T,num_classes]
         
@@ -242,7 +230,7 @@ class ConditionalDETR(nn.Module):
             samples = nested_tensor_from_tensor_list(samples)
 
         # origin CLIP features
-        clip_feat, _ = samples.decompose()
+        clip_feat, mask = samples.decompose()
 
         # backbone for temporal modeling
         feature_list, pos = self.backbone(samples) # list of [b,t,c], list of [b,t]
@@ -276,49 +264,40 @@ class ConditionalDETR(nn.Module):
             foreground_logits = self.class_embed(hs) # [dec_layers,b,num_queries,1]
             out['pred_logits'] = foreground_logits[-1]
 
-            # if self.norm_embed:
-            #     # normalize feature
-            #     visual_feats = visual_feats / visual_feats.norm(dim=-1,keepdim=True)
-            #     text_feats = text_feats / text_feats.norm(dim=-1,keepdim=True)
-            #     if self.disable_scale:
-            #         detector_logits = torch.einsum("lbqd,cd->lbqc",visual_feats,text_feats)
-            #     else: # default setting
-            #         detector_logits = torch.einsum("lbqd,cd->lbqc",self.logit_scale*visual_feats,text_feats)
-            # else:
-            #     detector_logits = torch.einsum("lbqd,cd->lbqc",visual_feats,text_feats) # [dec_layers,b,num_queries,num_classes]
-        
             if self.segmentation_loss: # compute segmentation logits, when don't compute sementation_loss，using origin clip_feat as visual_feat
-                viusal_feats = memory + 1e-8 # avoid the NaN [layers,B,T,dim]
+                if self.segmentation_head_type == "MLP":
+                    viusal_feats = self.segmentation_head(clip_feat) # [b,t,dim]
+                elif self.segmentation_head_type == "Conv":
+                    viusal_feats = self.segmentation_head(clip_feat.permute(0,2,1)).permute(0,2,1) # [b,t,dim]
+                elif self.segmentation_head_type == "MHA":
+                    viusal_feats = self.segmentation_head(clip_feat,clip_feat,clip_feat,key_padding_mask=mask) # [b,t,dim]
+                else:
+                    raise ValueError(f"Don't have this segmentation_head_type:{self.segmentation_head_type}")
+
                 if self.norm_embed: # normalize feature
                     viusal_feats = viusal_feats / viusal_feats.norm(dim=-1,keepdim=True)
                     text_feats = text_feats / text_feats.norm(dim=-1,keepdim=True)
-                    # if self.disable_scale:
-                    #     segmentation_logits = torch.einsum("btd,cd->btc",viusal_feats,text_feats)
-                    # else: # default setting
-                    segmentation_logits = torch.einsum("lbtd,cd->lbtc",self.logit_scale*viusal_feats,text_feats) # [enc_layers,b,T,num_classes]
+                    segmentation_logits = torch.einsum("btd,cd->btc",self.logit_scale*viusal_feats,text_feats) # [b,T,num_classes]
                 else:
-                    segmentation_logits = torch.einsum("lbtd,cd->lbtc",viusal_feats,text_feats)
-                out['segmentation_logits'] = segmentation_logits[-1]
+                    segmentation_logits = torch.einsum("btd,cd->btc",viusal_feats,text_feats)
+                out['segmentation_logits'] = segmentation_logits
             else: 
                 viusal_feats = clip_feat + 1e-8 # avoid the NaN [B,T,dim]
                 if self.norm_embed: # normalize feature
                     viusal_feats = viusal_feats / viusal_feats.norm(dim=-1,keepdim=True)
                     text_feats = text_feats / text_feats.norm(dim=-1,keepdim=True)
-                    # if self.disable_scale:
-                    #     segmentation_logits = torch.einsum("btd,cd->btc",viusal_feats,text_feats)
-                    # else: # default setting
                     segmentation_logits = torch.einsum("btd,cd->btc",self.logit_scale*viusal_feats,text_feats) # [enc_layers,b,T,num_classes]
                 else:
                     segmentation_logits = torch.einsum("btd,cd->btc",viusal_feats,text_feats)
-                out['segmentation_logits'] = segmentation_logits[-1]
+                out['segmentation_logits'] = segmentation_logits
            
            
             # obtain the ROIalign logits
             if not self.training: # only in inference stage
                 if self.ROIalign_strategy == "before_pred":
-                    ROIalign_logits = self._get_roi_prediction_v1(samples,outputs_coord[-1],text_feats)
+                    ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],text_feats)
                 else:
-                    ROIalign_logits = self._get_roi_prediction_v2(segmentation_logits[-1],mask,outputs_coord[-1]) # this operation must cooperate with segmenatation_loss
+                    ROIalign_logits = self._get_roi_prediction_v2(out['segmentation_logits'],mask,out['pred_boxes']) # this operation must cooperate with segmenatation_loss
                 out['ROIalign_logits'] = ROIalign_logits # update the term of out [b,num_queries,num_classes]
         else:
             detector_logits = self.class_embed(hs) # [dec_layers,b,num_queries,num_classes]
@@ -343,23 +322,10 @@ class ConditionalDETR(nn.Module):
 
 
 def build(args, device):
-    if args.target_type != "none" and not args.eval_proposal: # adopt one-hot as target, only used in close_set
-        num_classes = args.num_classes
-    else:
+    if args.target_type != "none" or args.eval_proposal: # adopt one-hot as target, only used in close_set
         num_classes = 1
-    # if args.task == 'close_set':
-    #     if args.binary:
-    #         num_classes = 1
-    #     else:
-    #         num_classes = args.num_classes
-    # elif args.task == 'zero_shot':
-    #     if args.binary:
-    #         num_classes = 1
-    #     else: # must set it for decide the idx of background class in SetCriterion
-    #         num_classes = int(args.num_classes * args.split / 100)
-    # else:
-    #     raise ValueError("Don't have this task setting.")
-
+    else:
+        num_classes = args.num_classes
 
     text_encoder, logit_scale = build_text_encoder(args,device)
     backbone = build_backbone(args)

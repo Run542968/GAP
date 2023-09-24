@@ -12,7 +12,6 @@ parser.add_argument('--device', type=str, default="cuda")
 parser.add_argument('--task', type=str, default="zero_shot", choices=('zero_shot', 'close_set'), help='[zero_shot,close_set]')
 parser.add_argument('--use_mlflow', action='store_true', default=False, help="whether to use mlflow")
 parser.add_argument('--target_type', type=str, default="prompt", choices=('none', 'prompt', 'description'), help="[none,prompt,description]") # NOTE: 'none' means use one-hot target that just for close_set
-# parser.add_argument('--binary', action='store_true', default=False, help="whether to binary detection") # NOTE: May there is bug of binary setting, without checking after coding. 
 parser.add_argument('--eval_proposal', action='store_true', default=False, help="Only evaluate the proposal quality, compute the class-agnostic foreground mAP in Tad_eal.py") 
 
 
@@ -59,7 +58,7 @@ parser.add_argument('--CLIP_model_name', type=str, default='ViT-B/16', help="The
 ## Conditional DETR
 parser.add_argument('--num_queries', type=int, default=15, help="Number of query slots")
 parser.add_argument('--norm_embed', action='store_true', default=False, help="Normalization and multiple the scale_logits for similarity computing between visual and text embedding")
-# parser.add_argument('--disable_scale', action='store_true', default=False, help="Whether disable the logits_scale from CLIP model to multiple visual feat")
+parser.add_argument('--segmentation_head_type', default="MLP", choices=('MLP', 'Conv', 'MHA'), help='Conv: Conv1d, MHA: MultiHeadAttention') 
 
 
 # Loss
@@ -92,11 +91,7 @@ parser.add_argument('--postprocess_topk', type=int, default=100, help="The numbe
 # Inference
 parser.add_argument('--save_result', action='store_true', default=False, help="Whether to save the prediction result")
 parser.add_argument('--test_interval', type=int, default=1, help="The interval to inference")
-# parser.add_argument('--enable_wrapper', action='store_true', default=False, help="Whether to adopt transfer wrapper in inference stage, only suitable for zero_shot")
-# parser.add_argument('--enable_ROIalign', action='store_true', default=False, help="Whether to adopt ROIalign to crop feature")
-parser.add_argument('--ROIalign_strategy', default="before_pred", choices=("before_pred","after_pred"), help="The position to apply ROIalign")
-# parser.add_argument('--fuse_rate', type=float, default=0.5, help="The feat to fuse the CLIP classification prediction and detector classification prediction")
-# parser.add_argument('--fuse_strategy', type=str, default="arithmetic", choices=("arithmetic","geometric"), help="The strategy to fuse two classification scores")
+parser.add_argument('--ROIalign_strategy', default="before_pred", choices=("before_pred","after_pred"), help="when to perform ROIalign, pred means compute visual-text similarity")
 parser.add_argument('--train_interval', type=int, default=-1, help="The interval to inference on train set, -1 denotes not using this")
 
 

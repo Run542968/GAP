@@ -71,7 +71,7 @@ def test(model,
         action_evaluator.accumulate()
         # dump detections
         if args.save_result:
-            save_path = osp.join('./results/',args.dataset_name,args.model_name,'detection_{}'+str(epoch)+'_{}.json')
+            save_path = osp.join('./results/',args.dataset_name,args.model_name,'detection_{}_'+str(epoch)+'_{}.json')
             action_evaluator.dump_detection(save_path)
         action_evaluator.summarize()
 

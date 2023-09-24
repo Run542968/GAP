@@ -116,10 +116,10 @@ class SetCriterion(nn.Module):
 
         # obtain logits
         segmentation_logits = outputs['segmentation_logits'] # [B,T,num_classes]
-        B,T,c = segmentation_logits.shape
+        B,T,C = segmentation_logits.shape
 
         # prepare labels
-        segmentation_onehot_labels_pad = torch.zeros((B,T,self.num_classes),device=segmentation_logits.device) # [B,T,num_classes], zero in padding region
+        segmentation_onehot_labels_pad = torch.zeros_like(segmentation_logits) # [B,T,num_classes], zero in padding region
         for i, tgt in enumerate(targets):
             feat_length = tgt['segmentation_onehot_labels'].shape[0]
             segmentation_onehot_labels_pad[i,:feat_length,:] = tgt['segmentation_onehot_labels'] # [feat_length, num_classes]
