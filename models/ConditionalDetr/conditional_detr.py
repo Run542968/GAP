@@ -270,7 +270,7 @@ class ConditionalDETR(nn.Module):
                 elif self.segmentation_head_type == "Conv":
                     viusal_feats = self.segmentation_head(clip_feat.permute(0,2,1)).permute(0,2,1) # [b,t,dim]
                 elif self.segmentation_head_type == "MHA":
-                    viusal_feats = self.segmentation_head(clip_feat,clip_feat,clip_feat,key_padding_mask=mask) # [b,t,dim]
+                    viusal_feats, _ = self.segmentation_head(clip_feat,clip_feat,clip_feat,key_padding_mask=mask) # [b,t,dim]
                 else:
                     raise ValueError(f"Don't have this segmentation_head_type:{self.segmentation_head_type}")
 

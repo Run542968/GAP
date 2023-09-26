@@ -96,20 +96,24 @@
 - [x]完善二分类detector和语义分类两个头的代码
   - 简单来讲就是detr的detector只用来检测前景框，完全不考虑分类，输出的是proposal的前景分数（也就是**质量分数**），这个分数应该要被用到
   - 分类用另一个分支的语义来做，默认采用在CLIP的视觉特征上进行ROIalign
-- [ ] 引入segmentation_loss反而掉点的原因应该是在memory上加的分类约束，使得memory又包含了一些语义信息，导致后面的decoder不能很好的检测到class-agnostic的proposals。
-  - [x] 彻底解耦，引入一个新的分支来做语义分类，ROIalign在这个分支上做
-    - [ ] 最简单的做法，直接在clip_feat上面加一层MLP进行语义的映射
-    - [ ] 复杂一点就是加一层self-attention
-    - [ ] 考虑到语义的local特性，加Conv1D或许会更好？
+- [x] 引入segmentation_loss反而掉点的原因应该是在memory上加的分类约束，使得memory又包含了一些语义信息，导致后面的decoder不能很好的检测到class-agnostic的proposals。
+  - [x] 彻底解耦，引入一个新的分支来做语义分类(不影响detector)，ROIalign在这个分支上做
+    - [x] 最简单的做法，直接在clip_feat上面加一层MLP进行语义的映射
+    - [x] 复杂一点就是加一层self-attention
+      - 😀这个效果最好,Thumos14_CLIP_prompt_zs_8frame_v2_7
+      - 但是这种需要训练的方式性能还是比不上直接拿CLIP的visual和text特征进行计算(Thumos14_CLIP_prompt_zs50_8frame_v2_7)，这样做训练出来的classification一定是过拟合的。特别是在训练类别数量不足的时候，zero-shot能力很差的
+    - [x] 考虑到语义的local特性，加Conv1D或许会更好？
+  - [ ] segmentation_loss的softamx加个温度系数$\tau=0.07$
 - [ ] 借鉴一下ODISE的grounding loss, 完成segment和文本中word的相似度计算约束
 - [ ] 是否引入一个learnable的背景类？Following `DetPro`
 - [ ] 像actionCLIP一样进行prompt增广
-- [x] 实验发现ROIalign strategy那里，不管是先预测再crop，还是先crop再预测，结果几乎是一样的，差别非常小。分析觉得是ROIalign的时候选了crop
+- [x] 实验发现ROIalign strategy那里，不管是先预测再crop，还是先crop再预测，结果几乎是一样的，差别非常小。分析觉得是ROIalign的时候选了max
   - [ ] ROIalign内部还有一个output_size可以调
 - [ ] 试试把ActivityNet的特征也处理一下？
   - [ ] 整个视频只采样278帧
   - [ ] 每个snippet用8帧来group
-- [ ] 给segmentation_loss的softamx加个温度系数$\tau$
+- [ ] binary的性能还能调，两个库都还能继续调
+
 - 📚 可以着手考虑的问题：
   - [ ] CLIP对于文本的global概念，没有细粒度的word理解，**不容易区分相似的动作**，例如"Diving"和“CliffDiving”
   - [ ] class-agnostic的proposal肯定是包含有背景信息，怎么去除这个背景的噪声干扰？实现更准确的分类？
