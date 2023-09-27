@@ -1,0 +1,231 @@
+{
+    "BaseballPitch": {
+        "idx": 0,
+        "Elaboration": {
+            "Description": [
+                "Grabs baseball",
+                "Winds up",
+                "Throws baseball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grabs baseball\", \"Winds up\", \"Throws baseball\"]}"
+    },
+    "BasketballDunk": {
+        "idx": 1,
+        "Elaboration": {
+            "Description": [
+                "approaches the basketball hoop",
+                "jumps",
+                "extends the arm",
+                "slams the ball through the hoop"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"approaches the basketball hoop\", \"jumps\", \"extends the arm\", \"slams the ball through the hoop\"]}"
+    },
+    "Billiards": {
+        "idx": 2,
+        "Elaboration": {
+            "Description": [
+                "places cue ball",
+                "aims at target ball",
+                "strikes cue ball",
+                "pockets target ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"places cue ball\", \"aims at target ball\", \"strikes cue ball\", \"pockets target ball\"]}"
+    },
+    "CleanAndJerk": {
+        "idx": 3,
+        "Elaboration": {
+            "Description": [
+                "grabs the barbell",
+                "lifts it to the shoulders",
+                "pushes it overhead"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"grabs the barbell\", \"lifts it to the shoulders\", \"pushes it overhead\"]}"
+    },
+    "CliffDiving": {
+        "idx": 4,
+        "Elaboration": {
+            "Description": [
+                "Climbs to the edge",
+                "Jumps off",
+                "Immerses in the water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Climbs to the edge\", \"Jumps off\", \"Immerses in the water\"]}"
+    },
+    "CricketBowling": {
+        "idx": 5,
+        "Elaboration": {
+            "Description": [
+                "Runs up to the crease",
+                "Delivers the ball towards the batsman"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Runs up to the crease\", \"Delivers the ball towards the batsman\"]}"
+    },
+    "CricketShot": {
+        "idx": 6,
+        "Elaboration": {
+            "Description": [
+                "Positioning the body",
+                "Eyes on the ball",
+                "Swinging the bat",
+                "Hitting the ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Positioning the body\", \"Eyes on the ball\", \"Swinging the bat\", \"Hitting the ball\"]}"
+    },
+    "Diving": {
+        "idx": 7,
+        "Elaboration": {
+            "Description": [
+                "stands on platform",
+                "jumps from platform",
+                "falls into the water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"stands on platform\", \"jumps from platform\", \"falls into the water\"]}"
+    },
+    "FrisbeeCatch": {
+        "idx": 8,
+        "Elaboration": {
+            "Description": [
+                "spots flying frisbee",
+                "judges trajectory",
+                "positions for catch",
+                "extends arm to intercept frisbee",
+                "grabs frisbee with hand"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"spots flying frisbee\", \"judges trajectory\", \"positions for catch\", \"extends arm to intercept frisbee\", \"grabs frisbee with hand\"]}"
+    },
+    "GolfSwing": {
+        "idx": 9,
+        "Elaboration": {
+            "Description": [
+                "Grips the golf club",
+                "Takes a backswing",
+                "Swings the club towards the ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grips the golf club\", \"Takes a backswing\", \"Swings the club towards the ball\"]}"
+    },
+    "HammerThrow": {
+        "idx": 10,
+        "Elaboration": {
+            "Description": [
+                "Grips the hammer",
+                "Spins around",
+                "Throws the hammer"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grips the hammer\", \"Spins around\", \"Throws the hammer\"]}"
+    },
+    "HighJump": {
+        "idx": 11,
+        "Elaboration": {
+            "Description": [
+                "runs towards the bar",
+                "plants one foot on the ground",
+                "launches off the other foot",
+                "clears the bar at maximum height"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"runs towards the bar\", \"plants one foot on the ground\", \"launches off the other foot\", \"clears the bar at maximum height\"]}"
+    },
+    "JavelinThrow": {
+        "idx": 12,
+        "Elaboration": {
+            "Description": [
+                "grasps javelin",
+                "takes a run up",
+                "throws javelin"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"grasps javelin\", \"takes a run up\", \"throws javelin\"]}"
+    },
+    "LongJump": {
+        "idx": 13,
+        "Elaboration": {
+            "Description": [
+                "runs towards the takeoff board",
+                "jumps off the takeoff board",
+                "extends body in mid-air",
+                "lands in the sandpit"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"runs towards the takeoff board\", \"jumps off the takeoff board\", \"extends body in mid-air\", \"lands in the sandpit\"]}"
+    },
+    "PoleVault": {
+        "idx": 14,
+        "Elaboration": {
+            "Description": [
+                "Runs towards the pole",
+                "Plant the pole in the ground",
+                "Jumps off the ground",
+                "Clears the bar",
+                "Lands on the mat"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Runs towards the pole\", \"Plant the pole in the ground\", \"Jumps off the ground\", \"Clears the bar\", \"Lands on the mat\"]}"
+    },
+    "Shotput": {
+        "idx": 15,
+        "Elaboration": {
+            "Description": [
+                "Holds shot",
+                "Rotates body",
+                "Throws shot"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds shot\", \"Rotates body\", \"Throws shot\"]}"
+    },
+    "SoccerPenalty": {
+        "idx": 16,
+        "Elaboration": {
+            "Description": [
+                "Places ball on penalty spot",
+                "Takes a few steps back",
+                "Runs towards the ball",
+                "Kicks the ball towards the goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Places ball on penalty spot\", \"Takes a few steps back\", \"Runs towards the ball\", \"Kicks the ball towards the goal\"]}"
+    },
+    "TennisSwing": {
+        "idx": 17,
+        "Elaboration": {
+            "Description": [
+                "Holds racket",
+                "Swings racket",
+                "Follows through with swing"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds racket\", \"Swings racket\", \"Follows through with swing\"]}"
+    },
+    "ThrowDiscus": {
+        "idx": 18,
+        "Elaboration": {
+            "Description": [
+                "Holds discus",
+                "Spins body",
+                "Throws discus"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds discus\", \"Spins body\", \"Throws discus\"]}"
+    },
+    "VolleyballSpiking": {
+        "idx": 19,
+        "Elaboration": {
+            "Description": [
+                "Approaches the net",
+                "Jumps and extends arm",
+                "Hits the ball with power"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Approaches the net\", \"Jumps and extends arm\", \"Hits the ball with power\"]}"
+    }
+}

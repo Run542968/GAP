@@ -1,0 +1,2334 @@
+{
+    "Applying sunscreen": {
+        "idx": 0,
+        "Elaboration": {
+            "Description": [
+                "Squeezes sunscreen from bottle",
+                "Applies sunscreen onto skin",
+                "Rubs sunscreen evenly on body"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Squeezes sunscreen from bottle\", \"Applies sunscreen onto skin\", \"Rubs sunscreen evenly on body\"]}"
+    },
+    "Arm wrestling": {
+        "idx": 1,
+        "Elaboration": {
+            "Description": [
+                "two participants grab each other's hands",
+                "try to push each other's arm to the table"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"two participants grab each other's hands\", \"try to push each other's arm to the table\"]}"
+    },
+    "Assembling bicycle": {
+        "idx": 2,
+        "Elaboration": {
+            "Description": [
+                "Attach handlebar",
+                "Install seat",
+                "Mount pedals",
+                "Attach wheels",
+                "Connect brakes",
+                "Tighten bolts"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Attach handlebar\", \"Install seat\", \"Mount pedals\", \"Attach wheels\", \"Connect brakes\", \"Tighten bolts\"]}"
+    },
+    "BMX": {
+        "idx": 3,
+        "Elaboration": {
+            "Description": [
+                "rides BMX bike",
+                "performs tricks",
+                "jumps off ramps"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"rides BMX bike\",\"performs tricks\",\"jumps off ramps\"]}"
+    },
+    "Baking cookies": {
+        "idx": 4,
+        "Elaboration": {
+            "Description": [
+                "Prepare dough",
+                "Roll out dough",
+                "Cut out cookie shapes",
+                "Place cookies on baking sheet",
+                "Bake cookies in the oven",
+                "Allow cookies to cool"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Prepare dough\", \"Roll out dough\", \"Cut out cookie shapes\", \"Place cookies on baking sheet\", \"Bake cookies in the oven\", \"Allow cookies to cool\"]}"
+    },
+    "Baton twirling": {
+        "idx": 5,
+        "Elaboration": {
+            "Description": [
+                "Spins baton in hand",
+                "Tosses baton into the air",
+                "Catches baton with other hand"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Spins baton in hand\", \"Tosses baton into the air\", \"Catches baton with other hand\"]}"
+    },
+    "Beach soccer": {
+        "idx": 6,
+        "Elaboration": {
+            "Description": [
+                "kicks the ball",
+                "passes the ball",
+                "dives to save a goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"kicks the ball\", \"passes the ball\", \"dives to save a goal\"]}"
+    },
+    "Beer pong": {
+        "idx": 7,
+        "Elaboration": {
+            "Description": [
+                "Sets up cups",
+                "Throws ping pong balls"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sets up cups\", \"Throws ping pong balls\"]}"
+    },
+    "Blow-drying hair": {
+        "idx": 8,
+        "Elaboration": {
+            "Description": [
+                "Turns on blow dryer",
+                "Directs airflow onto hair",
+                "Moves blow dryer throughout hair"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Turns on blow dryer\", \"Directs airflow onto hair\", \"Moves blow dryer throughout hair\"]}"
+    },
+    "Blowing leaves": {
+        "idx": 9,
+        "Elaboration": {
+            "Description": [
+                "Holds leaf blower",
+                "Turns on leaf blower",
+                "Directs air towards leaves"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds leaf blower\", \"Turns on leaf blower\", \"Directs air towards leaves\"]}"
+    },
+    "Playing ten pins": {
+        "idx": 10,
+        "Elaboration": {
+            "Description": [
+                "Bowls ball towards pins",
+                "Aims at pins",
+                "Hits pins with ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Bowls ball towards pins\", \"Aims at pins\", \"Hits pins with ball\"]}"
+    },
+    "Braiding hair": {
+        "idx": 11,
+        "Elaboration": {
+            "Description": [
+                "sectioning hair",
+                "crossing strands",
+                "twisting strands",
+                "repeating steps"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"sectioning hair\", \"crossing strands\", \"twisting strands\", \"repeating steps\"]}"
+    },
+    "Building sandcastles": {
+        "idx": 12,
+        "Elaboration": {
+            "Description": [
+                "Gathering sand",
+                "Shaping sand",
+                "Decorating sandcastle"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Gathering sand\", \"Shaping sand\", \"Decorating sandcastle\"]}"
+    },
+    "Bullfighting": {
+        "idx": 13,
+        "Elaboration": {
+            "Description": [
+                "fighter confronts bull with a cape",
+                "fighter uses a lance to stab the bull"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"fighter confronts bull with a cape\", \"fighter uses a lance to stab the bull\"]}"
+    },
+    "Calf roping": {
+        "idx": 14,
+        "Elaboration": {
+            "Description": [
+                "Rider chases calf",
+                "Rider throws lasso",
+                "Rider ties calf's legs"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Rider chases calf\", \"Rider throws lasso\", \"Rider ties calf's legs\"]}"
+    },
+    "Camel ride": {
+        "idx": 15,
+        "Elaboration": {
+            "Description": [
+                "Saddle up on the camel",
+                "Hold on to the reins",
+                "Enjoy the ride"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Saddle up on the camel\", \"Hold on to the reins\", \"Enjoy the ride\"]}"
+    },
+    "Canoeing": {
+        "idx": 16,
+        "Elaboration": {
+            "Description": [
+                "paddles with oar",
+                "sits in canoe",
+                "moves through water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"paddles with oar\", \"sits in canoe\", \"moves through water\"]}"
+    },
+    "Capoeira": {
+        "idx": 17,
+        "Elaboration": {
+            "Description": [
+                "performs acrobatic movements",
+                "kicks and strikes",
+                "performs agile spins and flips"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"performs acrobatic movements\", \"kicks and strikes\", \"performs agile spins and flips\"]}"
+    },
+    "Carving jack-o-lanterns": {
+        "idx": 18,
+        "Elaboration": {
+            "Description": [
+                "Choose a pumpkin",
+                "Cut off the top",
+                "Scoop out the seeds",
+                "Carve the eyes, nose, and mouth",
+                "Place a candle inside"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Choose a pumpkin\", \"Cut off the top\", \"Scoop out the seeds\", \"Carve the eyes, nose, and mouth\", \"Place a candle inside\"]}"
+    },
+    "Changing car wheel": {
+        "idx": 19,
+        "Elaboration": {
+            "Description": [
+                "Loosen lug nuts",
+                "Lift car with jack",
+                "Remove flat tire",
+                "Install spare tire",
+                "Tighten lug nuts"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Loosen lug nuts\", \"Lift car with jack\", \"Remove flat tire\", \"Install spare tire\", \"Tighten lug nuts\"]}"
+    },
+    "Cleaning sink": {
+        "idx": 20,
+        "Elaboration": {
+            "Description": [
+                "Turn on the water",
+                "Apply soap or detergent",
+                "Scrub with a sponge or brush",
+                "Rinse with water",
+                "Dry the sink"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Turn on the water\", \"Apply soap or detergent\", \"Scrub with a sponge or brush\", \"Rinse with water\", \"Dry the sink\"]}"
+    },
+    "Clipping cat claws": {
+        "idx": 21,
+        "Elaboration": {
+            "Description": [
+                "Restrain cat",
+                "Gently extend and hold paw",
+                "Trim claws with appropriate tool"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Restrain cat\", \"Gently extend and hold paw\", \"Trim claws with appropriate tool\"]}"
+    },
+    "Croquet": {
+        "idx": 22,
+        "Elaboration": {
+            "Description": [
+                "hits ball with mallet",
+                "passes through wickets",
+                "scores points by hitting other balls",
+                "advances to next wicket",
+                "reaches the final stake"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"hits ball with mallet\", \"passes through wickets\", \"scores points by hitting other balls\", \"advances to next wicket\", \"reaches the final stake\"]}"
+    },
+    "Curling": {
+        "idx": 23,
+        "Elaboration": {
+            "Description": [
+                "Pushes the curling stone",
+                "Sweeps the ice"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Pushes the curling stone\", \"Sweeps the ice\"] }"
+    },
+    "Cutting the grass": {
+        "idx": 24,
+        "Elaboration": {
+            "Description": [
+                "Start the lawnmower",
+                "Push the lawnmower",
+                "Mow the grass"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Start the lawnmower\", \"Push the lawnmower\", \"Mow the grass\"]}"
+    },
+    "Decorating the Christmas tree": {
+        "idx": 25,
+        "Elaboration": {
+            "Description": [
+                "Unbox decorations",
+                "Place tree in stand",
+                "String lights on tree",
+                "Hang ornaments on tree",
+                "Top tree with star or angel"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Unbox decorations\", \"Place tree in stand\", \"String lights on tree\", \"Hang ornaments on tree\", \"Top tree with star or angel\"]}"
+    },
+    "Disc dog": {
+        "idx": 26,
+        "Elaboration": {
+            "Description": [
+                "Throws frisbee towards the dog",
+                "Dog catches the frisbee mid-air",
+                "Dog lands with frisbee in its mouth"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Throws frisbee towards the dog\", \"Dog catches the frisbee mid-air\", \"Dog lands with frisbee in its mouth\"]}"
+    },
+    "Doing a powerbomb": {
+        "idx": 27,
+        "Elaboration": {
+            "Description": [
+                "lifts opponent",
+                "slams opponent onto ground"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"lifts opponent\", \"slams opponent onto ground\"]}"
+    },
+    "Doing crunches": {
+        "idx": 28,
+        "Elaboration": {
+            "Description": [
+                "Lies down on mat",
+                "Bends and lifts upper body",
+                "Repeats movement"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Lies down on mat\", \"Bends and lifts upper body\", \"Repeats movement\"]}"
+    },
+    "Drum corps": {
+        "idx": 29,
+        "Elaboration": {
+            "Description": [
+                "Marches in formation",
+                "Plays musical instruments",
+                "Performs choreographed routines"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Marches in formation\", \"Plays musical instruments\", \"Performs choreographed routines\"]}"
+    },
+    "Elliptical trainer": {
+        "idx": 30,
+        "Elaboration": {
+            "Description": [
+                "steps onto the elliptical machine",
+                "grasps the handles",
+                "starts pedaling with both legs",
+                "increases the resistance level",
+                "maintains a steady pace"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"steps onto the elliptical machine\", \"grasps the handles\", \"starts pedaling with both legs\", \"increases the resistance level\", \"maintains a steady pace\"]}"
+    },
+    "Doing fencing": {
+        "idx": 31,
+        "Elaboration": {
+            "Description": [
+                "Holds the fencing weapon",
+                "Takes the en garde position",
+                "Parries and attacks",
+                "Scores a point"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds the fencing weapon\", \"Takes the en garde position\", \"Parries and attacks\", \"Scores a point\"]}"
+    },
+    "Fixing the roof": {
+        "idx": 32,
+        "Elaboration": {
+            "Description": [
+                "Climbs up ladder",
+                "Inspects roof",
+                "Identifies problem area",
+                "Gathers tools",
+                "Repairs roof",
+                "Secures repaired area"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Climbs up ladder\", \"Inspects roof\", \"Identifies problem area\", \"Gathers tools\", \"Repairs roof\", \"Secures repaired area\"]}"
+    },
+    "Fun sliding down": {
+        "idx": 33,
+        "Elaboration": {
+            "Description": [
+                "Climbs to the top",
+                "Sits down",
+                "Slides down"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Climbs to the top\", \"Sits down\", \"Slides down\"]}"
+    },
+    "Futsal": {
+        "idx": 34,
+        "Elaboration": {
+            "Description": [
+                "Kicks the ball",
+                "Passes the ball",
+                "Dribbles the ball",
+                "Shoots the ball",
+                "Defends the goal",
+                "Scores a goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Kicks the ball\", \"Passes the ball\", \"Dribbles the ball\", \"Shoots the ball\", \"Defends the goal\", \"Scores a goal\"]}"
+    },
+    "Gargling mouthwash": {
+        "idx": 35,
+        "Elaboration": {
+            "Description": [
+                "Takes mouthwash",
+                "Gargles mouthwash",
+                "Spits out mouthwash"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Takes mouthwash\", \"Gargles mouthwash\", \"Spits out mouthwash\"]}"
+    },
+    "Grooming dog": {
+        "idx": 36,
+        "Elaboration": {
+            "Description": [
+                "Brushes fur",
+                "Cleans ears",
+                "Trims nails",
+                "Bathes dog",
+                "Dries dog"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Brushes fur\", \"Cleans ears\", \"Trims nails\", \"Bathes dog\", \"Dries dog\"]}"
+    },
+    "Hand car wash": {
+        "idx": 37,
+        "Elaboration": {
+            "Description": [
+                "Wets the car",
+                "Applies soap",
+                "Scrub the car",
+                "Rinse the car",
+                "Dry the car"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Wets the car\", \"Applies soap\", \"Scrub the car\", \"Rinse the car\", \"Dry the car\"]}"
+    },
+    "Hanging wallpaper": {
+        "idx": 38,
+        "Elaboration": {
+            "Description": [
+                "prepares wall",
+                "measures and cuts wallpaper",
+                "applies wallpaper",
+                "smooths out bubbles",
+                "trims excess wallpaper"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"prepares wall\",\"measures and cuts wallpaper\",\"applies wallpaper\",\"smooths out bubbles\",\"trims excess wallpaper\"]}"
+    },
+    "Having an ice cream": {
+        "idx": 39,
+        "Elaboration": {
+            "Description": [
+                "Holds the ice cream",
+                "Licks the ice cream",
+                "Enjoys the ice cream"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds the ice cream\", \"Licks the ice cream\", \"Enjoys the ice cream\"]}"
+    },
+    "Hitting a pinata": {
+        "idx": 40,
+        "Elaboration": {
+            "Description": [
+                "Blindfolded person swings stick",
+                "Hits pinata",
+                "Candy falls out"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Blindfolded person swings stick\", \"Hits pinata\", \"Candy falls out\"]}"
+    },
+    "Hula hoop": {
+        "idx": 41,
+        "Elaboration": {
+            "Description": [
+                "Swing hips",
+                "Spin hoop around waist"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Swing hips\", \"Spin hoop around waist\"]}"
+    },
+    "Hurling": {
+        "idx": 42,
+        "Elaboration": {
+            "Description": [
+                "Hits the sliotar with the hurl",
+                "Runs with the sliotar",
+                "Throws sliotar towards the goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Hits the sliotar with the hurl\", \"Runs with the sliotar\", \"Throws sliotar towards the goal\"]}"
+    },
+    "Ice fishing": {
+        "idx": 43,
+        "Elaboration": {
+            "Description": [
+                "drills hole in ice",
+                "sets up fishing equipment",
+                "waits for fish to bite",
+                "retrieves caught fish"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"drills hole in ice\", \"sets up fishing equipment\", \"waits for fish to bite\", \"retrieves caught fish\"]}"
+    },
+    "Installing carpet": {
+        "idx": 44,
+        "Elaboration": {
+            "Description": [
+                "Measure and cut carpet",
+                "Prepare floor surface",
+                "Lay down carpet padding",
+                "Unroll and position carpet",
+                "Stretch and secure carpet",
+                "Trim excess carpet edges",
+                "Clean up and finish installation"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Measure and cut carpet\", \"Prepare floor surface\", \"Lay down carpet padding\", \"Unroll and position carpet\", \"Stretch and secure carpet\", \"Trim excess carpet edges\", \"Clean up and finish installation\"]}"
+    },
+    "Kite flying": {
+        "idx": 45,
+        "Elaboration": {
+            "Description": [
+                "Unfolds the kite",
+                "Runs to generate wind",
+                "Lets go of the kite"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Unfolds the kite\", \"Runs to generate wind\", \"Lets go of the kite\"]}"
+    },
+    "Kneeling": {
+        "idx": 46,
+        "Elaboration": {
+            "Description": [
+                "Bends one or both knees",
+                "Lowering body to rest on knees"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Bends one or both knees\", \"Lowering body to rest on knees\"]}"
+    },
+    "Knitting": {
+        "idx": 47,
+        "Elaboration": {
+            "Description": [
+                "Holds knitting needles",
+                "loops yarn around needle",
+                "pulls the yarn through the loop"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds knitting needles\", \"loops yarn around needle\", \"pulls the yarn through the loop\"]}"
+    },
+    "Laying tile": {
+        "idx": 48,
+        "Elaboration": {
+            "Description": [
+                "Prepare the surface",
+                "Apply adhesive",
+                "Place tiles",
+                "Grout the tiles"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Prepare the surface\", \"Apply adhesive\", \"Place tiles\", \"Grout the tiles\"]}"
+    },
+    "Longboarding": {
+        "idx": 49,
+        "Elaboration": {
+            "Description": [
+                "Pushes off with foot",
+                "Gains speed by shifting weight",
+                "Cruises on longboard",
+                "Performs various maneuvers",
+                "Stops longboard using footbrake"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Pushes off with foot\", \"Gains speed by shifting weight\", \"Cruises on longboard\", \"Performs various maneuvers\", \"Stops longboard using footbrake\"]}"
+    },
+    "Making a cake": {
+        "idx": 50,
+        "Elaboration": {
+            "Description": [
+                "Prepares the ingredients",
+                "Mixes the ingredients",
+                "Pours the batter into a baking pan",
+                "Bakes the cake in the oven",
+                "Decorates the cake"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Prepares the ingredients\", \"Mixes the ingredients\", \"Pours the batter into a baking pan\", \"Bakes the cake in the oven\", \"Decorates the cake\"]}"
+    },
+    "Making a lemonade": {
+        "idx": 51,
+        "Elaboration": {
+            "Description": [
+                "squeezes lemons",
+                "adds sugar",
+                "mixes ingredients",
+                "adds water",
+                "stirs mixture",
+                "pours into glass",
+                "adds ice cubes"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"squeezes lemons\", \"adds sugar\", \"mixes ingredients\", \"adds water\", \"stirs mixture\", \"pours into glass\", \"adds ice cubes\"]}"
+    },
+    "Making an omelette": {
+        "idx": 52,
+        "Elaboration": {
+            "Description": [
+                "crack eggs",
+                "beat eggs",
+                "heat pan",
+                "pour eggs into pan",
+                "cook the omelette",
+                "fold the omelette",
+                "plate the omelette"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"crack eggs\", \"beat eggs\", \"heat pan\", \"pour eggs into pan\", \"cook the omelette\", \"fold the omelette\", \"plate the omelette\"]}"
+    },
+    "Mooping floor": {
+        "idx": 53,
+        "Elaboration": {
+            "Description": [
+                "gets a mop",
+                "fills bucket with water",
+                "dips mop in soapy water",
+                "mops floor",
+                "wrings out mop",
+                "repeats until clean"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"gets a mop\", \"fills bucket with water\", \"dips mop in soapy water\", \"mops floor\", \"wrings out mop\", \"repeats until clean\"]}"
+    },
+    "Painting fence": {
+        "idx": 54,
+        "Elaboration": {
+            "Description": [
+                "Holds paintbrush",
+                "Dips brush in paint",
+                "Applies paint to fence"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds paintbrush\", \"Dips brush in paint\", \"Applies paint to fence\"]}"
+    },
+    "Painting furniture": {
+        "idx": 55,
+        "Elaboration": {
+            "Description": [
+                "Prepares furniture surface",
+                "Applies primer",
+                "Applies base coat",
+                "Applies layers of paint",
+                "Applies protective finish"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Prepares furniture surface\",\"Applies primer\",\"Applies base coat\",\"Applies layers of paint\",\"Applies protective finish\"]}"
+    },
+    "Peeling potatoes": {
+        "idx": 56,
+        "Elaboration": {
+            "Description": [
+                "Rinse potatoes",
+                "Peel potatoes with a knife",
+                "Rinse peeled potatoes"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Rinse potatoes\", \"Peel potatoes with a knife\", \"Rinse peeled potatoes\"]}"
+    },
+    "Plastering": {
+        "idx": 57,
+        "Elaboration": {
+            "Description": [
+                "Prepares the wall surface",
+                "Applies the plaster coat",
+                "Smooths and levels the plaster"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Prepares the wall surface\", \"Applies the plaster coat\", \"Smooths and levels the plaster\"]}"
+    },
+    "Playing beach volleyball": {
+        "idx": 58,
+        "Elaboration": {
+            "Description": [
+                "Serves the ball",
+                "Sets the ball",
+                "Spikes the ball",
+                "Dives for the ball",
+                "Blocks the ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Serves the ball\", \"Sets the ball\", \"Spikes the ball\", \"Dives for the ball\", \"Blocks the ball\"]}"
+    },
+    "Playing blackjack": {
+        "idx": 59,
+        "Elaboration": {
+            "Description": [
+                "dealing cards",
+                "making bets",
+                "drawing cards",
+                "calculating hand value",
+                "deciding next move"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"dealing cards\",\"making bets\",\"drawing cards\",\"calculating hand value\",\"deciding next move\"]}"
+    },
+    "Playing congas": {
+        "idx": 60,
+        "Elaboration": {
+            "Description": [
+                "Sits on congas",
+                "Plays rhythmic patterns",
+                "Uses hands to strike congas"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sits on congas\", \"Plays rhythmic patterns\", \"Uses hands to strike congas\"]}"
+    },
+    "Playing drums": {
+        "idx": 61,
+        "Elaboration": {
+            "Description": [
+                "sits behind drum set",
+                "holds drumsticks",
+                "hits drums with drumsticks"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"sits behind drum set\",\"holds drumsticks\",\"hits drums with drumsticks\"]}"
+    },
+    "Playing ice hockey": {
+        "idx": 62,
+        "Elaboration": {
+            "Description": [
+                "Skates on ice",
+                "Hits the puck",
+                "Scores a goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Skates on ice\", \"Hits the puck\", \"Scores a goal\"]}"
+    },
+    "Playing pool": {
+        "idx": 63,
+        "Elaboration": {
+            "Description": [
+                "Holding cue stick",
+                "Aiming at balls",
+                "Striking cue ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holding cue stick\", \"Aiming at balls\", \"Striking cue ball\"]}"
+    },
+    "Playing rubik cube": {
+        "idx": 64,
+        "Elaboration": {
+            "Description": [
+                "Holding Rubik's cube",
+                "Rotating cube to align colors",
+                "Solving one layer at a time"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Holding Rubik's cube\",\"Rotating cube to align colors\",\"Solving one layer at a time\"]}"
+    },
+    "Powerbocking": {
+        "idx": 65,
+        "Elaboration": {
+            "Description": [
+                "Wear powerbocking stilts",
+                "Take small steps to gain balance",
+                "Begin hopping and jumping with powerbocks"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Wear powerbocking stilts\", \"Take small steps to gain balance\", \"Begin hopping and jumping with powerbocks\"]}"
+    },
+    "Putting in contact lenses": {
+        "idx": 66,
+        "Elaboration": {
+            "Description": [
+                "Washes hands",
+                "Holds contact lens with fingertips",
+                "Places lens on eye",
+                "Blinks to adjust lens"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Washes hands\", \"Holds contact lens with fingertips\", \"Places lens on eye\", \"Blinks to adjust lens\"]}"
+    },
+    "Putting on shoes": {
+        "idx": 67,
+        "Elaboration": {
+            "Description": [
+                "Sits down",
+                "Loosens shoelaces",
+                "Removes old shoes",
+                "Puts on new shoes",
+                "Ties shoelaces",
+                "Stands up"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sits down\", \"Loosens shoelaces\", \"Removes old shoes\", \"Puts on new shoes\", \"Ties shoelaces\", \"Stands up\"]}"
+    },
+    "Rafting": {
+        "idx": 68,
+        "Elaboration": {
+            "Description": [
+                "Gets on the raft",
+                "Paddles on the water",
+                "Navigates through rapids"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Gets on the raft\", \"Paddles on the water\", \"Navigates through rapids\"]}"
+    },
+    "Raking leaves": {
+        "idx": 69,
+        "Elaboration": {
+            "Description": [
+                "Gathers leaves into a pile",
+                "Uses rake to collect leaves",
+                "Transfers leaves into a bag or compost bin"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Gathers leaves into a pile\", \"Uses rake to collect leaves\", \"Transfers leaves into a bag or compost bin\"]}"
+    },
+    "Removing ice from car": {
+        "idx": 70,
+        "Elaboration": {
+            "Description": [
+                "Scraping ice off windshield",
+                "Removing ice from car windows",
+                "Clearing ice off car mirrors"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Scraping ice off windshield\",\"Removing ice from car windows\",\"Clearing ice off car mirrors\"]}"
+    },
+    "Riding bumper cars": {
+        "idx": 71,
+        "Elaboration": {
+            "Description": [
+                "Gets into the bumper car",
+                "Drives around the bumper car track",
+                "Bumps into other cars"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Gets into the bumper car\", \"Drives around the bumper car track\", \"Bumps into other cars\"]}"
+    },
+    "River tubing": {
+        "idx": 72,
+        "Elaboration": {
+            "Description": [
+                "Sits on tube",
+                "Floats down the river",
+                "Navigates around obstacles"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sits on tube\", \"Floats down the river\", \"Navigates around obstacles\"]}"
+    },
+    "Rock-paper-scissors": {
+        "idx": 73,
+        "Elaboration": {
+            "Description": [
+                "Forms a fist",
+                "Opens hand flat",
+                "Holds hand with two fingers extended"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Forms a fist\", \"Opens hand flat\", \"Holds hand with two fingers extended\"]}"
+    },
+    "Rollerblading": {
+        "idx": 74,
+        "Elaboration": {
+            "Description": [
+                "puts on rollerblades",
+                "starts skating",
+                "performs tricks and maneuvers"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"puts on rollerblades\", \"starts skating\", \"performs tricks and maneuvers\"]}"
+    },
+    "Roof shingle removal": {
+        "idx": 75,
+        "Elaboration": {
+            "Description": [
+                "Climbs onto the roof",
+                "Removes shingles from the roof"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Climbs onto the roof\", \"Removes shingles from the roof\"]}"
+    },
+    "Rope skipping": {
+        "idx": 76,
+        "Elaboration": {
+            "Description": [
+                "Holds the rope",
+                "Swings the rope",
+                "Jumps over the rope"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds the rope\", \"Swings the rope\", \"Jumps over the rope\"]}"
+    },
+    "Running a marathon": {
+        "idx": 77,
+        "Elaboration": {
+            "Description": [
+                "Starts running",
+                "Keeps a steady pace",
+                "Endurance training",
+                "Crosses the finish line"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Starts running\", \"Keeps a steady pace\", \"Endurance training\", \"Crosses the finish line\"]}"
+    },
+    "Scuba diving": {
+        "idx": 78,
+        "Elaboration": {
+            "Description": [
+                "puts on scuba gear",
+                "dives into water",
+                "explore underwater"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"puts on scuba gear\", \"dives into water\", \"explore underwater\"]}"
+    },
+    "Sharpening knives": {
+        "idx": 79,
+        "Elaboration": {
+            "Description": [
+                "Hold knife at a specific angle",
+                "Run knife along sharpening stone",
+                "Repeat until desired sharpness is achieved"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Hold knife at a specific angle\", \"Run knife along sharpening stone\", \"Repeat until desired sharpness is achieved\"]}"
+    },
+    "Shuffleboard": {
+        "idx": 80,
+        "Elaboration": {
+            "Description": [
+                "slides the puck",
+                "aims for highest score",
+                "uses cues to control speed and direction"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"slides the puck\", \"aims for highest score\", \"uses cues to control speed and direction\"]}"
+    },
+    "Skiing": {
+        "idx": 81,
+        "Elaboration": {
+            "Description": [
+                "Put on skis",
+                "Slide down the slope",
+                "Maintain balance"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Put on skis\", \"Slide down the slope\", \"Maintain balance\"]}"
+    },
+    "Slacklining": {
+        "idx": 82,
+        "Elaboration": {
+            "Description": [
+                "Secures slackline between two anchor points",
+                "Steps onto the slackline",
+                "Balances and walks along the slackline",
+                "Maintains balance and stability",
+                "Steps off the slackline"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Secures slackline between two anchor points\", \"Steps onto the slackline\", \"Balances and walks along the slackline\", \"Maintains balance and stability\", \"Steps off the slackline\"]}"
+    },
+    "Snow tubing": {
+        "idx": 83,
+        "Elaboration": {
+            "Description": [
+                "Sit on tube",
+                "Slide down the hill",
+                "Enjoy the ride"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sit on tube\", \"Slide down the hill\", \"Enjoy the ride\"]}"
+    },
+    "Snowboarding": {
+        "idx": 84,
+        "Elaboration": {
+            "Description": [
+                "puts on snowboard",
+                "rides down snowy slope",
+                "performs tricks on the snowboard"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"puts on snowboard\", \"rides down snowy slope\", \"performs tricks on the snowboard\"]}"
+    },
+    "Spread mulch": {
+        "idx": 85,
+        "Elaboration": {
+            "Description": [
+                "Spreads tarp on the ground",
+                "Pours mulch onto tarp",
+                "Uses rake to spread mulch evenly"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Spreads tarp on the ground\", \"Pours mulch onto tarp\", \"Uses rake to spread mulch evenly\"]}"
+    },
+    "Sumo": {
+        "idx": 86,
+        "Elaboration": {
+            "Description": [
+                "Bow to opponent",
+                "Charge towards opponent",
+                "Push opponent out of the ring"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Bow to opponent\", \"Charge towards opponent\", \"Push opponent out of the ring\"]}"
+    },
+    "Surfing": {
+        "idx": 87,
+        "Elaboration": {
+            "Description": [
+                "Paddles to catch a wave",
+                "Stands up on the surfboard",
+                "Rides the wave"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Paddles to catch a wave\", \"Stands up on the surfboard\", \"Rides the wave\"]}"
+    },
+    "Swimming": {
+        "idx": 88,
+        "Elaboration": {
+            "Description": [
+                "Enters the water",
+                "Floating on the water surface",
+                "Moving arms and legs to propel forward"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Enters the water\", \"Floating on the water surface\", \"Moving arms and legs to propel forward\"]}"
+    },
+    "Swinging at the playground": {
+        "idx": 89,
+        "Elaboration": {
+            "Description": [
+                "Grabs onto the swing",
+                "Pumps legs back and forth",
+                "Enjoys the swinging motion"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grabs onto the swing\", \"Pumps legs back and forth\", \"Enjoys the swinging motion\"]}"
+    },
+    "Table soccer": {
+        "idx": 90,
+        "Elaboration": {
+            "Description": [
+                "Flicks ball",
+                "Controls rods",
+                "Scores goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Flicks ball\", \"Controls rods\", \"Scores goal\"]}"
+    },
+    "Throwing darts": {
+        "idx": 91,
+        "Elaboration": {
+            "Description": [
+                "Grabs dart",
+                "Aims at target",
+                "Throws dart"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grabs dart\", \"Aims at target\", \"Throws dart\"]}"
+    },
+    "Trimming branches or hedges": {
+        "idx": 92,
+        "Elaboration": {
+            "Description": [
+                "Inspecting the branches or hedges",
+                "Identifying overgrown areas",
+                "Trimming the branches or hedges",
+                "Collecting and disposing of trimmed branches"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Inspecting the branches or hedges\", \"Identifying overgrown areas\", \"Trimming the branches or hedges\", \"Collecting and disposing of trimmed branches\"]}"
+    },
+    "Tug of war": {
+        "idx": 93,
+        "Elaboration": {
+            "Description": [
+                "Grips the rope",
+                "Pulls the rope",
+                "Takes position in a team"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grips the rope\", \"Pulls the rope\", \"Takes position in a team\"]}"
+    },
+    "Using the monkey bar": {
+        "idx": 94,
+        "Elaboration": {
+            "Description": [
+                "Grabs the first bar",
+                "Swings to the second bar",
+                "Repeats swinging to subsequent bars"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grabs the first bar\", \"Swings to the second bar\", \"Repeats swinging to subsequent bars\"]}"
+    },
+    "Using the rowing machine": {
+        "idx": 95,
+        "Elaboration": {
+            "Description": [
+                "grabs rowing handle",
+                "sits on rowing machine seat",
+                "initiates rowing motion",
+                "brings handle towards chest",
+                "extends legs and pushes back"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"grabs rowing handle\",\"sits on rowing machine seat\",\"initiates rowing motion\",\"brings handle towards chest\",\"extends legs and pushes back\"]}"
+    },
+    "Wakeboarding": {
+        "idx": 96,
+        "Elaboration": {
+            "Description": [
+                "puts on wakeboard",
+                "holds onto rope",
+                "stands up on wakeboard",
+                "rides the water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"puts on wakeboard\", \"holds onto rope\", \"stands up on wakeboard\", \"rides the water\"]}"
+    },
+    "Waterskiing": {
+        "idx": 97,
+        "Elaboration": {
+            "Description": [
+                "puts on skis",
+                "holds onto handle",
+                "leans back"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"puts on skis\", \"holds onto handle\", \"leans back\"] }"
+    },
+    "Waxing skis": {
+        "idx": 98,
+        "Elaboration": {
+            "Description": [
+                "Select appropriate wax",
+                "Apply wax to skis",
+                "Use waxing iron to melt wax onto skis",
+                "Let the wax cool",
+                "Scrape off excess wax",
+                "Buff skis for a smooth finish"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Select appropriate wax\", \"Apply wax to skis\", \"Use waxing iron to melt wax onto skis\", \"Let the wax cool\", \"Scrape off excess wax\", \"Buff skis for a smooth finish\"]}"
+    },
+    "Welding": {
+        "idx": 99,
+        "Elaboration": {
+            "Description": [
+                "Puts on safety gear",
+                "Turns on welding machine",
+                "Joins metal pieces with weld"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Puts on safety gear\", \"Turns on welding machine\", \"Joins metal pieces with weld\"] }"
+    },
+    "Drinking coffee": {
+        "idx": 100,
+        "Elaboration": {
+            "Description": [
+                "picks up coffee mug",
+                "takes a sip",
+                "puts down coffee mug"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"picks up coffee mug\", \"takes a sip\", \"puts down coffee mug\"]}"
+    },
+    "Zumba": {
+        "idx": 101,
+        "Elaboration": {
+            "Description": [
+                "warm-up",
+                "follows instructor's dance steps",
+                "dances to music"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"warm-up\", \"follows instructor's dance steps\", \"dances to music\"]}"
+    },
+    "Doing kickboxing": {
+        "idx": 102,
+        "Elaboration": {
+            "Description": [
+                "Warm up",
+                "Put on boxing gloves",
+                "Throw punches and kicks",
+                "Defend and block",
+                "Stay agile and maintain balance",
+                "Follow instructor's commands",
+                "Practice different techniques"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Warm up\", \"Put on boxing gloves\", \"Throw punches and kicks\", \"Defend and block\", \"Stay agile and maintain balance\", \"Follow instructor's commands\", \"Practice different techniques\"]}"
+    },
+    "Doing karate": {
+        "idx": 103,
+        "Elaboration": {
+            "Description": [
+                "Assumes karate stance",
+                "Throws punches and kicks",
+                "Performs karate techniques",
+                "Delivers strikes and blocks"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Assumes karate stance\", \"Throws punches and kicks\", \"Performs karate techniques\", \"Delivers strikes and blocks\"]}"
+    },
+    "Tango": {
+        "idx": 104,
+        "Elaboration": {
+            "Description": [
+                "Couples embrace",
+                "Dance in rhythm",
+                "Perform intricate steps"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Couples embrace\", \"Dance in rhythm\", \"Perform intricate steps\"]}"
+    },
+    "Putting on makeup": {
+        "idx": 105,
+        "Elaboration": {
+            "Description": [
+                "cleans face",
+                "applies foundation",
+                "adds eye makeup",
+                "applies lipstick"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"cleans face\", \"applies foundation\", \"adds eye makeup\", \"applies lipstick\"]}"
+    },
+    "High jump": {
+        "idx": 106,
+        "Elaboration": {
+            "Description": [
+                "runs towards the jump point",
+                "bends knees and swings arms",
+                "takes off with both legs",
+                "extends body upwards",
+                "clears the bar",
+                "lands on the mat"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"runs towards the jump point\", \"bends knees and swings arms\", \"takes off with both legs\", \"extends body upwards\", \"clears the bar\", \"lands on the mat\"]}"
+    },
+    "Playing bagpipes": {
+        "idx": 107,
+        "Elaboration": {
+            "Description": [
+                "Hold and inflate bagpipes",
+                "Play notes on the bagpipes",
+                "Control airflow and finger placement"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Hold and inflate bagpipes\", \"Play notes on the bagpipes\", \"Control airflow and finger placement\"]}"
+    },
+    "Cheerleading": {
+        "idx": 108,
+        "Elaboration": {
+            "Description": [
+                "forms human pyramid",
+                "jumps and claps",
+                "lifts cheerleader in the air"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"forms human pyramid\", \"jumps and claps\", \"lifts cheerleader in the air\"]}"
+    },
+    "Wrapping presents": {
+        "idx": 109,
+        "Elaboration": {
+            "Description": [
+                "measures and cuts wrapping paper",
+                "places gift on the wrapping paper",
+                "folds and tapes the edges of the wrapping paper",
+                "ties ribbon around the wrapped gift"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"measures and cuts wrapping paper\", \"places gift on the wrapping paper\", \"folds and tapes the edges of the wrapping paper\", \"ties ribbon around the wrapped gift\"]}"
+    },
+    "Cricket": {
+        "idx": 110,
+        "Elaboration": {
+            "Description": [
+                "Bowls",
+                "Bats",
+                "Fields",
+                "Catches",
+                "Runs",
+                "Takes wickets"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Bowls\",\"Bats\",\"Fields\",\"Catches\",\"Runs\",\"Takes wickets\"]}"
+    },
+    "Clean and jerk": {
+        "idx": 111,
+        "Elaboration": {
+            "Description": [
+                "Grasp the barbell",
+                "Clean the barbell to shoulders",
+                "Jerk the barbell overhead"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Grasp the barbell\", \"Clean the barbell to shoulders\", \"Jerk the barbell overhead\"]}"
+    },
+    "Preparing pasta": {
+        "idx": 112,
+        "Elaboration": {
+            "Description": [
+                "Boil water",
+                "Add pasta",
+                "Cook until al dente",
+                "Drain pasta",
+                "Add sauce"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Boil water\", \"Add pasta\", \"Cook until al dente\", \"Drain pasta\", \"Add sauce\"]}"
+    },
+    "Bathing dog": {
+        "idx": 113,
+        "Elaboration": {
+            "Description": [
+                "Fill bathtub with warm water",
+                "Place dog in bathtub",
+                "Wet dog's fur with water",
+                "Apply dog shampoo to fur",
+                "Massage shampoo into fur",
+                "Rinse off shampoo with water",
+                "Dry dog with towel",
+                "Brush dog's fur"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Fill bathtub with warm water\", \"Place dog in bathtub\", \"Wet dog's fur with water\", \"Apply dog shampoo to fur\", \"Massage shampoo into fur\", \"Rinse off shampoo with water\", \"Dry dog with towel\", \"Brush dog's fur\"]}"
+    },
+    "Discus throw": {
+        "idx": 114,
+        "Elaboration": {
+            "Description": [
+                "Grips discus",
+                "Rotates body",
+                "Throws discus"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Grips discus\", \"Rotates body\", \"Throws discus\"]}"
+    },
+    "Playing field hockey": {
+        "idx": 115,
+        "Elaboration": {
+            "Description": [
+                "Holds hockey stick",
+                "Hits the ball",
+                "Runs with the ball",
+                "Defends the goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds hockey stick\", \"Hits the ball\", \"Runs with the ball\", \"Defends the goal\"]}"
+    },
+    "Grooming horse": {
+        "idx": 116,
+        "Elaboration": {
+            "Description": [
+                "Brushes horse's coat",
+                "Cleans horse's hooves",
+                "Combs horse's mane and tail"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Brushes horse's coat\", \"Cleans horse's hooves\", \"Combs horse's mane and tail\"]}"
+    },
+    "Preparing salad": {
+        "idx": 117,
+        "Elaboration": {
+            "Description": [
+                "Washing vegetables",
+                "Chopping vegetables",
+                "Mixing dressing"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Washing vegetables\", \"Chopping vegetables\", \"Mixing dressing\"]}"
+    },
+    "Playing harmonica": {
+        "idx": 118,
+        "Elaboration": {
+            "Description": [
+                "Hold harmonica",
+                "Pucker lips",
+                "Blow and suck air",
+                "Move harmonica in and out"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Hold harmonica\", \"Pucker lips\", \"Blow and suck air\", \"Move harmonica in and out\"]}"
+    },
+    "Playing saxophone": {
+        "idx": 119,
+        "Elaboration": {
+            "Description": [
+                "Holding saxophone",
+                "Blowing into saxophone",
+                "Pressing keys",
+                "Moving fingers on keys"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holding saxophone\", \"Blowing into saxophone\", \"Pressing keys\", \"Moving fingers on keys\"]}"
+    },
+    "Chopping wood": {
+        "idx": 120,
+        "Elaboration": {
+            "Description": [
+                "holds axe",
+                "swings axe",
+                "splits wood"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"holds axe\", \"swings axe\", \"splits wood\"]}"
+    },
+    "Washing face": {
+        "idx": 121,
+        "Elaboration": {
+            "Description": [
+                "Wets face",
+                "Applies soap",
+                "Rinses face"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Wets face\", \"Applies soap\", \"Rinses face\"]}"
+    },
+    "Using the pommel horse": {
+        "idx": 122,
+        "Elaboration": {
+            "Description": [
+                "Approaches pommel horse",
+                "Mounts onto pommel horse",
+                "Executes routine on pommel horse"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Approaches pommel horse\", \"Mounts onto pommel horse\", \"Executes routine on pommel horse\"]}"
+    },
+    "Javelin throw": {
+        "idx": 123,
+        "Elaboration": {
+            "Description": [
+                "Runs with javelin",
+                "Builds momentum",
+                "Throws javelin"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Runs with javelin\", \"Builds momentum\", \"Throws javelin\"]}"
+    },
+    "Spinning": {
+        "idx": 124,
+        "Elaboration": {
+            "Description": [
+                "rotates rapidly in a circular motion"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"rotates rapidly in a circular motion\"]}"
+    },
+    "Ping-pong": {
+        "idx": 125,
+        "Elaboration": {
+            "Description": [
+                "Holds paddle",
+                "Hits ball with paddle",
+                "Serves ball",
+                "Returns ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds paddle\", \"Hits ball with paddle\", \"Serves ball\", \"Returns ball\"]}"
+    },
+    "Making a sandwich": {
+        "idx": 126,
+        "Elaboration": {
+            "Description": [
+                "Gathers ingredients",
+                "Assembles ingredients",
+                "Cuts bread",
+                "Adds fillings",
+                "Closes sandwich"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Gathers ingredients\", \"Assembles ingredients\", \"Cuts bread\", \"Adds fillings\", \"Closes sandwich\"]}"
+    },
+    "Brushing hair": {
+        "idx": 127,
+        "Elaboration": {
+            "Description": [
+                "Holds brush",
+                "Brushes hair",
+                "Repeats brushing motion"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds brush\", \"Brushes hair\", \"Repeats brushing motion\"]}"
+    },
+    "Playing guitarra": {
+        "idx": 128,
+        "Elaboration": {
+            "Description": [
+                "holds guitar",
+                "strums strings",
+                "changes chords",
+                "plays melody"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"holds guitar\", \"strums strings\", \"changes chords\", \"plays melody\"]}"
+    },
+    "Doing step aerobics": {
+        "idx": 129,
+        "Elaboration": {
+            "Description": [
+                "follows the instructor's steps",
+                "steps up and down on the platform",
+                "performs choreographed moves at a fast pace"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"follows the instructor's steps\", \"steps up and down on the platform\", \"performs choreographed moves at a fast pace\"]}"
+    },
+    "Drinking beer": {
+        "idx": 130,
+        "Elaboration": {
+            "Description": [
+                "opens beer can/bottle",
+                "raises beer to mouth",
+                "takes a sip"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"opens beer can/bottle\", \"raises beer to mouth\", \"takes a sip\"]}"
+    },
+    "Playing polo": {
+        "idx": 131,
+        "Elaboration": {
+            "Description": [
+                "Riding horse",
+                "Hitting ball with mallet"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Riding horse\", \"Hitting ball with mallet\"]}"
+    },
+    "Snatch": {
+        "idx": 132,
+        "Elaboration": {
+            "Description": [
+                "Grabs an object quickly"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grabs an object quickly\"]}"
+    },
+    "Paintball": {
+        "idx": 133,
+        "Elaboration": {
+            "Description": [
+                "Takes aim",
+                "Fires paintball",
+                "Ducks for cover"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Takes aim\", \"Fires paintball\", \"Ducks for cover\"]}"
+    },
+    "Long jump": {
+        "idx": 134,
+        "Elaboration": {
+            "Description": [
+                "Starts running",
+                "Builds momentum",
+                "Leaps forward with force"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Starts running\", \"Builds momentum\", \"Leaps forward with force\"]}"
+    },
+    "Cleaning windows": {
+        "idx": 135,
+        "Elaboration": {
+            "Description": [
+                "Spray window cleaner",
+                "Wipe with squeegee",
+                "Dry with a lint-free cloth"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Spray window cleaner\", \"Wipe with squeegee\", \"Dry with a lint-free cloth\"]}"
+    },
+    "Brushing teeth": {
+        "idx": 136,
+        "Elaboration": {
+            "Description": [
+                "wets toothbrush",
+                "applies toothpaste",
+                "brushes teeth",
+                "rinses mouth"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"wets toothbrush\", \"applies toothpaste\", \"brushes teeth\", \"rinses mouth\"]}"
+    },
+    "Playing flauta": {
+        "idx": 137,
+        "Elaboration": {
+            "Description": [
+                "Holds flauta",
+                "Blows into flauta",
+                "Produces music notes"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds flauta\", \"Blows into flauta\", \"Produces music notes\"]}"
+    },
+    "Tennis serve with ball bouncing": {
+        "idx": 138,
+        "Elaboration": {
+            "Description": [
+                "Holds tennis racket",
+                "Tosses ball in the air",
+                "Hits ball with racket"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds tennis racket\", \"Tosses ball in the air\", \"Hits ball with racket\"]}"
+    },
+    "Bungee jumping": {
+        "idx": 139,
+        "Elaboration": {
+            "Description": [
+                "ties safety harness",
+                "jumps off platform",
+                "freefalling",
+                "bounces back up"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"ties safety harness\", \"jumps off platform\", \"freefalling\", \"bounces back up\"]}"
+    },
+    "Triple jump": {
+        "idx": 140,
+        "Elaboration": {
+            "Description": [
+                "Approach",
+                "Hop",
+                "Step",
+                "Jump"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Approach\", \"Hop\", \"Step\", \"Jump\"]}"
+    },
+    "Horseback riding": {
+        "idx": 141,
+        "Elaboration": {
+            "Description": [
+                "mounts the horse",
+                "rides the horse",
+                "dismounts the horse"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"mounts the horse\",\"rides the horse\",\"dismounts the horse\"]}"
+    },
+    "Layup drill in basketball": {
+        "idx": 142,
+        "Elaboration": {
+            "Description": [
+                "dribbles towards the basket",
+                "takes a step and jumps",
+                "shoots the ball towards the basket"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"dribbles towards the basket\", \"takes a step and jumps\", \"shoots the ball towards the basket\"]}"
+    },
+    "Vacuuming floor": {
+        "idx": 143,
+        "Elaboration": {
+            "Description": [
+                "plug in vacuum",
+                "move vacuum back and forth",
+                "empty dustbin"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"plug in vacuum\", \"move vacuum back and forth\", \"empty dustbin\"]}"
+    },
+    "Cleaning shoes": {
+        "idx": 144,
+        "Elaboration": {
+            "Description": [
+                "Removes shoelaces",
+                "Brushes off dirt from shoes",
+                "Applies shoe cleaner",
+                "Uses brush to scrub shoes",
+                "Wipes off excess cleaner",
+                "Re-laces shoes if necessary"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Removes shoelaces\", \"Brushes off dirt from shoes\", \"Applies shoe cleaner\", \"Uses brush to scrub shoes\", \"Wipes off excess cleaner\", \"Re-laces shoes if necessary\"]}"
+    },
+    "Doing nails": {
+        "idx": 145,
+        "Elaboration": {
+            "Description": [
+                "prepares nails",
+                "applies nail polish",
+                "adds nail decorations",
+                "applies top coat"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"prepares nails\", \"applies nail polish\", \"adds nail decorations\", \"applies top coat\"]}"
+    },
+    "Shot put": {
+        "idx": 146,
+        "Elaboration": {
+            "Description": [
+                "holds shot put",
+                "rotates body",
+                "throws shot put"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"holds shot put\", \"rotates body\", \"throws shot put\"]}"
+    },
+    "Fixing bicycle": {
+        "idx": 147,
+        "Elaboration": {
+            "Description": [
+                "Check tire pressure",
+                "Adjust brakes",
+                "Tighten bolts",
+                "Oil the chain",
+                "Adjust gears"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Check tire pressure\", \"Adjust brakes\", \"Tighten bolts\", \"Oil the chain\", \"Adjust gears\"]}"
+    },
+    "Washing hands": {
+        "idx": 148,
+        "Elaboration": {
+            "Description": [
+                "Turn on the faucet",
+                "Wet your hands",
+                "Apply soap",
+                "Rub hands together",
+                "Rinse hands",
+                "Dry hands"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Turn on the faucet\", \"Wet your hands\", \"Apply soap\", \"Rub hands together\", \"Rinse hands\", \"Dry hands\"]}"
+    },
+    "Ironing clothes": {
+        "idx": 149,
+        "Elaboration": {
+            "Description": [
+                "Heat iron",
+                "Place clothes on ironing board",
+                "Smooth out wrinkles",
+                "Iron each section",
+                "Repeat for other clothes"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Heat iron\", \"Place clothes on ironing board\", \"Smooth out wrinkles\", \"Iron each section\", \"Repeat for other clothes\"]}"
+    },
+    "Using the balance beam": {
+        "idx": 150,
+        "Elaboration": {
+            "Description": [
+                "Steps onto balance beam",
+                "Balances on beam",
+                "Steps off balance beam"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Steps onto balance beam\", \"Balances on beam\", \"Steps off balance beam\"]}"
+    },
+    "Shoveling snow": {
+        "idx": 151,
+        "Elaboration": {
+            "Description": [
+                "grabs shovel",
+                "lifts snow with shovel",
+                "throws snow to the side"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"grabs shovel\", \"lifts snow with shovel\", \"throws snow to the side\"]}"
+    },
+    "Tumbling": {
+        "idx": 152,
+        "Elaboration": {
+            "Description": [
+                "Run towards designated area",
+                "Perform a series of acrobatic flips and rotations",
+                "Land on feet"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Run towards designated area\", \"Perform a series of acrobatic flips and rotations\", \"Land on feet\"]}"
+    },
+    "Using parallel bars": {
+        "idx": 153,
+        "Elaboration": {
+            "Description": [
+                "Grabs the parallel bars",
+                "Lifts himself/herself up",
+                "Balances on the parallel bars",
+                "Performs exercises on the parallel bars",
+                "Finishes the exercise and releases the parallel bars"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grabs the parallel bars\", \"Lifts himself/herself up\", \"Balances on the parallel bars\", \"Performs exercises on the parallel bars\", \"Finishes the exercise and releases the parallel bars\"]}"
+    },
+    "Getting a tattoo": {
+        "idx": 154,
+        "Elaboration": {
+            "Description": [
+                "choosing design",
+                "preparing the skin",
+                "applying stencil",
+                "getting inked",
+                "aftercare"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"choosing design\", \"preparing the skin\", \"applying stencil\", \"getting inked\", \"aftercare\"]}"
+    },
+    "Rock climbing": {
+        "idx": 155,
+        "Elaboration": {
+            "Description": [
+                "finds a suitable rock wall",
+                "puts on climbing gear",
+                "ascends the rock wall",
+                "utilizes handholds and footholds",
+                "reaches the destination"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"finds a suitable rock wall\", \"puts on climbing gear\", \"ascends the rock wall\", \"utilizes handholds and footholds\", \"reaches the destination\"]}"
+    },
+    "Smoking hookah": {
+        "idx": 156,
+        "Elaboration": {
+            "Description": [
+                "Sets up hookah",
+                "Lights charcoal",
+                "Adds flavored tobacco",
+                "Inhales smoke through hose"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sets up hookah\", \"Lights charcoal\", \"Adds flavored tobacco\", \"Inhales smoke through hose\"]}"
+    },
+    "Shaving": {
+        "idx": 157,
+        "Elaboration": {
+            "Description": [
+                "Wet face",
+                "Apply shaving cream",
+                "Shave with razor",
+                "Rinse face"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Wet face\", \"Apply shaving cream\", \"Shave with razor\", \"Rinse face\"]}"
+    },
+    "Getting a piercing": {
+        "idx": 158,
+        "Elaboration": {
+            "Description": [
+                "choosing a piercing",
+                "cleaning the piercing area",
+                "getting the piercing done"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"choosing a piercing\", \"cleaning the piercing area\", \"getting the piercing done\"]}"
+    },
+    "Springboard diving": {
+        "idx": 159,
+        "Elaboration": {
+            "Description": [
+                "stands on the springboard",
+                "jumps off the springboard",
+                "performs a dive"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"stands on the springboard\", \"jumps off the springboard\", \"performs a dive\"]}"
+    },
+    "Playing squash": {
+        "idx": 160,
+        "Elaboration": {
+            "Description": [
+                "Holds racket",
+                "Hits ball",
+                "Moves in the court"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds racket\", \"Hits ball\", \"Moves in the court\"]}"
+    },
+    "Playing piano": {
+        "idx": 161,
+        "Elaboration": {
+            "Description": [
+                "Sits at the piano bench",
+                "Places fingers on the keys",
+                "Presses the keys to produce sound"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sits at the piano bench\", \"Places fingers on the keys\", \"Presses the keys to produce sound\"]}"
+    },
+    "Dodgeball": {
+        "idx": 162,
+        "Elaboration": {
+            "Description": [
+                "Throws ball",
+                "Ducks",
+                "Catches ball"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Throws ball\", \"Ducks\", \"Catches ball\"]}"
+    },
+    "Smoking a cigarette": {
+        "idx": 163,
+        "Elaboration": {
+            "Description": [
+                "Takes out a cigarette",
+                "Lights the cigarette",
+                "Inhales and exhales smoke"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Takes out a cigarette\", \"Lights the cigarette\", \"Inhales and exhales smoke\"]}"
+    },
+    "Sailing": {
+        "idx": 164,
+        "Elaboration": {
+            "Description": [
+                "Sets sail",
+                "Navigates the boat",
+                "Adjusts the sails",
+                "Steers the boat"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Sets sail\",\"Navigates the boat\",\"Adjusts the sails\",\"Steers the boat\"]}"
+    },
+    "Getting a haircut": {
+        "idx": 165,
+        "Elaboration": {
+            "Description": [
+                "Sits in the barber chair",
+                "Chooses a hairstyle",
+                "Gets hair washed",
+                "Gets hair cut",
+                "Gets hair styled",
+                "Pays for the haircut"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sits in the barber chair\", \"Chooses a hairstyle\", \"Gets hair washed\", \"Gets hair cut\", \"Gets hair styled\", \"Pays for the haircut\"]}"
+    },
+    "Playing lacrosse": {
+        "idx": 166,
+        "Elaboration": {
+            "Description": [
+                "Holding lacrosse stick",
+                "Running with the ball",
+                "Passing the ball",
+                "Shooting the ball",
+                "Defending the opponent",
+                "Scoring a goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Holding lacrosse stick\",\"Running with the ball\",\"Passing the ball\",\"Shooting the ball\",\"Defending the opponent\",\"Scoring a goal\"]}"
+    },
+    "Cumbia": {
+        "idx": 167,
+        "Elaboration": {
+            "Description": [
+                "Side steps with rhythm",
+                "Twirls and spins",
+                "Moves hips in sync with music"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Side steps with rhythm\", \"Twirls and spins\", \"Moves hips in sync with music\"]}"
+    },
+    "Tai chi": {
+        "idx": 168,
+        "Elaboration": {
+            "Description": [
+                "Start with a relaxed standing posture",
+                "Perform slow and controlled movements",
+                "Engage in deep breathing and meditation"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Start with a relaxed standing posture\", \"Perform slow and controlled movements\", \"Engage in deep breathing and meditation\"]}"
+    },
+    "Painting": {
+        "idx": 169,
+        "Elaboration": {
+            "Description": [
+                "Holds paintbrush",
+                "Applies paint to canvas",
+                "Creates brushstrokes",
+                "Adds details and highlights"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds paintbrush\", \"Applies paint to canvas\", \"Creates brushstrokes\", \"Adds details and highlights\"]}"
+    },
+    "Mowing the lawn": {
+        "idx": 170,
+        "Elaboration": {
+            "Description": [
+                "Starts the lawnmower",
+                "Pushes the lawnmower forward",
+                "Moves the lawnmower in straight lines",
+                "Cuts the grass evenly",
+                "Turns the lawnmower at the end of each row",
+                "Continues mowing until the entire lawn is done",
+                "Stops the lawnmower"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Starts the lawnmower\", \"Pushes the lawnmower forward\", \"Moves the lawnmower in straight lines\", \"Cuts the grass evenly\", \"Turns the lawnmower at the end of each row\", \"Continues mowing until the entire lawn is done\", \"Stops the lawnmower\"]}"
+    },
+    "Shaving legs": {
+        "idx": 171,
+        "Elaboration": {
+            "Description": [
+                "applies shaving cream on legs",
+                "uses razor to shave legs",
+                "rinses off shaved area"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"applies shaving cream on legs\", \"uses razor to shave legs\", \"rinses off shaved area\"]}"
+    },
+    "Walking the dog": {
+        "idx": 172,
+        "Elaboration": {
+            "Description": [
+                "Leash the dog",
+                "Start walking",
+                "Keep dog on the leash",
+                "Follow the dog's pace",
+                "Observe surroundings"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Leash the dog\", \"Start walking\", \"Keep dog on the leash\", \"Follow the dog's pace\", \"Observe surroundings\"]}"
+    },
+    "Hammer throw": {
+        "idx": 173,
+        "Elaboration": {
+            "Description": [
+                "Grip hammer",
+                "Spin around",
+                "Release hammer"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Grip hammer\", \"Spin around\", \"Release hammer\"]}"
+    },
+    "Skateboarding": {
+        "idx": 174,
+        "Elaboration": {
+            "Description": [
+                "Pushes off",
+                "Balances on board",
+                "Performs tricks"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Pushes off\", \"Balances on board\", \"Performs tricks\"]}"
+    },
+    "Polishing shoes": {
+        "idx": 175,
+        "Elaboration": {
+            "Description": [
+                "Apply polish",
+                "Brush shoe",
+                "Buff shoe"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Apply polish\", \"Brush shoe\", \"Buff shoe\"]}"
+    },
+    "Ballet": {
+        "idx": 176,
+        "Elaboration": "error",
+        "Origin_Chat": "error"
+    },
+    "Hand washing clothes": {
+        "idx": 177,
+        "Elaboration": {
+            "Description": [
+                "Fills a basin with water",
+                "Adds detergent to the basin",
+                "Soaks the clothes in the water",
+                "Scrub the clothes",
+                "Rinses the clothes",
+                "Squeezes out excess water",
+                "Hangs the clothes to dry"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Fills a basin with water\", \"Adds detergent to the basin\", \"Soaks the clothes in the water\", \"Scrub the clothes\", \"Rinses the clothes\", \"Squeezes out excess water\", \"Hangs the clothes to dry\"]}"
+    },
+    "Plataform diving": {
+        "idx": 178,
+        "Elaboration": {
+            "Description": [
+                "Stands on platform",
+                "Jumps from platform",
+                "Performs acrobatic maneuvers in the air",
+                "Enters the water with a splash"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Stands on platform\", \"Jumps from platform\", \"Performs acrobatic maneuvers in the air\", \"Enters the water with a splash\"]}"
+    },
+    "Playing violin": {
+        "idx": 179,
+        "Elaboration": {
+            "Description": [
+                "Holds violin",
+                "Uses bow on strings",
+                "Produces music"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds violin\", \"Uses bow on strings\", \"Produces music\"]}"
+    },
+    "Breakdancing": {
+        "idx": 180,
+        "Elaboration": {
+            "Description": [
+                "starts with a freeze",
+                "performs a headspin",
+                "executes a windmill",
+                "does a flare",
+                "finishes with a backspin"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"starts with a freeze\", \"performs a headspin\", \"executes a windmill\", \"does a flare\", \"finishes with a backspin\"]}"
+    },
+    "Windsurfing": {
+        "idx": 181,
+        "Elaboration": {
+            "Description": [
+                "stands on the windsurfing board",
+                "holds the windsurfing sail",
+                "performs maneuvers on the water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"stands on the windsurfing board\", \"holds the windsurfing sail\", \"performs maneuvers on the water\"]}"
+    },
+    "Hopscotch": {
+        "idx": 182,
+        "Elaboration": {
+            "Description": [
+                "hops on one foot",
+                "jumps to next square",
+                "lands on one foot"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"hops on one foot\", \"jumps to next square\", \"lands on one foot\"]}"
+    },
+    "Doing motocross": {
+        "idx": 183,
+        "Elaboration": {
+            "Description": [
+                "starts the engine",
+                "accelerates on the track",
+                "jumps over obstacles",
+                "performs tricks in the air"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"starts the engine\", \"accelerates on the track\", \"jumps over obstacles\", \"performs tricks in the air\"]}"
+    },
+    "Mixing drinks": {
+        "idx": 184,
+        "Elaboration": {
+            "Description": [
+                "Gathers ingredients",
+                "Measures ingredients",
+                "Combines ingredients",
+                "Stirs mixture",
+                "Strains mixture",
+                "Adds garnish"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Gathers ingredients\", \"Measures ingredients\", \"Combines ingredients\", \"Stirs mixture\", \"Strains mixture\", \"Adds garnish\"]}"
+    },
+    "Starting a campfire": {
+        "idx": 185,
+        "Elaboration": {
+            "Description": [
+                "Gathering firewood",
+                "Arranging firewood in a pyramid shape",
+                "Lighting the firewood"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Gathering firewood\", \"Arranging firewood in a pyramid shape\", \"Lighting the firewood\"]}"
+    },
+    "Belly dance": {
+        "idx": 186,
+        "Elaboration": {
+            "Description": [
+                "Stand with feet shoulder-width apart",
+                "Move hips in a circular motion",
+                "Perform graceful arm movements"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Stand with feet shoulder-width apart\", \"Move hips in a circular motion\", \"Perform graceful arm movements\"]}"
+    },
+    "Removing curlers": {
+        "idx": 187,
+        "Elaboration": {
+            "Description": [
+                "unpinning curlers",
+                "removing curlers from hair"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"unpinning curlers\", \"removing curlers from hair\"]}"
+    },
+    "Archery": {
+        "idx": 188,
+        "Elaboration": {
+            "Description": [
+                "Holds bow",
+                "Nocks arrow",
+                "Pulls back arrow",
+                "Aims",
+                "Shoots arrow"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holds bow\", \"Nocks arrow\", \"Pulls back arrow\", \"Aims\", \"Shoots arrow\"]}"
+    },
+    "Volleyball": {
+        "idx": 189,
+        "Elaboration": {
+            "Description": [
+                "serve",
+                "pass",
+                "set",
+                "spike"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"serve\", \"pass\", \"set\", \"spike\"]}"
+    },
+    "Playing water polo": {
+        "idx": 190,
+        "Elaboration": {
+            "Description": [
+                "treads water",
+                "passes the ball",
+                "shoots at goal"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"treads water\", \"passes the ball\", \"shoots at goal\"]}"
+    },
+    "Playing racquetball": {
+        "idx": 191,
+        "Elaboration": {
+            "Description": [
+                "Hold racquet",
+                "Hit ball with racquet",
+                "Move around the court"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Hold racquet\", \"Hit ball with racquet\", \"Move around the court\"]}"
+    },
+    "Kayaking": {
+        "idx": 192,
+        "Elaboration": {
+            "Description": [
+                "Sits in kayak",
+                "Paddles with oar",
+                "Navigates through water"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Sits in kayak\", \"Paddles with oar\", \"Navigates through water\"]}"
+    },
+    "Polishing forniture": {
+        "idx": 193,
+        "Elaboration": {
+            "Description": [
+                "Applies polish on the surface",
+                "Uses a cloth to rub the surface in circular motion"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Applies polish on the surface\", \"Uses a cloth to rub the surface in circular motion\"]}"
+    },
+    "Playing kickball": {
+        "idx": 194,
+        "Elaboration": {
+            "Description": [
+                "Kicks ball",
+                "Runs to base",
+                "Tags player"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Kicks ball\", \"Runs to base\", \"Tags player\"]}"
+    },
+    "Using uneven bars": {
+        "idx": 195,
+        "Elaboration": {
+            "Description": [
+                "Grasp the bars",
+                "Swing between the bars",
+                "Release and dismount"
+            ]
+        },
+        "Origin_Chat": "{\"Description\":[\"Grasp the bars\", \"Swing between the bars\", \"Release and dismount\"]}"
+    },
+    "Washing dishes": {
+        "idx": 196,
+        "Elaboration": {
+            "Description": [
+                "Fills sink with water",
+                "Applies soap to dishes",
+                "Rinses dishes with water",
+                "Dries dishes with towel"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Fills sink with water\", \"Applies soap to dishes\", \"Rinses dishes with water\", \"Dries dishes with towel\"]}"
+    },
+    "Pole vault": {
+        "idx": 197,
+        "Elaboration": {
+            "Description": [
+                "Runs with pole",
+                "Plant the pole",
+                "Pushes off, jumps",
+                "Clears the bar"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Runs with pole\", \"Plant the pole\", \"Pushes off, jumps\", \"Clears the bar\"]}"
+    },
+    "Playing accordion": {
+        "idx": 198,
+        "Elaboration": {
+            "Description": [
+                "Holding accordion",
+                "Pressing keys",
+                "Moving bellows"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holding accordion\", \"Pressing keys\", \"Moving bellows\"]}"
+    },
+    "Playing badminton": {
+        "idx": 199,
+        "Elaboration": {
+            "Description": [
+                "Holding racket",
+                "Serving shuttlecock",
+                "Hitting shuttlecock",
+                "Moving around the court"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"Holding racket\", \"Serving shuttlecock\", \"Hitting shuttlecock\", \"Moving around the court\"]}"
+    }
+}

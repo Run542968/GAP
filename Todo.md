@@ -1,4 +1,4 @@
-#### 20230923提交到github, 在comit=`firtst backup`之前的所有修改都是该版本
+#### 第一次大版本，20230923最后一次提交到github，comit id=`firtst backup`
 - [x] 从Tad_eval.py保存下来的结果，看到start-time存在复数，需要debug
   - [x] 问题应该是处在后处理，后处理有一步骤是把(center,width)格式的结果转换为(start,end)的步骤：`segment_cw_to_t1t2`，如果width>center, 那么就会出现负值
   - [x] 解决方案是优化对`segment_cw_to_t1t2`的结果进行clamp()，如果出现负值或者超过最大值就截断
@@ -87,7 +87,7 @@
   - args.binary的设置是把类别总数变为1，也就是训练一个class-agnostic的DETR
   - 代码中还包含一些语义分割的结构，在memory上面构建一个snippet-level的分类
 
-#### 第二次大版本，在comit=`placeholder`之前的所有修改都是该版本
+#### 第二次大版本，20230927最后一次提交到github，comit id=`second backup`
 - 代码结构大改，这一版本去除了--binary的参数，直接默认DETR的query只负责前景定位，预测得到的分数是proposal的质量分数。🧨不管是“close_set”还是“zero_shot”都改！！
   - 🔒特别注意，除了`target_type="none"`，否则都默认DETR的query只定位前景
   - `target_type="none"`就是传统的DETR范式用在TAL，那当然是“close_set”了
@@ -104,8 +104,13 @@
       - 但是这种需要训练的方式性能还是比不上直接拿CLIP的visual和text特征进行计算(Thumos14_CLIP_prompt_zs50_8frame_v2_7)，这样做训练出来的classification一定是过拟合的。特别是在训练类别数量不足的时候，zero-shot能力很差的
     - [x] 考虑到语义的local特性，加Conv1D或许会更好？
   - [ ] segmentation_loss的softamx加个温度系数$\tau=0.07$
-- [ ] 借鉴一下ODISE的grounding loss, 完成segment和文本中word的相似度计算约束
-- [ ] 是否引入一个learnable的背景类？Following `DetPro`
+    - 不加了，这样用segmentation loss进行base classes的训练一定会导致过拟合
+- [ ] 借鉴一下ODISE的grounding loss, 完成ROIalign得到的segment和文本中word的相似度计算约束
+- [x] 是否显示约束一下背景类？Following `DetPro`
+  - [x] 目前的segmentation loss已经实现了这个功能：对于背景snippet，它对于所有base类的预测都是$\frac{1}{C_{base}}$。
+    - 但是好像没什么用
+  - 继续拓展一下，构造一个learnable background embedding
+    - [ ] 好像没什么意义，单个背景学到的信息挺有限的，没必要浪费时间
 - [ ] 像actionCLIP一样进行prompt增广
 - [x] 实验发现ROIalign strategy那里，不管是先预测再crop，还是先crop再预测，结果几乎是一样的，差别非常小。分析觉得是ROIalign的时候选了max
   - [ ] ROIalign内部还有一个output_size可以调
@@ -113,14 +118,22 @@
   - [ ] 整个视频只采样278帧
   - [ ] 每个snippet用8帧来group
 - [ ] binary的性能还能调，两个库都还能继续调
-
+  - [ ] num_queries等参数
+#### 第三次大版本
+- V3版本-Summary
+  - [ ] 
+- [ ] 添加评估proposal质量的指标，参考`2022_ECCV_EfficientPrompt`
+  - 不用了，直接binary就可以评估proposal的质量了
+  - 这个指标在消融的时候加
 - 📚 可以着手考虑的问题：
   - [ ] CLIP对于文本的global概念，没有细粒度的word理解，**不容易区分相似的动作**，例如"Diving"和“CliffDiving”
   - [ ] class-agnostic的proposal肯定是包含有背景信息，怎么去除这个背景的噪声干扰？实现更准确的分类？
-  - [ ] 动作proposal是有时序性的，怎样的一种pooling(目前是ROIalign以后用简单的average pooling), 可以再保证时序性质的情况下，对齐visual和sentence，也就是静态的sentence和动态的visual怎么alignment
+  - [ ] 动作proposal是有时序性的，怎样的一种pooling(目前是ROIalign以后用简单的average pooling), 可以在保证时序性质的情况下，对齐visual和sentence，也就是静态的sentence和动态的visual怎么alignment
     - 这种简单的pooling虽然能识别一些动作，但是缺乏动态建模
   - [ ] Not action是否可以借鉴？
   - [ ] 应该最大程度的利用CLIP预训练好的alignment能力，而不是改变它
-#### 第三次提交
-- [ ] 添加评估proposal质量的指标，参考`2022_ECCV_EfficientPrompt`
-
+    - 一个可能的方案
+      - [ ] ROIalign后的segment feat上加一层注意力层或者一维卷积，这层网络的作用是**组合视觉概念并且捕捉时序特征**，然后输出一个embedding。
+      - [ ] 文本方面，利用到多个sub-action的信息，也是在sub-action上加一层网络，完成sub-action之间的**顺序建模，和概念组合**，最后输出一个embedding。
+      - [ ] 用这两个embedding完成最终的ROIsegment分类，注意这里只有这一层composition network是训练的，其他所有部分都是fix的（保证了不过多改变CLIP特征的分布）
+      - [ ] 还可以构造一些顺序错乱的文本作为负样本，进行对比学习

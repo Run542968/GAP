@@ -77,9 +77,15 @@ class ConditionalDETR(nn.Module):
         self.segmentation_loss = args.segmentation_loss
         self.segmentation_head_type = args.segmentation_head_type
         self.ROIalign_strategy = args.ROIalign_strategy
-
+        self.ROIalign_size = args.ROIalign_size
 
         hidden_dim = transformer.d_model
+
+        # if self.enable_background:
+        #     self.bg_embedding = nn.Parameter(
+        #         torch.empty(1, hidden_dim)
+        #     )
+        #     torch.nn.init.xavier_uniform_(self.bg_embedding)
 
         self.class_embed = nn.Linear(hidden_dim, num_classes)
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
@@ -171,7 +177,7 @@ class ConditionalDETR(nn.Module):
         rois_abs_4d = self._to_roi_align_format(rois,truely_length,scale_factor)
         feat = origin_feat.permute(0,2,1) # [B,dim,T]
         feat = feat.reshape(B,C,1,T)
-        roi_feat = ROIalign(feat, rois_abs_4d, output_size=(1,16))
+        roi_feat = ROIalign(feat, rois_abs_4d, output_size=(1,self.ROIalign_size))
         roi_feat = roi_feat.reshape(B,Q,C,-1) # [B,Q,dim,output_width]
         roi_feat = roi_feat.permute(0,1,3,2) # [B,Q,output_width,dim]
         return roi_feat
@@ -238,8 +244,7 @@ class ConditionalDETR(nn.Module):
         # prepare text target
         if self.target_type != "none":
             with torch.no_grad():
-                text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # 
-
+                text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
         # feed into model
         src, mask = feature_list[-1].decompose()

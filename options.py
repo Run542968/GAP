@@ -59,6 +59,8 @@ parser.add_argument('--CLIP_model_name', type=str, default='ViT-B/16', help="The
 parser.add_argument('--num_queries', type=int, default=15, help="Number of query slots")
 parser.add_argument('--norm_embed', action='store_true', default=False, help="Normalization and multiple the scale_logits for similarity computing between visual and text embedding")
 parser.add_argument('--segmentation_head_type', default="MLP", choices=('MLP', 'Conv', 'MHA'), help='Conv: Conv1d, MHA: MultiHeadAttention') 
+# parser.add_argument('--enable_background', action='store_true', default=False, help="Whether to adopt leanable background embedding") 
+parser.add_argument('--ROIalign_size', type=int, default=16, help="The length of ROIalign ouput size")
 
 
 # Loss
