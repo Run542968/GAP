@@ -54,7 +54,7 @@ class SetCriterion(nn.Module):
         self.base_losses = ['labels', 'boxes']
         self.focal_alpha = focal_alpha
         self.gamma = args.gamma
-        self.segmentation_loss = args.segmentation_loss
+        self.instance_loss = args.instance_loss
         
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
@@ -130,6 +130,34 @@ class SetCriterion(nn.Module):
         losses['loss_segmentation'] = ce_loss.sum(-1).sum() / B
         return losses
 
+    def loss_instances(self,outputs, targets, indices, num_boxes):
+        '''
+        for instance prediction, modeling the relation of instance region and text 
+        instance_logits: the output of instance_logits => [batch_instance_num,num_classes]
+        '''
+        assert 'instance_logits' in outputs
+ 
+        # obtain logits
+        instance_logits = outputs['instance_logits'] #[batch_instance_num,num_classes]
+        B,C = instance_logits.shape
+
+        instance_gt = [] 
+        for t in targets:
+            gt_labels = t['labels'] # [num_instance]
+            instance_gt.append(gt_labels)
+        instance_gt = torch.cat(instance_gt,dim=0) # [batch_instance_num]->"class id"
+        
+        # prepare labels
+        target_classes_onehot = torch.zeros_like(instance_logits) # [batch_instance_num,num_classes]
+        target_classes_onehot.scatter_(1, instance_gt.reshape(-1,1), 1) # [batch_instance_num,num_classes]
+
+        ce_loss = -(target_classes_onehot * F.log_softmax(instance_logits, dim=-1)).sum(dim=-1)
+
+        losses = {}
+        losses['loss_instance'] = ce_loss.mean()
+        return losses
+
+
     def _get_src_permutation_idx(self, indices):
         # permute predictions following indices
         batch_idx = torch.cat([torch.full_like(src, i) for i, (src, _) in enumerate(indices)])
@@ -187,9 +215,13 @@ class SetCriterion(nn.Module):
                     l_dict = {k + f'_{i}': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
-        if self.segmentation_loss: # adopt segmentation_loss
-            segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
-            losses.update(segmentation_loss)
+        # if self.segmentation_loss: # adopt segmentation_loss
+        #     segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
+        #     losses.update(segmentation_loss)
+
+        if self.instance_loss: # adopt segmentation_loss
+            instance_loss = self.loss_instances(outputs, targets, indices, num_boxes)
+            losses.update(instance_loss)
         
         return losses
 

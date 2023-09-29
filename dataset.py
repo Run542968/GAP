@@ -531,18 +531,25 @@ if __name__ == "__main__":
     print(args)
     train_dataset = Thumos14Dataset(subset='train', mode='train', args=args)
     # print(f"dataset.description:{train_dataset.description_dict}")
-    print(f"dataset.classes:{train_dataset.classes}")
+    # print(f"dataset.classes:{train_dataset.classes}")
     
     data_loader = DataLoader(train_dataset, batch_size=2, collate_fn=collate_fn, num_workers=2, pin_memory=True, shuffle=True)
     iters = iter(data_loader)
     feat, target = next(iters)
-    print(f"feat.tensors:{feat.tensors.shape}")
-    print(f"feat.mask:{feat.mask}")
-    print(f"target:{target}")
-    print(f"target[0]['segmentation_onehot_labels']: {target[0]['segmentation_onehot_labels']}")
-    print(f"target[0]['segmentation_onehot_labels'].shape:{target[0]['segmentation_onehot_labels'].shape}")
-    print(f"target[0]['segmentation_onehot_labels'].dtype:{target[0]['segmentation_onehot_labels'].dtype}")
-    print(f"target[0]['segmentation_labels'].dtype:{target[0]['segmentation_labels']}")
+    # print(f"feat.tensors:{feat.tensors.shape}")
+    # print(f"feat.mask:{feat.mask}")
+    # print(f"target:{target}")
+    # print(f"target[0]['segmentation_onehot_labels']: {target[0]['segmentation_onehot_labels']}")
+    # print(f"target[0]['segmentation_onehot_labels'].shape:{target[0]['segmentation_onehot_labels'].shape}")
+    # print(f"target[0]['segmentation_onehot_labels'].dtype:{target[0]['segmentation_onehot_labels'].dtype}")
+    # print(f"target[0]['segmentation_labels'].dtype:{target[0]['segmentation_labels']}")
+    gt_coordinations = [t['segments'] for t in target]
+    print(f"gt_coordinations:{gt_coordinations}")
+    gt_coordinations = torch.cat(gt_coordinations,dim=0) # [batch_instance_num,2]->"center,width"
+    print(f"gt_coordinations.shape:{gt_coordinations.shape}")
+    gt_labels = [t['labels'] for t in target]
+    print(f"gt_labels:{gt_labels}")
+    gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num,1]->"class id"
+    print(f"gt_labels.shape:{gt_labels.shape}")
 
-
-# CUDA_VISIBLE_DEVICES=0 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"
+# CUDA_VISIBLE_DEVICES=1 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"

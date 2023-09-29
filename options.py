@@ -11,7 +11,7 @@ parser.add_argument('--seed', type=int, default=3552, help='random seed (default
 parser.add_argument('--device', type=str, default="cuda")
 parser.add_argument('--task', type=str, default="zero_shot", choices=('zero_shot', 'close_set'), help='[zero_shot,close_set]')
 parser.add_argument('--use_mlflow', action='store_true', default=False, help="whether to use mlflow")
-parser.add_argument('--target_type', type=str, default="prompt", choices=('none', 'prompt', 'description'), help="[none,prompt,description]") # NOTE: 'none' means use one-hot target that just for close_set
+parser.add_argument('--target_type', type=str, default="prompt", choices=('none', 'prompt', 'description', 'name'), help="[none,prompt,description,name]") # NOTE: 'none' means use one-hot target that just for close_set
 parser.add_argument('--eval_proposal', action='store_true', default=False, help="Only evaluate the proposal quality, compute the class-agnostic foreground mAP in Tad_eal.py") 
 
 
@@ -55,12 +55,22 @@ parser.add_argument('--dec_layers', type=int, default=6, help="Number of decodin
 parser.add_argument('--pre_norm', action='store_true', default=False, help="Whether normalize_before, NOTE: the pre_norm=True is not complete implementation in cross_attention")
 ## CLIP
 parser.add_argument('--CLIP_model_name', type=str, default='ViT-B/16', help="The version of different pretrain CLIP")
+## Semantic Head
+parser.add_argument('--semantic_visual_nheads', type=int, default=8, help="Number of attention heads inside the transformer's attentions")
+parser.add_argument('--semantic_visual_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
+parser.add_argument('--semantic_visual_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
+parser.add_argument('--semantic_text_nheads', type=int, default=8, help="Number of attention heads inside the transformer's attentions")
+parser.add_argument('--semantic_text_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
+parser.add_argument('--semantic_text_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
 ## Conditional DETR
 parser.add_argument('--num_queries', type=int, default=15, help="Number of query slots")
 parser.add_argument('--norm_embed', action='store_true', default=False, help="Normalization and multiple the scale_logits for similarity computing between visual and text embedding")
-parser.add_argument('--segmentation_head_type', default="MLP", choices=('MLP', 'Conv', 'MHA'), help='Conv: Conv1d, MHA: MultiHeadAttention') 
-# parser.add_argument('--enable_background', action='store_true', default=False, help="Whether to adopt leanable background embedding") 
+parser.add_argument('--exp_logit_scale', action='store_true', default=False, help="Whether to add exp() operation on logtis_scale")
+parser.add_argument('--instance_head_type', default="MLP", choices=('MLP', 'Conv', 'MHA'), help='Conv: Conv1d, MHA: MultiHeadAttention') 
 parser.add_argument('--ROIalign_size', type=int, default=16, help="The length of ROIalign ouput size")
+parser.add_argument('--subaction_version', type=str, default='v1', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
+parser.add_argument('--semantic_head_version', type=str, default='v1', choices=('v1', 'v2'), help="The structure of semantic head")
+
 
 
 # Loss
@@ -69,8 +79,8 @@ parser.add_argument('--cls_loss_coef', type=float, default=2)
 parser.add_argument('--bbox_loss_coef', type=float, default=5)
 parser.add_argument('--giou_loss_coef', type=float, default=2)
 parser.add_argument('--focal_alpha', type=float, default=0.25)
-parser.add_argument('--segmentation_loss', action='store_true', default=False, help="Enable sementation losses (loss at each layer)")
-parser.add_argument('--segmentation_loss_coef', type=float, default=1)
+parser.add_argument('--instance_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
+parser.add_argument('--instance_loss_coef', type=float, default=1)
 parser.add_argument('--gamma', type=float, default=2)
 
 # Matcher
@@ -81,6 +91,7 @@ parser.add_argument('--set_cost_giou', type=float, default=2, help="giou box coe
 # Optimizer
 parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--lr_backbone', type=float, default=1e-5)
+parser.add_argument('--lr_semantic_head', type=float, default=1e-4)
 parser.add_argument('--lr', type=float, default=1e-4)
 parser.add_argument('--weight_decay', type=float, default=1e-4)
 parser.add_argument('--lr_drop', type=int, default=40, help="the step begin to drop lr")

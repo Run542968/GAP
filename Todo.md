@@ -112,20 +112,53 @@
   - 继续拓展一下，构造一个learnable background embedding
     - [ ] 好像没什么意义，单个背景学到的信息挺有限的，没必要浪费时间
 - [ ] 像actionCLIP一样进行prompt增广
-- [x] 实验发现ROIalign strategy那里，不管是先预测再crop，还是先crop再预测，结果几乎是一样的，差别非常小。分析觉得是ROIalign的时候选了max
-  - [ ] ROIalign内部还有一个output_size可以调
+- [x] 实验发现ROIalign strategy那里，不管是先预测再crop，还是先crop再预测，结果几乎是一样的，差别非常小。分析觉得是ROIalign的时候选了max，选到了最显著的特征
 - [ ] 试试把ActivityNet的特征也处理一下？
   - [ ] 整个视频只采样278帧
   - [ ] 每个snippet用8帧来group
-- [ ] binary的性能还能调，两个库都还能继续调
-  - [ ] num_queries等参数
 #### 第三次大版本
 - V3版本-Summary
+  - [x] 🚩所有的实验都带后缀v3
+  - [x] 首先是抛弃segmentation loss，经过第二版本的分析，只要在base classes上训练，必然导致网络过拟合，丢失CLIP的泛化能力
+- [ ] 😎接下来是在segment-level进行时序建模，语义建模等操作
+  - [x] 训练阶段：
+    - visual: 把一个batch内的所有动作实例都用ROIalign给crop出来，然后在最原本的CLIP visual特征上加一层时序/语义建模网络，再pooling得到一个visual embedding
+    - text: 对于每个类别，提取每个子动作的特征，然后concat，再过一层时序/语义建模网络, 再pooling得到一个text embedding
+      - 这种方法也算一种fine-grained的类别建模，即相似动作子动作不同
+    - Loss: **先来最简单的**，分类的cross entropy，从viusal→text，一对多
+  - [x] 测试阶段：
+    - 用预测的结果ROIalign出visual segment，然后和训练流程保持一致，得到proposal logits
+  - 🔍结果分析：
+    - 效果特别差，instance loss特别低，几乎为0
+    - 有可能是和detector的学习率不匹配
+      - [x] 增加instance loss权重
+        - 没用，问题应该不在这里，Thumos14_CLIP_description_zs50_8frame_v2_5,6,7,8
+      - [x] 在optimizer那里为instance loss的文本和视觉self-attention单独设置参数学习率
+    - 有可能是sub-action的文本语义太过于凌乱
+      - [ ] 在文本这边，除了concat子动作的文本embedding，在最开始拼接一个类别名称的prompt
+      - [ ] 经过self-attention后，只拿第一个类别名称的prompt作为文本embedding(这样做的出发点是self-attention已经把sub-action信息聚合到了class name)
+    - 看了一下结果，所有的proposals都被预测成了几个固定的类别
+    - 可能是没加residual connect的原因，一个单独的self-attention其实完全打乱了原本CLIP的语义
+      - [x] 给visual和text都加上residual connect
+        - 👌非常有效，问题确实出在了这里。这批实验直接覆盖了以上没加residual connect的实验
+- [ ] 上面的实验只有简单的一层self-attention和residual connect，考虑采用一层transformer encoder完成建模
   - [ ] 
+- [ ] 😎如果上面的work了，进阶的训练版本：
+    - [ ] 可以采用对比学习
+      - visual→text: intra-video负样本可以是错误的sub-action组合; inter-video是batch内其他的类别文本
+      - text→visual: intra-video负样本可以是错误的ROI region; inter-video是batch内其他视频的ROI region
+        - 这个的优势在于能够从CLIP的角度refine proposal，也就是给detector产生的proposal重排序，把质量低的proposal分数降低，从而提高定位质量
+- [ ] 另一个思路，把class_name prompt作为query，然后其他的sub-action/description作为key和value，进行cross-attention，训练的时候学习某种聚合能力
+- [x] 不用prompt模板，只用class name得到文本embedding
+  - Thumos14_CLIP_name_zs50_8frame_v2_1
+  - 差距并不大，只掉了一个点。这说明class_name是具有明显的辨别信息的
 - [ ] 添加评估proposal质量的指标，参考`2022_ECCV_EfficientPrompt`
   - 不用了，直接binary就可以评估proposal的质量了
   - 这个指标在消融的时候加
-- 📚 可以着手考虑的问题：
+- [x] 前两个版本的logits_scale少了一个exp()操作，CLIP原本的模型是有exp()的，尝试一下
+  - ✌对Thumos14非常有效，在仅仅使用CLIP的能力做分类的时候，能够提高性能。这是合理的，因为原本CLIP训练的时候就有这个exp操作，Thumos14_CLIP_prompt_zs50_8frame_v2_16->17
+  - 🤣对activityNet13没啥用，ActivityNet13_CLIP_prompt_zs50_v2_7，ActivityNet13_CLIP_prompt_zs_v2_7。说明类**间差异比较大的情况下**，这个exp放缩操作影响不大
+- 📚可以着手考虑的问题：
   - [ ] CLIP对于文本的global概念，没有细粒度的word理解，**不容易区分相似的动作**，例如"Diving"和“CliffDiving”
   - [ ] class-agnostic的proposal肯定是包含有背景信息，怎么去除这个背景的噪声干扰？实现更准确的分类？
   - [ ] 动作proposal是有时序性的，怎样的一种pooling(目前是ROIalign以后用简单的average pooling), 可以在保证时序性质的情况下，对齐visual和sentence，也就是静态的sentence和动态的visual怎么alignment
@@ -137,3 +170,7 @@
       - [ ] 文本方面，利用到多个sub-action的信息，也是在sub-action上加一层网络，完成sub-action之间的**顺序建模，和概念组合**，最后输出一个embedding。
       - [ ] 用这两个embedding完成最终的ROIsegment分类，注意这里只有这一层composition network是训练的，其他所有部分都是fix的（保证了不过多改变CLIP特征的分布）
       - [ ] 还可以构造一些顺序错乱的文本作为负样本，进行对比学习
+- [ ] 😶‍🌫️持续调参
+  - binary的性能还能调，两个库都还能继续调
+    - num_queries等参数
+  - ROIalign内部还有一个output_size可以调，加了一个超参数：ROIalign_size

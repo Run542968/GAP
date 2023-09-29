@@ -5,7 +5,7 @@ task: "zero_shot"
 dataset_name: Thumos14
 anno_file_path: "./data/Thumos14/Thumos14_annotations.json"
 feature_info_path: "./data/Thumos14/CLIP/Thumos14_info_8frame.json"
-description_file_path: "./data/Thumos14/Thumos14_description_v4.json"
+description_file_path: "./data/Thumos14/Thumos14_description_v6.json"
 feature_path: "/mnt/Datasets/Thumos14/CLIP_feature_8frame"
 feature_stride: 8
 feature_type: "CLIP"

@@ -112,13 +112,26 @@ if __name__ == '__main__':
     param_dicts = [
         # the parameters in transformaer
         {
-            "params": [p for n, p in model.named_parameters() if "backbone" not in n and p.requires_grad]
+            "params": [p for n, p in model.named_parameters() if "backbone" not in n and \
+                                                                "instance_visual_head" not in n and \
+                                                                "instance_text_head" not in n and \
+                                                                p.requires_grad]
          },
         # the parameters in backbone
         {
             "params": [p for n, p in model.named_parameters() if "backbone" in n and p.requires_grad],
             "lr": args.lr_backbone,
         },
+        # the parameters in semantic head: instance_visual_head
+        {
+            "params": [p for n, p in model.named_parameters() if "instance_visual_head" in n and p.requires_grad],
+            "lr": args.lr_semantic_head,
+        },
+        # the parameters in semantic head: instance_text_head
+        {
+            "params": [p for n, p in model.named_parameters() if "instance_text_head" in n and p.requires_grad],
+            "lr": args.lr_semantic_head,
+        }
     ]
     optimizer = torch.optim.AdamW(param_dicts, lr=args.lr, weight_decay=args.weight_decay)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, args.lr_drop)

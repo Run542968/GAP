@@ -26,7 +26,7 @@ def train(model: torch.nn.Module,
         classes = data_loader.dataset.classes
         description_dict = data_loader.dataset.description_dict
 
-        outputs = model(samples, classes, description_dict)
+        outputs = model(samples, classes, description_dict, targets)
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict
         losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict) # the weight_dict controls which loss is applied
