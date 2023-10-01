@@ -33,10 +33,7 @@ class PostProcess(nn.Module):
                 prob = foreground_logits # only evaluate the proposal
             else:
                 prob = torch.mul(foreground_logits,ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
-            # if self.fuse_strategy == "arithmetic":
-            #     prob = self.fuse_rate*detector_logits.softmax(-1) + (1-self.fuse_rate)*ROIalign_logits.softmax(-1)
-            # else:
-            #     prob = torch.mul(detector_logits.softmax(-1).pow(self.fuse_rate),ROIalign_logits.softmax(-1).pow(1-self.fuse_rate))
+
         elif not eval_proposal:
             assert 'pred_logits' in outputs
             out_logits, out_bbox = outputs['pred_logits'], outputs['pred_boxes'] # [bs,num_queries,num_classes] [bs,num_queries,2]

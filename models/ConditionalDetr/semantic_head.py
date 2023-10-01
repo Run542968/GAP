@@ -53,7 +53,7 @@ class TransformerEncoderLayer(nn.Module):
     def __init__(self, d_model, nhead, dim_feedforward=2048, dropout=0.1,
                  activation="relu", normalize_before=False):
         super().__init__()
-        self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
+        self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout, batch_first=True)
         # Implementation of Feedforward model
         self.linear1 = nn.Linear(d_model, dim_feedforward)
         self.dropout = nn.Dropout(dropout)
@@ -140,16 +140,31 @@ def _get_activation_fn(activation):
 
 class Naive_Semantic_Head(nn.Module):
     '''
-    most naive structure that only adopt a self-attention and a residual connection
+    most naive structure that only adopt a network and a residual connection
     '''
-    def __init__(self, d_model, nhead):
-        self.self_attn = nn.MultiheadAttention(d_model,nhead,batch_first=True)
+    def __init__(self, d_model, nhead, type):
         super().__init__()
-    
-    def forward(self,input):
-        feats, _ = self.instance_visual_head(input,input,input) # [batch_instance_num,ROIalign_size,dim]
+        if type == "MLP":
+            self.instance_head = MLP(d_model,d_model,d_model,3)
+        elif type == "Conv":
+            self.instance_head = nn.Conv1d(d_model,d_model, kernel_size=3, padding=1)
+        elif type == "MHA":
+            self.instance_head = nn.MultiheadAttention(d_model,nhead,batch_first=True)
+        else:
+            raise ValueError(f"Don't have this instance_head_type:{type}")
+        self.type = type
+
+    def forward(self,input,src_key_padding_mask=None):
+        if self.type == "MLP":
+            feats = self.instance_head(input) # [batch_instance_num,ROIalign_size,dim]
+        elif self.type == "Conv":
+            feats = self.instance_head(input.permute(0,2,1)).permute(0,2,1) # [batch_instance_num,ROIalign_size,dim]
+        elif self.type == "MHA":
+            feats, _ = self.instance_head(input,input,input,key_padding_mask=src_key_padding_mask) # [batch_instance_num,ROIalign_size,dim]
+        else:
+            raise ValueError(f"Don't have this instance_head_type:{self.instance_head_type}")
         feats = feats + input # residual connection
-        return feats
+        return [feats]
     
 def build_semantic_head(args):
     '''
@@ -160,10 +175,13 @@ def build_semantic_head(args):
         if args.semantic_head_version == "v1":
             position_embedding = None
             visual_semantic_head = Naive_Semantic_Head(d_model=args.hidden_dim,
-                                                    nhead=args.semantic_visual_nheads)
+                                                    nhead=args.semantic_visual_nheads,
+                                                    type=args.instance_head_type)
             text_semantic_head = Naive_Semantic_Head(d_model=args.hidden_dim,
-                                                    nhead=args.semantic_text_nheads)
+                                                    nhead=args.semantic_text_nheads,
+                                                    type="MHA")
         elif args.semantic_head_version == "v2":
+            assert args.instance_head_type == "MHA", f"only MHA is adopt in this semantic_head_version, not current {args.instance_head_type}."
             position_embedding = build_position_encoding(args)
             visual_semantic_head = Semantic_Head(d_model=args.hidden_dim,
                                                 nhead=args.semantic_visual_nheads,
@@ -181,6 +199,6 @@ def build_semantic_head(args):
                                                 return_intermediate=True)
         else:
             raise ValueError(f"Don't define this semantic_head_version:{args.semantic_head_version}") 
-        return position_embedding,visual_semantic_head,text_semantic_head
+        return visual_semantic_head,text_semantic_head
     else:
-        return None, None, None
+        return None, None

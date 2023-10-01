@@ -56,10 +56,10 @@ parser.add_argument('--pre_norm', action='store_true', default=False, help="Whet
 ## CLIP
 parser.add_argument('--CLIP_model_name', type=str, default='ViT-B/16', help="The version of different pretrain CLIP")
 ## Semantic Head
-parser.add_argument('--semantic_visual_nheads', type=int, default=8, help="Number of attention heads inside the transformer's attentions")
+parser.add_argument('--semantic_visual_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
 parser.add_argument('--semantic_visual_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
 parser.add_argument('--semantic_visual_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
-parser.add_argument('--semantic_text_nheads', type=int, default=8, help="Number of attention heads inside the transformer's attentions")
+parser.add_argument('--semantic_text_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
 parser.add_argument('--semantic_text_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
 parser.add_argument('--semantic_text_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
 ## Conditional DETR
@@ -70,6 +70,7 @@ parser.add_argument('--instance_head_type', default="MLP", choices=('MLP', 'Conv
 parser.add_argument('--ROIalign_size', type=int, default=16, help="The length of ROIalign ouput size")
 parser.add_argument('--subaction_version', type=str, default='v1', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
 parser.add_argument('--semantic_head_version', type=str, default='v1', choices=('v1', 'v2'), help="The structure of semantic head")
+
 
 
 
@@ -106,6 +107,9 @@ parser.add_argument('--save_result', action='store_true', default=False, help="W
 parser.add_argument('--test_interval', type=int, default=1, help="The interval to inference")
 parser.add_argument('--ROIalign_strategy', default="before_pred", choices=("before_pred","after_pred"), help="when to perform ROIalign, pred means compute visual-text similarity")
 parser.add_argument('--train_interval', type=int, default=-1, help="The interval to inference on train set, -1 denotes not using this")
+parser.add_argument('--instance_loss_ensemble', action='store_true', default=False, help="Whether to ensemble the result of semantic head and CLIP capability")
+parser.add_argument('--ensemble_rate', type=float, default=0.5, help="the balance coefficient between semantic head and CLIP capability")
+parser.add_argument('--ensemble_strategy', type=str, default="arithmetic", choices=("arithmetic","geomethric"), help="the strategy to ensemble")
 
 
 
