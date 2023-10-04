@@ -156,7 +156,8 @@ class BaseDataset(Dataset):
             'video_duration': feature_duration,   # only used in inference
             'instance_masks':{}, # the mask to get action instance
             'segmentation_labels': np.full(feat_length,num_classes), # [T]
-            'segmentation_onehot_labels': np.full((feat_length,num_classes),1/num_classes) # [T,num_classes], the label for snippet-level semantic segmentation
+            'segmentation_onehot_labels': np.full((feat_length,num_classes),1/num_classes), # [T,num_classes], the label for snippet-level semantic segmentation
+            'mask_labels':np.full(feat_length,0) # [T]
             }
         
 
@@ -194,6 +195,9 @@ class BaseDataset(Dataset):
             target['segmentation_onehot_labels'][start_idx:end_idx,:] = np.repeat(id2onehot(num_classes,semantic_label).reshape(1,-1),end_idx-start_idx,axis=0)
             target['segmentation_labels'][start_idx:end_idx] = semantic_label
 
+            # update class-agnostic mask labels
+            target['mask_labels'][start_idx:end_idx] = 1
+
         # normalized the coordinate
         target['segments'] = np.array(target['segments']) / feature_duration
         
@@ -214,6 +218,8 @@ class BaseDataset(Dataset):
             target['segmentation_onehot_labels'] = torch.from_numpy(target['segmentation_onehot_labels'])
             target['segmentation_labels'] = torch.from_numpy(target['segmentation_labels'])
 
+            # covert 'mask_labels' to torch format
+            target['mask_labels'] = torch.from_numpy(target['mask_labels'])
         return target
 
     def __getitem__(self, index):
@@ -543,13 +549,14 @@ if __name__ == "__main__":
     # print(f"target[0]['segmentation_onehot_labels'].shape:{target[0]['segmentation_onehot_labels'].shape}")
     # print(f"target[0]['segmentation_onehot_labels'].dtype:{target[0]['segmentation_onehot_labels'].dtype}")
     # print(f"target[0]['segmentation_labels'].dtype:{target[0]['segmentation_labels']}")
-    gt_coordinations = [t['segments'] for t in target]
-    print(f"gt_coordinations:{gt_coordinations}")
-    gt_coordinations = torch.cat(gt_coordinations,dim=0) # [batch_instance_num,2]->"center,width"
-    print(f"gt_coordinations.shape:{gt_coordinations.shape}")
-    gt_labels = [t['labels'] for t in target]
-    print(f"gt_labels:{gt_labels}")
-    gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num,1]->"class id"
-    print(f"gt_labels.shape:{gt_labels.shape}")
+    # gt_coordinations = [t['segments'] for t in target]
+    # print(f"gt_coordinations:{gt_coordinations}")
+    # gt_coordinations = torch.cat(gt_coordinations,dim=0) # [batch_instance_num,2]->"center,width"
+    # print(f"gt_coordinations.shape:{gt_coordinations.shape}")
+    # gt_labels = [t['labels'] for t in target]
+    # print(f"gt_labels:{gt_labels}")
+    # gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num,1]->"class id"
+    # print(f"gt_labels.shape:{gt_labels.shape}")
+    print(f"target[0]['mask_labels']:{target[0]['mask_labels']}")
 
 # CUDA_VISIBLE_DEVICES=1 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"

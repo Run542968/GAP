@@ -55,6 +55,9 @@ class SetCriterion(nn.Module):
         self.focal_alpha = focal_alpha
         self.gamma = args.gamma
         self.instance_loss = args.instance_loss
+        self.instance_loss_type = args.instance_loss_type
+        self.matching_loss = args.matching_loss
+        self.mask_loss = args.mask_loss
         
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
@@ -151,13 +154,82 @@ class SetCriterion(nn.Module):
         target_classes_onehot = torch.zeros_like(instance_logits) # [batch_instance_num,num_classes]
         target_classes_onehot.scatter_(1, instance_gt.reshape(-1,1), 1) # [batch_instance_num,num_classes]
 
-        ce_loss = -(target_classes_onehot * F.log_softmax(instance_logits, dim=-1)).sum(dim=-1)
-
+        if self.instance_loss_type == "CE":
+            loss = -(target_classes_onehot * F.log_softmax(instance_logits, dim=-1)).sum(dim=-1)
+        elif self.instance_loss_type == "BCE":
+            prob = instance_logits.sigmoid() # [batch_instance_num,num_classes]
+            ce_loss = F.binary_cross_entropy_with_logits(instance_logits, target_classes_onehot, reduction="none")
+            p_t = prob * target_classes_onehot + (1 - prob) * (1 - target_classes_onehot) # [bs,num_queries,num_classes]
+            loss = ce_loss * ((1 - p_t) ** 2)
+            alpha = 0.25
+            if alpha >= 0:
+                alpha_t = alpha * target_classes_onehot + (1 - alpha) * (1 - target_classes_onehot)
+                loss = alpha_t * loss
+        else:
+            raise ValueError
         losses = {}
-        losses['loss_instance'] = ce_loss.mean()
+        losses['loss_instance'] = loss.mean()
         return losses
 
+    def loss_matching(self,outputs, targets, indices, num_boxes):
+        '''
+        for instance prediction, modeling the relation of instance region and text 
+        matching_logits: the output of matching_logits => [batch_instance_num,num_classes]
+        '''
+        assert 'matching_logits' in outputs
+ 
+        # obtain logits
+        matching_logits = outputs['matching_logits'] #[batch_instance_num,num_classes]
+        B,C = matching_logits.shape
 
+        instance_gt = [] 
+        for t in targets:
+            gt_labels = t['labels'] # [num_instance]
+            instance_gt.append(gt_labels)
+        instance_gt = torch.cat(instance_gt,dim=0) # [batch_instance_num]->"class id"
+        
+        # prepare labels
+        target_classes_onehot = torch.zeros_like(matching_logits) # [batch_instance_num,num_classes]
+        target_classes_onehot.scatter_(1, instance_gt.reshape(-1,1), 1) # [batch_instance_num,num_classes]
+
+        prob = matching_logits.sigmoid() # [batch_instance_num,num_classes]
+        ce_loss = F.binary_cross_entropy_with_logits(matching_logits, target_classes_onehot, reduction="none")
+        p_t = prob * target_classes_onehot + (1 - prob) * (1 - target_classes_onehot) # [bs,num_queries,num_classes]
+        loss = ce_loss * ((1 - p_t) ** 2)
+        alpha = 0.25
+        if alpha >= 0:
+            alpha_t = alpha * target_classes_onehot + (1 - alpha) * (1 - target_classes_onehot)
+            loss = alpha_t * loss
+
+        losses = {}
+        losses['loss_matching'] = loss.mean()
+        return losses
+
+    def loss_mask(self,outputs, targets, indices, num_boxes):
+        '''
+        for dense prediction, which is like to maskformer, the loss compute on the memory of the output of encoder
+        mask_logits: the output of mask_logits => [B,T,num_classes]
+        feature_list: the feature list after backbone for temporal modeling => list[NestedTensor]
+        '''
+        assert 'mask_logits' in outputs
+        assert 'mask_labels' in targets[0]
+
+        # obtain logits
+        mask_logits = outputs['mask_logits'].squeeze(2) # [B,T,1]->[B,T]
+        B,T= mask_logits.shape
+
+        # prepare labels
+        mask_labels_pad = torch.zeros_like(mask_logits) # [B,T], zero in padding region
+        for i, tgt in enumerate(targets):
+            feat_length = tgt['mask_labels'].shape[0]
+            mask_labels_pad[i,:feat_length] = tgt['mask_labels'] # [feat_length]
+
+        ce_loss = F.binary_cross_entropy_with_logits(mask_logits, mask_labels_pad, reduction="none").sum(-1) # [B,T]
+
+        losses = {}
+        losses['loss_mask'] = ce_loss.sum() / B
+        return losses
+    
     def _get_src_permutation_idx(self, indices):
         # permute predictions following indices
         batch_idx = torch.cat([torch.full_like(src, i) for i, (src, _) in enumerate(indices)])
@@ -219,10 +291,17 @@ class SetCriterion(nn.Module):
         #     segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
         #     losses.update(segmentation_loss)
 
-        if self.instance_loss: # adopt segmentation_loss
+        if self.instance_loss: # adopt instance_loss
             instance_loss = self.loss_instances(outputs, targets, indices, num_boxes)
             losses.update(instance_loss)
         
+        if self.matching_loss: # adopt matching_loss
+            matching_loss = self.loss_matching(outputs, targets, indices, num_boxes)
+            losses.update(matching_loss)
+        
+        if self.mask_loss:
+            mask_loss = self.loss_mask(outputs, targets, indices, num_boxes)
+            losses.update(mask_loss)
         return losses
 
 def build_criterion(args,num_classes,matcher,weight_dict):

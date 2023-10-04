@@ -135,20 +135,38 @@
         - 没用，问题应该不在这里，Thumos14_CLIP_description_zs50_8frame_v2_5,6,7,8
       - [x] 在optimizer那里为instance loss的文本和视觉self-attention单独设置参数学习率
     - 有可能是sub-action的文本语义太过于凌乱
-      - [ ] 在文本这边，除了concat子动作的文本embedding，在最开始拼接一个类别名称的prompt
-      - [ ] 经过self-attention后，只拿第一个类别名称的prompt作为文本embedding(这样做的出发点是self-attention已经把sub-action信息聚合到了class name)
+      - [x] 在文本这边，除了concat子动作的文本embedding，在最开始拼接一个类别名称的prompt
+      - [x] 经过self-attention后，只拿第一个类别名称的prompt作为文本embedding(这样做的出发点是self-attention已经把sub-action信息聚合到了class name)。只训练文本这边，visual那边固定住。单纯的学习怎么把sub-action聚合到class-name中
+        - 经过训练的方式还是没有不训练的好，即使初衷是想要学习怎么聚合，但实际上还是没见过novel类，还是不会聚合novel类
     - 看了一下结果，所有的proposals都被预测成了几个固定的类别
     - 可能是没加residual connect的原因，一个单独的self-attention其实完全打乱了原本CLIP的语义
       - [x] 给visual和text都加上residual connect
         - 👌非常有效，问题确实出在了这里。这批实验直接覆盖了以上没加residual connect的实验
 - [x] 上面的实验只有简单的一层self-attention和residual connect，考虑采用一层transformer encoder完成建模
   - 效果确实好
+- 上面的instance loss是采用了Cross Entropy Loss，实际上这个loss不太具备很好的泛化能力。因为softmax得到的是一个相对概率，即视觉特征和其他所有文本类别的相似度的相对值，BCE才是匹配的绝对值。因此把CE改成BCE试一下，直接用focal loss
+  - [x] 没什么太大的影响，并没有解决关键的问题
+- 分析一下Thumos14-split-50性能差的原因：
+  - 首先是预测得到的bounding box质量没那么好，因为训练数据少。低质量的bounding box包含很多背景/其他类别的内容，导致CLIP对于这个中带噪的segment，很难预测出准确的类别。简单来讲就是bounding box内的类别不唯一
+    - [ ] 这样来看，dense prediction是一个正确的方案。但是dense prediction的结果要怎么group成一个segment proposal是一个核心问题
+    - [ ] 还是要在训练阶段训一个背景类别的embedding，然后在测试的时候dense prediction，这样背景片段就不会被错误的分为某个类
+      - 具体实现：这是一个dense prediction的分支（从CLIP visual feat引出）
+        - [ ] 加一层时序建模
+        - [ ] 构造一个learnable background embedding
+  - 另一个方面就是inter-class的可区分性。也就是diving和cliffdiving经过CLIP text encoder得到的语义很相似。需要在prompt的层面层架类间的区分性
+    - [ ] 这个需要采用的就是一种prompt augmentation的策略
+- 一个新的方案：
+  - [x] visual这边暂时不动，文本这边纯prompt作为一个query, 通过cross-attention来聚合visual的特征，然后输出0/1，这样来进行一个dense的捕捉
+    - 具体一点：视觉prompt的维度Nxdim作为query，visual的特征维度BxTxdim作为Key和Value，把query给repert一下，经过cross-attention得到BxNxdim的结果，然后再和原本的prompt进行residual connection，经过一个MLP得到0/1匹配得分。这个loss称作matching loss
+      - 没啥用，只要一学习，原本的语义分布就被改变了，就会在base类上过拟合
 - [ ] 😎如果上面的work了，进阶的训练版本：
     - [ ] 可以采用对比学习
       - visual→text: intra-video负样本可以是错误的sub-action组合; inter-video是batch内其他的类别文本
       - text→visual: intra-video负样本可以是错误的ROI region; inter-video是batch内其他视频的ROI region
         - 这个的优势在于能够从CLIP的角度refine proposal，也就是给detector产生的proposal重排序，把质量低的proposal分数降低，从而提高定位质量
 - [ ] 另一个思路，把class_name prompt作为query，然后其他的sub-action/description作为key和value，进行cross-attention，训练的时候学习某种聚合能力
+- [ ] 核心转为怎么提高定位的性能：
+  - [ ] 增加一个0/1的mask loss作为辅助loss（在memory上面加，增加encoder的能力），提升detector的性能
 - [x] 不用prompt模板，只用class name得到文本embedding
   - Thumos14_CLIP_name_zs50_8frame_v2_1
   - 差距并不大，只掉了一个点。这说明class_name是具有明显的辨别信息的
@@ -174,3 +192,4 @@
   - binary的性能还能调，两个库都还能继续调
     - num_queries等参数
   - ROIalign内部还有一个output_size可以调，加了一个超参数：ROIalign_size
+    - [x] 调了，但是没啥大用。没用也合理，因为不管怎么调这个参数，只是ROIalign以后得到的特征信息是否丰富而已，box的坐标就那么大。无非是多插值还是少插值

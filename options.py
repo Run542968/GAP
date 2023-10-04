@@ -83,6 +83,12 @@ parser.add_argument('--focal_alpha', type=float, default=0.25)
 parser.add_argument('--instance_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
 parser.add_argument('--instance_loss_coef', type=float, default=1)
 parser.add_argument('--gamma', type=float, default=2)
+parser.add_argument('--instance_loss_type', type=str, default="CE", choices=('CE','BCE'), help="The type of Loss Function in Instance Loss")
+parser.add_argument('--matching_loss', action='store_true', default=False, help="Enable matching losses (loss at each layer)")
+parser.add_argument('--matching_loss_coef', type=float, default=1)
+parser.add_argument('--matching_loss_type', type=str, default="fixed", choices=('fixed','learnable'), help="The type of cross-attention in Matching Loss")
+parser.add_argument('--mask_loss', action='store_true', default=False, help="Enable mask losses (loss at each layer)")
+parser.add_argument('--mask_loss_coef', type=float, default=1)
 
 # Matcher
 parser.add_argument('--set_cost_class', type=float, default=2, help="Class coefficient in the matching cost")

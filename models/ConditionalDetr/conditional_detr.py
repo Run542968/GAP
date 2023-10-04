@@ -27,9 +27,10 @@ from models.clip import build_text_encoder
 from .semantic_head import build_semantic_head
 from models.clip import clip as clip_pkg
 import torchvision.ops.roi_align as ROIalign
-
+import numpy as np
 
 logger = logging.getLogger()
+
 
 class MLP(nn.Module):
     """ Very simple multi-layer perceptron (also called FFN)"""
@@ -93,6 +94,9 @@ class ConditionalDETR(nn.Module):
         self.instance_loss_ensemble = args.instance_loss_ensemble
         self.ensemble_rate = args.ensemble_rate
         self.ensemble_strategy = args.ensemble_strategy
+        self.matching_loss = args.matching_loss
+        self.matching_loss_type = args.matching_loss_type
+        self.mask_loss = args.mask_loss
 
         hidden_dim = transformer.d_model
 
@@ -107,6 +111,12 @@ class ConditionalDETR(nn.Module):
             self.instance_visual_head = visual_semantic_head
             self.instance_text_head = text_semantic_head
 
+        if self.matching_loss and self.matching_loss_type == "learnable":
+            # self.matching_head = MLP(2*hidden_dim,2*hidden_dim,1,3)
+            self.instance_text_head = nn.MultiheadAttention(hidden_dim, 4, dropout=0.1, batch_first=True)
+
+        if self.mask_loss:
+            self.mask_head = nn.Linear(hidden_dim, 1)
 
         # init prior_prob setting for focal loss
         prior_prob = 0.01
@@ -149,7 +159,7 @@ class ConditionalDETR(nn.Module):
         text_feats = self.text_encoder(tokens).float()
 
         return text_feats
-
+    
 
     def get_subaction_feats(self,cl_names, description_dict, device, version):
         '''
@@ -304,6 +314,8 @@ class ConditionalDETR(nn.Module):
             with torch.no_grad():
                 if self.instance_loss:
                     text_feats = self.get_subaction_feats(classes_name,description_dict,self.device,self.subaction_version) # nested_text_feats, tensors: [num_classes,unify length,dim] mask: [num_classes,unify length]
+                elif self.matching_loss:
+                    text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
                 else:
                     text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
@@ -325,33 +337,65 @@ class ConditionalDETR(nn.Module):
         outputs_coord = torch.stack(outputs_coords) # [dec_layers,b,num_queries,2]
         out['pred_boxes'] = outputs_coord[-1]
 
+        if self.mask_loss:
+            mask_logits = self.mask_head(memory[-1]) # [bs,t,1]
+            out['mask_logits'] = mask_logits
+
         if self.target_type != "none":
             # compute the class-agnostic foreground score
             foreground_logits = self.class_embed(hs) # [dec_layers,b,num_queries,1]
             out['pred_logits'] = foreground_logits[-1]
 
-            if self.training and self.instance_loss:
-                # prepare instance coordination
-                instance_roi_feat = [] 
-                for i, t in enumerate(targets):
-                    gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
-                    clip_feat_i = clip_feat[i].unsqueeze(0) # [1,T,dim]
-                    mask_i = mask[i].unsqueeze(0) # [1,T]
-                    roi_feat = self._roi_align(gt_coordinations,clip_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
-                    instance_roi_feat.append(roi_feat)
-                instance_roi_feat = torch.cat(instance_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
+            if self.training:
+                if self.instance_loss:
+                    # prepare instance coordination
+                    instance_roi_feat = [] 
+                    for i, t in enumerate(targets):
+                        gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
+                        clip_feat_i = clip_feat[i].unsqueeze(0) # [1,T,dim]
+                        mask_i = mask[i].unsqueeze(0) # [1,T]
+                        roi_feat = self._roi_align(gt_coordinations,clip_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
+                        instance_roi_feat.append(roi_feat)
+                    instance_roi_feat = torch.cat(instance_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
 
-                visual_feats = self.instance_visual_head(instance_roi_feat)[-1] # [layers, batch_instance_num,ROIalign_size,dim]->[batch_instance_num,ROIalign_size,dim]
-                visual_feats = visual_feats.mean(dim=1) # [batch_instance_num,dim]
+                    # visual_feats = self.instance_visual_head(instance_roi_feat)[-1] # [layers, batch_instance_num,ROIalign_size,dim]->[batch_instance_num,ROIalign_size,dim]
+                    visual_feats = instance_roi_feat.mean(dim=1) # [batch_instance_num,dim]
 
-                text_feats_tensors, text_feats_mask = text_feats.decompose()
-                text_feats = self.instance_text_head(text_feats_tensors,src_key_padding_mask=text_feats_mask)[-1] # [layers, num_classes,padding length,dim]->[num_classes,padding length,dim]
-                text_feats = text_feats.sum(dim=1)/torch.sum(~text_feats_mask,dim=1,keepdim=True) # [num_classes,dim]
+                    text_feats_tensors, text_feats_mask = text_feats.decompose()
+                    text_feats = self.instance_text_head(text_feats_tensors,src_key_padding_mask=text_feats_mask)[-1] # [layers, num_classes,padding length,dim]->[num_classes,padding length,dim]
+                    # text_feats = text_feats.sum(dim=1)/torch.sum(~text_feats_mask,dim=1,keepdim=True) # [num_classes,dim]
+                    text_feats = text_feats[:,0,:] # [num_classes,dim] get the firt position token, i.e., class_name token
 
-                instance_logits = self._compute_similarity(visual_feats,text_feats)
-                out['instance_logits'] = instance_logits # [batch_instance_num,num_classes]
+                    instance_logits = self._compute_similarity(visual_feats,text_feats)
+                    out['instance_logits'] = instance_logits # [batch_instance_num,num_classes]
+                elif self.matching_loss:
+                    # prepare instance coordination
+                    instance_roi_feat = [] 
+                    for i, t in enumerate(targets):
+                        gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
+                        clip_feat_i = clip_feat[i].unsqueeze(0) # [1,T,dim]
+                        mask_i = mask[i].unsqueeze(0) # [1,T]
+                        roi_feat = self._roi_align(gt_coordinations,clip_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
+                        instance_roi_feat.append(roi_feat)
+                    instance_roi_feat = torch.cat(instance_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
 
-           
+                    text_feats = text_feats.unsqueeze(0).repeat(instance_roi_feat.shape[0],1,1) # [batch_instance_num,num_classes,dim]
+                    
+                    if self.matching_loss_type == "fixed":
+                        # non-parameters cross-attention
+                        scale = torch.tensor(text_feats.shape[-1]).pow(0.5).to(self.device)
+                        qk = torch.einsum("bcd,btd->bct",text_feats,instance_roi_feat)
+                        qk = qk/scale
+                        attn = qk.softmax(-1)
+                        res = torch.einsum("bct,btd->bcd",attn,instance_roi_feat)
+                    elif self.matching_loss_type == "learnable":
+                        res,_ = self.instance_text_head(text_feats,instance_roi_feat,instance_roi_feat) # [batch_instance_num,num_classes,dim]
+                    # tgt = torch.cat((text_feats,res),dim=-1) # [batch_query_num,num_classes,2*dim]
+                    # matching_logits = self.matching_head(tgt).squeeze(2) # [batch_instance_num,num_classes,1]->[batch_instance_num,num_classes]
+                    matching_logits = torch.einsum("bcd,bcd->bcd",text_feats,res).sum(-1) # [batch_instance_num,num_classes]
+                    out['matching_logits'] = matching_logits # [batch_instance_num,num_classes]
+
+
             # obtain the ROIalign logits
             if not self.training: # only in inference stage
                 if self.instance_loss:
@@ -359,12 +403,13 @@ class ConditionalDETR(nn.Module):
                     b,q,l,d = roi_feat.shape
                     roi_feat = roi_feat.reshape(b*q,l,d)
 
-                    visual_feats = self.instance_visual_head(roi_feat)[-1] # [layers, bs*num_queries,ROIalign_size,dim]->[bs*num_queries,ROIalign_size,dim]
-                    visual_feats = visual_feats.mean(dim=1).reshape(b,q,d)
+                    # visual_feats = self.instance_visual_head(roi_feat)[-1] # [layers, bs*num_queries,ROIalign_size,dim]->[bs*num_queries,ROIalign_size,dim]
+                    visual_feats = roi_feat.mean(dim=1).reshape(b,q,d)
                     
                     text_feats_tensors, text_feats_mask = text_feats.decompose()
                     text_feats = self.instance_text_head(text_feats_tensors,src_key_padding_mask=text_feats_mask)[-1] # [layers, num_classes,padding length,dim]->[num_classes,padding length,dim]
-                    text_feats = text_feats.sum(dim=1)/torch.sum(~text_feats_mask,dim=1,keepdim=True) # [num_classes,dim]
+                    # text_feats = text_feats.sum(dim=1)/torch.sum(~text_feats_mask,dim=1,keepdim=True) # [num_classes,dim]
+                    text_feats = text_feats[:,0,:]
                     
                     instance_logits = self._compute_similarity(visual_feats,text_feats) # [b,num_queries,num_classes]
                     out['ROIalign_logits'] = instance_logits
@@ -385,12 +430,34 @@ class ConditionalDETR(nn.Module):
                         else:
                             NotImplementedError
                         out['ROIalign_logits'] = prob 
-
+                elif self.matching_loss:
+                    roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    b,q,l,d = roi_feat.shape
+                    roi_feat = roi_feat.reshape(b*q,l,d)
+                    
+                    text_feats = text_feats.unsqueeze(0).repeat(roi_feat.shape[0],1,1) # [batch_query_num,num_classes,dim]
+                    
+                    if self.matching_loss_type == "fixed":
+                        # non-parameters cross-attention
+                        scale = torch.tensor(text_feats.shape[-1]).pow(0.5).to(self.device)
+                        qk = torch.einsum("bcd,btd->bct",text_feats,roi_feat)
+                        qk = qk/scale
+                        attn = qk.softmax(-1)
+                        res = torch.einsum("bct,btd->bcd",attn,roi_feat)
+                    elif self.matching_loss_type == "learnable":
+                        res,_ = self.instance_text_head(text_feats,roi_feat,roi_feat) # [batch_instance_num,num_classes,dim]
+                    # tgt = torch.cat((text_feats,res),dim=-1) # [batch_query_num,num_classes,2*dim]
+                    # matching_logits = self.matching_head(tgt).squeeze(2) # [batch_query_num,num_classes,1]->[batch_query_num,num_classes]
+                    matching_logits = torch.einsum("bcd,bcd->bcd",text_feats,res).sum(-1) # [batch_query_num,num_classes]
+                    out['ROIalign_logits'] = matching_logits.reshape(b,q,-1) # [batch_query_num,num_classes]->[batch,query_num,num_classes]
+                    
                 else: # if don't use the instance loss, directly adopt clip_visual_feat to classification
                     if self.ROIalign_strategy == "before_pred":
                         ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],text_feats,self.ROIalign_size)
                     else:
                         visual_feats = clip_feat + 1e-8 # avoid the NaN [B,T,dim]
+                        if self.mask_loss:
+                            visual_feats = mask_logits*visual_feats
                         snippet_logits = self._compute_similarity(visual_feats,text_feats) # [b,T,num_classes]
                         ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
                     out['ROIalign_logits'] = ROIalign_logits # update the term of out [b,num_queries,num_classes]
@@ -446,7 +513,10 @@ def build(args, device):
     
     if args.instance_loss: # adopt segmentation_loss
         weight_dict['loss_instance'] = args.instance_loss_coef
-    
+    if args.matching_loss:
+        weight_dict['loss_matching'] = args.matching_loss_coef
+    if args.mask_loss:
+        weight_dict['loss_mask'] = args.mask_loss_coef
     # TODO this is a hack
     if args.aux_loss:
         aux_weight_dict = {}
