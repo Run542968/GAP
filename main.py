@@ -113,8 +113,8 @@ if __name__ == '__main__':
         # the parameters in transformaer
         {
             "params": [p for n, p in model.named_parameters() if "backbone" not in n and \
-                                                                "instance_visual_head" not in n and \
-                                                                "instance_text_head" not in n and \
+                                                                "sematnic_visual_head" not in n and \
+                                                                "sematnic_text_head" not in n and \
                                                                 p.requires_grad]
          },
         # the parameters in backbone
@@ -124,12 +124,12 @@ if __name__ == '__main__':
         },
         # the parameters in semantic head: instance_visual_head
         {
-            "params": [p for n, p in model.named_parameters() if "instance_visual_head" in n and p.requires_grad],
+            "params": [p for n, p in model.named_parameters() if "sematnic_visual_head" in n and p.requires_grad],
             "lr": args.lr_semantic_head,
         },
         # the parameters in semantic head: instance_text_head
         {
-            "params": [p for n, p in model.named_parameters() if "instance_text_head" in n and p.requires_grad],
+            "params": [p for n, p in model.named_parameters() if "sematnic_text_head" in n and p.requires_grad],
             "lr": args.lr_semantic_head,
         }
     ]

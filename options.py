@@ -55,21 +55,24 @@ parser.add_argument('--dec_layers', type=int, default=6, help="Number of decodin
 parser.add_argument('--pre_norm', action='store_true', default=False, help="Whether normalize_before, NOTE: the pre_norm=True is not complete implementation in cross_attention")
 ## CLIP
 parser.add_argument('--CLIP_model_name', type=str, default='ViT-B/16', help="The version of different pretrain CLIP")
-## Semantic Head
-parser.add_argument('--semantic_visual_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
-parser.add_argument('--semantic_visual_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
-parser.add_argument('--semantic_visual_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
-parser.add_argument('--semantic_text_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
-parser.add_argument('--semantic_text_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
-parser.add_argument('--semantic_text_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
 ## Conditional DETR
 parser.add_argument('--num_queries', type=int, default=15, help="Number of query slots")
 parser.add_argument('--norm_embed', action='store_true', default=False, help="Normalization and multiple the scale_logits for similarity computing between visual and text embedding")
 parser.add_argument('--exp_logit_scale', action='store_true', default=False, help="Whether to add exp() operation on logtis_scale")
-parser.add_argument('--instance_head_type', default="MLP", choices=('MLP', 'Conv', 'MHA'), help='Conv: Conv1d, MHA: MultiHeadAttention') 
 parser.add_argument('--ROIalign_size', type=int, default=16, help="The length of ROIalign ouput size")
-parser.add_argument('--subaction_version', type=str, default='v1', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
-parser.add_argument('--semantic_head_version', type=str, default='v1', choices=('v1', 'v2'), help="The structure of semantic head")
+## Semantic Head
+parser.add_argument('--semantic_vhead_type', default="None", choices=('None', 'MLP', 'Conv', 'MHA', 'Enc'), help='Conv: Conv1d, MHA: MultiHeadAttention, Enc: Transformer Encoder') 
+parser.add_argument('--semantic_thead_type', default="MHA", choices=('Conv', 'MHA', 'Enc'), help='Conv: Conv1d, MHA: MultiHeadAttention, Enc: Transformer Encoder') 
+parser.add_argument('--semantic_vEnc_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
+parser.add_argument('--semantic_vEnc_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
+parser.add_argument('--semantic_vEnc_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
+parser.add_argument('--semantic_tEnc_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
+parser.add_argument('--semantic_tEnc_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
+parser.add_argument('--semantic_tEnc_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
+
+parser.add_argument('--augment_prompt_type', type=str, default='single', choices=('single', 'average', 'attention'), help="single: prompt or description; average: fuse prompt and description; attention: self-attention then obtain first position embedding")
+parser.add_argument('--subaction_version', type=str, default='v3', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
+
 
 
 
@@ -80,9 +83,9 @@ parser.add_argument('--cls_loss_coef', type=float, default=2)
 parser.add_argument('--bbox_loss_coef', type=float, default=5)
 parser.add_argument('--giou_loss_coef', type=float, default=2)
 parser.add_argument('--focal_alpha', type=float, default=0.25)
+parser.add_argument('--gamma', type=float, default=2)
 parser.add_argument('--instance_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
 parser.add_argument('--instance_loss_coef', type=float, default=1)
-parser.add_argument('--gamma', type=float, default=2)
 parser.add_argument('--instance_loss_type', type=str, default="CE", choices=('CE','BCE'), help="The type of Loss Function in Instance Loss")
 parser.add_argument('--matching_loss', action='store_true', default=False, help="Enable matching losses (loss at each layer)")
 parser.add_argument('--matching_loss_coef', type=float, default=1)
@@ -115,14 +118,12 @@ parser.add_argument('--save_result', action='store_true', default=False, help="W
 parser.add_argument('--test_interval', type=int, default=1, help="The interval to inference")
 parser.add_argument('--ROIalign_strategy', default="before_pred", choices=("before_pred","after_pred"), help="when to perform ROIalign, pred means compute visual-text similarity")
 parser.add_argument('--train_interval', type=int, default=-1, help="The interval to inference on train set, -1 denotes not using this")
-parser.add_argument('--instance_loss_ensemble', action='store_true', default=False, help="Whether to ensemble the result of semantic head and CLIP capability")
+
+parser.add_argument('--results_ensemble', action='store_true', default=False, help="Whether to ensemble the result of semantic head and CLIP capability")
 parser.add_argument('--ensemble_rate', type=float, default=0.5, help="the balance coefficient between semantic head and CLIP capability")
 parser.add_argument('--ensemble_strategy', type=str, default="arithmetic", choices=("arithmetic","geomethric"), help="the strategy to ensemble")
-parser.add_argument('--augment_prompt', action='store_true', default=False, help="Whether to augment prompt")
-parser.add_argument('--augment_version', type=str, default='v1', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
 parser.add_argument('--filter_threshold', type=float, default=0, help="the threshold to filter some proposals that may be negative ")
-
-
+parser.add_argument('--proposals_weight_type', default="before_softmax", choices=("before_softmax","after_softmax"), help="the way to perform multiple between detector scores and ROIalign proposals")
 
 
 def merge_cfg_from_file(args,cfg_path):

@@ -1,5 +1,10 @@
 # basic
 task: "zero_shot"
+save_result: True
+
+# model
+exp_logit_scale: True
+norm_embed: True
 
 # dataset
 dataset_name: Thumos14
@@ -15,3 +20,4 @@ num_classes: 20
 # inference_slice_overlap: 0.25
 split: 50
 split_id: 0
+

@@ -1,5 +1,11 @@
 # basic
 task: "zero_shot"
+save_result: True
+
+# model
+exp_logit_scale: True
+norm_embed: True
+
 
 # dataset
 dataset_name: Thumos14

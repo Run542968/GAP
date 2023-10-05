@@ -203,4 +203,6 @@
 
 #### 第四次大版本
 - 首先是整合上面几个版本的代码，并且简化。
-  - [ ] 相比于detector新增的loss，例如instance_loss, segmentation_loss, mask_loss, matching_loss所用的module单独写，不要交叉
+  - [x] 相比于detector新增的loss，例如instance_loss, segmentation_loss, mask_loss, matching_loss所用的module单独写，不要交叉
+    - ant13不需要norm_embed
+  - [x] 把一些已经固定的参数，例如norm_embed, exp_ligits_scale放到config文件

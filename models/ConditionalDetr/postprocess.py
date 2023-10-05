@@ -15,6 +15,7 @@ class PostProcess(nn.Module):
         # self.binary = args.binary
         self.target_type = args.target_type
         self.segmentation_loss = args.segmentation_loss
+        self.proposals_weight_type = args.proposals_weight_type
         
         
     @torch.no_grad()
@@ -33,8 +34,10 @@ class PostProcess(nn.Module):
                 assert foreground_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{foreground_logits.shape}"
                 prob = foreground_logits # only evaluate the proposal
             else:
-                # prob = torch.mul(foreground_logits,ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
-                prob = torch.mul(foreground_logits,ROIalign_logits.softmax(-1)) # [bs,num_queries,num_classes]
+                if self.proposals_weight_type == "before_softmax":
+                    prob = torch.mul(foreground_logits,ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
+                elif self.proposals_weight_type == "after_softmax":
+                    prob = torch.mul(foreground_logits,ROIalign_logits.softmax(-1)) # [bs,num_queries,num_classes]
 
             if self.segmentation_loss:
                 prob = prob[:,:,:-1] # [bs,num_queries,num_classes]

@@ -145,60 +145,63 @@ class Naive_Semantic_Head(nn.Module):
     def __init__(self, d_model, nhead, type):
         super().__init__()
         if type == "MLP":
-            self.instance_head = MLP(d_model,d_model,d_model,3)
+            self.head = MLP(d_model,d_model,d_model,3)
         elif type == "Conv":
-            self.instance_head = nn.Conv1d(d_model,d_model, kernel_size=3, padding=1)
+            self.head = nn.Conv1d(d_model,d_model, kernel_size=3, padding=1)
         elif type == "MHA":
-            self.instance_head = nn.MultiheadAttention(d_model,nhead,batch_first=True)
+            self.head = nn.MultiheadAttention(d_model,nhead,batch_first=True)
+        elif type == "None":
+            pass
         else:
-            raise ValueError(f"Don't have this instance_head_type:{type}")
+            raise ValueError(f"Don't have this semantic_head:{type}")
         self.type = type
 
     def forward(self,input,src_key_padding_mask=None):
         if self.type == "MLP":
-            feats = self.instance_head(input) # [batch_instance_num,ROIalign_size,dim]
+            feats = self.head(input) # [batch_instance_num,ROIalign_size,dim]
         elif self.type == "Conv":
-            feats = self.instance_head(input.permute(0,2,1)).permute(0,2,1) # [batch_instance_num,ROIalign_size,dim]
+            feats = self.head(input.permute(0,2,1)).permute(0,2,1) # [batch_instance_num,ROIalign_size,dim]
         elif self.type == "MHA":
-            feats, _ = self.instance_head(input,input,input,key_padding_mask=src_key_padding_mask) # [batch_instance_num,ROIalign_size,dim]
+            feats, _ = self.head(input,input,input,key_padding_mask=src_key_padding_mask) # [batch_instance_num,ROIalign_size,dim]
+        elif self.type == "None":
+            return [input]
         else:
-            raise ValueError(f"Don't have this instance_head_type:{self.instance_head_type}")
+            raise ValueError(f"Don't have this semantic_head_type:{self.type}")
         feats = feats + input # residual connection
         return [feats]
     
-def build_semantic_head(args):
-    '''
-    v1: most naive structure that only adopt a self-attention and a residual connection
-    v2: transformer encoder
-    '''
-    if args.instance_loss or args.segmentation_loss:
-        if args.semantic_head_version == "v1":
-            position_embedding = None
-            visual_semantic_head = Naive_Semantic_Head(d_model=args.hidden_dim,
-                                                    nhead=args.semantic_visual_nheads,
-                                                    type=args.instance_head_type)
-            text_semantic_head = Naive_Semantic_Head(d_model=args.hidden_dim,
-                                                    nhead=args.semantic_text_nheads,
-                                                    type="MHA")
-        elif args.semantic_head_version == "v2":
-            assert args.instance_head_type == "MHA", f"only MHA is adopt in this semantic_head_version, not current {args.instance_head_type}."
-            position_embedding = build_position_encoding(args)
-            visual_semantic_head = Semantic_Head(d_model=args.hidden_dim,
-                                                nhead=args.semantic_visual_nheads,
-                                                num_layers=args.semantic_visual_layers,
-                                                dim_feedforward=args.dim_feedforward,
-                                                dropout=args.semantic_visual_dropout,
-                                                normalize_before = False,
-                                                return_intermediate=True)
-            text_semantic_head = Semantic_Head(d_model=args.hidden_dim,
-                                                nhead=args.semantic_text_nheads,
-                                                num_layers=args.semantic_text_layers,
-                                                dim_feedforward=args.dim_feedforward,
-                                                dropout=args.semantic_text_dropout,
-                                                normalize_before = False,
-                                                return_intermediate=True)
-        else:
-            raise ValueError(f"Don't define this semantic_head_version:{args.semantic_head_version}") 
-        return visual_semantic_head,text_semantic_head
+def build_semantic_head(args):   
+    if args.semantic_vhead_type in ['None','MLP','Conv','MHA']:
+        visual_head = Naive_Semantic_Head(d_model=args.hidden_dim,
+                                                nhead=args.semantic_vEnc_nheads,
+                                                type=args.semantic_vhead_type)
+    elif args.semantic_vhead_type == "Enc":
+        assert args.semantic_vhead_type == "Enc"
+        visual_head = Semantic_Head(d_model=args.hidden_dim,
+                                    nhead=args.semantic_vEnc_nheads,
+                                    num_layers=args.semantic_vEnc_layers,
+                                    dim_feedforward=args.dim_feedforward,
+                                    dropout=args.semantic_vEnc_dropout,
+                                    normalize_before = False,
+                                    return_intermediate=True)
+
+    if args.semantic_thead_type in ['Conv','MHA']:
+        text_head = Naive_Semantic_Head(d_model=args.hidden_dim,
+                                                nhead=args.semantic_tEnc_nheads,
+                                                type=args.semantic_thead_type)
+    elif args.semantic_thead_type == "Enc":
+        assert args.semantic_thead_type == "Enc"
+        text_head = Semantic_Head(d_model=args.hidden_dim,
+                                            nhead=args.semantic_tEnc_nheads,
+                                            num_layers=args.semantic_tEnc_layers,
+                                            dim_feedforward=args.dim_feedforward,
+                                            dropout=args.semantic_tEnc_dropout,
+                                            normalize_before = False,
+                                            return_intermediate=True)
+
+    if args.instance_loss: # instance head
+        return visual_head,text_head
+    elif args.segmentation_loss:
+        return visual_head,text_head
     else:
         return None, None
