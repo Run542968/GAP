@@ -97,6 +97,9 @@ class ConditionalDETR(nn.Module):
         self.matching_loss = args.matching_loss
         self.matching_loss_type = args.matching_loss_type
         self.mask_loss = args.mask_loss
+        self.segmentation_loss = args.segmentation_loss
+        self.augment_version = args.augment_version
+        self.augment_prompt = args.augment_prompt
 
         hidden_dim = transformer.d_model
 
@@ -117,6 +120,11 @@ class ConditionalDETR(nn.Module):
 
         if self.mask_loss:
             self.mask_head = nn.Linear(hidden_dim, 1)
+
+        if self.segmentation_loss:
+            self.bg_embedding = nn.Parameter( torch.empty(1, 512) )
+            torch.nn.init.kaiming_uniform_(self.bg_embedding, nonlinearity='relu')
+            self.instance_text_head = text_semantic_head
 
         # init prior_prob setting for focal loss
         prior_prob = 0.01
@@ -177,6 +185,8 @@ class ConditionalDETR(nn.Module):
                 subaction_list = ["a video of a person doing"+" "+c]
             else: 
                 raise ValueError(f"Don't have this version: {version}")
+            # print(f"c:{c}")
+            # print(f"description_dict[c]:{description_dict[c]}")
             subaction_list = subaction_list + description_dict[c]['Elaboration']['Description'] # [sub-action num, length]
             subaction_tokens = clip_pkg.tokenize(subaction_list).long().to(device)
             subaction_feats = self.text_encoder(subaction_tokens).float() # [sub-action num, dim]
@@ -185,6 +195,24 @@ class ConditionalDETR(nn.Module):
 
         return nested_text_feats 
 
+    def augment_text_feats(self,cl_names, description_dict, device, version):
+        text_feats = []
+        for c in cl_names:
+            if version == "v1":
+                subaction_list = []
+            elif version == "v2":
+                subaction_list = [c]
+            elif version == "v3":
+                subaction_list = ["a video of a person doing"+" "+c]
+            else: 
+                raise ValueError(f"Don't have this version: {version}")
+            subaction_list = subaction_list + description_dict[c]['Elaboration']['Description'] # [sub-action num, length]
+            subaction_tokens = clip_pkg.tokenize(subaction_list).long().to(device)
+            subaction_feats = self.text_encoder(subaction_tokens).float() # [sub-action num, dim]
+            pooled_feats = subaction_feats.mean(dim=0,keepdim=True)
+            text_feats.append(pooled_feats)
+        text_feats = torch.cat(text_feats,dim=0) # [num_classes,dim]
+        return text_feats
 
     def _to_roi_align_format(self, rois, truely_length, scale_factor=1):
         '''Convert RoIs to RoIAlign format.
@@ -316,6 +344,10 @@ class ConditionalDETR(nn.Module):
                     text_feats = self.get_subaction_feats(classes_name,description_dict,self.device,self.subaction_version) # nested_text_feats, tensors: [num_classes,unify length,dim] mask: [num_classes,unify length]
                 elif self.matching_loss:
                     text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+                elif self.segmentation_loss:
+                    text_feats = self.get_subaction_feats(classes_name,description_dict,self.device,self.subaction_version) # nested_text_feats, tensors: [num_classes,unify length,dim] mask: [num_classes,unify length]
+                elif self.augment_prompt:
+                    text_feats = self.augment_text_feats(classes_name, description_dict, self.device, self.augment_version) # [N classes,dim]
                 else:
                     text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
@@ -394,6 +426,17 @@ class ConditionalDETR(nn.Module):
                     # matching_logits = self.matching_head(tgt).squeeze(2) # [batch_instance_num,num_classes,1]->[batch_instance_num,num_classes]
                     matching_logits = torch.einsum("bcd,bcd->bcd",text_feats,res).sum(-1) # [batch_instance_num,num_classes]
                     out['matching_logits'] = matching_logits # [batch_instance_num,num_classes]
+                elif self.segmentation_loss:
+                    text_feats_tensors, text_feats_mask = text_feats.decompose()
+                    text_feats = self.instance_text_head(text_feats_tensors,src_key_padding_mask=text_feats_mask)[-1] # [layers, num_classes,padding length,dim]->[num_classes,padding length,dim]
+                    # text_feats = text_feats.sum(dim=1)/torch.sum(~text_feats_mask,dim=1,keepdim=True) # [num_classes,dim]
+                    text_feats = text_feats[:,0,:] # [num_classes,dim] get the firt position token, i.e., class_name token
+                    text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
+
+                    visual_feats = clip_feat + 1e-8
+                    segmentation_logits = self._compute_similarity(visual_feats,text_feats) # [b,T,num_classes+1]
+                    out['segmentation_logits'] = segmentation_logits
+                    out['logits_mask'] = mask
 
 
             # obtain the ROIalign logits
@@ -450,7 +493,19 @@ class ConditionalDETR(nn.Module):
                     # matching_logits = self.matching_head(tgt).squeeze(2) # [batch_query_num,num_classes,1]->[batch_query_num,num_classes]
                     matching_logits = torch.einsum("bcd,bcd->bcd",text_feats,res).sum(-1) # [batch_query_num,num_classes]
                     out['ROIalign_logits'] = matching_logits.reshape(b,q,-1) # [batch_query_num,num_classes]->[batch,query_num,num_classes]
-                    
+                
+                elif self.segmentation_loss:
+                    text_feats_tensors, text_feats_mask = text_feats.decompose()
+                    text_feats = self.instance_text_head(text_feats_tensors,src_key_padding_mask=text_feats_mask)[-1] # [layers, num_classes,padding length,dim]->[num_classes,padding length,dim]
+                    # text_feats = text_feats.sum(dim=1)/torch.sum(~text_feats_mask,dim=1,keepdim=True) # [num_classes,dim]
+                    text_feats = text_feats[:,0,:] # [num_classes,dim] get the firt position token, i.e., class_name token
+                    text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
+
+                    visual_feats = clip_feat + 1e-8
+                    segmentation_logits = self._compute_similarity(visual_feats,text_feats) # [b,T,num_classes+1]
+                    ROIalign_logits = self._get_roi_prediction_v2(segmentation_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes+1]
+                    out['ROIalign_logits'] = ROIalign_logits # update the term of out [b,num_queries,num_classes+1]
+
                 else: # if don't use the instance loss, directly adopt clip_visual_feat to classification
                     if self.ROIalign_strategy == "before_pred":
                         ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],text_feats,self.ROIalign_size)
@@ -517,6 +572,9 @@ def build(args, device):
         weight_dict['loss_matching'] = args.matching_loss_coef
     if args.mask_loss:
         weight_dict['loss_mask'] = args.mask_loss_coef
+    if args.segmentation_loss:
+        weight_dict['loss_segmentation'] = args.segmentation_loss_coef
+
     # TODO this is a hack
     if args.aux_loss:
         aux_weight_dict = {}

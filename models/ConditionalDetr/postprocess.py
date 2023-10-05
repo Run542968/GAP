@@ -14,6 +14,7 @@ class PostProcess(nn.Module):
         # self.enable_ROIalign = args.enable_ROIalign
         # self.binary = args.binary
         self.target_type = args.target_type
+        self.segmentation_loss = args.segmentation_loss
         
         
     @torch.no_grad()
@@ -32,7 +33,11 @@ class PostProcess(nn.Module):
                 assert foreground_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{foreground_logits.shape}"
                 prob = foreground_logits # only evaluate the proposal
             else:
-                prob = torch.mul(foreground_logits,ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
+                # prob = torch.mul(foreground_logits,ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
+                prob = torch.mul(foreground_logits,ROIalign_logits.softmax(-1)) # [bs,num_queries,num_classes]
+
+            if self.segmentation_loss:
+                prob = prob[:,:,:-1] # [bs,num_queries,num_classes]
 
         elif not eval_proposal:
             assert 'pred_logits' in outputs
@@ -46,9 +51,9 @@ class PostProcess(nn.Module):
 
 
         if self.type == "class_agnostic":
-            assert self.topk >= 10, "so small value for class_agnostic type, please check"
+            assert self.topk >= 1, "so small value for class_agnostic type, please check"
             # sort across different instances, pick top 100 at most
-            topk_values, topk_indexes = torch.topk(prob.view(B, -1), min(self.topk, Q*num_classes), dim=1) # [bs,num_queries*num_classes] - > [bs,100]
+            topk_values, topk_indexes = torch.topk(prob.reshape(B, -1), min(self.topk, Q*num_classes), dim=1) # [bs,num_queries*num_classes] - > [bs,100]
             scores = topk_values
             topk_boxes_idx = torch.div(topk_indexes, num_classes, rounding_mode='trunc') # get the row index of out_logits (b,q,c), i.e., the query idx. [bs,100//num_classes]
             labels = topk_indexes % num_classes # get the col index of out_logits (b,q,c), i.e., the class idx. [bs,100//num_classes]

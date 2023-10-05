@@ -58,6 +58,7 @@ class SetCriterion(nn.Module):
         self.instance_loss_type = args.instance_loss_type
         self.matching_loss = args.matching_loss
         self.mask_loss = args.mask_loss
+        self.segmentation_loss = args.segmentation_loss
         
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
@@ -114,23 +115,56 @@ class SetCriterion(nn.Module):
         segmentation_logits: the output of segmentation_logits => [B,T,num_classes]
         feature_list: the feature list after backbone for temporal modeling => list[NestedTensor]
         '''
+        # assert 'segmentation_logits' in outputs
+        # assert 'segmentation_onehot_labels' in targets[0]
+
+        # # obtain logits
+        # segmentation_logits = outputs['segmentation_logits'] # [B,T,num_classes]
+        # B,T,C = segmentation_logits.shape
+
+        # # prepare labels
+        # segmentation_onehot_labels_pad = torch.zeros_like(segmentation_logits) # [B,T,num_classes], zero in padding region
+        # for i, tgt in enumerate(targets):
+        #     feat_length = tgt['segmentation_onehot_labels'].shape[0]
+        #     segmentation_onehot_labels_pad[i,:feat_length,:] = tgt['segmentation_onehot_labels'] # [feat_length, num_classes]
+
+        # ce_loss = -(segmentation_onehot_labels_pad * F.log_softmax(segmentation_logits, dim=-1)).sum(dim=-1)
+
+        # losses = {}
+        # losses['loss_segmentation'] = ce_loss.sum(-1).sum() / B
+
         assert 'segmentation_logits' in outputs
-        assert 'segmentation_onehot_labels' in targets[0]
+        assert 'segmentation_labels' in targets[0]
+        assert 'logits_mask' in outputs
 
         # obtain logits
-        segmentation_logits = outputs['segmentation_logits'] # [B,T,num_classes]
+        segmentation_logits = outputs['segmentation_logits'] # [B,T,num_classes+1]
         B,T,C = segmentation_logits.shape
 
         # prepare labels
-        segmentation_onehot_labels_pad = torch.zeros_like(segmentation_logits) # [B,T,num_classes], zero in padding region
+        segmentation_labels_pad = torch.full(segmentation_logits.shape[:2], segmentation_logits.shape[2]-1, dtype=torch.int64, device=segmentation_logits.device) # [B,T]
         for i, tgt in enumerate(targets):
-            feat_length = tgt['segmentation_onehot_labels'].shape[0]
-            segmentation_onehot_labels_pad[i,:feat_length,:] = tgt['segmentation_onehot_labels'] # [feat_length, num_classes]
+            feat_length = tgt['segmentation_labels'].shape[0]
+            segmentation_labels_pad[i,:feat_length] = tgt['segmentation_labels'] # [feat_length]
 
-        ce_loss = -(segmentation_onehot_labels_pad * F.log_softmax(segmentation_logits, dim=-1)).sum(dim=-1)
+        target_classes_onehot = torch.zeros_like(segmentation_logits) # [bs,T,num_classes+1]
+        target_classes_onehot.scatter_(2, segmentation_labels_pad.unsqueeze(-1), 1)
+        
+
+        prob = segmentation_logits.sigmoid() # [batch_instance_num,num_classes]
+        ce_loss = F.binary_cross_entropy_with_logits(segmentation_logits, target_classes_onehot, reduction="none")
+        p_t = prob * target_classes_onehot + (1 - prob) * (1 - target_classes_onehot) # [bs,T,num_classes+1]
+        loss = ce_loss * ((1 - p_t) ** 2)
+        alpha = 0.25
+        if alpha >= 0:
+            alpha_t = alpha * target_classes_onehot + (1 - alpha) * (1 - target_classes_onehot)
+            loss = alpha_t * loss
+
+        logits_mask = ~outputs['logits_mask'] # covert False to 1
+        loss = torch.einsum("btc,bt->btc",loss,logits_mask) # [b,t,c+1]
 
         losses = {}
-        losses['loss_segmentation'] = ce_loss.sum(-1).sum() / B
+        losses['loss_segmentation'] = loss.sum(-1).mean()
         return losses
 
     def loss_instances(self,outputs, targets, indices, num_boxes):
@@ -287,9 +321,9 @@ class SetCriterion(nn.Module):
                     l_dict = {k + f'_{i}': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
-        # if self.segmentation_loss: # adopt segmentation_loss
-        #     segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
-        #     losses.update(segmentation_loss)
+        if self.segmentation_loss: # adopt segmentation_loss
+            segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
+            losses.update(segmentation_loss)
 
         if self.instance_loss: # adopt instance_loss
             instance_loss = self.loss_instances(outputs, targets, indices, num_boxes)

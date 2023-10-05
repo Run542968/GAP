@@ -2060,8 +2060,17 @@
     },
     "Ballet": {
         "idx": 176,
-        "Elaboration": "error",
-        "Origin_Chat": "error"
+        "Elaboration": {
+            "Description": [
+                "warm-up exercises",
+                "graceful movements and poses",
+                "pointe work",
+                "pirouettes",
+                "grand jet\u00e9",
+                "pas de deux"
+            ]
+        },
+        "Origin_Chat": "{\"Description\": [\"warm-up exercises\", \"graceful movements and poses\", \"pointe work\", \"pirouettes\", \"grand jet\u00e9\", \"pas de deux\"]}"
     },
     "Hand washing clothes": {
         "idx": 177,

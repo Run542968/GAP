@@ -171,7 +171,7 @@ def build_semantic_head(args):
     v1: most naive structure that only adopt a self-attention and a residual connection
     v2: transformer encoder
     '''
-    if args.instance_loss:
+    if args.instance_loss or args.segmentation_loss:
         if args.semantic_head_version == "v1":
             position_embedding = None
             visual_semantic_head = Naive_Semantic_Head(d_model=args.hidden_dim,

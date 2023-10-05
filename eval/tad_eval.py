@@ -46,6 +46,7 @@ class TADEvaluator(object):
                  nms_mode=['raw'], 
                  eval_proposal = False,
                  num_workers = 8,
+                 filter_threshold = 0
                  ):
         '''
         dataset_name:  thumos14, activitynet
@@ -56,6 +57,7 @@ class TADEvaluator(object):
         task_setting: what setting the model for, ['close_set','zero_shot']
         split: how to split the classes in zero-shot setting
         eval_proposal: whether to evaluate the class-agnostic proposal
+        filter_threshold: the threshold to filter negative proposals
         '''
         self.dataset_name = dataset_name
         self.subset = subset
@@ -64,6 +66,7 @@ class TADEvaluator(object):
         self.num_classes = len(self.classes)
         self.nms_mode = nms_mode
         self.epoch = epoch
+        self.filter_threshold = filter_threshold
 
         self.eval_proposal = eval_proposal
         if self.eval_proposal:
@@ -181,6 +184,7 @@ class ActivityNet13Evaluator(TADEvaluator):
                  nms_mode=['raw'], 
                  eval_proposal = False,
                  num_workers = 8,
+                 filter_threshold = 0
                  ):
         '''
         dataset_name:  thumos14, activitynet
@@ -197,7 +201,8 @@ class ActivityNet13Evaluator(TADEvaluator):
         super(ActivityNet13Evaluator,self).__init__(dataset_name, dataset.subset, epoch, iou_range, dataset.classes,
                                                 nms_mode, 
                                                 eval_proposal,
-                                                num_workers)
+                                                num_workers,
+                                                filter_threshold)
 
     def summarize(self):
         '''Compute mAP and collect stats'''
@@ -284,6 +289,7 @@ class Thumos14Evaluator(TADEvaluator):
                  nms_mode=['raw'], 
                  eval_proposal = False,
                  num_workers = 8,
+                 filter_threshold = 0
                  ):
         '''
         dataset_name:  thumos14, activitynet
@@ -302,7 +308,8 @@ class Thumos14Evaluator(TADEvaluator):
         super(Thumos14Evaluator,self).__init__(dataset_name, dataset.subset, epoch, iou_range, dataset.classes,
                                                 nms_mode, 
                                                 eval_proposal,
-                                                num_workers)
+                                                num_workers,
+                                                filter_threshold)
 
     def summarize(self):
         '''Compute mAP and collect stats'''
@@ -369,6 +376,13 @@ class Thumos14Evaluator(TADEvaluator):
                     # # only keep top 200 detections per video
                     # dets = dets[:200, :]
 
+                    if self.filter_threshold > 0: # filter the low confidence proposals
+                        try:
+                            fix_idx = np.where(dets[:,2] < self.filter_threshold)[0][0]
+                        except:
+                            fix_idx = len(dets)
+                        dets = dets[:fix_idx]
+                        
                     # On ActivityNet, follow the tradition to use external video label
                     if assign_cls_labels:
                             raise NotImplementedError

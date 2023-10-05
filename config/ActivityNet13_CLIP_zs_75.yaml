@@ -5,7 +5,7 @@ task: "zero_shot"
 dataset_name: ActivityNet13
 anno_file_path: "./data/ActivityNet13/ActivityNet13_annotations.json"
 feature_info_path: "./data/ActivityNet13/CLIP/ActivityNet13_info.json"
-description_file_path: "./data/ActivityNet13/ActivityNet13_description_v4.json"
+description_file_path: "./data/ActivityNet13/ActivityNet13_description_v6.json"
 feature_path: "/mnt/Datasets/ActivityNet13/CLIP_feature"
 feature_stride: 16
 feature_type: "CLIP"

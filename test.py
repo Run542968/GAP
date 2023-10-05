@@ -23,7 +23,8 @@ def test(model,
     # action_evaluator = None
     action_evaluator = getattr(tad_eval,dataset_name+"Evaluator")(dataset_name=dataset_name, epoch=epoch, dataset=data_loader.dataset, iou_range=iou_range,
                                     nms_mode=['raw'],
-                                    eval_proposal=args.eval_proposal
+                                    eval_proposal=args.eval_proposal,
+                                    filter_threshold=args.filter_threshold
                                     )
 
     epoch_loss_dict = {}

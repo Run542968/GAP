@@ -89,6 +89,8 @@ parser.add_argument('--matching_loss_coef', type=float, default=1)
 parser.add_argument('--matching_loss_type', type=str, default="fixed", choices=('fixed','learnable'), help="The type of cross-attention in Matching Loss")
 parser.add_argument('--mask_loss', action='store_true', default=False, help="Enable mask losses (loss at each layer)")
 parser.add_argument('--mask_loss_coef', type=float, default=1)
+parser.add_argument('--segmentation_loss', action='store_true', default=False, help="Enable segmentation losses (loss at each layer)")
+parser.add_argument('--segmentation_loss_coef', type=float, default=1)
 
 # Matcher
 parser.add_argument('--set_cost_class', type=float, default=2, help="Class coefficient in the matching cost")
@@ -116,6 +118,10 @@ parser.add_argument('--train_interval', type=int, default=-1, help="The interval
 parser.add_argument('--instance_loss_ensemble', action='store_true', default=False, help="Whether to ensemble the result of semantic head and CLIP capability")
 parser.add_argument('--ensemble_rate', type=float, default=0.5, help="the balance coefficient between semantic head and CLIP capability")
 parser.add_argument('--ensemble_strategy', type=str, default="arithmetic", choices=("arithmetic","geomethric"), help="the strategy to ensemble")
+parser.add_argument('--augment_prompt', action='store_true', default=False, help="Whether to augment prompt")
+parser.add_argument('--augment_version', type=str, default='v1', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
+parser.add_argument('--filter_threshold', type=float, default=0, help="the threshold to filter some proposals that may be negative ")
+
 
 
 
