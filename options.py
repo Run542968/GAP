@@ -95,6 +95,9 @@ parser.add_argument('--mask_loss_coef', type=float, default=1)
 parser.add_argument('--segmentation_loss', action='store_true', default=False, help="Enable segmentation losses (loss at each layer)")
 parser.add_argument('--segmentation_loss_coef', type=float, default=1)
 
+parser.add_argument('--instance_loss_v2', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
+
+
 # Matcher
 parser.add_argument('--set_cost_class', type=float, default=2, help="Class coefficient in the matching cost")
 parser.add_argument('--set_cost_bbox', type=float, default=5, help="L1 box coefficient in the matching cost")

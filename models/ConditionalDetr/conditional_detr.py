@@ -91,6 +91,7 @@ class ConditionalDETR(nn.Module):
         self.ROIalign_size = args.ROIalign_size
  
         self.instance_loss = args.instance_loss
+        self.instance_loss_v2 = args.instance_loss_v2
 
         self.matching_loss = args.matching_loss
         self.matching_loss_type = args.matching_loss_type
@@ -116,14 +117,14 @@ class ConditionalDETR(nn.Module):
         self.input_proj = nn.Conv1d(backbone.feat_dim, hidden_dim, kernel_size=1)
         
 
-        if self.instance_loss: # instance head
-            self.sematnic_visual_head = visual_semantic_head
+        if self.instance_loss or self.instance_loss_v2: # instance head
+            self.semantic_visual_head = visual_semantic_head
             self.semantic_text_head = text_semantic_head
 
         if self.segmentation_loss:
             self.bg_embedding = nn.Parameter( torch.empty(1, 512) )
             torch.nn.init.kaiming_uniform_(self.bg_embedding, nonlinearity='relu')
-            self.sematnic_visual_head = visual_semantic_head
+            self.semantic_visual_head = visual_semantic_head
             self.semantic_text_head = text_semantic_head
 
         if self.matching_loss and self.matching_loss_type == "learnable":
@@ -396,13 +397,32 @@ class ConditionalDETR(nn.Module):
                         instance_roi_feat.append(roi_feat)
                     instance_roi_feat = torch.cat(instance_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
 
-                    visual_feats = self.sematnic_visual_head(instance_roi_feat)[-1] # [layers, batch_instance_num,ROIalign_size,dim]->[batch_instance_num,ROIalign_size,dim]
+                    visual_feats = self.semantic_visual_head(instance_roi_feat)[-1] # [layers, batch_instance_num,ROIalign_size,dim]->[batch_instance_num,ROIalign_size,dim]
                     visual_feats = visual_feats.mean(dim=1) # [batch_instance_num,dim]
 
                     text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
 
                     instance_logits = self._compute_similarity(visual_feats,text_feats)
                     out['instance_logits'] = instance_logits # [batch_instance_num,num_classes]
+
+                if self.instance_loss_v2:
+                    visual_feats = self.semantic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, bs,T,dim]->[bs,T,dim]
+                    # prepare instance coordination
+                    instance_roi_feat = [] 
+                    for i, t in enumerate(targets):
+                        gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
+                        visual_feat_i = visual_feats[i].unsqueeze(0) # [1,T,dim]
+                        mask_i = mask[i].unsqueeze(0) # [1,T]
+                        roi_feat = self._roi_align(gt_coordinations,visual_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
+                        instance_roi_feat.append(roi_feat)
+                    instance_roi_feat = torch.cat(instance_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
+                    visual_feats = instance_roi_feat.mean(dim=1) # [batch_instance_num,dim]
+
+                    text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
+
+                    instance_logits = self._compute_similarity(visual_feats,text_feats)
+                    out['instance_logits'] = instance_logits # [batch_instance_num,num_classes]
+
 
                 if self.matching_loss:
                     # prepare instance coordination
@@ -436,7 +456,7 @@ class ConditionalDETR(nn.Module):
                     text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
                     text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
 
-                    visual_feats = self.sematnic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch_instance_num,T,dim]->[batch_instance_num,T,dim]
+                    visual_feats = self.semantic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch_instance_num,T,dim]->[batch_instance_num,T,dim]
 
                     segmentation_logits = self._compute_similarity(visual_feats,text_feats) # [b,T,num_classes+1]
                     out['segmentation_logits'] = segmentation_logits
@@ -449,14 +469,23 @@ class ConditionalDETR(nn.Module):
                     b,q,l,d = roi_feat.shape
                     roi_feat = roi_feat.reshape(b*q,l,d)
 
-                    visual_feats = self.sematnic_visual_head(roi_feat)[-1] # [layers, bs*num_queries,ROIalign_size,dim]->[bs*num_queries,ROIalign_size,dim]
+                    visual_feats = self.semantic_visual_head(roi_feat)[-1] # [layers, bs*num_queries,ROIalign_size,dim]->[bs*num_queries,ROIalign_size,dim]
                     visual_feats = visual_feats.mean(dim=1).reshape(b,q,d)
                     
                     text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
 
                     instance_logits = self._compute_similarity(visual_feats,text_feats) # [b,num_queries,num_classes]
                     out['ROIalign_logits'] = instance_logits
-                    
+                elif self.instance_loss_v2:
+                    visual_feats = self.semantic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch_instance_num,T,dim]->[batch_instance_num,T,dim]
+                    roi_feat = self._roi_align(out['pred_boxes'],visual_feats,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    b,q,l,d = roi_feat.shape
+                    visual_feats = roi_feat.mean(dim=2) # [b,q,d]
+
+                    text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
+
+                    instance_logits = self._compute_similarity(visual_feats,text_feats) # [b,num_queries,num_classes]
+                    out['ROIalign_logits'] = instance_logits
                 elif self.matching_loss:
                     roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
                     b,q,l,d = roi_feat.shape
@@ -483,7 +512,7 @@ class ConditionalDETR(nn.Module):
                     text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
                     text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
 
-                    visual_feats = self.sematnic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch_instance_num,T,dim]->[batch_instance_num,T,dim]
+                    visual_feats = self.semantic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch_instance_num,T,dim]->[batch_instance_num,T,dim]
 
                     segmentation_logits = self._compute_similarity(visual_feats,text_feats) # [b,T,num_classes+1]
                     ROIalign_logits = self._get_roi_prediction_v2(segmentation_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes+1]
@@ -513,7 +542,7 @@ class ConditionalDETR(nn.Module):
                     semantic_logits = out['ROIalign_logits']
                     if self.segmentation_loss:
                         semantic_logits = semantic_logits[:,:,:-1]
-                        
+
                     if self.ensemble_strategy == "arithmetic":
                         prob = self.ensemble_rate*semantic_logits + (1-self.ensemble_rate)*ROIalign_logits
                     elif self.ensemble_strategy == "geomethric":
@@ -570,7 +599,7 @@ def build(args, device):
     weight_dict = {'loss_ce': args.cls_loss_coef, 'loss_bbox': args.bbox_loss_coef}
     weight_dict['loss_giou'] = args.giou_loss_coef
     
-    if args.instance_loss: # adopt segmentation_loss
+    if args.instance_loss or args.instance_loss_v2: 
         weight_dict['loss_instance'] = args.instance_loss_coef
     if args.matching_loss:
         weight_dict['loss_matching'] = args.matching_loss_coef

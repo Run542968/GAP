@@ -206,3 +206,23 @@
   - [x] 相比于detector新增的loss，例如instance_loss, segmentation_loss, mask_loss, matching_loss所用的module单独写，不要交叉
     - ant13不需要norm_embed
   - [x] 把一些已经固定的参数，例如norm_embed, exp_ligits_scale放到config文件
+- 整个文章的故事脉络：
+  1. 首先baseline是传统的detr做zero-shot；zero-shot需要泛化，所以解耦定位和分类，detector是class-agnostic的定位
+  2. 考虑到动作的特性，baseline要有一层时序卷积，然后训练一个instance loss v2 (用BCE而不是CE，提高泛化性)
+  3. 考虑到动作完整性，再加一个ranking loss
+  4. 最后再做一个prompt的增广
+- [x] 🚩改进instance loss→**Instance Loss v2**
+  - 应该是先在整个视频上加时序卷积，然后再corp出来，再训练文本这边。目前的做法是先crop，再时序。这样做的时序卷积是考虑不到背景信息的
+  - instance loss做的就是一个region和文本的分类匹配，也就是语义的匹配
+  - 这里应该更加关注匹配，而不是改变CLIP的原本语义
+  - action关注的应该是**region-level的建模**。因为CLIP本来就是frame-level的匹配，再segmentation loss是没什么意思的，就等于在已经alignment的模型上强行alignment
+  - [x] 注意原来的代码ROIalign是detach的，在instance loss v2要可导
+    - 这个没关系，因为这里detach的是坐标。坐标确实不需要求导，需要求导的是拿到的特征
+- [ ] Ranking Loss
+  - 还是得走**语义完整性**这条路，利用语义来提高proposals的质量
+  - 方法：
+    - 生成一些不完整的负样本box，然后ROIalign得到特征
+    - 这个特征再和文本进行交互，生成一个匹配分数
+      - 回归？先对比loss吧，双向对比
+        - 每个proposals左右生成
+    - 在测试的时候，这个匹配分数用来re-rank proposals

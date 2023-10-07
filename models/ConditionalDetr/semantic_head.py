@@ -199,9 +199,10 @@ def build_semantic_head(args):
                                             normalize_before = False,
                                             return_intermediate=True)
 
-    if args.instance_loss: # instance head
+    if args.instance_loss or args.instance_loss_v2: # instance head
         return visual_head,text_head
     elif args.segmentation_loss:
         return visual_head,text_head
     else:
-        return None, None
+        raise ValueError
+        # return None, None
