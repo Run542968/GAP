@@ -60,6 +60,7 @@ class SetCriterion(nn.Module):
         self.mask_loss = args.mask_loss
         self.segmentation_loss = args.segmentation_loss
         self.instance_loss_v2 = args.instance_loss_v2
+        self.instance_loss_v3 = args.instance_loss_v3
         
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
@@ -326,7 +327,7 @@ class SetCriterion(nn.Module):
             segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
             losses.update(segmentation_loss)
 
-        if self.instance_loss or self.instance_loss_v2: # adopt instance_loss
+        if self.instance_loss or self.instance_loss_v2 or self.instance_loss_v3: # adopt instance_loss
             instance_loss = self.loss_instances(outputs, targets, indices, num_boxes)
             losses.update(instance_loss)
         

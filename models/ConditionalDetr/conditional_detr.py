@@ -92,6 +92,7 @@ class ConditionalDETR(nn.Module):
  
         self.instance_loss = args.instance_loss
         self.instance_loss_v2 = args.instance_loss_v2
+        self.instance_loss_v3 = args.instance_loss_v3
 
         self.matching_loss = args.matching_loss
         self.matching_loss_type = args.matching_loss_type
@@ -117,9 +118,16 @@ class ConditionalDETR(nn.Module):
         self.input_proj = nn.Conv1d(backbone.feat_dim, hidden_dim, kernel_size=1)
         
 
-        if self.instance_loss or self.instance_loss_v2: # instance head
+        if self.instance_loss or self.instance_loss_v2 : # instance head
             self.semantic_visual_head = visual_semantic_head
             self.semantic_text_head = text_semantic_head
+
+        if self.instance_loss_v3:
+            self.semantic_visual_head = visual_semantic_head
+            self.semantic_text_head = text_semantic_head
+            self.temporal_head = nn.Conv1d(hidden_dim,hidden_dim, kernel_size=3, padding=1)
+            self.cls_token = nn.Parameter(torch.zeros(1,1,hidden_dim))
+
 
         if self.segmentation_loss:
             self.bg_embedding = nn.Parameter( torch.empty(1, 512) )
@@ -423,6 +431,29 @@ class ConditionalDETR(nn.Module):
                     instance_logits = self._compute_similarity(visual_feats,text_feats)
                     out['instance_logits'] = instance_logits # [batch_instance_num,num_classes]
 
+                if self.instance_loss_v3:
+                    visual_feats = self.temporal_head(clip_feat.permute(0,2,1)).permute(0,2,1) # [bs,T,dim]
+                    visual_feats = clip_feat + visual_feats # residual connection
+                    # prepare instance coordination
+                    instance_roi_feat = [] 
+                    for i, t in enumerate(targets):
+                        gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
+                        visual_feat_i = visual_feats[i].unsqueeze(0) # [1,T,dim]
+                        mask_i = mask[i].unsqueeze(0) # [1,T]
+                        roi_feat = self._roi_align(gt_coordinations,visual_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
+                        instance_roi_feat.append(roi_feat)
+                    instance_roi_feat = torch.cat(instance_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
+                    
+                    cls_tokens = self.cls_token.expand(instance_roi_feat.shape[0], -1, -1) # [batch_instance_num,1,dim]
+                    instance_roi_feat_with_cls = torch.cat((cls_tokens,instance_roi_feat),dim=1)  # [batch_instance_num,1+ROIalign_size,dim]
+                    visual_feats = self.semantic_visual_head(instance_roi_feat_with_cls)[-1] # [layers, batch_instance_num,1+ROIalign_size,dim]->[batch_instance_num,1+ROIalign_size,dim]
+                    visual_cls_feats = visual_feats[:,0,:] # [batch_instance_num,dim]
+
+                    text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
+
+                    instance_logits = self._compute_similarity(visual_cls_feats,text_feats)
+                    out['instance_logits'] = instance_logits # [batch_instance_num,num_classes]
+
 
                 if self.matching_loss:
                     # prepare instance coordination
@@ -486,6 +517,25 @@ class ConditionalDETR(nn.Module):
 
                     instance_logits = self._compute_similarity(visual_feats,text_feats) # [b,num_queries,num_classes]
                     out['ROIalign_logits'] = instance_logits
+                elif self.instance_loss_v3:
+                    visual_feats = self.temporal_head(clip_feat.permute(0,2,1)).permute(0,2,1) # [bs,T,dim]
+                    visual_feats = clip_feat + visual_feats # residual connection
+                    # prepare roi feat
+                    roi_feat = self._roi_align(out['pred_boxes'],visual_feats,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    b,q,l,d = roi_feat.shape
+                    roi_feat = roi_feat.reshape(b*q,l,d)
+
+                    cls_tokens = self.cls_token.expand(b*q, -1, -1) # [b*q,1,dim]
+                    instance_roi_feat_with_cls = torch.cat((cls_tokens,roi_feat),dim=1)  # [b*q,1+ROIalign_size,dim]
+                    visual_feats = self.semantic_visual_head(instance_roi_feat_with_cls)[-1] # [layers, b*q,1+ROIalign_size,dim]->[b*q,1+ROIalign_size,dim]
+                    visual_cls_feats = visual_feats[:,0,:] # [b*q,dim]
+                    visual_cls_feats = visual_cls_feats.reshape(b,q,d)
+
+                    text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
+
+                    instance_logits = self._compute_similarity(visual_cls_feats,text_feats) # [b,num_queries,num_classes]
+                    out['ROIalign_logits'] = instance_logits
+
                 elif self.matching_loss:
                     roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
                     b,q,l,d = roi_feat.shape
@@ -599,7 +649,7 @@ def build(args, device):
     weight_dict = {'loss_ce': args.cls_loss_coef, 'loss_bbox': args.bbox_loss_coef}
     weight_dict['loss_giou'] = args.giou_loss_coef
     
-    if args.instance_loss or args.instance_loss_v2: 
+    if args.instance_loss or args.instance_loss_v2 or args.instance_loss_v3: 
         weight_dict['loss_instance'] = args.instance_loss_coef
     if args.matching_loss:
         weight_dict['loss_matching'] = args.matching_loss_coef

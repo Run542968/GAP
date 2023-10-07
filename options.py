@@ -96,6 +96,7 @@ parser.add_argument('--segmentation_loss', action='store_true', default=False, h
 parser.add_argument('--segmentation_loss_coef', type=float, default=1)
 
 parser.add_argument('--instance_loss_v2', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
+parser.add_argument('--instance_loss_v3', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
 
 
 # Matcher
@@ -107,6 +108,7 @@ parser.add_argument('--set_cost_giou', type=float, default=2, help="giou box coe
 parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--lr_backbone', type=float, default=1e-5)
 parser.add_argument('--lr_semantic_head', type=float, default=1e-4)
+parser.add_argument('--lr_temporal_head', type=float, default=1e-4)
 parser.add_argument('--lr', type=float, default=1e-4)
 parser.add_argument('--weight_decay', type=float, default=1e-4)
 parser.add_argument('--lr_drop', type=int, default=40, help="the step begin to drop lr")

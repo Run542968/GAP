@@ -218,10 +218,16 @@
   - action关注的应该是**region-level的建模**。因为CLIP本来就是frame-level的匹配，再segmentation loss是没什么意思的，就等于在已经alignment的模型上强行alignment
   - [x] 注意原来的代码ROIalign是detach的，在instance loss v2要可导
     - 这个没关系，因为这里detach的是坐标。坐标确实不需要求导，需要求导的是拿到的特征
+- [x] 改进instance loss v2→instance loss v3
+  - [x] 时序建模应该单独拎出来，用Conv
+  - [x] crop出的特征加一层语义encoder
+  - [x] 引出一个learnable CLS token聚合instance的信息
+  - [x] 注意instance loss v3需要设置参数lr_temporal_head；和v1还有一个区别就是单独多了一个写死的Conv1d进行时序建模
 - [ ] Ranking Loss
   - 还是得走**语义完整性**这条路，利用语义来提高proposals的质量
   - 方法：
-    - 生成一些不完整的负样本box，然后ROIalign得到特征
+    - 生成一些不完整的负样本box，然后ROIalign得到特征，然后和原本的正样本box给stack起来，得到维度[batch_instance_num,N,dim]
+      - 其中N表示这个instance的正负样本，一个正，多个负
     - 这个特征再和文本进行交互，生成一个匹配分数
       - 回归？先对比loss吧，双向对比
         - 每个proposals左右生成

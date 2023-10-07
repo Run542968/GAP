@@ -115,6 +115,7 @@ if __name__ == '__main__':
             "params": [p for n, p in model.named_parameters() if "backbone" not in n and \
                                                                 "sematnic_visual_head" not in n and \
                                                                 "sematnic_text_head" not in n and \
+                                                                "temporal_head" not in n and \
                                                                 p.requires_grad]
          },
         # the parameters in backbone
@@ -131,6 +132,11 @@ if __name__ == '__main__':
         {
             "params": [p for n, p in model.named_parameters() if "sematnic_text_head" in n and p.requires_grad],
             "lr": args.lr_semantic_head,
+        },
+        # the parameters in temporal_modeling: temporal_head
+        {
+            "params": [p for n, p in model.named_parameters() if "temporal_head" in n and p.requires_grad],
+            "lr": args.lr_temporal_head,
         }
     ]
     optimizer = torch.optim.AdamW(param_dicts, lr=args.lr, weight_decay=args.weight_decay)
