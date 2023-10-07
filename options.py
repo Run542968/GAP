@@ -13,6 +13,7 @@ parser.add_argument('--task', type=str, default="zero_shot", choices=('zero_shot
 parser.add_argument('--use_mlflow', action='store_true', default=False, help="whether to use mlflow")
 parser.add_argument('--target_type', type=str, default="prompt", choices=('none', 'prompt', 'description', 'name'), help="[none,prompt,description,name]") # NOTE: 'none' means use one-hot target that just for close_set
 parser.add_argument('--eval_proposal', action='store_true', default=False, help="Only evaluate the proposal quality, compute the class-agnostic foreground mAP in Tad_eal.py") 
+parser.add_argument('--prefix', type=str, default="", help="the prefix to distinguish different experiments in mlflow") # NOTE: 'none' means use one-hot target that just for close_set
 
 
 # dataset

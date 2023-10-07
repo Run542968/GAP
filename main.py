@@ -69,14 +69,14 @@ if __name__ == '__main__':
         #### mlflow ####
         if args.task == 'zero_shot':
             if args.eval_proposal: 
-                experiment_name = "_".join([args.dataset_name,args.feature_type,args.task,str(args.split),"binary"])
+                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.task,str(args.split),"binary"])
             else:
-                experiment_name = "_".join([args.dataset_name,args.feature_type,args.target_type,args.task,str(args.split)])
+                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.target_type,args.task,str(args.split)])
         elif args.task == 'close_set':
             if args.eval_proposal: 
-                experiment_name = "_".join([args.dataset_name,args.feature_type,args.task,"binary"])
+                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.task,"binary"])
             else:
-                experiment_name = "_".join([args.dataset_name,args.feature_type,args.target_type,args.task])
+                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.target_type,args.task])
         else:
             raise ValueError("don't define this setting.")
         if mlflow.get_experiment_by_name(experiment_name) == None: 

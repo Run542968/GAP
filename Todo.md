@@ -201,14 +201,14 @@
   - ROIalign内部还有一个output_size可以调，加了一个超参数：ROIalign_size
     - [x] 调了，但是没啥大用。没用也合理，因为不管怎么调这个参数，只是ROIalign以后得到的特征信息是否丰富而已，box的坐标就那么大。无非是多插值还是少插值
 
-#### 第四次大版本
+#### 第四次大版本，20231007最后一次提交到github，comit id=`fourth backup`
 - 首先是整合上面几个版本的代码，并且简化。
   - [x] 相比于detector新增的loss，例如instance_loss, segmentation_loss, mask_loss, matching_loss所用的module单独写，不要交叉
     - ant13不需要norm_embed
   - [x] 把一些已经固定的参数，例如norm_embed, exp_ligits_scale放到config文件
 - 整个文章的故事脉络：
   1. 首先baseline是传统的detr做zero-shot；zero-shot需要泛化，所以解耦定位和分类，detector是class-agnostic的定位
-  2. 考虑到动作的特性，baseline要有一层时序卷积，然后训练一个instance loss v2 (用BCE而不是CE，提高泛化性)
+  2. 考虑到动作的特性，baseline要有一层时序卷积，然后训练一个instance loss v3 (用BCE而不是CE，提高泛化性)
   3. 考虑到动作完整性，再加一个ranking loss
   4. 最后再做一个prompt的增广
 - [x] 🚩改进instance loss→**Instance Loss v2**
@@ -223,6 +223,7 @@
   - [x] crop出的特征加一层语义encoder
   - [x] 引出一个learnable CLS token聚合instance的信息
   - [x] 注意instance loss v3需要设置参数lr_temporal_head；和v1还有一个区别就是单独多了一个写死的Conv1d进行时序建模
+  - 💣这个版本不行，学习得到的CLS token会充分在训练集上过拟合
 - [ ] Ranking Loss
   - 还是得走**语义完整性**这条路，利用语义来提高proposals的质量
   - 方法：
@@ -232,3 +233,7 @@
       - 回归？先对比loss吧，双向对比
         - 每个proposals左右生成
     - 在测试的时候，这个匹配分数用来re-rank proposals
+#### 第五次大版本
+- 还是回到一阶段的class-agnostic DETR, 在DETR直接多一个分类头，但是这个分类头是从fine-tuning的CLIP进行知识蒸馏的
+- 利用segmentation loss对CLIP进行fine-tuning，目的是通过时序建模和细粒度的语义匹配，让fine-tuning后的特征既具备了时序特征，又保留丰富的语义用于zero-shot识别
+- 经过蒸馏后的特征又能给class-agnostic的DETR注入一些语义信息
