@@ -62,6 +62,7 @@ class SetCriterion(nn.Module):
         self.instance_loss_v2 = args.instance_loss_v2
         self.instance_loss_v3 = args.instance_loss_v3
         self.distillation_loss = args.distillation_loss
+        self.classification_loss = args.classification_loss
         
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
@@ -284,6 +285,30 @@ class SetCriterion(nn.Module):
         losses['loss_distillation'] = loss.mean()
         return losses
 
+    def loss_classification(self, outputs, targets, indices, num_boxes, log=True):
+        """Classification loss (Binary focal loss)
+        targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
+        """
+        assert 'classification_logits' in outputs
+        src_logits = outputs['classification_logits'] # [bs,num_queries,num_classes]
+
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        target_classes_o = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        target_classes = torch.full(src_logits.shape[:2], src_logits.shape[2],
+                                    dtype=torch.int64, device=src_logits.device) # [bs,num_queries]
+        target_classes[idx] = target_classes_o # [bs,num_queries]
+
+        target_classes_onehot = torch.zeros([src_logits.shape[0], src_logits.shape[1], src_logits.shape[2]+1],
+                                            dtype=src_logits.dtype, layout=src_logits.layout, device=src_logits.device) # [bs,num_queries,num_classes+1]
+        target_classes_onehot.scatter_(2, target_classes.unsqueeze(-1), 1)
+
+        target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
+        loss_ce = sigmoid_focal_loss(src_logits, target_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma) * src_logits.shape[1]
+        losses = {'loss_classification': loss_ce}
+
+
+        return losses
+
     def _get_src_permutation_idx(self, indices):
         # permute predictions following indices
         batch_idx = torch.cat([torch.full_like(src, i) for i, (src, _) in enumerate(indices)])
@@ -360,6 +385,10 @@ class SetCriterion(nn.Module):
         if self.distillation_loss:
             distillation_loss = self.loss_distillation(outputs, targets, indices, num_boxes)
             losses.update(distillation_loss)
+
+        if self.classification_loss:
+            classification_loss = self.loss_classification(outputs, targets, indices, num_boxes)
+            losses.update(classification_loss)
         return losses
 
 def build_criterion(args,num_classes,matcher,weight_dict):

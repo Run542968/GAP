@@ -151,6 +151,7 @@ class BaseDataset(Dataset):
         target = {
             'segments': [], 
             'labels': [], # the category labels for detector
+            'semantic_labels':[],
             'label_names': [],
             'video_name': video_name,
             'video_duration': feature_duration,   # only used in inference
@@ -182,6 +183,7 @@ class BaseDataset(Dataset):
             target['label_names'].append(label_name)
 
             semantic_label = classes.index(seg_anno['label']) # the category labels for semantic classification
+            target['semantic_labels'].append(semantic_label)
             # add instance_masks to target dict
             if seg_anno['label'] not in target['instance_masks'].keys():
                 target['instance_masks'][seg_anno['label']] = {'label_id':semantic_label,'mask':np.ones(feat_length,dtype=bool)}
@@ -220,6 +222,9 @@ class BaseDataset(Dataset):
 
             # covert 'mask_labels' to torch format
             target['mask_labels'] = torch.from_numpy(target['mask_labels'])
+
+            # covert 'semantic_labels' to torch format
+            target['semantic_labels'] = torch.from_numpy(np.array(target['semantic_labels'],dtype='int64'))
         return target
 
     def __getitem__(self, index):
@@ -558,5 +563,6 @@ if __name__ == "__main__":
     # gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num,1]->"class id"
     # print(f"gt_labels.shape:{gt_labels.shape}")
     print(f"target[0]['mask_labels']:{target[0]['mask_labels']}")
+    print(f"target[0]['semantic_labels']:{target[0]['semantic_labels']}")
 
-# CUDA_VISIBLE_DEVICES=1 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"
+# CUDA_VISIBLE_DEVICES=4 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"

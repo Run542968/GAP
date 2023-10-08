@@ -103,6 +103,8 @@ class ConditionalDETR(nn.Module):
 
         self.distillation_loss = args.distillation_loss
 
+        self.classification_loss = args.classification_loss
+
         self.augment_prompt_type = args.augment_prompt_type
         self.subaction_version = args.subaction_version
 
@@ -503,7 +505,10 @@ class ConditionalDETR(nn.Module):
 
                 if self.distillation_loss:
                     # detr semantic embedding
-                    student_logits = self.distill_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
+                    if self.classification_loss:
+                        student_logits = self.classification_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
+                    else:
+                        student_logits = self.distill_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
                     out['student_logits'] = student_logits
 
                     # CLIP semantic embedding
@@ -516,6 +521,11 @@ class ConditionalDETR(nn.Module):
                     teacher_logits = roi_feat.mean(dim=2) # [b,q,d]
                     out['teacher_logits'] = teacher_logits
 
+                if self.classification_loss:
+                    classification_emb = self.classification_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
+                    text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+                    classification_prob = self._compute_similarity(classification_emb,text_feats) # [b,num_queries,num_classes]
+                    out['classification_logits'] = classification_prob
 
             # obtain the ROIalign logits
             if not self.training: # only in inference stage
@@ -592,12 +602,19 @@ class ConditionalDETR(nn.Module):
                     ROIalign_logits = self._get_roi_prediction_v2(segmentation_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes+1]
                     out['ROIalign_logits'] = ROIalign_logits # update the term of out [b,num_queries,num_classes+1]
 
-                elif self.distillation_loss:
+                elif self.distillation_loss and not self.classification_loss:
                     student_logits = self.distill_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
-                    text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
-                    text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
-                    distillation_logits = self._compute_similarity(student_logits,text_feats) # [b,num_queries,num_classes+1]
+                    text_feats = self._text_feats(text_feats,self.augment_prompt_type,'None')
+                    # text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
+                    distillation_logits = self._compute_similarity(student_logits,text_feats) # [b,num_queries,num_classes]
                     out['ROIalign_logits'] = distillation_logits
+
+                elif self.classification_loss:
+                    classification_emb = self.classification_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
+                    text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+                    classification_prob = self._compute_similarity(classification_emb,text_feats) # [b,num_queries,num_classes]
+                    out['ROIalign_logits'] = classification_prob
+
 
                 else: # if don't use the instance loss, directly adopt clip_visual_feat to classification
                     if self.ROIalign_strategy == "before_pred":
@@ -690,6 +707,8 @@ def build(args, device):
         weight_dict['loss_segmentation'] = args.segmentation_loss_coef
     if args.distillation_loss:
         weight_dict['loss_distillation'] = args.distillation_loss_coef
+    if args.classification_loss:
+        weight_dict['loss_classification'] = args.classification_loss_coef
 
     # TODO this is a hack
     if args.aux_loss:

@@ -203,6 +203,8 @@ def build_semantic_head(args):
         return visual_head,text_head
     elif args.segmentation_loss:
         return visual_head,text_head
+    elif args.classification_loss or args.distillation_loss:
+        return None,None
     else:
         raise ValueError
         # return None, None

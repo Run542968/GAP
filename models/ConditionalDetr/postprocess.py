@@ -40,7 +40,7 @@ class PostProcess(nn.Module):
                 elif self.proposals_weight_type == "after_softmax":
                     prob = torch.mul(foreground_logits,ROIalign_logits.softmax(-1)) # [bs,num_queries,num_classes]
 
-            if self.segmentation_loss or self.distillation_loss:
+            if self.segmentation_loss:
                 prob = prob[:,:,:-1] # [bs,num_queries,num_classes]
 
         elif not eval_proposal:
