@@ -61,6 +61,7 @@ class SetCriterion(nn.Module):
         self.segmentation_loss = args.segmentation_loss
         self.instance_loss_v2 = args.instance_loss_v2
         self.instance_loss_v3 = args.instance_loss_v3
+        self.distillation_loss = args.distillation_loss
         
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
@@ -266,6 +267,23 @@ class SetCriterion(nn.Module):
         losses['loss_mask'] = ce_loss.sum() / B
         return losses
     
+    def loss_distillation(self,outputs, targets, indices, num_boxes):
+        '''
+        for distillation the CLIP feat to DETR detector
+        '''
+        assert 'student_logits' in outputs
+        assert 'teacher_logits' in outputs
+
+        # obtain logits
+        student_logits = outputs['student_logits']
+        teacher_logits = outputs['teacher_logits'] # [B,Q,dim]
+
+        loss = torch.abs(teacher_logits-student_logits).sum(-1)
+
+        losses = {}
+        losses['loss_distillation'] = loss.mean()
+        return losses
+
     def _get_src_permutation_idx(self, indices):
         # permute predictions following indices
         batch_idx = torch.cat([torch.full_like(src, i) for i, (src, _) in enumerate(indices)])
@@ -338,6 +356,10 @@ class SetCriterion(nn.Module):
         if self.mask_loss:
             mask_loss = self.loss_mask(outputs, targets, indices, num_boxes)
             losses.update(mask_loss)
+
+        if self.distillation_loss:
+            distillation_loss = self.loss_distillation(outputs, targets, indices, num_boxes)
+            losses.update(distillation_loss)
         return losses
 
 def build_criterion(args,num_classes,matcher,weight_dict):

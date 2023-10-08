@@ -237,3 +237,13 @@
 - 还是回到一阶段的class-agnostic DETR, 在DETR直接多一个分类头，但是这个分类头是从fine-tuning的CLIP进行知识蒸馏的
 - 利用segmentation loss对CLIP进行fine-tuning，目的是通过时序建模和细粒度的语义匹配，让fine-tuning后的特征既具备了时序特征，又保留丰富的语义用于zero-shot识别
 - 经过蒸馏后的特征又能给class-agnostic的DETR注入一些语义信息
+- [x] 构造distillation loss
+  - [x] 注意要和segmentation loss搭配使用，segmentation loss的**semantic_visual_head就是时序建模head**
+  - [x] 完善criterion的loss，采用L1 loss
+  - [x] 学习一个bg embdding
+- 蒸馏的故事脉络
+  - baseline就是直接拿DETR做这个任务
+  - + class-agnostic 检测头
+  - + 细粒度的文语义本匹配
+  - + CLIP的蒸馏
+  - + ensemble

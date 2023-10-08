@@ -101,6 +101,8 @@ class ConditionalDETR(nn.Module):
 
         self.segmentation_loss = args.segmentation_loss
 
+        self.distillation_loss = args.distillation_loss
+
         self.augment_prompt_type = args.augment_prompt_type
         self.subaction_version = args.subaction_version
 
@@ -140,7 +142,14 @@ class ConditionalDETR(nn.Module):
 
         if self.mask_loss:
             self.mask_head = nn.Linear(hidden_dim, 1)
+            
 
+        if self.distillation_loss:
+            self.distill_embed = nn.Linear(hidden_dim, hidden_dim)
+            # self.temporal_head = nn.Conv1d(hidden_dim,hidden_dim, kernel_size=3, padding=1)
+
+        if self.classification_loss:
+            self.classification_embed = nn.Linear(hidden_dim, hidden_dim)
 
         # init prior_prob setting for focal loss
         prior_prob = 0.01
@@ -454,7 +463,6 @@ class ConditionalDETR(nn.Module):
                     instance_logits = self._compute_similarity(visual_cls_feats,text_feats)
                     out['instance_logits'] = instance_logits # [batch_instance_num,num_classes]
 
-
                 if self.matching_loss:
                     # prepare instance coordination
                     instance_roi_feat = [] 
@@ -487,11 +495,27 @@ class ConditionalDETR(nn.Module):
                     text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
                     text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
 
-                    visual_feats = self.semantic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch_instance_num,T,dim]->[batch_instance_num,T,dim]
+                    visual_feats = self.semantic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch,T,dim]->[batch,T,dim]
 
                     segmentation_logits = self._compute_similarity(visual_feats,text_feats) # [b,T,num_classes+1]
                     out['segmentation_logits'] = segmentation_logits
                     out['logits_mask'] = mask
+
+                if self.distillation_loss:
+                    # detr semantic embedding
+                    student_logits = self.distill_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
+                    out['student_logits'] = student_logits
+
+                    # CLIP semantic embedding
+                    if self.segmentation_loss:
+                        visual_feats = self.semantic_visual_head(clip_feat,src_key_padding_mask=mask)[-1] # [layers, batch,T,dim]->[batch,T,dim]
+                    else:
+                        visual_feats = clip_feat
+                    roi_feat = self._roi_align(out['pred_boxes'],visual_feats,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    b,q,l,d = roi_feat.shape
+                    teacher_logits = roi_feat.mean(dim=2) # [b,q,d]
+                    out['teacher_logits'] = teacher_logits
+
 
             # obtain the ROIalign logits
             if not self.training: # only in inference stage
@@ -558,7 +582,7 @@ class ConditionalDETR(nn.Module):
                     matching_logits = torch.einsum("bcd,bcd->bcd",text_feats,res).sum(-1) # [batch_query_num,num_classes]
                     out['ROIalign_logits'] = matching_logits.reshape(b,q,-1) # [batch_query_num,num_classes]->[batch,query_num,num_classes]
                 
-                elif self.segmentation_loss:
+                elif self.segmentation_loss and not self.distillation_loss:
                     text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
                     text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
 
@@ -567,6 +591,13 @@ class ConditionalDETR(nn.Module):
                     segmentation_logits = self._compute_similarity(visual_feats,text_feats) # [b,T,num_classes+1]
                     ROIalign_logits = self._get_roi_prediction_v2(segmentation_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes+1]
                     out['ROIalign_logits'] = ROIalign_logits # update the term of out [b,num_queries,num_classes+1]
+
+                elif self.distillation_loss:
+                    student_logits = self.distill_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,dim]
+                    text_feats = self._text_feats(text_feats,self.augment_prompt_type,self.semantic_text_head)
+                    text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
+                    distillation_logits = self._compute_similarity(student_logits,text_feats) # [b,num_queries,num_classes+1]
+                    out['ROIalign_logits'] = distillation_logits
 
                 else: # if don't use the instance loss, directly adopt clip_visual_feat to classification
                     if self.ROIalign_strategy == "before_pred":
@@ -579,7 +610,7 @@ class ConditionalDETR(nn.Module):
                         ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
                     out['ROIalign_logits'] = ROIalign_logits # update the term of out [b,num_queries,num_classes]
 
-                if self.results_ensemble and (self.instance_loss or self.matching_loss or self.segmentation_loss):
+                if self.results_ensemble and (self.instance_loss or self.matching_loss or self.segmentation_loss or self.distillation_loss):
                     fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, "prompt") # [N classes,dim]
 
                     if self.ROIalign_strategy == "before_pred":
@@ -590,7 +621,7 @@ class ConditionalDETR(nn.Module):
                         ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
                     
                     semantic_logits = out['ROIalign_logits']
-                    if self.segmentation_loss:
+                    if self.segmentation_loss or self.distillation_loss:
                         semantic_logits = semantic_logits[:,:,:-1]
 
                     if self.ensemble_strategy == "arithmetic":
@@ -657,6 +688,8 @@ def build(args, device):
         weight_dict['loss_mask'] = args.mask_loss_coef
     if args.segmentation_loss:
         weight_dict['loss_segmentation'] = args.segmentation_loss_coef
+    if args.distillation_loss:
+        weight_dict['loss_distillation'] = args.distillation_loss_coef
 
     # TODO this is a hack
     if args.aux_loss:
