@@ -263,9 +263,19 @@
   - [ ] 把semantic head直接放在主模型的文件，用了就实例化
   - [x] 注意处理args.eval_proposal
   - [x] matcher那里注意在enable_anctionness的时候是拿actionness_logits匹配
+    - [x] 🎈**注意**: 如果--actionness_loss，那么在matcher的cost用的还是--set_cost_class
   - [x] dataset的labels表示二分类标签，semantic_labels表示多类别标签
   - 👹选择了--eval_proposal的时候，需要设置--actionness_loss_coef和原本V2版本的--cls_loss_coef一致，命令示例：Thumos14_CLIP_prompt_zs_8frame_binary_23
   - 👺想要进行V2版本完全分离的实验：需要采用actionness_loss，并且--cls_loss_coef 0，然后搭配results_ensemble，--emsemble_rate 0, 命令示例：Thumos14_CLIP_prompt_zs_8frame_v6_2
 - [ ] 完善文本head这边的self-attention集成
 - [x] 🚩注意整个代码中logits指的其实是probability 
+- [x] 不参与梯度反传的计算过程会影响结果吗?
+  - 不会，实验Thumos14_CLIP_prompt_zs_8frame_v6_1和Thumos14_CLIP_prompt_zs_8frame_v6_3验证了这一点
+  - v6_1相比于v6_3在loss_actionness少计算了一个loss_error
+  - 而loss_error是没有参与梯度反传的，没有任何影响
+- [x] 在__init__实例化nn.Mudule和在forward调用实例化后的Module会影响结果吗？
+  - 会的，之前也做过实验。每次实例化或者调用pytorch的Module，都会next() torch.nn内部的随机种子，导致实验结果出现变化
+  - 所以，模型确定以后不要随意增/删一些module，即使用不到它们
+  - 增/删一定程度上等价于换了个随机种子
+  - 实验证明了这一点：Thumos14_CLIP_prompt_zs_8frame_v6_1→6
 - 没有匹配到的proposals也是有用的，该怎么用？

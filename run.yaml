@@ -277,8 +277,10 @@ Binary Classification in CLIP feature:
                     
                      ################# V6 系列 ########################
                     ##### 验证一下能不能复现 ############
+                    #【base-16】--proposals_weight_type "after_softmax"
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_23" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --prefix "v6" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --eval_proposal --actionness_loss_coef 3 --proposals_weight_type "after_softmax"
                     #【same-16】
-                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_23" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --prefix "v6" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --eval_proposal --actionness_loss_coef 3
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_24" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --prefix "v6" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --eval_proposal --actionness_loss_coef 3 
                     
         split_50:
             clip: 
@@ -635,11 +637,11 @@ Zero-Shot:
                     # 【base-4】 --augment_prompt_type "average" --description_file_path "./data/ActivityNet13/ActivityNet13_description_v4.json" --subaction_version "v1" :: 19.47
                     CUDA_VISIBLE_DEVICES=3 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_v4_20" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-2 --exp_logit_scale --segmentation_loss --semantic_vhead_type "Conv" --augment_prompt_type "average" --subaction_version "v1" --lr_semantic_head 1e-7 --description_file_path "./data/ActivityNet13/ActivityNet13_description_v4.json"
                     
-                    # 【base-v2-7】 --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-8 :: 
+                    # 【base-v2-7】 --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-8 :: 10.13
                     CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_v4_21" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-2 --exp_logit_scale --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-8
                     # 【base-v2-7】 --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-6 :: 
                     CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_v4_22" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-2 --exp_logit_scale --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-6
-                    # 【base-v2-7】 --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-5 :: 
+                    # 【base-v2-7】 --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-5 :: 10.13
                     CUDA_VISIBLE_DEVICES=2 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_v4_23" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --use_mlflow --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-2 --exp_logit_scale --segmentation_loss --semantic_vhead_type "None" --semantic_thead_type "MHA" --augment_prompt_type "attention" --subaction_version "v3" --lr_semantic_head 1e-5
                     
                     # 【base-12】 --instance_loss_v2 --semantic_vhead_type "Conv" --augment_prompt_type "single" --lr_semantic_head 1e-7 ::
@@ -979,12 +981,25 @@ Zero-Shot:
                     CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_17" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --classification_loss_coef 3
                     
                     ################# V6 系列 ########################
-                    ##### 验证一下能不能复现 ############
-                    #【base-v2-15】--proposals_weight_type "before_softmax"
+                    ##### 验证一下能不能复现直接拿bounding box去corp video, 然后用CLIP分类的结果 ############
+                    #【same-v2-15】:: 31.416，差不多能复现，代码没bug，是随机性的问题
                     CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_1" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0
-                    #【same-v2-15】
+                    #【base-v2-15】--proposals_weight_type "after_softmax"
                     CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_2" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0 --proposals_weight_type "after_softmax"
+                    #【same-v2-15】手动把原本不小心去除的loss_error加回了loss_actionness :: 验证了不参与梯度反传的计算是不影响结果的
+                    CUDA_VISIBLE_DEVICES=5 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_3" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0
+                    #【same-v2-15】手动删除了result_ensemble那里第二次调用get_text_feats :: 没什么影响，不是重复调用CLIP.text_encoder造成的误差
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_4" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0
+                    #【same-v2-15】手动在forward删除了class_logits这个分支的调用 :: 确实会发生变化
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_5" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0
+                    #【same-v2-15】手动删除class_logits这个分支所有有关的内容，包括_init__和forward :: 确实会发生变化，这是因为没调用或者实例化一个nn.module, 就会触发pytorch内部的一个随机种子
+                    CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_6" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0
                     
+                    ######### 正常跑实验 #########
+                    # only DETR
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_7" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0
+                    
+
         i3d:
             activitynet1.3: 
             thumos14:

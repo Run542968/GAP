@@ -457,7 +457,7 @@ def build(args, device):
     weight_dict = {'loss_ce': args.cls_loss_coef, 'loss_bbox': args.bbox_loss_coef}
     weight_dict['loss_giou'] = args.giou_loss_coef
     
-    if args.actionness_loss:
+    if args.actionness_loss or args.eval_proposal:
         weight_dict['loss_actionness'] = args.actionness_loss_coef
     if args.distillation_loss:
         weight_dict['loss_distillation'] = args.distillation_loss_coef

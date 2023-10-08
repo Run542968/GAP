@@ -304,6 +304,9 @@ class SetCriterion(nn.Module):
         loss_ce = sigmoid_focal_loss(src_logits, target_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma) * src_logits.shape[1]
         losses = {'loss_actionness': loss_ce}
 
+        if log:
+            # TODO this should probably be a separate loss, not hacked in this one here
+            losses['class_error'] = 100 - accuracy(src_logits[idx], target_classes_o)[0] # [batch_matched_queries,num_classes]
         return losses
 
     def _get_src_permutation_idx(self, indices):
