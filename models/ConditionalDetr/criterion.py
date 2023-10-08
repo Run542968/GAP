@@ -51,30 +51,28 @@ class SetCriterion(nn.Module):
         self.num_classes = num_classes
         self.matcher = matcher
         self.weight_dict = weight_dict
-        self.base_losses = ['labels', 'boxes']
         self.focal_alpha = focal_alpha
         self.gamma = args.gamma
-        self.instance_loss = args.instance_loss
-        self.instance_loss_type = args.instance_loss_type
-        self.matching_loss = args.matching_loss
-        self.mask_loss = args.mask_loss
-        self.segmentation_loss = args.segmentation_loss
-        self.instance_loss_v2 = args.instance_loss_v2
-        self.instance_loss_v3 = args.instance_loss_v3
+
+        self.actionness_loss = args.actionness_loss 
+        self.eval_proposal = args.eval_proposal
         self.distillation_loss = args.distillation_loss
-        self.classification_loss = args.classification_loss
-        
+
+        if self.eval_proposal:
+            self.base_losses = ['boxes']
+        else:
+            self.base_losses = ['labels', 'boxes']
 
     def loss_labels(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (Binary focal loss)
         targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
         """
-        assert 'pred_logits' in outputs
-        src_logits = outputs['pred_logits'] # [bs,num_queries,num_classes]
+        assert 'class_logits' in outputs
+        src_logits = outputs['class_logits'] # [bs,num_queries,num_classes]
 
         idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
-        target_classes_o = torch.cat([t["labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
-        target_classes = torch.full(src_logits.shape[:2], self.num_classes,
+        target_classes_o = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        target_classes = torch.full(src_logits.shape[:2], src_logits.shape[2],
                                     dtype=torch.int64, device=src_logits.device) # [bs,num_queries]
         target_classes[idx] = target_classes_o # [bs,num_queries]
 
@@ -285,15 +283,15 @@ class SetCriterion(nn.Module):
         losses['loss_distillation'] = loss.mean()
         return losses
 
-    def loss_classification(self, outputs, targets, indices, num_boxes, log=True):
+    def loss_actionness(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (Binary focal loss)
         targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
         """
-        assert 'classification_logits' in outputs
-        src_logits = outputs['classification_logits'] # [bs,num_queries,num_classes]
+        assert 'actionness_logits' in outputs
+        src_logits = outputs['actionness_logits'] # [bs,num_queries,1]
 
         idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
-        target_classes_o = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        target_classes_o = torch.cat([t["labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
         target_classes = torch.full(src_logits.shape[:2], src_logits.shape[2],
                                     dtype=torch.int64, device=src_logits.device) # [bs,num_queries]
         target_classes[idx] = target_classes_o # [bs,num_queries]
@@ -304,8 +302,7 @@ class SetCriterion(nn.Module):
 
         target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
         loss_ce = sigmoid_focal_loss(src_logits, target_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma) * src_logits.shape[1]
-        losses = {'loss_classification': loss_ce}
-
+        losses = {'loss_actionness': loss_ce}
 
         return losses
 
@@ -366,29 +363,14 @@ class SetCriterion(nn.Module):
                     l_dict = {k + f'_{i}': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
-        if self.segmentation_loss: # adopt segmentation_loss
-            segmentation_loss = self.loss_segmentations(outputs, targets, indices, num_boxes)
-            losses.update(segmentation_loss)
-
-        if self.instance_loss or self.instance_loss_v2 or self.instance_loss_v3: # adopt instance_loss
-            instance_loss = self.loss_instances(outputs, targets, indices, num_boxes)
-            losses.update(instance_loss)
-        
-        if self.matching_loss: # adopt matching_loss
-            matching_loss = self.loss_matching(outputs, targets, indices, num_boxes)
-            losses.update(matching_loss)
-        
-        if self.mask_loss:
-            mask_loss = self.loss_mask(outputs, targets, indices, num_boxes)
-            losses.update(mask_loss)
-
         if self.distillation_loss:
             distillation_loss = self.loss_distillation(outputs, targets, indices, num_boxes)
             losses.update(distillation_loss)
 
-        if self.classification_loss:
-            classification_loss = self.loss_classification(outputs, targets, indices, num_boxes)
-            losses.update(classification_loss)
+        if self.actionness_loss or self.eval_proposal:
+            actionness_loss = self.loss_actionness(outputs, targets, indices, num_boxes)
+            losses.update(actionness_loss)
+
         return losses
 
 def build_criterion(args,num_classes,matcher,weight_dict):

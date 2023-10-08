@@ -275,6 +275,11 @@ Binary Classification in CLIP feature:
                     #【base-13】--cls_loss_coef 5 :: 44.07
                     CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_22" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16  --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --eval_proposal --cls_loss_coef 5
                     
+                     ################# V6 系列 ########################
+                    ##### 验证一下能不能复现 ############
+                    #【same-16】
+                    CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_23" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --prefix "v6" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --eval_proposal --actionness_loss_coef 3
+                    
         split_50:
             clip: 
                 activitynet1.3:
@@ -951,27 +956,34 @@ Zero-Shot:
                     CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_6" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 2 --norm_embed --exp_logit_scale --bbox_loss_coef 1 --classification_loss --classification_loss_coef 2
                     # --classification_loss --distillation_loss （分类＋蒸馏）:: 14.39
                     CUDA_VISIBLE_DEVICES=5 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_7" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --distillation_loss
-                    #【base-7】--distillation_loss_coef 0.1 
+                    #【base-7】--distillation_loss_coef 0.1 :: 26.91
                     CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_8" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --distillation_loss --distillation_loss_coef 0.1
                     # --distillation_loss （只有蒸馏）:: 15.4
                     CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_9" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --distillation_loss
                     #【base-9】--distillation_loss_coef 0.1 :: 30.18
                     CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_10" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --distillation_loss --distillation_loss_coef 0.1
                     
-                    #【base-7】--distillation_loss_coef 0.1 --classification_loss_coef 0.1
+                    #【base-7】--distillation_loss_coef 0.1 --classification_loss_coef 0.1 :: 28.17
                     CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_11" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --distillation_loss --distillation_loss_coef 0.1 --classification_loss_coef 0.1
-                    #【base-7】--distillation_loss_coef 0.1 --classification_loss_coef 0.01
+                    #【base-7】--distillation_loss_coef 0.1 --classification_loss_coef 0.01 :: 25.9
                     CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_12" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --distillation_loss --distillation_loss_coef 0.1 --classification_loss_coef 0.01
-                    #【base-7】--distillation_loss_coef 0.1 --classification_loss_coef 2
+                    #【base-7】--distillation_loss_coef 0.1 --classification_loss_coef 2 :: 30.51
                     CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_13" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --distillation_loss --distillation_loss_coef 0.1 --classification_loss_coef 2
-                    #【base-1】--classification_loss_coef 0.1
+                    #【base-1】--classification_loss_coef 0.1 :: 13.29
                     CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_14" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --classification_loss_coef 0.1
-                    #【base-1】--classification_loss_coef 0.01
+                    #【base-1】--classification_loss_coef 0.01 :: 10.55
                     CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_15" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --classification_loss_coef 0.01
-                    #【base-1】--classification_loss_coef 2
+                    #【base-1】--classification_loss_coef 2 :: 16.44
                     CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_16" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --classification_loss_coef 2
-                    #【base-1】--classification_loss_coef 3
+                    #【base-1】--classification_loss_coef 3 :: 15.92
                     CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v5_17" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v5" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --cls_loss_coef 3 --classification_loss --classification_loss_coef 3
+                    
+                    ################# V6 系列 ########################
+                    ##### 验证一下能不能复现 ############
+                    #【base-v2-15】--proposals_weight_type "before_softmax"
+                    CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_1" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0
+                    #【same-v2-15】
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v6_2" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --prefix "v6" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss --actionness_loss_coef 3 --cls_loss_coef 0 --results_ensemble --ROIalign_strategy "after_pred" --ensemble_rate 0 --proposals_weight_type "after_softmax"
                     
         i3d:
             activitynet1.3: 

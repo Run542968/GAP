@@ -9,15 +9,11 @@ class PostProcess(nn.Module):
         super().__init__()
         self.type = args.postprocess_type
         self.topk = args.postprocess_topk
-        # self.fuse_rate = args.fuse_rate
-        # self.fuse_strategy = args.fuse_strategy
-        # self.enable_ROIalign = args.enable_ROIalign
-        # self.binary = args.binary
+
         self.target_type = args.target_type
-        self.segmentation_loss = args.segmentation_loss
         self.proposals_weight_type = args.proposals_weight_type
-        self.distillation_loss = args.distillation_loss
-        
+        self.actionness_loss = args.actionness_loss
+        self.prob_type = args.prob_type
         
     @torch.no_grad()
     def forward(self, outputs, target_sizes, eval_proposal=False):
@@ -26,26 +22,41 @@ class PostProcess(nn.Module):
             outputs: raw outputs of the model
             target_sizes: tensor of dimension [batch_size x 1] containing the size of each video of the batch
         """
+        out_bbox = outputs['pred_boxes'] # [bs,num_queries,2]
+        
         if self.target_type != "none":
-            assert 'ROIalign_logits' in outputs
-            foreground_logits, ROIalign_logits, out_bbox = outputs['pred_logits'], outputs['ROIalign_logits'], outputs['pred_boxes'] # [bs,num_queries,1] [bs,num_queries,num_classes] [bs,num_queries,2]
-            foreground_logits = foreground_logits.sigmoid()
-
             if eval_proposal:
-                assert foreground_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{foreground_logits.shape}"
-                prob = foreground_logits # only evaluate the proposal
+                assert 'actionness_logits' in outputs
+                actionness_logits = outputs['actionness_logits']
+                assert actionness_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{actionness_logits.shape}"
+                prob = actionness_logits.sigmoid() # only evaluate the proposal
             else:
-                if self.proposals_weight_type == "before_softmax":
-                    prob = torch.mul(foreground_logits,ROIalign_logits).softmax(-1) # [bs,num_queries,num_classes]
-                elif self.proposals_weight_type == "after_softmax":
-                    prob = torch.mul(foreground_logits,ROIalign_logits.softmax(-1)) # [bs,num_queries,num_classes]
+                assert 'class_logits' in outputs
+                class_logits = outputs['class_logits'] #  [bs,num_queries,num_classes] 
+                if self.actionness_loss: # [bs,num_queries,1]
+                    assert 'actionness_logits' in outputs
+                    actionness_logits = outputs['actionness_logits']
+                    actionness_logits = actionness_logits.sigmoid()
 
-            if self.segmentation_loss:
-                prob = prob[:,:,:-1] # [bs,num_queries,num_classes]
-
-        elif not eval_proposal:
-            assert 'pred_logits' in outputs
-            out_logits, out_bbox = outputs['pred_logits'], outputs['pred_boxes'] # [bs,num_queries,num_classes] [bs,num_queries,2]
+                    if self.prob_type == "softmax":
+                        if self.proposals_weight_type == "before_softmax":
+                            prob = torch.mul(actionness_logits,class_logits).softmax(-1) # [bs,num_queries,num_classes]
+                        elif self.proposals_weight_type == "after_softmax":
+                            prob = torch.mul(actionness_logits,class_logits.softmax(-1)) # [bs,num_queries,num_classes]
+                    elif self.prob_type == "sigmoid":
+                        prob = torch.mul(actionness_logits,class_logits.sigmoid()) # [bs,num_queries,num_classes]
+                    else:
+                        raise NotImplementedError
+                else:
+                    if self.prob_type == "softmax":
+                        prob = class_logits.softmax(-1)
+                    elif self.prob_type == "sigmoid":
+                        prob = class_logits.sigmoid()
+                    else:
+                        raise NotImplementedError
+        elif self.target_type == "none" and not eval_proposal:
+            assert 'class_logits' in outputs
+            out_logits = outputs['pred_logits'] # [bs,num_queries,num_classes]
             prob = out_logits.sigmoid() # [bs,num_queries,num_classes]
         else:
             raise ValueError("Don't have this case.")

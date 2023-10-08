@@ -24,7 +24,7 @@ class HungarianMatcher(nn.Module):
     while the others are un-matched (and thus treated as non-objects).
     """
 
-    def __init__(self, cost_class: float = 1, cost_bbox: float = 1, cost_giou: float = 1):
+    def __init__(self, cost_class: float = 1, cost_bbox: float = 1, cost_giou: float = 1, args=None):
         """Creates the matcher
         Params:
             cost_class: This is the relative weight of the classification error in the matching cost
@@ -35,6 +35,8 @@ class HungarianMatcher(nn.Module):
         self.cost_class = cost_class
         self.cost_bbox = cost_bbox
         self.cost_giou = cost_giou
+        self.actionness_loss = args.actionness_loss
+        self.eval_proposal = args.eval_proposal
         assert cost_class != 0 or cost_bbox != 0 or cost_giou != 0, "all costs cant be 0"
 
     @torch.no_grad()
@@ -46,6 +48,8 @@ class HungarianMatcher(nn.Module):
                  "pred_boxes": Tensor of dim [batch_size, num_queries, 2] with the predicted box coordinates
             targets: This is a list of targets (len(targets) = batch_size), where each target is a dict containing:
                  "labels": Tensor of dim [num_target_boxes] (where num_target_boxes is the number of ground-truth
+                           objects in the target) containing the binary class labels
+                 "semantic_lables": Tensor of dim [num_target_boxes] (where num_target_boxes is the number of ground-truth
                            objects in the target) containing the class labels
                  "segments": Tensor of dim [num_target_boxes, 2] containing the target box coordinates
         Returns:
@@ -55,15 +59,28 @@ class HungarianMatcher(nn.Module):
             For each batch element, it holds:
                 len(index_i) = len(index_j) = min(num_queries, num_target_boxes)
         """
-        bs, num_queries = outputs["pred_logits"].shape[:2] 
+        if self.actionness_loss or self.eval_proposal:
+            assert "actionness_logits" in outputs
+            bs, num_queries = outputs["actionness_logits"].shape[:2] 
 
-        # We flatten to compute the cost matrices in a batch
-        out_prob = outputs["pred_logits"].flatten(0, 1).sigmoid()  # [batch_size * num_queries, num_classes]
-        out_bbox = outputs["pred_boxes"].flatten(0, 1)  # [batch_size * num_queries, 2]
+            # We flatten to compute the cost matrices in a batch
+            out_prob = outputs["actionness_logits"].flatten(0, 1).sigmoid()  # [batch_size * num_queries, 1]
+            out_bbox = outputs["pred_boxes"].flatten(0, 1)  # [batch_size * num_queries, 2]
 
-        # Also concat the target labels and boxes
-        tgt_ids = torch.cat([v["labels"] for v in targets]) # [gt_instance_num]
-        tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
+            # Also concat the target labels and boxes
+            tgt_ids = torch.cat([v["labels"] for v in targets]) # [gt_instance_num]
+            tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
+        else:
+            assert "class_logits" in outputs
+            bs, num_queries = outputs["class_logits"].shape[:2] 
+
+            # We flatten to compute the cost matrices in a batch
+            out_prob = outputs["class_logits"].flatten(0, 1).sigmoid()  # [batch_size * num_queries, num_classes]
+            out_bbox = outputs["pred_boxes"].flatten(0, 1)  # [batch_size * num_queries, 2]
+
+            # Also concat the target labels and boxes
+            tgt_ids = torch.cat([v["semantic_labels"] for v in targets]) # [gt_instance_num]
+            tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
 
         # Compute the classification cost.
         alpha = 0.25
@@ -94,5 +111,6 @@ class HungarianMatcher(nn.Module):
 def build_matcher(args):
     return HungarianMatcher(cost_class=args.set_cost_class, 
                             cost_bbox=args.set_cost_bbox, 
-                            cost_giou=args.set_cost_giou
+                            cost_giou=args.set_cost_giou,
+                            args = args
                             )

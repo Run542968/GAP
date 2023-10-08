@@ -255,5 +255,17 @@
   - + 细粒度的文语义本匹配
   - + CLIP的蒸馏
   - + ensemble
-- [ ] 简化一下代码，把没用的loss都去掉
+- [ ] 简化一下代码，把没用的loss从main model的forward里去掉
+  - [x] Instance Loss
+  - [x] Segmentation Loss
+  - [x] Matching Loss
+  - [x] Mask Loss
+  - [ ] 把semantic head直接放在主模型的文件，用了就实例化
+  - [x] 注意处理args.eval_proposal
+  - [x] matcher那里注意在enable_anctionness的时候是拿actionness_logits匹配
+  - [x] dataset的labels表示二分类标签，semantic_labels表示多类别标签
+  - 👹选择了--eval_proposal的时候，需要设置--actionness_loss_coef和原本V2版本的--cls_loss_coef一致，命令示例：Thumos14_CLIP_prompt_zs_8frame_binary_23
+  - 👺想要进行V2版本完全分离的实验：需要采用actionness_loss，并且--cls_loss_coef 0，然后搭配results_ensemble，--emsemble_rate 0, 命令示例：Thumos14_CLIP_prompt_zs_8frame_v6_2
+- [ ] 完善文本head这边的self-attention集成
+- [x] 🚩注意整个代码中logits指的其实是probability 
 - 没有匹配到的proposals也是有用的，该怎么用？
