@@ -248,7 +248,7 @@
   - + 细粒度的文语义本匹配
   - + CLIP的蒸馏
   - + ensemble
-#### 第六次大版本
+#### 第六次大版本，20231012最后一次提交到github，comit id=`sixth backup`
 - 蒸馏的故事脉络
   - baseline就是直接拿DETR做这个任务
   - + class-agnostic前景质量分数, 用于后处理的proposal加权
@@ -286,7 +286,11 @@
     - [x] 然后从start=0开始，构造背景instance
     - [x] 暂时先只构造semantic_label的背景instance，对于class-agnostic的head不构造背景。因为这里主要考虑的是语义的完整性
     - [x] 跑代码的时候，这个loss的名称还是loss_ce，替换了原来的loss_ce的实现
-- [ ] Thumos14的动作时长太短了，或许每帧视为一个会更好
+- [ ] Thumos14的动作时长太短了，或许每帧视为一个snippet会更好
+#### 第七次大版本
+- 整份代码都增加了背景类别
+  - [ ] 在class-agnostic那里也增加一个背景
+  - [ ] 在class-aware那里也增加一个可学习的背景类
 
 
 python main.py feature_type="clip" device="cuda:0" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
