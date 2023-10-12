@@ -251,7 +251,7 @@
 #### 第六次大版本
 - 蒸馏的故事脉络
   - baseline就是直接拿DETR做这个任务
-  - + class-agnostic前景质量分数
+  - + class-agnostic前景质量分数, 用于后处理的proposal加权
   - + 细粒度的文语义本匹配
   - + CLIP的蒸馏
   - + ensemble
@@ -279,3 +279,18 @@
   - 增/删一定程度上等价于换了个随机种子
   - 实验证明了这一点：Thumos14_CLIP_prompt_zs_8frame_v6_1→6
 - 没有匹配到的proposals也是有用的，该怎么用？
+  - 目前的一个思路是在gt那里生成background instance，在匹配的时候显式的匹配背景
+  - 目前的DETR范式，无论是用CE还是BCE求损失，都是默认non-matched queries都是背景，实际上这种约束太强了，忽视了一些低质量proposal也包含了对应类别语义
+  - [x] 在dataset的self._get_train_label那里直接构造pure background instance annotation
+    - [x] 首先把segment_annotation按照时间顺序排序一下
+    - [x] 然后从start=0开始，构造背景instance
+    - [x] 暂时先只构造semantic_label的背景instance，对于class-agnostic的head不构造背景。因为这里主要考虑的是语义的完整性
+    - [x] 跑代码的时候，这个loss的名称还是loss_ce，替换了原来的loss_ce的实现
+- [ ] Thumos14的动作时长太短了，或许每帧视为一个会更好
+
+
+python main.py feature_type="clip" device="cuda:0" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
+python main.py feature_type="clip" device="cuda:1" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
+python main.py feature_type="clip" device="cuda:2" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
+python main.py feature_type="clip" device="cuda:3" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
+

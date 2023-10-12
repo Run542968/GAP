@@ -92,6 +92,8 @@ parser.add_argument('--actionness_loss_coef', type=float, default=2)
 parser.add_argument('--distillation_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
 parser.add_argument('--distillation_loss_coef', type=float, default=1)
 
+parser.add_argument('--complete_loss', action='store_true', default=False)
+
 
 # Matcher
 parser.add_argument('--set_cost_class', type=float, default=2, help="Class coefficient in the matching cost")
@@ -123,7 +125,7 @@ parser.add_argument('--ensemble_rate', type=float, default=0.5, help="the balanc
 parser.add_argument('--ensemble_strategy', type=str, default="arithmetic", choices=("arithmetic","geomethric"), help="the strategy to ensemble")
 parser.add_argument('--filter_threshold', type=float, default=0, help="the threshold to filter some proposals that may be negative ")
 parser.add_argument('--proposals_weight_type', default="before_softmax", choices=("before_softmax","after_softmax"), help="the way to perform multiple between detector scores and ROIalign proposals")
-parser.add_argument('--prob_type', type=str, default="softmax", choices=("softmax","igmoid"), help="the strategy to get normalized probability")
+parser.add_argument('--prob_type', type=str, default="softmax", choices=("softmax","sigmoid"), help="the strategy to get normalized probability")
 
 
 

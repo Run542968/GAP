@@ -62,6 +62,7 @@ class BaseDataset(Dataset):
         self.split = args.split
         self.split_id = args.split_id
         self.target_type = args.target_type
+        self.complete_loss = args.complete_loss
         # self.binary = args.binary
 
         self.slice_size = args.slice_size
@@ -161,10 +162,25 @@ class BaseDataset(Dataset):
             'mask_labels':np.full(feat_length,0) # [T]
             }
         
-
+        # sort the segments follow time sequence
+        segments_anno = list(sorted(segments_anno, key=lambda x: sum(x['segment'])))
+        bg_start = 0
+        bg_end = feature_duration
         for seg_anno in segments_anno: # a list of dict [{'segment': ,'labels': }, ]
- 
+            
             segment = seg_anno['segment'] 
+
+            if self.complete_loss:
+                # add bg instance
+                if segment[0]-bg_start > 0.5: # guarantee the bg instance more than 1 snippet
+                    bg_segment = [bg_start,segment[0]]
+                    bg_semantic_labels = num_classes
+                    bg_start = segment[1] # update bg_start
+                    target['segments'].append(bg_segment)
+                    target['semantic_labels'].append(bg_semantic_labels)
+                    target['labels'].append(1)  # the category labels for detector to classify
+                    target['label_names'].append("background")
+
 
             # special rule for thumos14, treat ambiguous instances as negatives, although the ambiguous has been dropped in self.parse_gt()
             if seg_anno['label'] not in classes:
@@ -184,6 +200,7 @@ class BaseDataset(Dataset):
 
             semantic_label = classes.index(seg_anno['label']) # the category labels for semantic classification
             target['semantic_labels'].append(semantic_label)
+            
             # add instance_masks to target dict
             if seg_anno['label'] not in target['instance_masks'].keys():
                 target['instance_masks'][seg_anno['label']] = {'label_id':semantic_label,'mask':np.ones(feat_length,dtype=bool)}
@@ -199,6 +216,17 @@ class BaseDataset(Dataset):
 
             # update class-agnostic mask labels
             target['mask_labels'][start_idx:end_idx] = 1
+
+
+        if self.complete_loss:
+            # add bg instance 
+            if bg_end-segment[1] > 0.5: # guarantee the bg instance more than 1 snippet
+                bg_segment = [segment[1],bg_end]
+                bg_semantic_labels = num_classes
+                target['segments'].append(bg_segment)
+                target['semantic_labels'].append(bg_semantic_labels)
+                target['labels'].append(1)  # the category labels for detector to classify
+                target['label_names'].append("background")
 
         # normalized the coordinate
         target['segments'] = np.array(target['segments']) / feature_duration
@@ -564,5 +592,6 @@ if __name__ == "__main__":
     # print(f"gt_labels.shape:{gt_labels.shape}")
     print(f"target[0]['mask_labels']:{target[0]['mask_labels']}")
     print(f"target[0]['semantic_labels']:{target[0]['semantic_labels']}")
+    print(f"target[0]['segments']:{target[0]['segments']}")
 
 # CUDA_VISIBLE_DEVICES=4 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"

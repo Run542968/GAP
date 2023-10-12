@@ -57,6 +57,7 @@ class SetCriterion(nn.Module):
         self.actionness_loss = args.actionness_loss 
         self.eval_proposal = args.eval_proposal
         self.distillation_loss = args.distillation_loss
+        self.complete_loss = args.complete_loss
 
         if self.eval_proposal:
             self.base_losses = ['boxes']
@@ -87,6 +88,33 @@ class SetCriterion(nn.Module):
         if log:
             # TODO this should probably be a separate loss, not hacked in this one here
             losses['class_error'] = 100 - accuracy(src_logits[idx], target_classes_o)[0] # [batch_matched_queries,num_classes]
+        return losses
+
+    def loss_complete_labels(self, outputs, targets, indices, num_boxes, log=True):
+        """
+        Modify the loss_labels, consider the complete of proposal semantic, introding the bg instance in matching stage
+        """
+        assert 'class_logits' in outputs
+        src_logits = outputs['class_logits'] # [bs,num_queries,num_classes]
+
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        target_classes_o = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        target_classes = torch.full(src_logits.shape[:2], src_logits.shape[2],
+                                    dtype=torch.int64, device=src_logits.device) # [bs,num_queries]
+        target_classes[idx] = target_classes_o # [bs,num_queries]
+
+        target_classes_onehot = torch.zeros([src_logits.shape[0], src_logits.shape[1], src_logits.shape[2]+1],
+                                            dtype=src_logits.dtype, layout=src_logits.layout, device=src_logits.device) # [bs,num_queries,num_classes+1]
+        target_classes_onehot.scatter_(2, target_classes.unsqueeze(-1), 1)
+
+        target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
+
+        complete_classes_onehot = target_classes_onehot[idx] # [batch_matched_queries,num_classes]
+        complete_logits = src_logits[idx] # [batch_matched_queries,num_classes]
+
+        loss_ce = sigmoid_focal_loss(complete_logits, complete_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma)
+        losses = {'loss_ce': loss_ce}
+
         return losses
 
  
@@ -270,14 +298,14 @@ class SetCriterion(nn.Module):
         '''
         for distillation the CLIP feat to DETR detector
         '''
-        assert 'student_logits' in outputs
-        assert 'teacher_logits' in outputs
+        assert 'student_emb' in outputs
+        assert 'teacher_emb' in outputs
 
         # obtain logits
-        student_logits = outputs['student_logits']
-        teacher_logits = outputs['teacher_logits'] # [B,Q,dim]
+        student_emb = outputs['student_emb']
+        teacher_emb = outputs['teacher_emb'] # [B,Q,dim]
 
-        loss = torch.abs(teacher_logits-student_logits).sum(-1)
+        loss = torch.abs(teacher_emb-student_emb).sum(-1)
 
         losses = {}
         losses['loss_distillation'] = loss.mean()
@@ -322,10 +350,16 @@ class SetCriterion(nn.Module):
         return batch_idx, tgt_idx
 
     def get_loss(self, loss, outputs, targets, indices, num_boxes, **kwargs):
-        loss_map = {
-            'labels': self.loss_labels,
-            'boxes': self.loss_boxes
-        }
+        if self.actionness_loss:
+            loss_map = {
+                'labels': self.loss_complete_labels,
+                'boxes': self.loss_boxes
+            }
+        else:
+            loss_map = {
+                'labels': self.loss_labels,
+                'boxes': self.loss_boxes
+            }
         assert loss in loss_map, f'do you really want to compute {loss} loss?'
         return loss_map[loss](outputs, targets, indices, num_boxes, **kwargs)
 
