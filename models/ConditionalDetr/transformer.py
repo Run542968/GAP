@@ -51,33 +51,39 @@ class Transformer(nn.Module):
                  num_decoder_layers=6, dim_feedforward=2048, dropout=0.1,
                  activation="relu", normalize_before=False,
                  return_intermediate_enc=False,
-                 return_intermediate_dec=False):
+                 return_intermediate_dec=False,
+                 args = None):
         super().__init__()
 
         encoder_layer = TransformerEncoderLayer(d_model, nhead, dim_feedforward,
                                                 dropout, activation, normalize_before)
         encoder_norm = nn.LayerNorm(d_model) if normalize_before else None
-        self.encoder = TransformerEncoder(encoder_layer, num_encoder_layers, encoder_norm, return_intermediate=return_intermediate_enc)
+        self.encoder = TransformerEncoder(encoder_layer, num_encoder_layers, encoder_norm, return_intermediate=return_intermediate_enc,args=args)
 
         decoder_layer = TransformerDecoderLayer(d_model, nhead, dim_feedforward,
                                                 dropout, activation, normalize_before)
         decoder_norm = nn.LayerNorm(d_model)
         self.decoder = TransformerDecoder(decoder_layer, num_decoder_layers, decoder_norm,
                                           return_intermediate=return_intermediate_dec,
-                                          d_model=d_model)
+                                          d_model=d_model,
+                                          args=args)
 
         self._reset_parameters()
 
         self.d_model = d_model
         self.nhead = nhead
         self.dec_layers = num_decoder_layers
+        self.enable_posPrior = args.enable_posPrior
+        self.posPrior_type = args.posPrior_type
+        self.enable_textQuery = args.enable_textQuery
+        self.drop_encoder = args.drop_encoder
 
     def _reset_parameters(self):
         for p in self.parameters():
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p)
 
-    def forward(self, src, mask, query_embed, pos_embed):
+    def forward(self, src, mask, query_embed, pos_embed, tgt=None, drop_encoder=False):
         '''
         input:
             src: [b,t,c]
@@ -89,11 +95,23 @@ class Transformer(nn.Module):
         bs, t, c = src.shape
         src = src.permute(1, 0, 2) # [t,b,c]
         pos_embed = pos_embed.permute(1, 0, 2) # [t,b,c]
-        query_embed = query_embed.unsqueeze(1).repeat(1, bs, 1) # [num_queries,b,c]
+        if self.posPrior_type == "clip":
+            query_embed = query_embed.permute(1,0,2)
+        else:
+            query_embed = query_embed.unsqueeze(1).repeat(1, bs, 1) # [num_queries,b,c]
         mask = mask # [b,t]
+        
+        if self.enable_posPrior:
+            tgt = torch.zeros((query_embed.shape[0],bs,c),device=query_embed.device) # [num_queries,b,c]
+        elif self.enable_textQuery:
+            tgt = tgt
+        else:
+            tgt = torch.zeros_like(query_embed) # [num_queries,b,c]
 
-        tgt = torch.zeros_like(query_embed) # [num_queries,b,c]
-        memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed) # [layers,t,b,c]
+        if self.drop_encoder or drop_encoder:
+            memory = src.unsqueeze(0)
+        else:
+            memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed) # [layers,t,b,c]
         hs, references = self.decoder(tgt, memory[-1], memory_key_padding_mask=mask, 
                           pos=pos_embed, query_pos=query_embed) # [dec_layers,b,num_queries,c] [b,num_queries,1]
         # permute TxNxC to NxTxC
@@ -103,7 +121,7 @@ class Transformer(nn.Module):
 
 class TransformerEncoder(nn.Module):
 
-    def __init__(self, encoder_layer, num_layers, norm=None, return_intermediate=False):
+    def __init__(self, encoder_layer, num_layers, norm=None, return_intermediate=False, args=None):
         super().__init__()
         self.layers = _get_clones(encoder_layer, num_layers)
         self.num_layers = num_layers
@@ -137,16 +155,22 @@ class TransformerEncoder(nn.Module):
 
 class TransformerDecoder(nn.Module):
 
-    def __init__(self, decoder_layer, num_layers, norm=None, return_intermediate=False, d_model=256):
+    def __init__(self, decoder_layer, num_layers, norm=None, return_intermediate=False, d_model=256, args=None):
         super().__init__()
+        self.enable_posPrior = args.enable_posPrior
         self.layers = _get_clones(decoder_layer, num_layers)
         self.num_layers = num_layers
         self.norm = norm
         self.return_intermediate = return_intermediate
         self.query_scale = MLP(d_model, d_model, d_model, 2)
-        self.ref_point_head = MLP(d_model, d_model, 1, 2)
+        if self.enable_posPrior:
+            self.ref_point_head = MLP(d_model, d_model, d_model, 2)
+        else:
+            self.ref_point_head = MLP(d_model, d_model, 1, 2)
         for layer_id in range(num_layers - 1):
             self.layers[layer_id + 1].ca_qpos_proj = None
+        
+        self.enable_textQuery = args.enable_textQuery
 
     def forward(self, tgt, memory,
                 tgt_mask: Optional[Tensor] = None,
@@ -165,31 +189,63 @@ class TransformerDecoder(nn.Module):
         t,b,hidden_dim = tgt.shape
         output = tgt
 
-        intermediate = []
-        reference_points_before_sigmoid = self.ref_point_head(query_pos)    # [num_queries, batch_size, 1]
-        reference_points = reference_points_before_sigmoid.sigmoid().transpose(0, 1) # [batch_size, num_queries, 1]
+        if self.enable_posPrior:
+            intermediate = []
+            reference_points = query_pos.sigmoid().transpose(0,1) # [batch_size, num_queries, 1]
+            
+            for layer_id, layer in enumerate(self.layers):
+                obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
 
-        for layer_id, layer in enumerate(self.layers):
-            obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
+                if self.enable_textQuery:
+                    pos_transformation = self.query_scale(output)
+                else:
+                    # For the first decoder layer, we do not apply transformation over p_s
+                    if layer_id == 0:
+                        pos_transformation = 1
+                    else:
+                        pos_transformation = self.query_scale(output)
 
-            # For the first decoder layer, we do not apply transformation over p_s
-            if layer_id == 0:
-                pos_transformation = 1
-            else:
-                pos_transformation = self.query_scale(output)
+                # get sine embedding for the query vector
+                query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
+                query_pos = self.ref_point_head(query_sine_embed) # [num_queries, b, c] 
+                
+                # apply transformation
+                query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
+                output = layer(output, memory, tgt_mask=tgt_mask,
+                            memory_mask=memory_mask,
+                            tgt_key_padding_mask=tgt_key_padding_mask,
+                            memory_key_padding_mask=memory_key_padding_mask,
+                            pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
+                            is_first=(layer_id == 0))
+                if self.return_intermediate:
+                    intermediate.append(self.norm(output))
 
-            # get sine embedding for the query vector
-            query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
-            # apply transformation
-            query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
-            output = layer(output, memory, tgt_mask=tgt_mask,
-                           memory_mask=memory_mask,
-                           tgt_key_padding_mask=tgt_key_padding_mask,
-                           memory_key_padding_mask=memory_key_padding_mask,
-                           pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
-                           is_first=(layer_id == 0))
-            if self.return_intermediate:
-                intermediate.append(self.norm(output))
+        else:
+            intermediate = []
+            reference_points_before_sigmoid = self.ref_point_head(query_pos)    # [num_queries, batch_size, 1]
+            reference_points = reference_points_before_sigmoid.sigmoid().transpose(0, 1) # [batch_size, num_queries, 1]
+
+            for layer_id, layer in enumerate(self.layers):
+                obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
+
+                # For the first decoder layer, we do not apply transformation over p_s
+                if layer_id == 0:
+                    pos_transformation = 1
+                else:
+                    pos_transformation = self.query_scale(output)
+
+                # get sine embedding for the query vector
+                query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
+                # apply transformation
+                query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
+                output = layer(output, memory, tgt_mask=tgt_mask,
+                            memory_mask=memory_mask,
+                            tgt_key_padding_mask=tgt_key_padding_mask,
+                            memory_key_padding_mask=memory_key_padding_mask,
+                            pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
+                            is_first=(layer_id == 0))
+                if self.return_intermediate:
+                    intermediate.append(self.norm(output))
 
         if self.norm is not None:
             output = self.norm(output)
@@ -434,7 +490,8 @@ def build_transformer(args):
         num_decoder_layers=args.dec_layers,
         normalize_before=args.pre_norm,
         return_intermediate_enc=True,
-        return_intermediate_dec=True
+        return_intermediate_dec=True,
+        args=args
     )
 
 

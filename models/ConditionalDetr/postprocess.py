@@ -14,6 +14,7 @@ class PostProcess(nn.Module):
         self.proposals_weight_type = args.proposals_weight_type
         self.actionness_loss = args.actionness_loss
         self.prob_type = args.prob_type
+        self.complete_loss = args.complete_loss
         
     @torch.no_grad()
     def forward(self, outputs, target_sizes, eval_proposal=False):
@@ -25,42 +26,82 @@ class PostProcess(nn.Module):
         out_bbox = outputs['pred_boxes'] # [bs,num_queries,2]
         
         if self.target_type != "none":
-            if eval_proposal:
-                assert 'actionness_logits' in outputs
-                actionness_logits = outputs['actionness_logits']
-                assert actionness_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{actionness_logits.shape}"
-                prob = actionness_logits.sigmoid() # only evaluate the proposal
-            else:
-                assert 'class_logits' in outputs
-                class_logits = outputs['class_logits'] #  [bs,num_queries,num_classes] 
-                if self.actionness_loss: # [bs,num_queries,1]
+            if self.complete_loss:
+                if eval_proposal:
                     assert 'actionness_logits' in outputs
                     actionness_logits = outputs['actionness_logits']
-                    actionness_logits = actionness_logits.sigmoid()
-
-                    if self.prob_type == "softmax":
-                        if self.proposals_weight_type == "before_softmax":
-                            prob = torch.mul(actionness_logits,class_logits).softmax(-1) # [bs,num_queries,num_classes]
-                        elif self.proposals_weight_type == "after_softmax":
-                            prob = torch.mul(actionness_logits,class_logits.softmax(-1)) # [bs,num_queries,num_classes]
-                    elif self.prob_type == "sigmoid":
-                        prob = torch.mul(actionness_logits,class_logits.sigmoid()) # [bs,num_queries,num_classes]
-                    else:
-                        raise NotImplementedError
+                    assert actionness_logits.shape[-1] == 2, f"please check the dimension of foreground_logits, shape:{actionness_logits.shape}"
+                    prob = actionness_logits.sigmoid() # only evaluate the proposal
+                    prob = prob[:,:,0]
                 else:
-                    if self.prob_type == "softmax":
-                        prob = class_logits.softmax(-1)
-                    elif self.prob_type == "sigmoid":
-                        prob = class_logits.sigmoid()
+                    assert 'class_logits' in outputs
+                    class_logits = outputs['class_logits'] #  [bs,num_queries,num_classes] 
+                    if self.actionness_loss: # [bs,num_queries,1]
+                        assert 'actionness_logits' in outputs
+                        actionness_logits = outputs['actionness_logits']
+                        actionness_logits = actionness_logits.sigmoid()
+                        actionness_logits = actionness_logits[:,:,0].unsqueeze(dim=2) 
+
+
+                        if self.prob_type == "softmax":
+                            if self.proposals_weight_type == "before_softmax":
+                                prob = torch.mul(actionness_logits,class_logits).softmax(-1) # [bs,num_queries,num_classes+1]
+                                prob = prob[:,:,:-1] # [bs,num_queries,num_classes]
+                            elif self.proposals_weight_type == "after_softmax":
+                                prob = torch.mul(actionness_logits,class_logits.softmax(-1)) # [bs,num_queries,num_classes+1]
+                                prob = prob[:,:,:-1]
+                        elif self.prob_type == "sigmoid":
+                            prob = torch.mul(actionness_logits,class_logits.sigmoid()) # [bs,num_queries,num_classes+1]
+                            prob = prob[:,:,:-1]
+                        else:
+                            raise NotImplementedError
                     else:
-                        raise NotImplementedError
+                        if self.prob_type == "softmax":
+                            prob = class_logits.softmax(-1)
+                            prob = prob[:,:,:-1]
+                        elif self.prob_type == "sigmoid":
+                            prob = class_logits.sigmoid()
+                            prob = prob[:,:,:-1]
+                        else:
+                            raise NotImplementedError
+            else:
+                if eval_proposal:
+                    assert 'actionness_logits' in outputs
+                    actionness_logits = outputs['actionness_logits']
+                    assert actionness_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{actionness_logits.shape}"
+                    prob = actionness_logits.sigmoid() # only evaluate the proposal
+
+                else:
+                    assert 'class_logits' in outputs
+                    class_logits = outputs['class_logits'] #  [bs,num_queries,num_classes] 
+                    if self.actionness_loss: # [bs,num_queries,1]
+                        assert 'actionness_logits' in outputs
+                        actionness_logits = outputs['actionness_logits']
+                        actionness_logits = actionness_logits.sigmoid()
+
+                        if self.prob_type == "softmax":
+                            if self.proposals_weight_type == "before_softmax":
+                                prob = torch.mul(actionness_logits,class_logits).softmax(-1) # [bs,num_queries,num_classes]
+                            elif self.proposals_weight_type == "after_softmax":
+                                prob = torch.mul(actionness_logits,class_logits.softmax(-1)) # [bs,num_queries,num_classes]
+                        elif self.prob_type == "sigmoid":
+                            prob = torch.mul(actionness_logits,class_logits.sigmoid()) # [bs,num_queries,num_classes]
+                        else:
+                            raise NotImplementedError
+                    else:
+                        if self.prob_type == "softmax":
+                            prob = class_logits.softmax(-1)
+                        elif self.prob_type == "sigmoid":
+                            prob = class_logits.sigmoid()
+                        else:
+                            raise NotImplementedError
         elif self.target_type == "none" and not eval_proposal:
             assert 'class_logits' in outputs
             out_logits = outputs['pred_logits'] # [bs,num_queries,num_classes]
             prob = out_logits.sigmoid() # [bs,num_queries,num_classes]
         else:
             raise ValueError("Don't have this case.")
-        
+    
         B,Q,num_classes = prob.shape
         assert len(prob) == len(target_sizes)
 

@@ -161,7 +161,7 @@ if __name__ == '__main__':
                     log_metrics(res_dict,step=epoch)
 
         
-        if epoch % args.test_interval == 0:
+        if epoch % args.test_interval == 0 and args.test_interval != -1:
             test_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
             logger.info('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
             logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
@@ -181,8 +181,9 @@ if __name__ == '__main__':
     iou = best_stats['iou_range']
     max_map = best_stats['per_iou_ap_raw']
     max_Avg = best_stats['mAP_raw']
+    best_epoch = best_stats['epoch']
     logger.info('||'.join(['MAX map @ {} = {:.3f} '.format(iou[i],max_map[i]*100) for i in range(len(iou))]))
-    logger.info('MAX mAP Avg ALL: {}'.format(max_Avg*100))
+    logger.info('MAX mAP Avg ALL: {} in Epoch: {}'.format(max_Avg*100,best_epoch))
     
     if args.use_mlflow:     # for mlflow
         best_res_dict = {'best_IoU_'+str(k):v*100 for k,v in zip(best_stats['iou_range'],best_stats['per_iou_ap_raw'])}

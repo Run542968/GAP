@@ -64,8 +64,8 @@ def segment_iou(segments1, segments2):
     """
     # degenerate boxes gives inf / nan results
     # so do an early check
-    assert (segments1[:, 1] >= segments1[:, 0]).all()
-    assert (segments2[:, 1] >= segments2[:, 0]).all()
+    assert (segments1[:, 1] >= segments1[:, 0]).all(), f"segments1:{segments1}"
+    assert (segments2[:, 1] >= segments2[:, 0]).all(), f"segments2:{segments2}"
 
     area1 = segment_length(segments1) # N
     area2 = segment_length(segments2) # M

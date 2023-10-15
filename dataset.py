@@ -170,7 +170,7 @@ class BaseDataset(Dataset):
             
             segment = seg_anno['segment'] 
 
-            if self.complete_loss:
+            if self.complete_loss and len(segments_anno)>0:
                 # add bg instance
                 if segment[0]-bg_start > 0.5: # guarantee the bg instance more than 1 snippet
                     bg_segment = [bg_start,segment[0]]
@@ -218,7 +218,7 @@ class BaseDataset(Dataset):
             target['mask_labels'][start_idx:end_idx] = 1
 
 
-        if self.complete_loss:
+        if self.complete_loss and len(segments_anno)>0:
             # add bg instance 
             if bg_end-segment[1] > 0.5: # guarantee the bg instance more than 1 snippet
                 bg_segment = [segment[1],bg_end]

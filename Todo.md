@@ -248,7 +248,7 @@
   - + 细粒度的文语义本匹配
   - + CLIP的蒸馏
   - + ensemble
-#### 第六次大版本，20231012最后一次提交到github，comit id=`sixth backup`
+#### 第六次大版本，20231015最后一次提交到github，comit id=`sixth backup`
 - 蒸馏的故事脉络
   - baseline就是直接拿DETR做这个任务
   - + class-agnostic前景质量分数, 用于后处理的proposal加权
@@ -287,14 +287,46 @@
     - [x] 暂时先只构造semantic_label的背景instance，对于class-agnostic的head不构造背景。因为这里主要考虑的是语义的完整性
     - [x] 跑代码的时候，这个loss的名称还是loss_ce，替换了原来的loss_ce的实现
 - [ ] Thumos14的动作时长太短了，或许每帧视为一个snippet会更好
+- 整份代码都增加了背景类别，用--complete_loss控制
+  - [x] 在class-agnostic那里也增加一个背景
+  - [x] 在class-aware那里也增加一个可学习的背景类
+  - [x] 当开启--complete_loss的时候，就只抑制匹配到的背景query，而不是所有query
+    - 对应的loss也做了修改，变成了complete_labels和complete_actionness
+- [ ] 增加位置先验
+  - [x] 先按照DAB-DETR一样增加均匀分布的位置先验
+  - [x] 再根据CLIP的特征增加语义的位置先验
+    - 根据CLIP的特征效果很差
+- [x] 增加对base class的测试
+  - test_interval和train_interval为-1的时候，表示不进行这个类别的测试
+- [ ] 增加AR的计算
+- [x] 采用OV-DETR的方式，用text——embedding作为query
+  - 没什么用
+- [x] 增加一个文本信息蒸馏
+  - 对于匹配到的query和类别，将query对应的类别的语义关系 蒸馏给 query和其他类别的语义关系
+  - 这个是一个辅助loss，让query的位置更加靠近多个类的中心，避免在seen classes上过拟合
+- [x] 增加一个proposal之间的互斥loss
+  - 先验1：同一个类别的动作之间不重叠
+  - 先验2：unmatched的实例应该和matched的实例的IOU越小越好 
+  - 💣训练的时候会崩，预测出来的bounding box会变成nan
+  - [ ] 改进互斥loss, 应该是proposal两两之间都推远，也就是利用先验3：unmatched之间的IOU越小越好
+- 🚩 只测试val_set和同时测试train_set、val_set性能竟然不一样
+  - Thumos14_CLIP_prompt_zs_8frame_v6_24、Thumos14_CLIP_prompt_zs_8frame_v6_25
+- [ ] 改进一下蒸馏loss, 变成预测logits的蒸馏
+- [x] 增加一个query relation distillation
+  - 没什么用
+- 试一下不要encoder直接在CLIP特征上套一个decoder的class-agnostic效果和正常DETR效果, --drop_encoder
+  - [ ] 正常DETR
+  - [ ] class-agnostic
+- [ ] 去掉position embedding
+- [ ] 调整position embedding的温度系数
+- [ ] 试一下前5个epoch用encoder的输出作为decoder的输入，后几个epoch用clip feat作为decoder的输入，测试二分类的质量
+
 #### 第七次大版本
-- 整份代码都增加了背景类别
-  - [ ] 在class-agnostic那里也增加一个背景
-  - [ ] 在class-aware那里也增加一个可学习的背景类
-
-
-python main.py feature_type="clip" device="cuda:0" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
-python main.py feature_type="clip" device="cuda:1" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
-python main.py feature_type="clip" device="cuda:2" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
-python main.py feature_type="clip" device="cuda:3" batch_size=2048 file_with_video_paths="./dataset_list/HACS_video_dir_list.txt" output_path="/mnt/Datasets/HACS/HACS_feature_frame"
-
+- 级联的定位refine
+  - [ ] 首先在一个正常的transformer训练一个class-agnostic的检测器
+  - [ ] query出了transformer以后，先得到坐标，corp出每个query对应的CLIP视觉特征 BxNxdim (这里在crop出来的特征时序维度进行average pooling)，然后对视觉特征进行分类得到 BxNx1，用分类的结果得到每个query对应的类别名称的embedding BxNxdim
+  - [ ] 类别名称的embedding再和crop出来的视觉特征计算cross-attention，目的是找到proposal内部语义相似的区域，[B,N,1,dim] + [B,N,L,dim] -> [B,N,1,dim] -> [B,N,dim]
+  - [ ] 类别名称的embdding在和整个视频计算cross-attention, 目的是找到proposal在整个视频语义相似的区域, [B,N,dim] + [B,T,dim] -> [B,N,dim] 
+  - [ ] 这两组特征再和query embedding拼接起来，过一个MLP
+  - [ ] 多个query embedding之间再进行self-attention
+  - [ ] 然后再进行一对一的匹配loss

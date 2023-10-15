@@ -4,6 +4,7 @@ import logging
 from eval import tad_eval
 logger = logging.getLogger()
 
+
 @torch.no_grad()
 def test(model, 
          criterion, 
@@ -37,7 +38,7 @@ def test(model,
         classes = data_loader.dataset.classes
         description_dict = data_loader.dataset.description_dict
 
-        outputs = model(samples, classes, description_dict,targets)
+        outputs = model(samples, classes, description_dict,targets,epoch)
 
         # loss_dict = criterion(outputs, targets)
         # weight_dict = criterion.weight_dict
@@ -90,4 +91,68 @@ def test(model,
 
         stats['stats_summary'] = action_evaluator.stats_summary
 
+    
     return stats
+
+if __name__ == "__main__":
+    import options
+    from options import merge_cfg_from_file
+    from utils.util import get_logger, setup_seed
+    import dataset
+    from torch.utils.data import DataLoader
+    from utils.misc import collate_fn
+    from models.ConditionalDetr import build_model
+    import os
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    args = options.parser.parse_args()
+    if args.cfg_path is not None:
+        args = merge_cfg_from_file(args,args.cfg_path) # NOTE that the config comes from yaml file is the latest one.
+
+    device = torch.device(args.device)
+    seed=args.seed
+    setup_seed(seed)
+
+    # load dataset
+    train_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='train', mode='train', args=args)
+    val_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='inference', mode='inference', args=args)
+
+    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=True, drop_last=True)
+    # val_loader = DataLoader(val_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
+    # train_val_loader = DataLoader(train_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
+
+    # load model
+    model, criterion, postprocessor = build_model(args,device)
+    ckpt_path = os.path.join("./ckpt",args.dataset_name,"best_"+args.model_name+".pkl")
+    model.load_state_dict(torch.load(ckpt_path))
+    model.to(device)
+
+    iters = iter(train_loader)
+    samples, targets = next(iters)
+    samples = samples.to(device)
+    # targets = [{k: v.to(device) if k in ['segments', 'labels'] else v for k, v in t.items()} for t in targets] # Not Required in inferene stage
+    
+    classes = train_loader.dataset.classes
+    description_dict = train_loader.dataset.description_dict
+    outputs = model(samples, classes, description_dict,targets)
+
+    memory = outputs['memory'][-1] # [enc_layers, b,t,c]
+    idx = 9
+    save_dir = os.path.join('./heatmap',args.target_type+"_memory",targets[idx]['video_name'])
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
+    # 可视化特征的self-similarity matirx
+    self_similarity = torch.einsum("td,ld->tl",memory[idx],memory[idx])
+    self_similarity = self_similarity.cpu().detach().numpy()
+    fig = plt.figure(figsize=(16,6))
+    sns.heatmap(self_similarity,cmap="YlGnBu")
+    plt.savefig(os.path.join(save_dir,'memory_self_similarity.png'))
+    
+    print(targets[idx]['video_name'])
+    print(targets[idx]['mask_labels'])
+    print(targets[idx]['semantic_labels'])
+    print(targets[idx]['segments'])
+
+# CUDA_VISIBLE_DEVICES=2 python test.py --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --batch_size 16 --target_type "prompt" --model_name "ActivityNet13_CLIP_prompt_zs_v6_1" --num_queries 5 --enc_layers 2 --dec_layers 2 --enable_backbone

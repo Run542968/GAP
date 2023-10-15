@@ -93,7 +93,14 @@ class ConditionalDETR(nn.Module):
 
         self.actionness_loss = args.actionness_loss
         self.distillation_loss = args.distillation_loss
+        self.complete_loss = args.complete_loss
+        self.text_distillation_loss = args.text_distillation_loss
+        self.queryRelation_loss = args.queryRelation_loss
 
+        self.enable_posPrior = args.enable_posPrior
+        self.posPrior_type = args.posPrior_type
+        self.posPrior_method = args.posPrior_method
+        self.enable_textQuery = args.enable_textQuery
 
         self.augment_prompt_type = args.augment_prompt_type
         self.subaction_version = args.subaction_version
@@ -101,6 +108,9 @@ class ConditionalDETR(nn.Module):
         self.results_ensemble = args.results_ensemble
         self.ensemble_rate = args.ensemble_rate
         self.ensemble_strategy = args.ensemble_strategy
+        self.drop_encoder = args.drop_encoder
+
+        self.refine_start = args.refine_start
         
 
         hidden_dim = transformer.d_model
@@ -109,11 +119,22 @@ class ConditionalDETR(nn.Module):
         nn.init.constant_(self.bbox_embed.layers[-1].weight.data, 0)
         nn.init.constant_(self.bbox_embed.layers[-1].bias.data, 0)
 
-        self.query_embed = nn.Embedding(self.num_queries, hidden_dim)
+        if self.enable_posPrior:
+            self.query_embed = nn.Embedding(self.num_queries,1)
+            self.query_embed.weight.data[:, :1].uniform_(0, 1)
+            self.query_embed.weight.data[:, :1] = inverse_sigmoid(self.query_embed.weight.data[:, :1])
+            self.query_embed.weight.data[:, :1].requires_grad = False
+        else:
+            self.query_embed = nn.Embedding(self.num_queries, hidden_dim)
+        
+        
         self.input_proj = nn.Conv1d(backbone.feat_dim, hidden_dim, kernel_size=1)
         
         if self.target_type != "none":
             self.class_embed = nn.Linear(hidden_dim, hidden_dim)
+            if self.complete_loss:
+                self.bg_embedding = nn.Parameter( torch.empty(1, 512) )
+                torch.nn.init.kaiming_uniform_(self.bg_embedding, nonlinearity='relu')
         else:
             self.class_embed = nn.Linear(hidden_dim, num_classes)
             # init prior_prob setting for focal loss
@@ -122,17 +143,14 @@ class ConditionalDETR(nn.Module):
             self.class_embed.bias.data = torch.ones(num_classes) * bias_value
 
         if self.actionness_loss or self.eval_proposal:
-            self.actionness_embed = nn.Linear(hidden_dim,1)
+            if self.complete_loss:
+                self.actionness_embed = nn.Linear(hidden_dim,2)
+            else:
+                self.actionness_embed = nn.Linear(hidden_dim,1)
             # init prior_prob setting for focal loss
             prior_prob = 0.01
             bias_value = -math.log((1 - prior_prob) / prior_prob)
             self.actionness_embed.bias.data = torch.ones(1) * bias_value
-
-
-        if self.distillation_loss:
-            self.distill_embed = nn.Linear(hidden_dim, hidden_dim)
-            # self.temporal_head = nn.Conv1d(hidden_dim,hidden_dim, kernel_size=3, padding=1)
-
 
 
         if self.target_type != "none":
@@ -310,7 +328,7 @@ class ConditionalDETR(nn.Module):
         else:
             NotImplementedError
 
-    def forward(self, samples: NestedTensor, classes_name, description_dict, targets):
+    def forward(self, samples: NestedTensor, classes_name, description_dict, targets, epoch):
         """ The forward expects a NestedTensor, which consists of:
                - samples.tensor: batched video, of shape [batch_size x T x C]
                - samples.mask: a binary mask of shape [batch_size x T], containing 1 (i.e., true) on padded snippet
@@ -333,6 +351,7 @@ class ConditionalDETR(nn.Module):
 
         # origin CLIP features
         clip_feat, mask = samples.decompose()
+        bs,t,dim = clip_feat.shape
 
         # backbone for temporal modeling
         feature_list, pos = self.backbone(samples) # list of [b,t,c], list of [b,t]
@@ -353,10 +372,40 @@ class ConditionalDETR(nn.Module):
         src, mask = feature_list[-1].decompose()
         assert mask is not None
         src = self.input_proj(src.permute(0,2,1)).permute(0,2,1)
-        memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1]) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
-        
+
+        if epoch < self.refine_start or not self.training:
+            if self.enable_posPrior and self.posPrior_type == "clip":
+                pos_logits = self._compute_similarity(clip_feat,text_feats) # [bs,t,num_classes]
+                truely_length = t-torch.sum(mask,dim=1) # [B]
+                truely_length = truely_length.reshape(-1,1,1) # [B,1,1]
+                if self.posPrior_method == "max":
+                    loc,_ = pos_logits.max(dim=-1) # [bs,t]
+                elif self.posPrior_method == "mean":
+                    loc = pos_logits.mean(dim=-1) # [bs,t]
+                else:
+                    raise ValueError
+                top_val, top_idx = torch.topk(loc,dim=-1,k=self.num_queries) # [bs,num_queries_idx]
+                top_idx = top_idx.unsqueeze(dim=2) # [bs,num_queries_idx,1]
+                coordinate = top_idx/truely_length
+                query_pos = inverse_sigmoid(coordinate) # [bs,num_queries_idx,1]
+                memory, hs, reference = self.transformer(src, mask, query_pos, pos[-1], None, False) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
+            elif self.enable_textQuery:
+                query_embed = torch.empty((self.num_queries*len(classes_name),text_feats.shape[1]),device=text_feats.device).uniform_(0,1)
+                query_embed = inverse_sigmoid(query_embed)
+                tgt = text_feats.unsqueeze(1).repeat(self.num_queries,bs,1) # [num_queries*num_classes,bs,dim]
+                memory, hs, reference = self.transformer(src, mask, query_embed, pos[-1], tgt, False) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
+            elif self.drop_encoder:
+                memory, hs, reference = self.transformer(clip_feat, mask, self.query_embed.weight, pos[-1], None, False)
+            else:
+                memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1], None, False) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
+        else:
+            memory, hs, reference = self.transformer(clip_feat, mask, self.query_embed.weight, pos[-1], None, True) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
+
         # record result
         out = {}
+        out['memory'] = memory
+        out['hs'] = hs
+        
         reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
         outputs_coords = []
         for lvl in range(hs.shape[0]):
@@ -371,12 +420,14 @@ class ConditionalDETR(nn.Module):
         if self.target_type != "none":
             if self.actionness_loss or self.eval_proposal:
                 # compute the class-agnostic foreground score
-                actionness_logits = self.actionness_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,1]
+                actionness_logits = self.actionness_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,2]
                 out['actionness_logits'] = actionness_logits
             
             if not self.eval_proposal:
                 class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
-                class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes]
+                if self.complete_loss:
+                    text_feats = torch.cat((text_feats,self.bg_embedding),dim=0) # [num_classes+1,dim]
+                class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes+1]
                 out['class_logits'] = class_logits
 
             if self.training:
@@ -389,11 +440,32 @@ class ConditionalDETR(nn.Module):
                     teacher_emb = roi_feat.mean(dim=2) # [b,q,d]
                     out['teacher_emb'] = teacher_emb
 
+                if self.text_distillation_loss:
+                    out['query_feats'] = class_emb
+                    out['text_feats'] = text_feats
+                
+                if self.queryRelation_loss:
+                    visual_feats = clip_feat
+                    roi_feat = self._roi_align(out['pred_boxes'],visual_feats,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    b,q,l,d = roi_feat.shape
+                    ROI_feats = roi_feat.mean(dim=2) # [b,q,d]
+                    ROI_feats = ROI_feats.reshape(b*q,d) 
+                    ROI_feats = ROI_feats / ROI_feats.norm(dim=-1,keepdim=True)
+                    ROI_relation = torch.einsum("bd,qd->bq",ROI_feats,ROI_feats) # [b*q,b*q]
+                    out['ROI_relation'] = ROI_relation
+
+                    query_feats = class_emb.reshape(b*q,d)
+                    query_feats = query_feats / query_feats.norm(dim=-1,keepdim=True)
+                    query_relation = torch.einsum("bd,qd->bq",query_feats,query_feats) # [b*q,b*q]
+                    out['query_relation'] = query_relation
+
             # obtain the ROIalign logits
             if not self.training: # only in inference stage
                 if self.results_ensemble:
                     fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, "prompt") # [N classes,dim]
-
+                    if self.complete_loss:
+                        fixed_text_feats = torch.cat((fixed_text_feats,self.bg_embedding),dim=0) # [N+1 classes, dim]
+                    
                     if self.ROIalign_strategy == "before_pred":
                         ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],fixed_text_feats,self.ROIalign_size)
                     else:
@@ -461,6 +533,12 @@ def build(args, device):
         weight_dict['loss_actionness'] = args.actionness_loss_coef
     if args.distillation_loss:
         weight_dict['loss_distillation'] = args.distillation_loss_coef
+    if args.text_distillation_loss:
+        weight_dict['loss_text_distillation'] = args.text_distillation_loss_coef
+    if args.exclusive_loss:
+        weight_dict['loss_exclusive'] = args.exclusive_loss_coef
+    if args.queryRelation_loss:
+        weight_dict['loss_queryRelation'] = args.queryRelation_loss_coef
 
     # TODO this is a hack
     if args.aux_loss:
