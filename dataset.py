@@ -62,7 +62,6 @@ class BaseDataset(Dataset):
         self.split = args.split
         self.split_id = args.split_id
         self.target_type = args.target_type
-        self.complete_loss = args.complete_loss
         # self.binary = args.binary
 
         self.slice_size = args.slice_size
@@ -170,17 +169,6 @@ class BaseDataset(Dataset):
             
             segment = seg_anno['segment'] 
 
-            if self.complete_loss and len(segments_anno)>0:
-                # add bg instance
-                if segment[0]-bg_start > 0.5: # guarantee the bg instance more than 1 snippet
-                    bg_segment = [bg_start,segment[0]]
-                    bg_semantic_labels = num_classes
-                    bg_start = segment[1] # update bg_start
-                    target['segments'].append(bg_segment)
-                    target['semantic_labels'].append(bg_semantic_labels)
-                    target['labels'].append(1)  # the category labels for detector to classify
-                    target['label_names'].append("background")
-
 
             # special rule for thumos14, treat ambiguous instances as negatives, although the ambiguous has been dropped in self.parse_gt()
             if seg_anno['label'] not in classes:
@@ -217,16 +205,6 @@ class BaseDataset(Dataset):
             # update class-agnostic mask labels
             target['mask_labels'][start_idx:end_idx] = 1
 
-
-        if self.complete_loss and len(segments_anno)>0:
-            # add bg instance 
-            if bg_end-segment[1] > 0.5: # guarantee the bg instance more than 1 snippet
-                bg_segment = [segment[1],bg_end]
-                bg_semantic_labels = num_classes
-                target['segments'].append(bg_segment)
-                target['semantic_labels'].append(bg_semantic_labels)
-                target['labels'].append(1)  # the category labels for detector to classify
-                target['label_names'].append("background")
 
         # normalized the coordinate
         target['segments'] = np.array(target['segments']) / feature_duration

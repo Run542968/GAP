@@ -37,6 +37,7 @@ class HungarianMatcher(nn.Module):
         self.cost_giou = cost_giou
         self.actionness_loss = args.actionness_loss
         self.eval_proposal = args.eval_proposal
+        self.enable_classAgnostic = args.enable_classAgnostic
         assert cost_class != 0 or cost_bbox != 0 or cost_giou != 0, "all costs cant be 0"
 
     @torch.no_grad()
@@ -59,7 +60,7 @@ class HungarianMatcher(nn.Module):
             For each batch element, it holds:
                 len(index_i) = len(index_j) = min(num_queries, num_target_boxes)
         """
-        if self.actionness_loss or self.eval_proposal:
+        if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
             assert "actionness_logits" in outputs
             bs, num_queries = outputs["actionness_logits"].shape[:2] 
 

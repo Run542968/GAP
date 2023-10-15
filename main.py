@@ -165,7 +165,7 @@ if __name__ == '__main__':
             test_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
             logger.info('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
             logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
-            
+
             if args.use_mlflow: # for mlflow
                 res_dict = {'IoU_'+str(k):v*100 for k,v in zip(test_stats['iou_range'],test_stats['per_iou_ap_raw'])}
                 res_dict.update({"mAP":test_stats['mAP_raw']*100})
@@ -176,7 +176,9 @@ if __name__ == '__main__':
                 best_stats = test_stats
                 logger.info('new best metric {:.4f}@epoch{}'.format(best_stats['mAP_raw']*100, epoch))
                 torch.save(model.state_dict(), os.path.join('./ckpt/',args.dataset_name,'best_' + args.model_name + '.pkl'))
-        
+
+            logger.info('Current best metric from {:.4f}@epoch{}'.format(best_stats['mAP_raw']*100, best_stats['epoch']))
+
     
     iou = best_stats['iou_range']
     max_map = best_stats['per_iou_ap_raw']

@@ -74,14 +74,10 @@ parser.add_argument('--semantic_tEnc_dropout', type=float, default=0.1, help="Dr
 parser.add_argument('--augment_prompt_type', type=str, default='single', choices=('single', 'average', 'attention'), help="single: prompt or description; average: fuse prompt and description; attention: self-attention then obtain first position embedding")
 parser.add_argument('--subaction_version', type=str, default='v3', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
 
-parser.add_argument('--enable_posPrior', action='store_true', default=False)
-parser.add_argument('--posPrior_type', type=str, default='uniform', choices=('uniform', 'clip'))
-parser.add_argument('--posPrior_method', type=str, default='max', choices=('max', 'mean'), help="the method to obtain prior position, just for posPrior_type=='clip'")
-parser.add_argument('--enable_textQuery', action='store_true', default=False)
 
-parser.add_argument('--drop_encoder', action='store_true', default=False)
 parser.add_argument('--refine_start', type=int, default=-1)
 
+parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
 
 
 
@@ -97,19 +93,6 @@ parser.add_argument('--gamma', type=float, default=2)
 parser.add_argument('--actionness_loss', action='store_true', default=False)
 parser.add_argument('--actionness_loss_coef', type=float, default=2)
 
-parser.add_argument('--distillation_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
-parser.add_argument('--distillation_loss_coef', type=float, default=1)
-
-parser.add_argument('--complete_loss', action='store_true', default=False)
-
-parser.add_argument('--text_distillation_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
-parser.add_argument('--text_distillation_loss_coef', type=float, default=1)
-
-parser.add_argument('--exclusive_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
-parser.add_argument('--exclusive_loss_coef', type=float, default=1)
-
-parser.add_argument('--queryRelation_loss', action='store_true', default=False, help="Enable instance losses (loss at each layer)")
-parser.add_argument('--queryRelation_loss_coef', type=float, default=1)
 
 
 # Matcher
@@ -136,10 +119,10 @@ parser.add_argument('--save_result', action='store_true', default=False, help="W
 parser.add_argument('--test_interval', type=int, default=1, help="The interval to inference, -1 denotes not using this")
 parser.add_argument('--ROIalign_strategy', default="before_pred", choices=("before_pred","after_pred"), help="when to perform ROIalign, pred means compute visual-text similarity")
 parser.add_argument('--train_interval', type=int, default=-1, help="The interval to inference on train set, -1 denotes not using this")
-
 parser.add_argument('--results_ensemble', action='store_true', default=False, help="Whether to ensemble the result of semantic head and CLIP capability")
 parser.add_argument('--ensemble_rate', type=float, default=0.5, help="the balance coefficient between semantic head and CLIP capability")
 parser.add_argument('--ensemble_strategy', type=str, default="arithmetic", choices=("arithmetic","geomethric"), help="the strategy to ensemble")
+
 parser.add_argument('--filter_threshold', type=float, default=0, help="the threshold to filter some proposals that may be negative ")
 parser.add_argument('--proposals_weight_type', default="before_softmax", choices=("before_softmax","after_softmax"), help="the way to perform multiple between detector scores and ROIalign proposals")
 parser.add_argument('--prob_type', type=str, default="softmax", choices=("softmax","sigmoid"), help="the strategy to get normalized probability")

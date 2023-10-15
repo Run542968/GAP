@@ -248,7 +248,7 @@
   - + 细粒度的文语义本匹配
   - + CLIP的蒸馏
   - + ensemble
-#### 第六次大版本，20231015最后一次提交到github，comit id=`sixth backup`
+#### 第六次大版本，20231015最后一次提交到github，comit id=`sixth backup v2`
 - 蒸馏的故事脉络
   - baseline就是直接拿DETR做这个任务
   - + class-agnostic前景质量分数, 用于后处理的proposal加权
@@ -324,9 +324,15 @@
 #### 第七次大版本
 - 级联的定位refine
   - [ ] 首先在一个正常的transformer训练一个class-agnostic的检测器
+    - [ ] --enable_classAgnostic True开启这个模式
+    - [ ] --actionness_loss True 就是分类加class-agnostic定位
+    - [ ] 两个都没有就是baseline的DETR
   - [ ] query出了transformer以后，先得到坐标，corp出每个query对应的CLIP视觉特征 BxNxdim (这里在crop出来的特征时序维度进行average pooling)，然后对视觉特征进行分类得到 BxNx1，用分类的结果得到每个query对应的类别名称的embedding BxNxdim
   - [ ] 类别名称的embedding再和crop出来的视觉特征计算cross-attention，目的是找到proposal内部语义相似的区域，[B,N,1,dim] + [B,N,L,dim] -> [B,N,1,dim] -> [B,N,dim]
   - [ ] 类别名称的embdding在和整个视频计算cross-attention, 目的是找到proposal在整个视频语义相似的区域, [B,N,dim] + [B,T,dim] -> [B,N,dim] 
   - [ ] 这两组特征再和query embedding拼接起来，过一个MLP
   - [ ] 多个query embedding之间再进行self-attention
   - [ ] 然后再进行一对一的匹配loss
+  - 只refine定位，识别用CLIP来做
+
+ git commit -m "delete some invalid try in previous version, simplify the code"

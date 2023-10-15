@@ -56,15 +56,12 @@ class SetCriterion(nn.Module):
 
         self.actionness_loss = args.actionness_loss 
         self.eval_proposal = args.eval_proposal
-        self.distillation_loss = args.distillation_loss
-        self.complete_loss = args.complete_loss
-        self.text_distillation_loss = args.text_distillation_loss
-        self.exclusive_loss = args.exclusive_loss
-        self.queryRelation_loss = args.queryRelation_loss
+        self.enable_classAgnostic = args.enable_classAgnostic
 
-
-        if self.eval_proposal:
-            self.base_losses = ['boxes']
+        if self.eval_proposal or self.enable_classAgnostic:
+            self.base_losses = ['boxes','actionness']
+        elif self.actionness_loss:
+            self.base_losses = ['labels','actionness','boxes']
         else:
             self.base_losses = ['labels', 'boxes']
 
@@ -483,16 +480,11 @@ class SetCriterion(nn.Module):
         return batch_idx, tgt_idx
 
     def get_loss(self, loss, outputs, targets, indices, num_boxes, **kwargs):
-        if self.complete_loss:
-            loss_map = {
-                'labels': self.loss_complete_labels,
-                'boxes': self.loss_boxes
-            }
-        else:
-            loss_map = {
-                'labels': self.loss_labels,
-                'boxes': self.loss_boxes
-            }
+        loss_map = {
+            'labels': self.loss_labels,
+            'boxes': self.loss_boxes,
+            'actionness': self.loss_actionness
+        }
         assert loss in loss_map, f'do you really want to compute {loss} loss?'
         return loss_map[loss](outputs, targets, indices, num_boxes, **kwargs)
 
@@ -533,28 +525,10 @@ class SetCriterion(nn.Module):
                     l_dict = {k + f'_{i}': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
-        if self.distillation_loss:
-            distillation_loss = self.loss_distillation(outputs, targets, indices, num_boxes)
-            losses.update(distillation_loss)
+        # if self.actionness_loss or self.eval_proposal:
+        #     actionness_loss = self.loss_actionness(outputs, targets, indices, num_boxes)
+        #     losses.update(actionness_loss)
 
-        if self.actionness_loss or self.eval_proposal:
-            if self.complete_loss:
-                actionness_loss = self.loss_complete_actionness(outputs, targets, indices, num_boxes)
-            else:
-                actionness_loss = self.loss_actionness(outputs, targets, indices, num_boxes)
-            losses.update(actionness_loss)
-
-        if self.text_distillation_loss:
-            text_distillation_loss = self.loss_text_distillation(outputs, targets, indices, num_boxes)
-            losses.update(text_distillation_loss)
-
-        if self.exclusive_loss:
-            exclusive_loss = self.loss_exclusive_v2(outputs, targets, indices, num_boxes)
-            losses.update(exclusive_loss)
-        
-        if self.queryRelation_loss:
-            queryRelation_loss = self.loss_queryRelation(outputs, targets, indices, num_boxes)
-            losses.update(queryRelation_loss)
         return losses
 
 def build_criterion(args,num_classes,matcher,weight_dict):
