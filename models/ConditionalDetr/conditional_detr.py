@@ -24,6 +24,7 @@ from .transformer import build_transformer
 from .criterion import build_criterion
 from .postprocess import build_postprocess
 from models.clip import build_text_encoder
+from .refine_decoder import build_refine_decoder
 # from .semantic_head import build_semantic_head
 from models.clip import clip as clip_pkg
 import torchvision.ops.roi_align as ROIalign
@@ -53,6 +54,7 @@ class ConditionalDETR(nn.Module):
                  backbone, 
                  transformer, 
                  text_encoder, 
+                 refine_decoder,
                  logit_scale, 
                  device, 
                  num_classes,
@@ -110,6 +112,13 @@ class ConditionalDETR(nn.Module):
         # init bbox_mebed
         nn.init.constant_(self.bbox_embed.layers[-1].weight.data, 0)
         nn.init.constant_(self.bbox_embed.layers[-1].bias.data, 0)
+        
+        if self.enable_refine:
+            self.bbox_embed_refine = MLP(hidden_dim,hidden_dim,2,3)
+            # init bbox_mebed
+            nn.init.constant_(self.bbox_embed_refine.layers[-1].weight.data, 0)
+            nn.init.constant_(self.bbox_embed_refine.layers[-1].bias.data, 0)
+            self.refine_decoder = refine_decoder
 
 
         self.query_embed = nn.Embedding(self.num_queries, hidden_dim)
@@ -336,7 +345,7 @@ class ConditionalDETR(nn.Module):
         bs,t,dim = clip_feat.shape
 
         # backbone for temporal modeling
-        feature_list, pos = self.backbone(samples) # list of [b,t,c], list of [b,t]
+        feature_list, pos = self.backbone(samples) # list of [b,t,c], list of [b,t,c]
 
         # prepare text target
         if self.target_type != "none":
@@ -371,6 +380,34 @@ class ConditionalDETR(nn.Module):
         outputs_coord = torch.stack(outputs_coords) # [dec_layers,b,num_queries,2]
         out['pred_boxes'] = outputs_coord[-1]
 
+        # refine encoder
+        if self.enable_refine and epoch >= self.refine_start:
+            roi_pos = self._roi_align(out['pred_boxes'],pos[-1],mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+            roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+            b,q,l,d = roi_feat.shape
+            segment_feat = roi_feat.mean(dim=2) # [b,q,d]
+            # classification_logits = self._compute_similarity(roi_feat,text_feats) # [b,num_queries,num_classes]
+            # pred_logits = classification_logits.softmax(dim=-1)
+            # pred_cls = torch.argmax(pred_logits,dim=-1) # [b,num_queries]
+            # pred_cls_feat = text_feats[pred_cls] # [b,num_queries,dim]
+            
+            refined_hs,reference = self.refine_decoder(hs[-1],clip_feat,segment_feat,roi_feat,
+                                                            memory_key_padding_mask = mask,
+                                                            pos = pos[-1],
+                                                            roi_pos = roi_pos,
+                                                            query_pos = reference)
+            
+            reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
+            outputs_coords = []
+            for lvl in range(refined_hs.shape[0]):
+                tmp = self.bbox_embed_refine(refined_hs[lvl]) # [b,num_queries,2], tmp is the predicted offset value.
+                tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
+                outputs_coord = tmp.sigmoid() # [b,num_queries,2]
+                outputs_coords.append(outputs_coord)
+            outputs_coord = torch.stack(outputs_coords) # [dec_layers,b,num_queries,2]
+            out['pred_boxes'] = outputs_coord[-1]
+
+            hs = refined_hs
 
         if self.target_type != "none":
             if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
@@ -406,20 +443,7 @@ class ConditionalDETR(nn.Module):
                 
             #     out['gt_labels'] = gt_labels
             #     out['gt_logits'] = gt_logits
-
-            if self.enable_refine and epoch >= self.refine_start:
-                roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
-                b,q,l,d = roi_feat.shape
-                roi_feat = roi_feat.mean(dim=2) # [b,q,d]
-                classification_logits = self._compute_similarity(roi_feat,text_feats) # [b,num_queries,num_classes]
-                pred_logits = classification_logits.softmax(dim=-1)
-                pred_cls = torch.argmax(pred_logits,dim=-1) # [b,num_queries]
-                pred_cls_feat = text_feats[pred_cls] # [b,num_queries,dim]
-                
-                refined_query,reference = self.refine_decoder(hs,clip_feat,pred_cls_feat,roi_feat,
-                                                              memory_key_padding_mask = mask,
-                                                              pos = pos[-1],
-                                                              query_pos = reference)
+            ## compute the classification accuate of CLIP
 
 
             # obtain the ROIalign logits
@@ -489,11 +513,16 @@ def build(args, device):
     backbone = build_backbone(args)
     transformer = build_transformer(args)
     # semantic_vhead,semantic_thead = build_semantic_head(args)
+    if args.enable_refine:
+        refine_decoder = build_refine_decoder(args)
+    else:
+        refine_decoder = None
 
     model = ConditionalDETR(
         backbone,
         transformer,
         text_encoder,
+        refine_decoder,
         logit_scale,
         device=device,
         num_classes=num_classes,

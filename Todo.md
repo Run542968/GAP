@@ -327,7 +327,8 @@
     - [x] --enable_classAgnostic True开启这个模式
     - [x] --actionness_loss True 就是分类加class-agnostic定位
     - [x] 两个都没有就是baseline的DETR
-  - [ ] query出了transformer以后，先得到坐标，corp出每个query对应的CLIP视觉特征 BxNxdim (这里在crop出来的特征时序维度进行average pooling)，然后对视觉特征进行分类得到 BxNx1，用分类的结果得到每个query对应的类别名称的embedding BxNxdim
+  - [x] query出了transformer以后，先得到坐标，corp出每个query对应的CLIP视觉特征 BxNxdim (这里在crop出来的特征时序维度进行average pooling)，然后对视觉特征进行分类得到 BxNx1，用分类的结果得到每个query对应的类别名称的embedding BxNxdim
+  - [ ] crop出特征的同时，要把位置编码也一起crop，作为一个统一的绝对位置
   - [ ] 类别名称的embedding再和crop出来的视觉特征计算cross-attention，目的是找到proposal内部语义相似的区域，[B,N,1,dim] + [B,N,L,dim] -> [B,N,1,dim] -> [B,N,dim]
   - [ ] 类别名称的embdding在和整个视频计算cross-attention, 目的是找到proposal在整个视频语义相似的区域, [B,N,dim] + [B,T,dim] -> [B,N,dim] 
   - [ ] 这两组特征再和query embedding拼接起来，过一个MLP
