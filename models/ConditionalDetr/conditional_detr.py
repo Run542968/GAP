@@ -101,6 +101,7 @@ class ConditionalDETR(nn.Module):
         self.subaction_version = args.subaction_version
 
 
+        self.enable_refine = args.enable_refine
         self.refine_start = args.refine_start
         
 
@@ -379,11 +380,47 @@ class ConditionalDETR(nn.Module):
             
             if not self.eval_proposal and not self.enable_classAgnostic:
                 class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
-                class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes+1]
+                class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes]
                 out['class_logits'] = class_logits
 
-            if self.training:
-                pass
+
+            ## compute the classification accuate of CLIP
+            # prepare instance coordination
+            # gt_roi_feat = [] 
+            # gt_labels = []
+            # for i, t in enumerate(targets):
+            #     if len(t['segments']) > 0 :
+            #         gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
+            #         visual_feat_i = clip_feat[i].unsqueeze(0) # [1,T,dim]
+            #         mask_i = mask[i].unsqueeze(0) # [1,T]
+            #         roi_feat = self._roi_align(gt_coordinations,visual_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
+            #         gt_roi_feat.append(roi_feat)
+            #         gt_lbl = t['semantic_labels'] # [num]
+            #         gt_labels.append(gt_lbl)
+            # if len(gt_labels) > 0:
+            #     gt_roi_feat = torch.cat(gt_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
+            #     gt_roi_feat = gt_roi_feat.mean(dim=1) # [batch_instance_num,dim]
+            #     gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num]
+
+            #     gt_logits = self._compute_similarity(gt_roi_feat,text_feats) # [batch_instance_num,num_classes]
+                
+            #     out['gt_labels'] = gt_labels
+            #     out['gt_logits'] = gt_logits
+
+            if self.enable_refine and epoch >= self.refine_start:
+                roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                b,q,l,d = roi_feat.shape
+                roi_feat = roi_feat.mean(dim=2) # [b,q,d]
+                classification_logits = self._compute_similarity(roi_feat,text_feats) # [b,num_queries,num_classes]
+                pred_logits = classification_logits.softmax(dim=-1)
+                pred_cls = torch.argmax(pred_logits,dim=-1) # [b,num_queries]
+                pred_cls_feat = text_feats[pred_cls] # [b,num_queries,dim]
+                
+                refined_query,reference = self.refine_decoder(hs,clip_feat,pred_cls_feat,roi_feat,
+                                                              memory_key_padding_mask = mask,
+                                                              pos = pos[-1],
+                                                              query_pos = reference)
+
 
             # obtain the ROIalign logits
             if not self.training: # only in inference stage

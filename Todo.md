@@ -323,10 +323,10 @@
 
 #### 第七次大版本
 - 级联的定位refine
-  - [ ] 首先在一个正常的transformer训练一个class-agnostic的检测器
-    - [ ] --enable_classAgnostic True开启这个模式
-    - [ ] --actionness_loss True 就是分类加class-agnostic定位
-    - [ ] 两个都没有就是baseline的DETR
+  - [x] 首先在一个正常的transformer训练一个class-agnostic的检测器
+    - [x] --enable_classAgnostic True开启这个模式
+    - [x] --actionness_loss True 就是分类加class-agnostic定位
+    - [x] 两个都没有就是baseline的DETR
   - [ ] query出了transformer以后，先得到坐标，corp出每个query对应的CLIP视觉特征 BxNxdim (这里在crop出来的特征时序维度进行average pooling)，然后对视觉特征进行分类得到 BxNx1，用分类的结果得到每个query对应的类别名称的embedding BxNxdim
   - [ ] 类别名称的embedding再和crop出来的视觉特征计算cross-attention，目的是找到proposal内部语义相似的区域，[B,N,1,dim] + [B,N,L,dim] -> [B,N,1,dim] -> [B,N,dim]
   - [ ] 类别名称的embdding在和整个视频计算cross-attention, 目的是找到proposal在整个视频语义相似的区域, [B,N,dim] + [B,T,dim] -> [B,N,dim] 
@@ -334,5 +334,8 @@
   - [ ] 多个query embedding之间再进行self-attention
   - [ ] 然后再进行一对一的匹配loss
   - 只refine定位，识别用CLIP来做
-
+- [ ] 💣Thumos14在测试的时候，空的segment是导致性能下降的主要原因
+  - 数据处理的方法需要调整
+  - 大量空segment，甚至一个batch都是空的
+  - 难顶，怪不得性能那么差
  git commit -m "delete some invalid try in previous version, simplify the code"

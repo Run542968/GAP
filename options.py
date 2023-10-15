@@ -70,11 +70,16 @@ parser.add_argument('--semantic_vEnc_dropout', type=float, default=0.1, help="Dr
 parser.add_argument('--semantic_tEnc_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
 parser.add_argument('--semantic_tEnc_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
 parser.add_argument('--semantic_tEnc_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
+## Refine Decoder
+parser.add_argument('--ref_dec_layers', type=int, default=2, help="Number of decoding layers in the transformer")
+
+
 
 parser.add_argument('--augment_prompt_type', type=str, default='single', choices=('single', 'average', 'attention'), help="single: prompt or description; average: fuse prompt and description; attention: self-attention then obtain first position embedding")
 parser.add_argument('--subaction_version', type=str, default='v3', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
 
 
+parser.add_argument('--enable_refine', action='store_true', default=False)
 parser.add_argument('--refine_start', type=int, default=-1)
 
 parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
