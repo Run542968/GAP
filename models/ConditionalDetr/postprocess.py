@@ -46,6 +46,8 @@ class PostProcess(nn.Module):
                             prob = torch.mul(actionness_logits,class_logits.softmax(-1)) # [bs,num_queries,num_classes]
                     elif self.prob_type == "sigmoid":
                         prob = torch.mul(actionness_logits,class_logits.sigmoid()) # [bs,num_queries,num_classes]
+                    elif self.prob_type == "none_mul":
+                        prob = class_logits.softmax(-1) # [bs,num_queries,num_classes]
                     else:
                         raise NotImplementedError
                 else:

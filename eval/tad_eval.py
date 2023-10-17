@@ -8,7 +8,8 @@ import numpy as np
 import logging
 import concurrent.futures
 import sys
-from .eval_detection import compute_average_precision_detection
+from .eval_detection import compute_average_precision_detection,average_recall_vs_nr_proposals
+from scipy.interpolate import interp1d
 from utils.misc import all_gather
 from utils.segment_ops import soft_nms, temporal_nms
 import logging
@@ -135,6 +136,33 @@ class TADEvaluator(object):
         self.stats[nms_mode]['per_cls_ap'] = per_cls_ap
         return per_iou_ap
 
+    def compute_ar(self, nms_mode):
+        # ground_truth = pd.read_csv('datasets/thumos14_test_groundtruth.csv')
+
+        # Computes average recall vs average number of proposals.
+        average_recall, average_nr_proposals = average_recall_vs_nr_proposals(
+            self.all_pred[nms_mode], self.all_gt)
+
+        f = interp1d(average_nr_proposals,
+                    average_recall,
+                    axis=0,
+                    fill_value='extrapolate')
+
+        # return {
+        #     'AR@50': str(f(50)),
+        #     'AR@100': str(f(100)),
+        #     'AR@200': str(f(200)),
+        #     'AR@500': str(f(500))
+        # }
+        return {
+            'AR@1': f(1),
+            'AR@50': f(50),
+            'AR@100': f(100),
+            'AR@200': f(200),
+            'AR@500': f(500)
+        }
+
+
     def dump_to_json(self, dets, save_path):
         result_dict = {}
         videos = dets['video-id'].unique()
@@ -205,7 +233,9 @@ class ActivityNet13Evaluator(TADEvaluator):
                                                 filter_threshold)
 
     def summarize(self):
-        '''Compute mAP and collect stats'''
+        '''Compute mAP and collect stats
+           also comupte AR 
+        '''
 
         # 0.5 0.75 0.95 avg
         display_iou_thr_inds = [0, 5, 9]
@@ -227,6 +257,11 @@ class ActivityNet13Evaluator(TADEvaluator):
         for nms_mode in self.nms_mode:
             self.stats[nms_mode]['AP50'] = self.stats[nms_mode]['per_iou_ap'][0]
         self.stats_summary = msg
+
+        # compute AR
+        for nms_mode in self.nms_mode:
+            ar_dict = self.compute_ar(nms_mode)
+            self.stats[nms_mode].update(ar_dict)
 
     def import_gt(self):
         # obtain gt dataframe
@@ -333,6 +368,11 @@ class Thumos14Evaluator(TADEvaluator):
         for nms_mode in self.nms_mode:
             self.stats[nms_mode]['AP50'] = self.stats[nms_mode]['per_iou_ap'][2]
         self.stats_summary = msg
+        
+        # compute AR
+        for nms_mode in self.nms_mode:
+            ar_dict = self.compute_ar(nms_mode)
+            self.stats[nms_mode].update(ar_dict)
 
     def import_gt(self):
         # obtain gt dataframe

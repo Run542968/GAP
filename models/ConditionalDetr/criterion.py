@@ -57,6 +57,7 @@ class SetCriterion(nn.Module):
         self.actionness_loss = args.actionness_loss 
         self.eval_proposal = args.eval_proposal
         self.enable_classAgnostic = args.enable_classAgnostic
+        self.enable_refine = args.enable_refine
 
         if self.eval_proposal or self.enable_classAgnostic:
             self.base_losses = ['boxes','actionness']
@@ -117,7 +118,6 @@ class SetCriterion(nn.Module):
 
         return losses
 
- 
     def loss_boxes(self, outputs, targets, indices, num_boxes):
         """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
            targets dicts must contain the key "segments" containing a tensor of dim [nb_target_boxes, 4]
@@ -390,6 +390,50 @@ class SetCriterion(nn.Module):
             losses['class_error'] = 100 - accuracy(src_logits[idx], target_classes_o)[0] # [batch_matched_queries,num_classes]
         return losses
 
+    def loss_refine_actionness(self, outputs, targets, indices, num_boxes, log=True):
+        """Classification loss (Binary focal loss)
+        targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
+        """
+        assert 'actionness_logits' in outputs
+        src_logits = outputs['actionness_logits'] # [bs,num_queries,1]
+
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        target_classes_o = torch.cat([t["labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        target_classes = torch.full(src_logits.shape[:2], src_logits.shape[2],
+                                    dtype=torch.int64, device=src_logits.device) # [bs,num_queries]
+        target_classes[idx] = target_classes_o # [bs,num_queries]
+
+        target_classes_onehot = torch.zeros([src_logits.shape[0], src_logits.shape[1], src_logits.shape[2]+1],
+                                            dtype=src_logits.dtype, layout=src_logits.layout, device=src_logits.device) # [bs,num_queries,num_classes+1]
+        target_classes_onehot.scatter_(2, target_classes.unsqueeze(-1), 1)
+
+        target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
+        loss_ce = sigmoid_focal_loss(src_logits, target_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma) * src_logits.shape[1]
+        losses = {'loss_refine_actionness': loss_ce}
+
+        return losses
+
+    def loss_refine_boxes(self, outputs, targets, indices, num_boxes):
+        """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
+           targets dicts must contain the key "segments" containing a tensor of dim [nb_target_boxes, 4]
+           The target boxes are expected in format (center_x, center_y, w, h), normalized by the image size.
+        """
+        assert 'pred_boxes' in outputs
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        src_boxes = outputs['pred_boxes'][idx] # [batch_matched_queries,2]
+        target_boxes = torch.cat([t['segments'][i] for t, (_, i) in zip(targets, indices)], dim=0) # [batch_target,2]
+
+        loss_bbox = F.l1_loss(src_boxes, target_boxes, reduction='none')
+
+        losses = {}
+        losses['loss_refine_bbox'] = loss_bbox.sum() / num_boxes
+
+        loss_giou = 1 - torch.diag(segment_iou(
+            segment_cw_to_t1t2(src_boxes).clamp(min=0,max=1), 
+            segment_cw_to_t1t2(target_boxes))) # the clamp is to deal with the case "center"-"width/2" < 0 and "center"+"width/2" < 1
+        losses['loss_refine_giou'] = loss_giou.sum() / num_boxes
+        return losses
+
     def loss_complete_actionness(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (Binary focal loss)
         targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
@@ -419,7 +463,6 @@ class SetCriterion(nn.Module):
 
         return losses
 
-    
     def loss_text_distillation(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (Binary focal loss)
         targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
@@ -498,7 +541,36 @@ class SetCriterion(nn.Module):
         outputs_without_aux = {k: v for k, v in outputs.items() if k != 'aux_outputs'}
 
         # Retrieve the matching between the outputs of the last layer and the targets
-        indices = self.matcher(outputs_without_aux, targets)
+
+        if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
+            assert "actionness_logits" in outputs_without_aux
+            # We flatten to compute the cost matrices in a batch
+            logits = outputs_without_aux["actionness_logits"]
+
+            # Also concat the target labels and boxes
+            tgt_ids = torch.cat([v["labels"] for v in targets]) # [gt_instance_num]
+            tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
+            sizes = [len(v["segments"]) for v in targets]
+        else:
+            assert "class_logits" in outputs_without_aux
+            # We flatten to compute the cost matrices in a batch
+            logits = outputs_without_aux["class_logits"]
+
+            # Also concat the target labels and boxes
+            tgt_ids = torch.cat([v["semantic_labels"] for v in targets]) # [gt_instance_num]
+            tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
+            sizes = [len(v["segments"]) for v in targets]
+
+        indices = self.matcher(logits, outputs_without_aux["pred_boxes"], tgt_ids, tgt_bbox, sizes)
+
+        if self.enable_refine and "refine_actionness_logits" in outputs_without_aux:
+            assert "refined_pred_boxes" in outputs_without_aux
+
+            logits = outputs_without_aux["refine_actionness_logits"]
+            tgt_ids = torch.cat([v["labels"] for v in targets]) # [gt_instance_num]
+            tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
+            sizes = [len(v["segments"]) for v in targets]
+            refine_indices = self.matcher(logits,outputs_without_aux["refined_pred_boxes"],tgt_ids,tgt_bbox,sizes)
 
         # Compute the average number of target boxes accross all nodes, for normalization purposes
         num_boxes = sum(len(t["labels"]) for t in targets)
@@ -529,6 +601,11 @@ class SetCriterion(nn.Module):
         #     actionness_loss = self.loss_actionness(outputs, targets, indices, num_boxes)
         #     losses.update(actionness_loss)
 
+        if self.enable_refine and "refine_actionness_logits" in outputs:
+            refine_actionness_loss = self.loss_refine_actionness(outputs, targets, refine_indices, num_boxes)
+            losses.update(refine_actionness_loss)
+            loss_refine_boxes = self.loss_refine_boxes(outputs, targets, refine_indices, num_boxes)
+            losses.update(loss_refine_boxes)
         return losses
 
 def build_criterion(args,num_classes,matcher,weight_dict):
