@@ -80,7 +80,6 @@ parser.add_argument('--subaction_version', type=str, default='v3', choices=('v1'
 
 
 parser.add_argument('--enable_refine', action='store_true', default=False)
-parser.add_argument('--refine_start', type=int, default=-1)
 
 parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
 
@@ -97,10 +96,6 @@ parser.add_argument('--gamma', type=float, default=2)
 
 parser.add_argument('--actionness_loss', action='store_true', default=False)
 parser.add_argument('--actionness_loss_coef', type=float, default=2)
-
-parser.add_argument('--refine_actionness_loss_coef', type=float, default=2)
-parser.add_argument('--refine_bbox_loss_coef', type=float, default=5)
-parser.add_argument('--refine_giou_loss_coef', type=float, default=2)
 
 
 

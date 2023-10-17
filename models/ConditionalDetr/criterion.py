@@ -57,7 +57,6 @@ class SetCriterion(nn.Module):
         self.actionness_loss = args.actionness_loss 
         self.eval_proposal = args.eval_proposal
         self.enable_classAgnostic = args.enable_classAgnostic
-        self.enable_refine = args.enable_refine
 
         if self.eval_proposal or self.enable_classAgnostic:
             self.base_losses = ['boxes','actionness']
@@ -563,15 +562,6 @@ class SetCriterion(nn.Module):
 
         indices = self.matcher(logits, outputs_without_aux["pred_boxes"], tgt_ids, tgt_bbox, sizes)
 
-        if self.enable_refine and "refine_actionness_logits" in outputs_without_aux:
-            assert "refined_pred_boxes" in outputs_without_aux
-
-            logits = outputs_without_aux["refine_actionness_logits"]
-            tgt_ids = torch.cat([v["labels"] for v in targets]) # [gt_instance_num]
-            tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
-            sizes = [len(v["segments"]) for v in targets]
-            refine_indices = self.matcher(logits,outputs_without_aux["refined_pred_boxes"],tgt_ids,tgt_bbox,sizes)
-
         # Compute the average number of target boxes accross all nodes, for normalization purposes
         num_boxes = sum(len(t["labels"]) for t in targets)
         num_boxes = torch.as_tensor([num_boxes], dtype=torch.float, device=next(iter(outputs.values())).device).item()
@@ -601,11 +591,7 @@ class SetCriterion(nn.Module):
         #     actionness_loss = self.loss_actionness(outputs, targets, indices, num_boxes)
         #     losses.update(actionness_loss)
 
-        if self.enable_refine and "refine_actionness_logits" in outputs:
-            refine_actionness_loss = self.loss_refine_actionness(outputs, targets, refine_indices, num_boxes)
-            losses.update(refine_actionness_loss)
-            loss_refine_boxes = self.loss_refine_boxes(outputs, targets, refine_indices, num_boxes)
-            losses.update(loss_refine_boxes)
+
         return losses
 
 def build_criterion(args,num_classes,matcher,weight_dict):

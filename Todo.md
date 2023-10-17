@@ -334,12 +334,16 @@
   - [x] 这两组特征再和query embedding拼接起来，过一个MLP
   - [x] 多个query embedding之间再进行self-attention
   - [x] 然后再进行一对一的匹配loss
+  - [x] 💣这样模型太重了，做不好，改成下面轻量级的
   - 只refine定位，识别用CLIP来做
 - [x] 定位loss用两次，第一次在refine前的decoder输出用，第二次在refine后的输出用
 - [x] refine decoder和motion decoder之间detach掉，避免影响encoder的时序建模
   - [x] detach应该是合理的，两个decoder不要相互影响
 - [ ] 应该直接end-to-end的训练，先训第一阶段，再refine是不行的
 - [ ] refine得到的应该是一个偏移量，和之前的结果合并作为最后的结果
+  - [ ] 还是要一阶段，简单的用语义稍微补充一点local的信息
+  - [ ] 先crop出特征，然后和segment内的特征进行cross-attention，再和segment外的特征进行cross-attention
+  - [ ] 设计一个对比loss，在语义层面增加特征可区分性
 - [ ] 💣Thumos14在测试的时候，空的segment是导致性能下降的主要原因
   - 数据处理的方法需要调整
   - 大量空segment，甚至一个batch都是空的

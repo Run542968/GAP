@@ -143,10 +143,6 @@ class RefineDecoder(nn.Module):
         return output.unsqueeze(0)
 
 
-
-
-
-
 class RefineDecoderLayer(nn.Module):
 
     def __init__(self, d_model, nheads, dim_feedforward=2048, dropout=0.1,
@@ -335,20 +331,69 @@ class RefineDecoderLayer(nn.Module):
 
         return fusion_query_feat2
 
+
+class RefineDecoderV2(nn.Module):
+
+    def __init__(self, nheads=4, d_model=256, args=None):
+        super().__init__()
+        self.cross_attn_local = nn.MultiheadAttention(d_model,nheads)
+        self.self_attn = nn.MultiheadAttention(d_model,nheads)
+
+
+
+    def forward(self, query_feat, video_feat, roi_segment_feat,
+                video_feat_key_padding_mask: Optional[Tensor] = None,
+                video_pos: Optional[Tensor] = None,
+                roi_pos: Optional[Tensor] = None):
+        '''
+            query_feat: [b,n,c]
+            roi_segment_feat: [b,n,l,c]
+            video_feat: [b,t,c]
+            video_feat_key_padding_mask: equal the mask [b,t]
+            video_pos: [t,b,c]
+            roi_pos: [b,n,l,c]
+        '''
+        # cross-attetion in query_embed and sement feat
+        query_feat = query_feat.permute(1,0,2) # [num_queries,b,dim]
+        segment_feat = roi_segment_feat.permute(2,1,0,3) # [l,num_queries,b,dim]
+        l,n,b,dim = segment_feat.shape
+        segment_feat = segment_feat.reshape(l,n*b,dim) # [l,n*b,dim]
+        query_feat_seg = query_feat.reshape(1,n*b,dim) # [1,n*b,dim]
+        tgt1 = self.cross_attn_local(query=query_feat_seg,
+                                     key=segment_feat,
+                                     value=segment_feat)[0] # [1,n*b,dim]
+        tgt1 = tgt1.reshape(n,b,dim)
+
+        query_feat = query_feat + tgt1
+
+        # self-attetnion between different query
+        tgt2 = self.self_attn(query=query_feat,
+                              key=query_feat,
+                              value=query_feat)[0]
+        query_feat = tgt2
+
+        query_feat = query_feat.permute(1,0,2) # [b,n,dim]
+        return query_feat
+
+
 def build_refine_decoder(args):
-    decoder_layer = RefineDecoderLayer(
-        d_model=args.hidden_dim,
-        nheads=args.nheads,
-        dim_feedforward=args.dim_feedforward,
-        dropout=args.dropout,
-        normalize_before=args.pre_norm
-    )
-    decoder_norm = nn.LayerNorm(args.hidden_dim)
-    return RefineDecoder(
-        decoder_layer=decoder_layer,
-        num_layers=args.ref_dec_layers,
-        norm=decoder_norm,
-        return_intermediate=True,
-        d_model=args.hidden_dim,
-        args=args
-    )
+    # decoder_layer = RefineDecoderLayer(
+    #     d_model=args.hidden_dim,
+    #     nheads=args.nheads,
+    #     dim_feedforward=args.dim_feedforward,
+    #     dropout=args.dropout,
+    #     normalize_before=args.pre_norm
+    # )
+    # decoder_norm = nn.LayerNorm(args.hidden_dim)
+    # return RefineDecoder(
+    #     decoder_layer=decoder_layer,
+    #     num_layers=args.ref_dec_layers,
+    #     norm=decoder_norm,
+    #     return_intermediate=True,
+    #     d_model=args.hidden_dim,
+    #     args=args
+    # )
+
+    return RefineDecoderV2(nheads=args.nheads,
+                           d_model=args.hidden_dim,
+                           args=args)
