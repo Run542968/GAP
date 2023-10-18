@@ -362,7 +362,11 @@
   - 找到了原因，原来这个在StepLr的作用是每间隔多少epoch按照0.1的因子降低学习率。
   - 如果间隔太密，后面学习率就特别小，怪不得收敛了，原来是不动了
 - [ ] 新增加了一个enable_injection
-  - 代码目的是在训练的时候
+  - 代码目的是在训练的时候注入语义信息
+  - 方案：
+    - decoder的每一层都会输出一个更新后的query，用bbox_embed函数得到这个query对应的坐标，然后在CLIP的原始特征上拿到对应segment的特征，做cross-attention更新query，然后更新后的query之间再self-attention。
+    - 接下来把更新后的query特征加回原始query，送入decoder的下一个block
+    - 主要思想就是用CLIP的语义提供一些query之间位置关系的先验
 - [ ] 方法特点：
   - proposal generation方面来说：
     - proposal-level：

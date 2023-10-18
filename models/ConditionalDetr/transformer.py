@@ -196,7 +196,9 @@ class TransformerDecoder(nn.Module):
         super().__init__()
         self.enable_posPrior = args.enable_posPrior
         self.enable_injection = args.enable_injection
+        self.injection_type = args.injection_type
         self.ROIalign_size = args.ROIalign_size
+        self.injection_fuseType = args.injection_fuseType
 
         self.layers = _get_clones(decoder_layer, num_layers)
         self.num_layers = num_layers
@@ -208,6 +210,9 @@ class TransformerDecoder(nn.Module):
             self.ref_point_head = MLP(d_model, d_model, d_model, 2)
         else:
             self.ref_point_head = MLP(d_model, d_model, 1, 2)
+
+        if self.injection_fuseType == "mlp":
+            self.fuse_mlp = nn.Linear(2*d_model,d_model)
 
         for layer_id in range(num_layers - 1):
             self.layers[layer_id + 1].ca_qpos_proj = None
@@ -292,7 +297,12 @@ class TransformerDecoder(nn.Module):
                     outputs_coord = tmp.sigmoid() # [b,num_queries,2]
 
                 roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
-                roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                if self.injection_type == "vfeat":
+                    roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                elif self.injection_type == "memory":
+                    roi_feat = _roi_align(outputs_coord,memory.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                else:
+                    raise ValueError(f"ValueError:{self.injection_type}")
                 b,q,l,d = roi_feat.shape
                 refine_hs = refine_decoder(hs,clip_feat,roi_feat,
                                         video_feat_key_padding_mask=memory_key_padding_mask,
@@ -300,7 +310,13 @@ class TransformerDecoder(nn.Module):
                                         roi_pos=roi_pos)
                 refine_hs = refine_hs.permute(1,0,2) # [n,b,c]
 
-                output = output + refine_hs
+                if self.injection_fuseType == "mlp":
+                    output = torch.cat((output,refine_hs),dim=2) # [n,b,2*c]
+                    output = self.fuse_mlp(output) # [n,b,c]
+                elif self.injection_fuseType == "add":
+                    output = output + refine_hs
+                else:
+                    raise ValueError
 
                 if self.return_intermediate:
                     intermediate.append(self.norm(output))
@@ -340,16 +356,27 @@ class TransformerDecoder(nn.Module):
                     outputs_coord = tmp.sigmoid() # [b,num_queries,2]
 
                 roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
-                roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                if self.injection_type == "vfeat":
+                    roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                elif self.injection_type == "memory":
+                    roi_feat = _roi_align(outputs_coord,memory.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                else:
+                    raise ValueError(f"ValueError:{self.injection_type}")
                 b,q,l,d = roi_feat.shape
                 refine_hs = refine_decoder(hs,clip_feat,roi_feat,
                                         video_feat_key_padding_mask=memory_key_padding_mask,
                                         video_pos=pos.permute(1,0,2),
                                         roi_pos=roi_pos)
                 refine_hs = refine_hs.permute(1,0,2) 
-                
-                output = output + refine_hs
 
+                if self.injection_fuseType == "mlp":
+                    output = torch.cat((output,refine_hs),dim=2) # [n,b,2*c]
+                    output = self.fuse_mlp(output) # [n,b,c]
+                elif self.injection_fuseType == "add":
+                    output = output + refine_hs
+                else:
+                    raise ValueError
+                
                 if self.return_intermediate:
                     intermediate.append(self.norm(output))
         else:
