@@ -61,18 +61,6 @@ parser.add_argument('--num_queries', type=int, default=15, help="Number of query
 parser.add_argument('--norm_embed', action='store_true', default=False, help="Normalization and multiple the scale_logits for similarity computing between visual and text embedding")
 parser.add_argument('--exp_logit_scale', action='store_true', default=False, help="Whether to add exp() operation on logtis_scale")
 parser.add_argument('--ROIalign_size', type=int, default=16, help="The length of ROIalign ouput size")
-## Semantic Head
-parser.add_argument('--semantic_vhead_type', default="None", choices=('None', 'MLP', 'Conv', 'MHA', 'Enc'), help='Conv: Conv1d, MHA: MultiHeadAttention, Enc: Transformer Encoder') 
-parser.add_argument('--semantic_thead_type', default="MHA", choices=('Conv', 'MHA', 'Enc'), help='Conv: Conv1d, MHA: MultiHeadAttention, Enc: Transformer Encoder') 
-parser.add_argument('--semantic_vEnc_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
-parser.add_argument('--semantic_vEnc_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
-parser.add_argument('--semantic_vEnc_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
-parser.add_argument('--semantic_tEnc_nheads', type=int, default=4, help="Number of attention heads inside the transformer's attentions")
-parser.add_argument('--semantic_tEnc_layers', type=int, default=1, help="Number of encoder layers inside the transformer's attentions")
-parser.add_argument('--semantic_tEnc_dropout', type=float, default=0.1, help="Dropout applied in the transformer")
-## Refine Decoder
-parser.add_argument('--ref_dec_layers', type=int, default=2, help="Number of decoding layers in the transformer")
-
 
 
 parser.add_argument('--augment_prompt_type', type=str, default='single', choices=('single', 'average', 'attention'), help="single: prompt or description; average: fuse prompt and description; attention: self-attention then obtain first position embedding")
@@ -83,7 +71,9 @@ parser.add_argument('--enable_refine', action='store_true', default=False)
 
 parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
 
+parser.add_argument('--enable_posPrior', action='store_true', default=False)
 
+parser.add_argument('--enable_injection', action='store_true', default=False)
 
 
 # Loss

@@ -15,6 +15,8 @@ import torch
 import torch.nn.functional as F
 from torch import nn, Tensor
 from .attention import MultiheadAttention
+from utils.misc import (NestedTensor, nested_tensor_from_tensor_list, inverse_sigmoid)
+import torchvision.ops.roi_align as ROIalign
 
 class MLP(nn.Module):
     """ Very simple multi-layer perceptron (also called FFN)"""
@@ -45,6 +47,48 @@ def gen_sineembed_for_position(pos_tensor,hidden_dim):
     pos = pos_x # [num_queries, b, hidden_dim]
     return pos
 
+def _to_roi_align_format(rois, truely_length, scale_factor=1):
+    '''Convert RoIs to RoIAlign format.
+    Params:
+        RoIs: normalized segments coordinates, shape (batch_size, num_segments, 2)
+        T: length of the video feature sequence
+    '''
+    # transform to absolute axis
+    B, N = rois.shape[:2]
+    rois_center = rois[:, :, 0:1] # [B,N,1]
+    rois_size = rois[:, :, 1:2] * scale_factor # [B,N,1]
+    truely_length = truely_length.reshape(-1,1,1) # [B,1,1]
+    rois_abs = torch.cat(
+        (rois_center - rois_size/2, rois_center + rois_size/2), dim=2) * truely_length # [B,N,2]->"start,end"
+    # expand the RoIs
+    _max = truely_length.repeat(1,N,2)
+    _min = torch.zeros_like(_max)
+    rois_abs = torch.clamp(rois_abs, min=_min, max=_max)  # (B, N, 2)
+    # transfer to 4 dimension coordination
+    rois_abs_4d = torch.zeros((B,N,4),dtype=rois_abs.dtype,device=rois_abs.device)
+    rois_abs_4d[:,:,0], rois_abs_4d[:,:,2] = rois_abs[:,:,0], rois_abs[:,:,1] # x1,0,x2,0
+
+    # add batch index
+    batch_ind = torch.arange(0, B).view((B, 1, 1)).to(rois_abs.device) # [B,1,1]
+    batch_ind = batch_ind.repeat(1, N, 1) # [B,N,1]
+    rois_abs_4d = torch.cat((batch_ind, rois_abs_4d), dim=2) # [B,N,1+4]->"batch_id,x1,0,x2,0"
+    # NOTE: stop gradient here to stablize training
+    return rois_abs_4d.view((B*N, 5)).detach()
+
+
+def _roi_align(rois, origin_feat, mask, ROIalign_size, scale_factor=1):
+    B,Q,_ = rois.shape
+    B,T,C = origin_feat.shape
+    truely_length = T-torch.sum(mask,dim=1) # [B]
+    rois_abs_4d = _to_roi_align_format(rois,truely_length,scale_factor)
+    feat = origin_feat.permute(0,2,1) # [B,dim,T]
+    feat = feat.reshape(B,C,1,T)
+    roi_feat = ROIalign(feat, rois_abs_4d, output_size=(1,ROIalign_size))
+    roi_feat = roi_feat.reshape(B,Q,C,-1) # [B,Q,dim,output_width]
+    roi_feat = roi_feat.permute(0,1,3,2) # [B,Q,output_width,dim]
+    return roi_feat
+
+
 class Transformer(nn.Module):
 
     def __init__(self, d_model=512, nhead=8, num_encoder_layers=6,
@@ -73,13 +117,15 @@ class Transformer(nn.Module):
         self.d_model = d_model
         self.nhead = nhead
         self.dec_layers = num_decoder_layers
+        self.enable_posPrior = args.enable_posPrior
 
     def _reset_parameters(self):
         for p in self.parameters():
             if p.dim() > 1:
                 nn.init.xavier_uniform_(p)
 
-    def forward(self, src, mask, query_embed, pos_embed):
+    def forward(self, src, mask, query_embed, pos_embed, 
+                clip_feat=None, bbox_function=None, refine_decoder=None):
         '''
         input:
             src: [b,t,c]
@@ -96,11 +142,15 @@ class Transformer(nn.Module):
         mask = mask # [b,t]
         
 
-        tgt = torch.zeros_like(query_embed) # [num_queries,b,c]
+        if self.enable_posPrior:
+            tgt = torch.zeros((query_embed.shape[0],bs,c),device=query_embed.device) # [num_queries,b,c]
+        else:
+            tgt = torch.zeros_like(query_embed) # [num_queries,b,c]
 
         memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed) # [layers,t,b,c]
         hs, references = self.decoder(tgt, memory[-1], memory_key_padding_mask=mask, 
-                          pos=pos_embed, query_pos=query_embed) # [dec_layers,b,num_queries,c] [b,num_queries,1]
+                          pos=pos_embed, query_pos=query_embed,
+                          clip_feat=clip_feat, bbox_function=bbox_function, refine_decoder=refine_decoder) # [dec_layers,b,num_queries,c] [b,num_queries,1]
         # permute TxNxC to NxTxC
         memory = memory.permute(0,2,1,3)
         return memory, hs, references
@@ -144,13 +194,21 @@ class TransformerDecoder(nn.Module):
 
     def __init__(self, decoder_layer, num_layers, norm=None, return_intermediate=False, d_model=256, args=None):
         super().__init__()
+        self.enable_posPrior = args.enable_posPrior
+        self.enable_injection = args.enable_injection
+        self.ROIalign_size = args.ROIalign_size
+
         self.layers = _get_clones(decoder_layer, num_layers)
         self.num_layers = num_layers
         self.norm = norm
         self.return_intermediate = return_intermediate
         self.query_scale = MLP(d_model, d_model, d_model, 2)
 
-        self.ref_point_head = MLP(d_model, d_model, 1, 2)
+        if self.enable_posPrior:
+            self.ref_point_head = MLP(d_model, d_model, d_model, 2)
+        else:
+            self.ref_point_head = MLP(d_model, d_model, 1, 2)
+
         for layer_id in range(num_layers - 1):
             self.layers[layer_id + 1].ca_qpos_proj = None
         
@@ -161,7 +219,8 @@ class TransformerDecoder(nn.Module):
                 tgt_key_padding_mask: Optional[Tensor] = None,
                 memory_key_padding_mask: Optional[Tensor] = None,
                 pos: Optional[Tensor] = None,
-                query_pos: Optional[Tensor] = None):
+                query_pos: Optional[Tensor] = None,
+                clip_feat=None, bbox_function=None, refine_decoder=None):
         '''
             tgt: [num_queries,b,c]
             memory: [t,b,c]
@@ -172,32 +231,154 @@ class TransformerDecoder(nn.Module):
         t,b,hidden_dim = tgt.shape
         output = tgt
 
+        if self.enable_posPrior and not self.enable_injection:
+            intermediate = []
+            reference_points = query_pos.sigmoid().transpose(0,1) # [batch_size, num_queries, 1]
 
-        intermediate = []
-        reference_points_before_sigmoid = self.ref_point_head(query_pos)    # [num_queries, batch_size, 1]
-        reference_points = reference_points_before_sigmoid.sigmoid().transpose(0, 1) # [batch_size, num_queries, 1]
+            for layer_id, layer in enumerate(self.layers):
+                obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
 
-        for layer_id, layer in enumerate(self.layers):
-            obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
+                # For the first decoder layer, we do not apply transformation over p_s
+                if layer_id == 0:
+                    pos_transformation = 1
+                else:
+                    pos_transformation = self.query_scale(output)
 
-            # For the first decoder layer, we do not apply transformation over p_s
-            if layer_id == 0:
-                pos_transformation = 1
-            else:
-                pos_transformation = self.query_scale(output)
+                # get sine embedding for the query vector
+                query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
+                query_pos = self.ref_point_head(query_sine_embed) # [num_queries, b, c] 
 
-            # get sine embedding for the query vector
-            query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
-            # apply transformation
-            query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
-            output = layer(output, memory, tgt_mask=tgt_mask,
-                        memory_mask=memory_mask,
-                        tgt_key_padding_mask=tgt_key_padding_mask,
-                        memory_key_padding_mask=memory_key_padding_mask,
-                        pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
-                        is_first=(layer_id == 0))
-            if self.return_intermediate:
-                intermediate.append(self.norm(output))
+                # apply transformation
+                query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
+                output = layer(output, memory, tgt_mask=tgt_mask,
+                            memory_mask=memory_mask,
+                            tgt_key_padding_mask=tgt_key_padding_mask,
+                            memory_key_padding_mask=memory_key_padding_mask,
+                            pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
+                            is_first=(layer_id == 0))
+                if self.return_intermediate:
+                    intermediate.append(self.norm(output))
+        elif self.enable_injection and not self.enable_posPrior:
+            intermediate = []
+            reference_points_before_sigmoid = self.ref_point_head(query_pos)    # [num_queries, batch_size, 1]
+            reference_points = reference_points_before_sigmoid.sigmoid().transpose(0, 1) # [batch_size, num_queries, 1]
+
+            for layer_id, layer in enumerate(self.layers):
+                obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
+
+                # For the first decoder layer, we do not apply transformation over p_s
+                if layer_id == 0:
+                    pos_transformation = 1
+                else:
+                    pos_transformation = self.query_scale(output)
+
+                # get sine embedding for the query vector
+                query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
+                # apply transformation
+                query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
+                output = layer(output, memory, tgt_mask=tgt_mask,
+                            memory_mask=memory_mask,
+                            tgt_key_padding_mask=tgt_key_padding_mask,
+                            memory_key_padding_mask=memory_key_padding_mask,
+                            pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
+                            is_first=(layer_id == 0)) # [num_queries, b, c]
+
+                # add refine injection
+                with torch.no_grad():
+                    hs = output.permute(1,0,2) # [b,n,c]
+                    ref_points_before_sigmoid = reference_points_before_sigmoid.permute(1,0,2)
+                    tmp = bbox_function(hs) # [b,num_queries,2], tmp is the predicted offset value.
+                    tmp[..., :1] += ref_points_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
+                    outputs_coord = tmp.sigmoid() # [b,num_queries,2]
+
+                roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                b,q,l,d = roi_feat.shape
+                refine_hs = refine_decoder(hs,clip_feat,roi_feat,
+                                        video_feat_key_padding_mask=memory_key_padding_mask,
+                                        video_pos=pos.permute(1,0,2),
+                                        roi_pos=roi_pos)
+                refine_hs = refine_hs.permute(1,0,2) # [n,b,c]
+
+                output = output + refine_hs
+
+                if self.return_intermediate:
+                    intermediate.append(self.norm(output))
+
+        elif self.enable_posPrior and self.enable_injection:
+            intermediate = []
+            reference_points = query_pos.sigmoid().transpose(0,1) # [batch_size, num_queries, 1]
+
+            for layer_id, layer in enumerate(self.layers):
+                obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
+
+                # For the first decoder layer, we do not apply transformation over p_s
+                if layer_id == 0:
+                    pos_transformation = 1
+                else:
+                    pos_transformation = self.query_scale(output)
+
+                # get sine embedding for the query vector
+                query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
+                query_pos = self.ref_point_head(query_sine_embed) # [num_queries, b, c] 
+
+                # apply transformation
+                query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
+                output = layer(output, memory, tgt_mask=tgt_mask,
+                            memory_mask=memory_mask,
+                            tgt_key_padding_mask=tgt_key_padding_mask,
+                            memory_key_padding_mask=memory_key_padding_mask,
+                            pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
+                            is_first=(layer_id == 0))
+                
+                # add refine injection
+                with torch.no_grad():
+                    hs = output.permute(1,0,2) # [b,n,c]
+                    reference_before_sigmoid = inverse_sigmoid(reference_points) # [b,num_queries,1], Reference point is the predicted center point.
+                    tmp = bbox_function(hs) # [b,num_queries,2], tmp is the predicted offset value.
+                    tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
+                    outputs_coord = tmp.sigmoid() # [b,num_queries,2]
+
+                roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                b,q,l,d = roi_feat.shape
+                refine_hs = refine_decoder(hs,clip_feat,roi_feat,
+                                        video_feat_key_padding_mask=memory_key_padding_mask,
+                                        video_pos=pos.permute(1,0,2),
+                                        roi_pos=roi_pos)
+                refine_hs = refine_hs.permute(1,0,2) 
+                
+                output = output + refine_hs
+
+                if self.return_intermediate:
+                    intermediate.append(self.norm(output))
+        else:
+            intermediate = []
+            reference_points_before_sigmoid = self.ref_point_head(query_pos)    # [num_queries, batch_size, 1]
+            reference_points = reference_points_before_sigmoid.sigmoid().transpose(0, 1) # [batch_size, num_queries, 1]
+
+            for layer_id, layer in enumerate(self.layers):
+                obj_center = reference_points[..., :1].transpose(0, 1)      # [num_queries, batch_size, 1]
+
+                # For the first decoder layer, we do not apply transformation over p_s
+                if layer_id == 0:
+                    pos_transformation = 1
+                else:
+                    pos_transformation = self.query_scale(output)
+
+                # get sine embedding for the query vector
+                query_sine_embed = gen_sineembed_for_position(obj_center,hidden_dim) # [num_queries, b, c] 
+                # apply transformation
+                query_sine_embed = query_sine_embed * pos_transformation # [num_queries,b,c]*[1] or [num_queries,b,c]*[num_queries,b,c]
+                output = layer(output, memory, tgt_mask=tgt_mask,
+                            memory_mask=memory_mask,
+                            tgt_key_padding_mask=tgt_key_padding_mask,
+                            memory_key_padding_mask=memory_key_padding_mask,
+                            pos=pos, query_pos=query_pos, query_sine_embed=query_sine_embed,
+                            is_first=(layer_id == 0)) # [num_queries, b, c]
+                
+                if self.return_intermediate:
+                    intermediate.append(self.norm(output))
 
         if self.norm is not None:
             output = self.norm(output)

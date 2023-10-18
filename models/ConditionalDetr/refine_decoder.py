@@ -350,7 +350,7 @@ class RefineDecoderV2(nn.Module):
             roi_segment_feat: [b,n,l,c]
             video_feat: [b,t,c]
             video_feat_key_padding_mask: equal the mask [b,t]
-            video_pos: [t,b,c]
+            video_pos: [b,t,c]
             roi_pos: [b,n,l,c]
         '''
         # cross-attetion in query_embed and sement feat

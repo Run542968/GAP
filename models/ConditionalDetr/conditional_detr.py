@@ -104,6 +104,9 @@ class ConditionalDETR(nn.Module):
 
 
         self.enable_refine = args.enable_refine
+        self.enable_posPrior = args.enable_posPrior
+
+        self.enable_injection = args.enable_injection
 
         hidden_dim = transformer.d_model
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
@@ -111,12 +114,17 @@ class ConditionalDETR(nn.Module):
         nn.init.constant_(self.bbox_embed.layers[-1].weight.data, 0)
         nn.init.constant_(self.bbox_embed.layers[-1].bias.data, 0)
         
-        if self.enable_refine:
+        if self.enable_refine or self.enable_injection:
             self.refine_decoder = refine_decoder
 
+        if self.enable_posPrior:
+            self.query_embed = nn.Embedding(self.num_queries,1)
+            self.query_embed.weight.data[:, :1].uniform_(0, 1)
+            self.query_embed.weight.data[:, :1] = inverse_sigmoid(self.query_embed.weight.data[:, :1])
+            self.query_embed.weight.data[:, :1].requires_grad = False
+        else:
+            self.query_embed = nn.Embedding(self.num_queries, hidden_dim)
 
-        self.query_embed = nn.Embedding(self.num_queries, hidden_dim)
-        
         
         self.input_proj = nn.Conv1d(backbone.feat_dim, hidden_dim, kernel_size=1)
         
@@ -358,7 +366,11 @@ class ConditionalDETR(nn.Module):
         src, mask = feature_list[-1].decompose()
         assert mask is not None
         src = self.input_proj(src.permute(0,2,1)).permute(0,2,1)
-        memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1]) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
+        
+        if self.enable_injection:
+            memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1], clip_feat, self.bbox_embed, self.refine_decoder) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
+        else:
+            memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1]) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
 
         # record result
         out = {}
@@ -388,6 +400,12 @@ class ConditionalDETR(nn.Module):
             tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
             outputs_coord = tmp.sigmoid() # [b,num_queries,2]
             out['pred_boxes'] = outputs_coord
+
+            if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
+                # compute the class-agnostic foreground score
+                actionness_logits = self.actionness_embed(refine_hs) # [b,num_queries,2]
+                out['actionness_logits'] = actionness_logits
+
         else:
             reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
             outputs_coords = []
@@ -399,12 +417,11 @@ class ConditionalDETR(nn.Module):
             outputs_coord = torch.stack(outputs_coords) # [dec_layers,b,num_queries,2]
             out['pred_boxes'] = outputs_coord[-1]
 
-
-        if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
-            # compute the class-agnostic foreground score
-            actionness_logits = self.actionness_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,2]
-            out['actionness_logits'] = actionness_logits
-        
+            if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
+                # compute the class-agnostic foreground score
+                actionness_logits = self.actionness_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,2]
+                out['actionness_logits'] = actionness_logits
+            
 
         if self.target_type != "none":
            
@@ -506,7 +523,7 @@ def build(args, device):
     backbone = build_backbone(args)
     transformer = build_transformer(args)
     # semantic_vhead,semantic_thead = build_semantic_head(args)
-    if args.enable_refine:
+    if args.enable_refine or args.enable_injection:
         refine_decoder = build_refine_decoder(args)
     else:
         refine_decoder = None

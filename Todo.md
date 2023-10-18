@@ -358,3 +358,28 @@
       - ![](./Todo.assets/2023-10-16-19-11-56.png)
     - memory的自相似度矩阵
       - ![](./Todo.assets/2023-10-16-19-12-12.png)
+- 🚩发现将drop_lr参数设置小，很早的降低学习率能够很快的收敛，`Thumos14_CLIP_prompt_zs50_8frame_v7_13`
+  - 找到了原因，原来这个在StepLr的作用是每间隔多少epoch按照0.1的因子降低学习率。
+  - 如果间隔太密，后面学习率就特别小，怪不得收敛了，原来是不动了
+- [ ] 新增加了一个enable_injection
+  - 代码目的是在训练的时候
+- [ ] 方法特点：
+  - proposal generation方面来说：
+    - proposal-level：
+      - 相比于anchor-free方法，无需复杂的后处理，NMS or soft-NMS，生成的proposal质量比较高
+      - 直接有效，就像一篇TCSVT的文章所说，mAP指标在计算的时候即使有很多错误的proposals，也不会掉点太多
+      - 训练和测试是一致的，没有gap
+      - 在训练过程中可以直接得到proposal对应区域的特征，从而进行一些操作
+        - 这也是这篇文章一个小亮点
+      - proposals之间能够有相互感知，不像frame-level是独立的
+      - 相比于bottom-up方法，不需要设置阈值来生成proposal，没有过多的人工干预和人工先验
+      - 更像一种high-level的感知，而不是分类
+  - Zero-Shot Temporal Action Localization任务来说：
+    - 不需要去改变CLIP的语义，任何在seen classes的fine-tuning都仅仅是将分类头拟合到CLIP的子空间，这是不对的
+    - 已经采用了CLIP作为backbone，还有必要去训练检测头吗？又不是像目标检测一样重新训了一个轻量级的backbone
+- 写作论文参考：
+  - 2023_ICLR_F-VLM：Open-Vocabulary Object Detection upon Frozen Vision and Language Models
+  - DAB-DETR
+  - Relaxed Transformer
+- 写作参考：
+  - A Simple Framework for Contrastive Learning of Visual Representations
