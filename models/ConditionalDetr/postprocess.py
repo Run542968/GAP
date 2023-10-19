@@ -92,7 +92,7 @@ class PostProcess(nn.Module):
             mean_prob = torch.mean(prob,dim=1) # [bs,num_classes]
             value, idx = torch.topk(mean_prob, self.topk, dim=-1) # [bs,topk=1]
             labels = idx.repeat(1,Q) # [bs,num_queries]
-            scores = torch.gather(prob,dim=2,index=idx.unsqueeze(1).repeat(1,Q,1)).squeeze() # [bs,num_queries,1]->[bs,num_queries]
+            scores = torch.gather(prob,dim=2,index=idx.unsqueeze(1).repeat(1,Q,1)).squeeze(2) # [bs,num_queries,1]->[bs,num_queries]
             out_boxes = segment_cw_to_t1t2(out_bbox).clamp(min=0,max=1) #  [bs,num_queries,2], the clamp is to deal with the case "center"-"width/2" < 0 and "center"+"width/2" < 1
             topk_boxes = out_boxes # [bs,num_queries,2]
             topk_boxes_idx = torch.arange(0, out_boxes.shape[1], 1, dtype=labels.dtype, device=labels.device)[None, :].repeat(labels.shape[0], 1)

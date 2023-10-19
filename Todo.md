@@ -349,6 +349,7 @@
   - 大量空segment，甚至一个batch都是空的
   - 难顶，怪不得性能那么差
   - [x] 但是减少query数量没什么用
+  - [ ] 测试的时候直接输入整个视频去测试，这样就不会出现过多的empty query, --inference_entire
 - [ ] 发现了一个关键问题
   - Transfmor对于短视频的处理不好，因为self-attention存在过平滑的问题
   - 图片来自：v_MtmQjudesdM

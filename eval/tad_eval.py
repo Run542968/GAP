@@ -301,6 +301,13 @@ class ActivityNet13Evaluator(TADEvaluator):
                     # # only keep top 200 detections per video
                     # dets = dets[:200, :]
 
+                    if self.filter_threshold > 0: # filter the low confidence proposals
+                        try:
+                            fix_idx = np.where(dets[:,2] < self.filter_threshold)[0][0]
+                        except:
+                            fix_idx = len(dets)
+                        dets = dets[:fix_idx]
+                        
                     # On ActivityNet, follow the tradition to use external video label
                     if assign_cls_labels:
                             raise NotImplementedError
@@ -340,6 +347,7 @@ class Thumos14Evaluator(TADEvaluator):
         self.src_valid_anno_dict = dataset.src_valid_anno_dict # The difference of ActivityNet13
         self.valid_anno_dict = dataset.valid_anno_dict
         self.slice_overlap = dataset.slice_overlap
+        self.inference_entire = dataset.inference_entire
         super(Thumos14Evaluator,self).__init__(dataset_name, dataset.subset, epoch, iou_range, dataset.classes,
                                                 nms_mode, 
                                                 eval_proposal,
@@ -391,44 +399,84 @@ class Thumos14Evaluator(TADEvaluator):
         assign_cls_labels: whether to follow the tradition to use external video label or manually assign class labels to the detections. This is optional when the predictions are class-agnostic.
         '''
         pred_numpy = {k: {kk: vv.detach().cpu().numpy() for kk, vv in v.items()} for k,v in pred.items()}
-        for k, v in pred_numpy.items():
-            window_start = self.valid_anno_dict[k]['time_offset']
-            video_id = self.valid_anno_dict[k]['src_video_name']
-            this_dets = [
-                [v['segments'][i, 0] + window_start, 
-                    v['segments'][i, 1] + window_start, 
-                    v['scores'][i],
-                    v['labels'][i]]
-                for i in range(len(v['scores']))]
-        
-            # ignore videos that are not in ground truth set
-            if video_id not in self.video_ids:
-                continue
-            
-            this_dets = np.array(this_dets)   # [num_proposals,4]->"start, end, score, label"
-            
-            for nms_mode in self.nms_mode:
-                input_dets = np.copy(this_dets)
+        if self.inference_entire:
+            for k, v in pred_numpy.items():
+                this_dets = [
+                    [v['segments'][i, 0], 
+                        v['segments'][i, 1], 
+                        v['scores'][i],
+                        v['labels'][i]]
+                    for i in range(len(v['scores']))]
+                video_id = k
 
-                if nms_mode == 'raw':
-                    sort_idx = input_dets[:, 2].argsort()[::-1]
-                    dets = input_dets[sort_idx, :]
-                    # # only keep top 200 detections per video
-                    # dets = dets[:200, :]
+                # ignore videos that are not in ground truth set
+                if video_id not in self.video_ids:
+                    continue
+                
+                this_dets = np.array(this_dets)   # [num_proposals,4]->"start, end, score, label"
+                
+                for nms_mode in self.nms_mode:
+                    input_dets = np.copy(this_dets)
 
-                    if self.filter_threshold > 0: # filter the low confidence proposals
-                        try:
-                            fix_idx = np.where(dets[:,2] < self.filter_threshold)[0][0]
-                        except:
-                            fix_idx = len(dets)
-                        dets = dets[:fix_idx]
-                        
-                    # On ActivityNet, follow the tradition to use external video label
-                    if assign_cls_labels:
-                            raise NotImplementedError
-                    self.all_pred[nms_mode] += [[video_id, k] + det for det in dets.tolist()]  # "video-id, slice-id, start, end, score, label"
-                else:
-                    raise NotImplementedError
+                    if nms_mode == 'raw':
+                        sort_idx = input_dets[:, 2].argsort()[::-1]
+                        dets = input_dets[sort_idx, :]
+                        # # only keep top 200 detections per video
+                        # dets = dets[:200, :]
+
+                        if self.filter_threshold > 0: # filter the low confidence proposals
+                            try:
+                                fix_idx = np.where(dets[:,2] < self.filter_threshold)[0][0]
+                            except:
+                                fix_idx = len(dets)
+                            dets = dets[:fix_idx]
+                            
+                        # On ActivityNet, follow the tradition to use external video label
+                        if assign_cls_labels:
+                                raise NotImplementedError
+                        self.all_pred[nms_mode] += [[video_id] + det for det in dets.tolist()]  # "video-id, start, end, score, label"
+                    else:
+                        raise NotImplementedError
+        else:
+            pred_numpy = {k: {kk: vv.detach().cpu().numpy() for kk, vv in v.items()} for k,v in pred.items()}
+            for k, v in pred_numpy.items():
+                window_start = self.valid_anno_dict[k]['time_offset']
+                video_id = self.valid_anno_dict[k]['src_video_name']
+                this_dets = [
+                    [v['segments'][i, 0] + window_start, 
+                        v['segments'][i, 1] + window_start, 
+                        v['scores'][i],
+                        v['labels'][i]]
+                    for i in range(len(v['scores']))]
+            
+                # ignore videos that are not in ground truth set
+                if video_id not in self.video_ids:
+                    continue
+                
+                this_dets = np.array(this_dets)   # [num_proposals,4]->"start, end, score, label"
+                
+                for nms_mode in self.nms_mode:
+                    input_dets = np.copy(this_dets)
+
+                    if nms_mode == 'raw':
+                        sort_idx = input_dets[:, 2].argsort()[::-1]
+                        dets = input_dets[sort_idx, :]
+                        # # only keep top 200 detections per video
+                        # dets = dets[:200, :]
+
+                        if self.filter_threshold > 0: # filter the low confidence proposals
+                            try:
+                                fix_idx = np.where(dets[:,2] < self.filter_threshold)[0][0]
+                            except:
+                                fix_idx = len(dets)
+                            dets = dets[:fix_idx]
+                            
+                        # On ActivityNet, follow the tradition to use external video label
+                        if assign_cls_labels:
+                                raise NotImplementedError
+                        self.all_pred[nms_mode] += [[video_id, k] + det for det in dets.tolist()]  # "video-id, slice-id, start, end, score, label"
+                    else:
+                        raise NotImplementedError
 
     def cross_window_fusion(self):
         '''
@@ -485,12 +533,16 @@ class Thumos14Evaluator(TADEvaluator):
 
     def accumulate(self):
         '''accumulate detections in all videos'''
-        for nms_mode in self.nms_mode:
-            self.all_pred[nms_mode] = pd.DataFrame(self.all_pred[nms_mode], columns=["video-id", "slice-id", "t-start", "t-end", "score", "cls"])
-        
+        if self.inference_entire:
+            for nms_mode in self.nms_mode:
+                self.all_pred[nms_mode] = pd.DataFrame(self.all_pred[nms_mode], columns=["video-id", "t-start", "t-end", "score", "cls"])
+        else:
+            for nms_mode in self.nms_mode:
+                self.all_pred[nms_mode] = pd.DataFrame(self.all_pred[nms_mode], columns=["video-id", "slice-id", "t-start", "t-end", "score", "cls"])
+            
         self.pred_by_cls = {}
         for nms_mode in self.nms_mode:
-            if nms_mode == 'raw' and self.slice_overlap > 0:
+            if nms_mode == 'raw' and self.slice_overlap > 0 and not self.inference_entire:
                 self.cross_window_fusion()
             self.pred_by_cls[nms_mode] = [self.all_pred[nms_mode][self.all_pred[nms_mode].cls == cls].reset_index(drop=True).drop(labels=['cls'],axis=1) for cls in range(self.num_classes)]
 

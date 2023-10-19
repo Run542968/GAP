@@ -359,7 +359,7 @@ class RefineDecoderV2(nn.Module):
         l,n,b,dim = segment_feat.shape
         segment_feat = segment_feat.reshape(l,n*b,dim) # [l,n*b,dim]
         query_feat_seg = query_feat.reshape(1,n*b,dim) # [1,n*b,dim]
-        
+
         tgt1 = self.cross_attn_local(query=query_feat_seg,
                                      key=segment_feat,
                                      value=segment_feat)[0] # [1,n*b,dim]
@@ -371,7 +371,7 @@ class RefineDecoderV2(nn.Module):
         tgt2 = self.self_attn(query=query_feat,
                               key=query_feat,
                               value=query_feat)[0]
-        query_feat = tgt2
+        query_feat = query_feat + tgt2
 
         query_feat = query_feat.permute(1,0,2) # [b,n,dim]
         return query_feat

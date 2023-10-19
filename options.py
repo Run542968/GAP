@@ -123,6 +123,7 @@ parser.add_argument('--ensemble_strategy', type=str, default="arithmetic", choic
 parser.add_argument('--filter_threshold', type=float, default=0, help="the threshold to filter some proposals that may be negative ")
 parser.add_argument('--proposals_weight_type', default="before_softmax", choices=("before_softmax","after_softmax"), help="the way to perform multiple between detector scores and ROIalign proposals")
 parser.add_argument('--prob_type', type=str, default="softmax", choices=("softmax","sigmoid", "none_mul"), help="the strategy to get normalized probability")
+parser.add_argument('--inference_entire', action='store_true', default=False, help="Whether to test entire video instead of slide window")
 
 
 def merge_cfg_from_file(args,cfg_path):

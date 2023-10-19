@@ -1,0 +1,3298 @@
+{
+    "video_test_0001064": {
+        "frame_duration": 275.73333333333335,
+        "frame_length": 8273,
+        "snippet_length": 8273,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 275.76666666666665
+    },
+    "video_test_0000672": {
+        "frame_length": 1228,
+        "snippet_length": 1228,
+        "frame_duration": 40.9,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 40.93333333333333
+    },
+    "video_validation_0000363": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_length": 22376,
+        "snippet_length": 22376,
+        "frame_duration": 746.5791666666667,
+        "snippet_duration": 746.6125333333333
+    },
+    "video_test_0000505": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7145,
+        "snippet_length": 7145,
+        "frame_duration": 238.13333333333333,
+        "snippet_duration": 238.16666666666666
+    },
+    "video_test_0000405": {
+        "frame_duration": 183.8,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5515,
+        "snippet_length": 5515,
+        "snippet_duration": 183.83333333333334
+    },
+    "video_validation_0000949": {
+        "frame_length": 606,
+        "snippet_length": 606,
+        "frame_duration": 20.166666666666668,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 20.2
+    },
+    "video_validation_0000940": {
+        "frame_duration": 35.833333333333336,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1076,
+        "snippet_length": 1076,
+        "snippet_duration": 35.86666666666667
+    },
+    "video_validation_0000261": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 698,
+        "snippet_length": 698,
+        "frame_duration": 23.233333333333334,
+        "snippet_duration": 23.266666666666666
+    },
+    "video_validation_0000053": {
+        "frame_duration": 197.16666666666666,
+        "frame_length": 5916,
+        "snippet_length": 5916,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 197.2
+    },
+    "video_test_0000437": {
+        "frame_duration": 204.4,
+        "frame_length": 6133,
+        "snippet_length": 6133,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 204.43333333333334
+    },
+    "video_test_0000591": {
+        "frame_duration": 33.4334,
+        "frame_length": 1003,
+        "snippet_length": 1003,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "snippet_duration": 33.466766666666665
+    },
+    "video_validation_0000202": {
+        "frame_duration": 188.86666666666667,
+        "frame_length": 5667,
+        "snippet_length": 5667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 188.9
+    },
+    "video_test_0000873": {
+        "frame_length": 1044,
+        "snippet_length": 1044,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 34.766666666666666,
+        "snippet_duration": 34.8
+    },
+    "video_test_0001459": {
+        "frame_duration": 814.72,
+        "frame_length": 20369,
+        "snippet_length": 20369,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "snippet_duration": 814.76
+    },
+    "video_test_0001512": {
+        "frame_length": 1584,
+        "snippet_length": 1584,
+        "frame_duration": 52.766666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 52.8
+    },
+    "video_validation_0000160": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 407.9,
+        "frame_length": 12238,
+        "snippet_length": 12238,
+        "snippet_duration": 407.93333333333334
+    },
+    "video_validation_0000365": {
+        "frame_length": 8070,
+        "snippet_length": 8070,
+        "frame_duration": 268.96666666666664,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 269.0
+    },
+    "video_test_0001522": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 46.266666666666666,
+        "frame_length": 1389,
+        "snippet_length": 1389,
+        "snippet_duration": 46.3
+    },
+    "video_validation_0000178": {
+        "frame_length": 3441,
+        "snippet_length": 3441,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 114.66666666666667,
+        "snippet_duration": 114.7
+    },
+    "video_validation_0000417": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 10702,
+        "snippet_length": 10702,
+        "frame_duration": 356.7,
+        "snippet_duration": 356.73333333333335
+    },
+    "video_validation_0000316": {
+        "frame_length": 6051,
+        "snippet_length": 6051,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 201.66666666666666,
+        "snippet_duration": 201.7
+    },
+    "video_test_0000073": {
+        "frame_duration": 98.86666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2967,
+        "snippet_length": 2967,
+        "snippet_duration": 98.9
+    },
+    "video_test_0001235": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_length": 25187,
+        "snippet_length": 25187,
+        "frame_duration": 840.3728666666667,
+        "snippet_duration": 840.4062333333334
+    },
+    "video_test_0000426": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 153.0,
+        "frame_length": 4591,
+        "snippet_length": 4591,
+        "snippet_duration": 153.03333333333333
+    },
+    "video_test_0001163": {
+        "frame_duration": 100.73333333333333,
+        "frame_length": 3023,
+        "snippet_length": 3023,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 100.76666666666667
+    },
+    "video_validation_0000852": {
+        "frame_duration": 235.53333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7067,
+        "snippet_length": 7067,
+        "snippet_duration": 235.56666666666666
+    },
+    "video_validation_0000416": {
+        "frame_length": 16236,
+        "snippet_length": 16236,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 541.1666666666666,
+        "snippet_duration": 541.2
+    },
+    "video_validation_0000907": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 34.63333333333333,
+        "frame_length": 1040,
+        "snippet_length": 1040,
+        "snippet_duration": 34.666666666666664
+    },
+    "video_test_0000665": {
+        "frame_length": 10344,
+        "snippet_length": 10344,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 344.76666666666665,
+        "snippet_duration": 344.8
+    },
+    "video_test_0001558": {
+        "frame_length": 4282,
+        "snippet_length": 4282,
+        "frame_duration": 142.7,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 142.73333333333332
+    },
+    "video_test_0000671": {
+        "frame_duration": 116.7,
+        "frame_length": 3502,
+        "snippet_length": 3502,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 116.73333333333333
+    },
+    "video_test_0000355": {
+        "frame_length": 19378,
+        "snippet_length": 19378,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 645.9,
+        "snippet_duration": 645.9333333333333
+    },
+    "video_validation_0000168": {
+        "frame_length": 4106,
+        "snippet_length": 4106,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 136.83333333333334,
+        "snippet_duration": 136.86666666666667
+    },
+    "video_validation_0000288": {
+        "frame_length": 3356,
+        "snippet_length": 3356,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 111.83333333333333,
+        "snippet_duration": 111.86666666666666
+    },
+    "video_test_0000724": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 144.96666666666667,
+        "frame_length": 4350,
+        "snippet_length": 4350,
+        "snippet_duration": 145.0
+    },
+    "video_test_0001307": {
+        "frame_duration": 204.56666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6138,
+        "snippet_length": 6138,
+        "snippet_duration": 204.6
+    },
+    "video_test_0000173": {
+        "frame_duration": 191.5,
+        "frame_length": 5746,
+        "snippet_length": 5746,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 191.53333333333333
+    },
+    "video_test_0000011": {
+        "frame_length": 2373,
+        "snippet_length": 2373,
+        "frame_duration": 79.06666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 79.1
+    },
+    "video_validation_0000183": {
+        "frame_length": 2446,
+        "snippet_length": 2446,
+        "frame_duration": 81.5,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 81.53333333333333
+    },
+    "video_validation_0000860": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 936,
+        "snippet_length": 936,
+        "frame_duration": 31.166666666666668,
+        "snippet_duration": 31.2
+    },
+    "video_validation_0000052": {
+        "frame_duration": 166.33333333333334,
+        "frame_length": 4991,
+        "snippet_length": 4991,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 166.36666666666667
+    },
+    "video_test_0001343": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 12483,
+        "snippet_length": 12483,
+        "frame_duration": 416.06666666666666,
+        "snippet_duration": 416.1
+    },
+    "video_validation_0000206": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 179.03333333333333,
+        "frame_length": 5372,
+        "snippet_length": 5372,
+        "snippet_duration": 179.06666666666666
+    },
+    "video_test_0000188": {
+        "frame_length": 16161,
+        "snippet_length": 16161,
+        "frame_duration": 538.6666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 538.7
+    },
+    "video_test_0000353": {
+        "frame_length": 2165,
+        "snippet_length": 2165,
+        "frame_duration": 72.13333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 72.16666666666667
+    },
+    "video_test_0001164": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_length": 25364,
+        "snippet_length": 25364,
+        "frame_duration": 846.2787666666667,
+        "snippet_duration": 846.3121333333333
+    },
+    "video_test_0000793": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_duration": 1673.3049666666666,
+        "frame_length": 50150,
+        "snippet_length": 50150,
+        "snippet_duration": 1673.3383333333334
+    },
+    "video_validation_0000903": {
+        "frame_length": 16411,
+        "snippet_length": 16411,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_duration": 547.547,
+        "snippet_duration": 547.5803666666667
+    },
+    "video_test_0000950": {
+        "frame_duration": 1315.28,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_length": 32883,
+        "snippet_length": 32883,
+        "snippet_duration": 1315.32
+    },
+    "video_test_0000593": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1681,
+        "snippet_length": 1681,
+        "frame_duration": 56.0,
+        "snippet_duration": 56.03333333333333
+    },
+    "video_validation_0000784": {
+        "frame_duration": 88.73333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2663,
+        "snippet_length": 2663,
+        "snippet_duration": 88.76666666666667
+    },
+    "video_test_0001038": {
+        "frame_length": 3634,
+        "snippet_length": 3634,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 121.1,
+        "snippet_duration": 121.13333333333334
+    },
+    "video_validation_0000265": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1545,
+        "snippet_length": 1545,
+        "frame_duration": 51.46666666666667,
+        "snippet_duration": 51.5
+    },
+    "video_test_0000179": {
+        "frame_duration": 168.5,
+        "frame_length": 5056,
+        "snippet_length": 5056,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 168.53333333333333
+    },
+    "video_test_0000285": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5787,
+        "snippet_length": 5787,
+        "frame_duration": 192.86666666666667,
+        "snippet_duration": 192.9
+    },
+    "video_test_0000051": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 115.96666666666667,
+        "frame_length": 3480,
+        "snippet_length": 3480,
+        "snippet_duration": 116.0
+    },
+    "video_test_0001267": {
+        "frame_duration": 125.96666666666667,
+        "frame_length": 3780,
+        "snippet_length": 3780,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 126.0
+    },
+    "video_validation_0000158": {
+        "frame_duration": 306.53333333333336,
+        "frame_length": 9197,
+        "snippet_length": 9197,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 306.56666666666666
+    },
+    "video_test_0000541": {
+        "frame_duration": 29.233333333333334,
+        "frame_length": 878,
+        "snippet_length": 878,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 29.266666666666666
+    },
+    "video_validation_0000932": {
+        "frame_length": 3390,
+        "snippet_length": 3390,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 112.96666666666667,
+        "snippet_duration": 113.0
+    },
+    "video_test_0000946": {
+        "frame_length": 834,
+        "snippet_length": 834,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 27.766666666666666,
+        "snippet_duration": 27.8
+    },
+    "video_validation_0000481": {
+        "frame_length": 13081,
+        "snippet_length": 13081,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 436.0,
+        "snippet_duration": 436.03333333333336
+    },
+    "video_test_0000691": {
+        "frame_duration": 176.96666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5310,
+        "snippet_length": 5310,
+        "snippet_duration": 177.0
+    },
+    "video_test_0001460": {
+        "frame_length": 872,
+        "snippet_length": 872,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 29.033333333333335,
+        "snippet_duration": 29.066666666666666
+    },
+    "video_validation_0000051": {
+        "frame_length": 5091,
+        "snippet_length": 5091,
+        "frame_duration": 169.66666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 169.7
+    },
+    "video_validation_0000482": {
+        "frame_length": 2654,
+        "snippet_length": 2654,
+        "frame_duration": 88.43333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 88.46666666666667
+    },
+    "video_validation_0000910": {
+        "frame_duration": 192.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5764,
+        "snippet_length": 5764,
+        "snippet_duration": 192.13333333333333
+    },
+    "video_validation_0000290": {
+        "frame_duration": 66.66666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2001,
+        "snippet_length": 2001,
+        "snippet_duration": 66.7
+    },
+    "video_validation_0000665": {
+        "frame_length": 15724,
+        "snippet_length": 15724,
+        "frame_duration": 524.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 524.1333333333333
+    },
+    "video_test_0001118": {
+        "frame_duration": 70.3,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2110,
+        "snippet_length": 2110,
+        "snippet_duration": 70.33333333333333
+    },
+    "video_test_0001495": {
+        "frame_duration": 528.5947333333334,
+        "frame_length": 15843,
+        "snippet_length": 15843,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "snippet_duration": 528.6281
+    },
+    "video_test_0000839": {
+        "frame_duration": 382.7,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 11482,
+        "snippet_length": 11482,
+        "snippet_duration": 382.73333333333335
+    },
+    "video_validation_0000209": {
+        "frame_duration": 576.0087666666667,
+        "frame_length": 17264,
+        "snippet_length": 17264,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "snippet_duration": 576.0421333333334
+    },
+    "video_test_0000429": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4149,
+        "snippet_length": 4149,
+        "frame_duration": 138.26666666666668,
+        "snippet_duration": 138.3
+    },
+    "video_validation_0000685": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 129.16666666666666,
+        "frame_length": 3876,
+        "snippet_length": 3876,
+        "snippet_duration": 129.2
+    },
+    "video_test_0000615": {
+        "frame_duration": 206.53333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6197,
+        "snippet_length": 6197,
+        "snippet_duration": 206.56666666666666
+    },
+    "video_test_0000558": {
+        "frame_length": 6028,
+        "snippet_length": 6028,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 200.9,
+        "snippet_duration": 200.93333333333334
+    },
+    "video_test_0001195": {
+        "frame_duration": 899.48,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_length": 22488,
+        "snippet_length": 22488,
+        "snippet_duration": 899.52
+    },
+    "video_test_0000085": {
+        "frame_duration": 220.66666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6621,
+        "snippet_length": 6621,
+        "snippet_duration": 220.7
+    },
+    "video_validation_0000947": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_length": 2951,
+        "snippet_length": 2951,
+        "frame_duration": 98.43166666666667,
+        "snippet_duration": 98.46503333333334
+    },
+    "video_validation_0000175": {
+        "frame_length": 2394,
+        "snippet_length": 2394,
+        "frame_duration": 79.76666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 79.8
+    },
+    "video_test_0000504": {
+        "frame_length": 2181,
+        "snippet_length": 2181,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 72.66666666666667,
+        "snippet_duration": 72.7
+    },
+    "video_validation_0000936": {
+        "frame_length": 1273,
+        "snippet_length": 1273,
+        "frame_duration": 42.4,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 42.43333333333333
+    },
+    "video_test_0001072": {
+        "frame_length": 8547,
+        "snippet_length": 8547,
+        "frame_duration": 284.8666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 284.9
+    },
+    "video_test_0000854": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6814,
+        "snippet_length": 6814,
+        "frame_duration": 227.1,
+        "snippet_duration": 227.13333333333333
+    },
+    "video_test_0001229": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7207,
+        "snippet_length": 7207,
+        "frame_duration": 240.2,
+        "snippet_duration": 240.23333333333332
+    },
+    "video_test_0001209": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 351.03333333333336,
+        "frame_length": 10532,
+        "snippet_length": 10532,
+        "snippet_duration": 351.06666666666666
+    },
+    "video_test_0000026": {
+        "frame_length": 6234,
+        "snippet_length": 6234,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 207.76666666666668,
+        "snippet_duration": 207.8
+    },
+    "video_test_0000989": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 193.46666666666667,
+        "frame_length": 5805,
+        "snippet_length": 5805,
+        "snippet_duration": 193.5
+    },
+    "video_test_0001431": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 358.26666666666665,
+        "frame_length": 10749,
+        "snippet_length": 10749,
+        "snippet_duration": 358.3
+    },
+    "video_validation_0000366": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 32.03333333333333,
+        "frame_length": 962,
+        "snippet_length": 962,
+        "snippet_duration": 32.06666666666667
+    },
+    "video_validation_0000945": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 190.43333333333334,
+        "frame_length": 5714,
+        "snippet_length": 5714,
+        "snippet_duration": 190.46666666666667
+    },
+    "video_test_0001134": {
+        "frame_length": 5514,
+        "snippet_length": 5514,
+        "frame_duration": 183.76666666666668,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 183.8
+    },
+    "video_test_0000357": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 126.8,
+        "frame_length": 3805,
+        "snippet_length": 3805,
+        "snippet_duration": 126.83333333333333
+    },
+    "video_test_0001129": {
+        "frame_duration": 67.63333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2030,
+        "snippet_length": 2030,
+        "snippet_duration": 67.66666666666667
+    },
+    "video_test_0000319": {
+        "frame_duration": 138.76666666666668,
+        "frame_length": 4164,
+        "snippet_length": 4164,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 138.8
+    },
+    "video_validation_0000413": {
+        "frame_duration": 717.92,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_length": 17949,
+        "snippet_length": 17949,
+        "snippet_duration": 717.96
+    },
+    "video_validation_0000317": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 214.13333333333333,
+        "frame_length": 6425,
+        "snippet_length": 6425,
+        "snippet_duration": 214.16666666666666
+    },
+    "video_test_0000062": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 14.9,
+        "frame_length": 448,
+        "snippet_length": 448,
+        "snippet_duration": 14.933333333333334
+    },
+    "video_validation_0000186": {
+        "frame_duration": 90.43333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2714,
+        "snippet_length": 2714,
+        "snippet_duration": 90.46666666666667
+    },
+    "video_validation_0000176": {
+        "frame_length": 4120,
+        "snippet_length": 4120,
+        "frame_duration": 137.3,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 137.33333333333334
+    },
+    "video_validation_0000059": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 228.76666666666668,
+        "frame_length": 6864,
+        "snippet_length": 6864,
+        "snippet_duration": 228.8
+    },
+    "video_validation_0000781": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 127.33333333333333,
+        "frame_length": 3821,
+        "snippet_length": 3821,
+        "snippet_duration": 127.36666666666666
+    },
+    "video_validation_0000670": {
+        "frame_length": 4094,
+        "snippet_length": 4094,
+        "frame_duration": 136.43333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 136.46666666666667
+    },
+    "video_test_0001039": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7041,
+        "snippet_length": 7041,
+        "frame_duration": 234.66666666666666,
+        "snippet_duration": 234.7
+    },
+    "video_test_0001268": {
+        "frame_length": 2840,
+        "snippet_length": 2840,
+        "frame_duration": 94.63333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 94.66666666666667
+    },
+    "video_test_0000412": {
+        "frame_length": 6221,
+        "snippet_length": 6221,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 207.33333333333334,
+        "snippet_duration": 207.36666666666667
+    },
+    "video_test_0000293": {
+        "frame_length": 7004,
+        "snippet_length": 7004,
+        "frame_duration": 233.43333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 233.46666666666667
+    },
+    "video_test_0000689": {
+        "frame_length": 3900,
+        "snippet_length": 3900,
+        "frame_duration": 129.96666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 130.0
+    },
+    "video_validation_0000266": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 171.43333333333334,
+        "frame_length": 5144,
+        "snippet_length": 5144,
+        "snippet_duration": 171.46666666666667
+    },
+    "video_test_0001270": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 264.8,
+        "frame_length": 7945,
+        "snippet_length": 7945,
+        "snippet_duration": 264.8333333333333
+    },
+    "video_test_0000549": {
+        "frame_duration": 71.56666666666666,
+        "frame_length": 2148,
+        "snippet_length": 2148,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 71.6
+    },
+    "video_test_0000374": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3652,
+        "snippet_length": 3652,
+        "frame_duration": 121.7,
+        "snippet_duration": 121.73333333333333
+    },
+    "video_validation_0000944": {
+        "frame_duration": 190.83333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5726,
+        "snippet_length": 5726,
+        "snippet_duration": 190.86666666666667
+    },
+    "video_validation_0000369": {
+        "frame_duration": 1149.0479,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_length": 34438,
+        "snippet_length": 34438,
+        "snippet_duration": 1149.0812666666666
+    },
+    "video_validation_0000313": {
+        "frame_length": 3948,
+        "snippet_length": 3948,
+        "frame_duration": 131.56666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 131.6
+    },
+    "video_validation_0000684": {
+        "frame_duration": 68.4,
+        "frame_length": 2053,
+        "snippet_length": 2053,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 68.43333333333334
+    },
+    "video_test_0001314": {
+        "frame_length": 10344,
+        "snippet_length": 10344,
+        "frame_duration": 344.76666666666665,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 344.8
+    },
+    "video_validation_0000312": {
+        "frame_duration": 79.4,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2383,
+        "snippet_length": 2383,
+        "snippet_duration": 79.43333333333334
+    },
+    "video_test_0000113": {
+        "frame_duration": 86.1,
+        "frame_length": 2584,
+        "snippet_length": 2584,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 86.13333333333334
+    },
+    "video_validation_0000950": {
+        "frame_duration": 20.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 604,
+        "snippet_length": 604,
+        "snippet_duration": 20.133333333333333
+    },
+    "video_validation_0000201": {
+        "frame_length": 1323,
+        "snippet_length": 1323,
+        "frame_duration": 44.06666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 44.1
+    },
+    "video_validation_0000171": {
+        "frame_duration": 152.16666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4566,
+        "snippet_length": 4566,
+        "snippet_duration": 152.2
+    },
+    "video_test_0001391": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 9303,
+        "snippet_length": 9303,
+        "frame_duration": 310.06666666666666,
+        "snippet_duration": 310.1
+    },
+    "video_test_0000765": {
+        "frame_duration": 117.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3514,
+        "snippet_length": 3514,
+        "snippet_duration": 117.13333333333334
+    },
+    "video_test_0000940": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 93.13333333333334,
+        "frame_length": 2795,
+        "snippet_length": 2795,
+        "snippet_duration": 93.16666666666667
+    },
+    "video_test_0000058": {
+        "frame_duration": 114.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3424,
+        "snippet_length": 3424,
+        "snippet_duration": 114.13333333333334
+    },
+    "video_validation_0000988": {
+        "frame_length": 3728,
+        "snippet_length": 3728,
+        "frame_duration": 124.23333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 124.26666666666667
+    },
+    "video_test_0001247": {
+        "frame_duration": 93.2,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2797,
+        "snippet_length": 2797,
+        "snippet_duration": 93.23333333333333
+    },
+    "video_validation_0000785": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4209,
+        "snippet_length": 4209,
+        "frame_duration": 140.26666666666668,
+        "snippet_duration": 140.3
+    },
+    "video_test_0000292": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2279,
+        "snippet_length": 2279,
+        "frame_duration": 75.93333333333334,
+        "snippet_duration": 75.96666666666667
+    },
+    "video_test_0000664": {
+        "frame_length": 2579,
+        "snippet_length": 2579,
+        "frame_duration": 85.93333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 85.96666666666667
+    },
+    "video_validation_0000286": {
+        "frame_duration": 218.7,
+        "frame_length": 6562,
+        "snippet_length": 6562,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 218.73333333333332
+    },
+    "video_test_0001075": {
+        "frame_length": 6338,
+        "snippet_length": 6338,
+        "frame_duration": 211.44456666666667,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "snippet_duration": 211.47793333333334
+    },
+    "video_validation_0000318": {
+        "frame_duration": 186.7,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5602,
+        "snippet_length": 5602,
+        "snippet_duration": 186.73333333333332
+    },
+    "video_test_0000730": {
+        "frame_duration": 106.36666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3192,
+        "snippet_length": 3192,
+        "snippet_duration": 106.4
+    },
+    "video_validation_0000161": {
+        "frame_length": 1852,
+        "snippet_length": 1852,
+        "frame_duration": 61.7,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 61.733333333333334
+    },
+    "video_validation_0000170": {
+        "frame_length": 6476,
+        "snippet_length": 6476,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 215.83333333333334,
+        "snippet_duration": 215.86666666666667
+    },
+    "video_test_0001135": {
+        "frame_duration": 47.6,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1429,
+        "snippet_length": 1429,
+        "snippet_duration": 47.63333333333333
+    },
+    "video_test_0000250": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 212.0,
+        "frame_length": 6361,
+        "snippet_length": 6361,
+        "snippet_duration": 212.03333333333333
+    },
+    "video_validation_0000854": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 505,
+        "snippet_length": 505,
+        "frame_duration": 16.8,
+        "snippet_duration": 16.833333333333332
+    },
+    "video_test_0001194": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3871,
+        "snippet_length": 3871,
+        "frame_duration": 129.0,
+        "snippet_duration": 129.03333333333333
+    },
+    "video_test_0000896": {
+        "frame_duration": 226.63333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6800,
+        "snippet_length": 6800,
+        "snippet_duration": 226.66666666666666
+    },
+    "video_test_0000464": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 21302,
+        "snippet_length": 21302,
+        "frame_duration": 710.0333333333333,
+        "snippet_duration": 710.0666666666667
+    },
+    "video_validation_0000790": {
+        "frame_length": 3034,
+        "snippet_length": 3034,
+        "frame_duration": 101.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 101.13333333333334
+    },
+    "video_validation_0000174": {
+        "frame_duration": 152.83333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4586,
+        "snippet_length": 4586,
+        "snippet_duration": 152.86666666666667
+    },
+    "video_validation_0000263": {
+        "frame_length": 1422,
+        "snippet_length": 1422,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 47.36666666666667,
+        "snippet_duration": 47.4
+    },
+    "video_test_0001463": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 106.56666666666666,
+        "frame_length": 3198,
+        "snippet_length": 3198,
+        "snippet_duration": 106.6
+    },
+    "video_validation_0000483": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 120.06666666666666,
+        "frame_length": 3603,
+        "snippet_length": 3603,
+        "snippet_duration": 120.1
+    },
+    "video_validation_0000167": {
+        "frame_duration": 210.8,
+        "frame_length": 6325,
+        "snippet_length": 6325,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 210.83333333333334
+    },
+    "video_validation_0000156": {
+        "frame_length": 7122,
+        "snippet_length": 7122,
+        "frame_duration": 237.36666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 237.4
+    },
+    "video_test_0001549": {
+        "frame_duration": 114.86666666666666,
+        "frame_length": 3447,
+        "snippet_length": 3447,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 114.9
+    },
+    "video_validation_0000054": {
+        "frame_duration": 134.96666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4050,
+        "snippet_length": 4050,
+        "snippet_duration": 135.0
+    },
+    "video_validation_0000283": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 61.63333333333333,
+        "frame_length": 1850,
+        "snippet_length": 1850,
+        "snippet_duration": 61.666666666666664
+    },
+    "video_validation_0000489": {
+        "frame_length": 6057,
+        "snippet_length": 6057,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 201.86666666666667,
+        "snippet_duration": 201.9
+    },
+    "video_validation_0000058": {
+        "frame_length": 3958,
+        "snippet_length": 3958,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 131.9,
+        "snippet_duration": 131.93333333333334
+    },
+    "video_validation_0000669": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6962,
+        "snippet_length": 6962,
+        "frame_duration": 232.03333333333333,
+        "snippet_duration": 232.06666666666666
+    },
+    "video_validation_0000786": {
+        "frame_length": 3217,
+        "snippet_length": 3217,
+        "frame_duration": 107.2,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 107.23333333333333
+    },
+    "video_test_0001484": {
+        "frame_length": 6149,
+        "snippet_length": 6149,
+        "frame_duration": 204.93333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 204.96666666666667
+    },
+    "video_test_0000847": {
+        "frame_duration": 235.96666666666667,
+        "frame_length": 7080,
+        "snippet_length": 7080,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 236.0
+    },
+    "video_validation_0000205": {
+        "frame_length": 16098,
+        "snippet_length": 16098,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 536.5666666666667,
+        "snippet_duration": 536.6
+    },
+    "video_validation_0000666": {
+        "frame_length": 35234,
+        "snippet_length": 35234,
+        "frame_duration": 1409.32,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "snippet_duration": 1409.36
+    },
+    "video_validation_0000931": {
+        "frame_duration": 92.56666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2778,
+        "snippet_length": 2778,
+        "snippet_duration": 92.6
+    },
+    "video_validation_0000661": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 168.26666666666668,
+        "frame_length": 5049,
+        "snippet_length": 5049,
+        "snippet_duration": 168.3
+    },
+    "video_test_0001255": {
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_length": 31575,
+        "snippet_length": 31575,
+        "frame_duration": 1262.96,
+        "snippet_duration": 1263.0
+    },
+    "video_test_0000673": {
+        "frame_duration": 170.03333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5102,
+        "snippet_length": 5102,
+        "snippet_duration": 170.06666666666666
+    },
+    "video_test_0000450": {
+        "frame_length": 852,
+        "snippet_length": 852,
+        "frame_duration": 28.366666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 28.4
+    },
+    "video_test_0001079": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 14724,
+        "snippet_length": 14724,
+        "frame_duration": 490.76666666666665,
+        "snippet_duration": 490.8
+    },
+    "video_validation_0000856": {
+        "frame_length": 2491,
+        "snippet_length": 2491,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 83.0,
+        "snippet_duration": 83.03333333333333
+    },
+    "video_test_0001447": {
+        "frame_duration": 229.8,
+        "frame_length": 6895,
+        "snippet_length": 6895,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 229.83333333333334
+    },
+    "video_test_0001066": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 152.3,
+        "frame_length": 4570,
+        "snippet_length": 4570,
+        "snippet_duration": 152.33333333333334
+    },
+    "video_test_0000740": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 12341,
+        "snippet_length": 12341,
+        "frame_duration": 411.3333333333333,
+        "snippet_duration": 411.3666666666667
+    },
+    "video_test_0000714": {
+        "frame_duration": 179.4,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5383,
+        "snippet_length": 5383,
+        "snippet_duration": 179.43333333333334
+    },
+    "video_validation_0000948": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 30.0,
+        "frame_length": 901,
+        "snippet_length": 901,
+        "snippet_duration": 30.033333333333335
+    },
+    "video_validation_0000904": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 228.53333333333333,
+        "frame_length": 6857,
+        "snippet_length": 6857,
+        "snippet_duration": 228.56666666666666
+    },
+    "video_test_0001257": {
+        "frame_duration": 247.66666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7431,
+        "snippet_length": 7431,
+        "snippet_duration": 247.7
+    },
+    "video_validation_0000858": {
+        "frame_duration": 111.13333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3335,
+        "snippet_length": 3335,
+        "snippet_duration": 111.16666666666667
+    },
+    "video_test_0000887": {
+        "frame_length": 11592,
+        "snippet_length": 11592,
+        "frame_duration": 386.3666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 386.4
+    },
+    "video_validation_0000909": {
+        "frame_length": 5907,
+        "snippet_length": 5907,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 196.86666666666667,
+        "snippet_duration": 196.9
+    },
+    "video_test_0001324": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 163.8,
+        "frame_length": 4915,
+        "snippet_length": 4915,
+        "snippet_duration": 163.83333333333334
+    },
+    "video_validation_0000667": {
+        "frame_length": 9970,
+        "snippet_length": 9970,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 332.3,
+        "snippet_duration": 332.3333333333333
+    },
+    "video_test_0000723": {
+        "frame_duration": 226.2,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6787,
+        "snippet_length": 6787,
+        "snippet_duration": 226.23333333333332
+    },
+    "video_test_0000028": {
+        "frame_duration": 145.83333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4376,
+        "snippet_length": 4376,
+        "snippet_duration": 145.86666666666667
+    },
+    "video_validation_0000981": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3928,
+        "snippet_length": 3928,
+        "frame_duration": 130.9,
+        "snippet_duration": 130.93333333333334
+    },
+    "video_test_0001281": {
+        "frame_duration": 70.43703333333333,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_length": 2112,
+        "snippet_length": 2112,
+        "snippet_duration": 70.4704
+    },
+    "video_test_0001078": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 97.43333333333334,
+        "frame_length": 2924,
+        "snippet_length": 2924,
+        "snippet_duration": 97.46666666666667
+    },
+    "video_validation_0000415": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 281.96666666666664,
+        "frame_length": 8460,
+        "snippet_length": 8460,
+        "snippet_duration": 282.0
+    },
+    "video_test_0000807": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 159.23333333333332,
+        "frame_length": 4778,
+        "snippet_length": 4778,
+        "snippet_duration": 159.26666666666668
+    },
+    "video_validation_0000983": {
+        "frame_duration": 136.16666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4086,
+        "snippet_length": 4086,
+        "snippet_duration": 136.2
+    },
+    "video_test_0001446": {
+        "frame_length": 8568,
+        "snippet_length": 8568,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 285.56666666666666,
+        "snippet_duration": 285.6
+    },
+    "video_test_0000379": {
+        "frame_duration": 848.2140333333333,
+        "frame_length": 25422,
+        "snippet_length": 25422,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "snippet_duration": 848.2474
+    },
+    "video_validation_0000210": {
+        "frame_duration": 139.43333333333334,
+        "frame_length": 4184,
+        "snippet_length": 4184,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 139.46666666666667
+    },
+    "video_test_0000538": {
+        "frame_length": 5473,
+        "snippet_length": 5473,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 182.4,
+        "snippet_duration": 182.43333333333334
+    },
+    "video_validation_0000165": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 106.33333333333333,
+        "frame_length": 3191,
+        "snippet_length": 3191,
+        "snippet_duration": 106.36666666666666
+    },
+    "video_test_0001531": {
+        "frame_length": 6513,
+        "snippet_length": 6513,
+        "frame_duration": 217.06666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 217.1
+    },
+    "video_test_0000846": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 816,
+        "snippet_length": 816,
+        "frame_duration": 27.166666666666668,
+        "snippet_duration": 27.2
+    },
+    "video_validation_0000289": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 131.36666666666667,
+        "frame_length": 3942,
+        "snippet_length": 3942,
+        "snippet_duration": 131.4
+    },
+    "video_validation_0000315": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 159.66666666666666,
+        "frame_length": 4791,
+        "snippet_length": 4791,
+        "snippet_duration": 159.7
+    },
+    "video_test_0000372": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 8819,
+        "snippet_length": 8819,
+        "frame_duration": 293.93333333333334,
+        "snippet_duration": 293.96666666666664
+    },
+    "video_validation_0000488": {
+        "frame_duration": 112.66666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3381,
+        "snippet_length": 3381,
+        "snippet_duration": 112.7
+    },
+    "video_test_0000844": {
+        "frame_duration": 169.36666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5082,
+        "snippet_length": 5082,
+        "snippet_duration": 169.4
+    },
+    "video_validation_0000368": {
+        "frame_duration": 285.8,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 8575,
+        "snippet_length": 8575,
+        "snippet_duration": 285.8333333333333
+    },
+    "video_validation_0000941": {
+        "frame_duration": 231.26666666666668,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6939,
+        "snippet_length": 6939,
+        "snippet_duration": 231.3
+    },
+    "video_test_0000278": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 215.13333333333333,
+        "frame_length": 6455,
+        "snippet_length": 6455,
+        "snippet_duration": 215.16666666666666
+    },
+    "video_validation_0000060": {
+        "frame_duration": 187.0,
+        "frame_length": 5611,
+        "snippet_length": 5611,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 187.03333333333333
+    },
+    "video_validation_0000190": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 265,
+        "snippet_length": 265,
+        "frame_duration": 8.8,
+        "snippet_duration": 8.833333333333334
+    },
+    "video_test_0000413": {
+        "frame_duration": 42.666666666666664,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1281,
+        "snippet_length": 1281,
+        "snippet_duration": 42.7
+    },
+    "video_validation_0000787": {
+        "frame_length": 1184,
+        "snippet_length": 1184,
+        "frame_duration": 39.43333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 39.46666666666667
+    },
+    "video_test_0001358": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6584,
+        "snippet_length": 6584,
+        "frame_duration": 219.43333333333334,
+        "snippet_duration": 219.46666666666667
+    },
+    "video_validation_0000187": {
+        "frame_length": 1798,
+        "snippet_length": 1798,
+        "frame_duration": 59.9,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 59.93333333333333
+    },
+    "video_test_0000129": {
+        "frame_length": 5757,
+        "snippet_length": 5757,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 191.86666666666667,
+        "snippet_duration": 191.9
+    },
+    "video_test_0000987": {
+        "frame_length": 5544,
+        "snippet_length": 5544,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 184.76666666666668,
+        "snippet_duration": 184.8
+    },
+    "video_validation_0000267": {
+        "frame_duration": 381.6333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 11450,
+        "snippet_length": 11450,
+        "snippet_duration": 381.6666666666667
+    },
+    "video_validation_0000908": {
+        "frame_duration": 263.56666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7908,
+        "snippet_length": 7908,
+        "snippet_duration": 263.6
+    },
+    "video_test_0000131": {
+        "frame_length": 3919,
+        "snippet_length": 3919,
+        "frame_duration": 130.6,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 130.63333333333333
+    },
+    "video_validation_0000946": {
+        "frame_length": 2799,
+        "snippet_length": 2799,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 93.26666666666667,
+        "snippet_duration": 93.3
+    },
+    "video_test_0000448": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 100.4,
+        "frame_length": 3013,
+        "snippet_length": 3013,
+        "snippet_duration": 100.43333333333334
+    },
+    "video_validation_0000155": {
+        "frame_length": 2263,
+        "snippet_length": 2263,
+        "frame_duration": 75.4,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 75.43333333333334
+    },
+    "video_validation_0000851": {
+        "frame_duration": 30.966666666666665,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 930,
+        "snippet_length": 930,
+        "snippet_duration": 31.0
+    },
+    "video_validation_0000418": {
+        "frame_duration": 246.43333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7394,
+        "snippet_length": 7394,
+        "snippet_duration": 246.46666666666667
+    },
+    "video_validation_0000855": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 153.9,
+        "frame_length": 4618,
+        "snippet_length": 4618,
+        "snippet_duration": 153.93333333333334
+    },
+    "video_test_0001146": {
+        "frame_length": 6520,
+        "snippet_length": 6520,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 217.3,
+        "snippet_duration": 217.33333333333334
+    },
+    "video_test_0000324": {
+        "frame_length": 4470,
+        "snippet_length": 4470,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 148.96666666666667,
+        "snippet_duration": 149.0
+    },
+    "video_test_0000698": {
+        "frame_length": 510,
+        "snippet_length": 510,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 16.966666666666665,
+        "snippet_duration": 17.0
+    },
+    "video_validation_0000185": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 60.53333333333333,
+        "frame_length": 1817,
+        "snippet_length": 1817,
+        "snippet_duration": 60.56666666666667
+    },
+    "video_validation_0000663": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6779,
+        "snippet_length": 6779,
+        "frame_duration": 225.93333333333334,
+        "snippet_duration": 225.96666666666667
+    },
+    "video_test_0000443": {
+        "frame_duration": 291.3666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 8742,
+        "snippet_length": 8742,
+        "snippet_duration": 291.4
+    },
+    "video_validation_0000902": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_duration": 593.1592333333333,
+        "frame_length": 17778,
+        "snippet_length": 17778,
+        "snippet_duration": 593.1926
+    },
+    "video_test_0001313": {
+        "frame_length": 5218,
+        "snippet_length": 5218,
+        "frame_duration": 173.9,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 173.93333333333334
+    },
+    "video_test_0001556": {
+        "frame_duration": 103.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3094,
+        "snippet_length": 3094,
+        "snippet_duration": 103.13333333333334
+    },
+    "video_validation_0000688": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 131.96666666666667,
+        "frame_length": 3960,
+        "snippet_length": 3960,
+        "snippet_duration": 132.0
+    },
+    "video_validation_0000151": {
+        "frame_duration": 33.43333333333333,
+        "frame_length": 1004,
+        "snippet_length": 1004,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 33.46666666666667
+    },
+    "video_test_0001008": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 99.46666666666667,
+        "frame_length": 2985,
+        "snippet_length": 2985,
+        "snippet_duration": 99.5
+    },
+    "video_validation_0000362": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 14896,
+        "snippet_length": 14896,
+        "frame_duration": 496.5,
+        "snippet_duration": 496.53333333333336
+    },
+    "video_validation_0000055": {
+        "frame_duration": 162.73333333333332,
+        "frame_length": 4883,
+        "snippet_length": 4883,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 162.76666666666668
+    },
+    "video_validation_0000188": {
+        "frame_duration": 170.36666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5112,
+        "snippet_length": 5112,
+        "snippet_duration": 170.4
+    },
+    "video_test_0000004": {
+        "frame_length": 1012,
+        "snippet_length": 1012,
+        "frame_duration": 33.7,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 33.733333333333334
+    },
+    "video_test_0000211": {
+        "frame_length": 2963,
+        "snippet_length": 2963,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 98.73333333333333,
+        "snippet_duration": 98.76666666666667
+    },
+    "video_test_0001123": {
+        "frame_length": 7705,
+        "snippet_length": 7705,
+        "frame_duration": 256.8,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 256.8333333333333
+    },
+    "video_test_0000622": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 205.3,
+        "frame_length": 6160,
+        "snippet_length": 6160,
+        "snippet_duration": 205.33333333333334
+    },
+    "video_validation_0000314": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_length": 26926,
+        "snippet_length": 26926,
+        "frame_duration": 898.3975,
+        "snippet_duration": 898.4308666666667
+    },
+    "video_validation_0000664": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6567,
+        "snippet_length": 6567,
+        "frame_duration": 218.86666666666667,
+        "snippet_duration": 218.9
+    },
+    "video_test_0001081": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 117.1,
+        "frame_length": 3514,
+        "snippet_length": 3514,
+        "snippet_duration": 117.13333333333334
+    },
+    "video_validation_0000935": {
+        "frame_length": 2938,
+        "snippet_length": 2938,
+        "frame_duration": 97.9,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 97.93333333333334
+    },
+    "video_validation_0000179": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5570,
+        "snippet_length": 5570,
+        "frame_duration": 185.63333333333333,
+        "snippet_duration": 185.66666666666666
+    },
+    "video_validation_0000943": {
+        "frame_duration": 108.36666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3252,
+        "snippet_length": 3252,
+        "snippet_duration": 108.4
+    },
+    "video_test_0000964": {
+        "frame_length": 1898,
+        "snippet_length": 1898,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 63.233333333333334,
+        "snippet_duration": 63.266666666666666
+    },
+    "video_validation_0000783": {
+        "frame_length": 5910,
+        "snippet_length": 5910,
+        "frame_duration": 196.96666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 197.0
+    },
+    "video_validation_0000681": {
+        "frame_duration": 64.96666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1950,
+        "snippet_length": 1950,
+        "snippet_duration": 65.0
+    },
+    "video_test_0000442": {
+        "frame_length": 4649,
+        "snippet_length": 4649,
+        "frame_duration": 154.93333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 154.96666666666667
+    },
+    "video_validation_0000056": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4129,
+        "snippet_length": 4129,
+        "frame_duration": 137.6,
+        "snippet_duration": 137.63333333333333
+    },
+    "video_test_0000461": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3723,
+        "snippet_length": 3723,
+        "frame_duration": 124.06666666666666,
+        "snippet_duration": 124.1
+    },
+    "video_test_0000423": {
+        "frame_length": 6278,
+        "snippet_length": 6278,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 209.23333333333332,
+        "snippet_duration": 209.26666666666668
+    },
+    "video_test_0000864": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5864,
+        "snippet_length": 5864,
+        "frame_duration": 195.43333333333334,
+        "snippet_duration": 195.46666666666667
+    },
+    "video_test_0001114": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 48.43333333333333,
+        "frame_length": 1454,
+        "snippet_length": 1454,
+        "snippet_duration": 48.46666666666667
+    },
+    "video_validation_0000989": {
+        "frame_duration": 37.0,
+        "frame_length": 1111,
+        "snippet_length": 1111,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 37.03333333333333
+    },
+    "video_test_0000737": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4430,
+        "snippet_length": 4430,
+        "frame_duration": 147.63333333333333,
+        "snippet_duration": 147.66666666666666
+    },
+    "video_test_0000701": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1938,
+        "snippet_length": 1938,
+        "frame_duration": 64.56666666666666,
+        "snippet_duration": 64.6
+    },
+    "video_test_0000601": {
+        "frame_duration": 431.8333333333333,
+        "frame_length": 12956,
+        "snippet_length": 12956,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 431.8666666666667
+    },
+    "video_test_0000238": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3079,
+        "snippet_length": 3079,
+        "frame_duration": 102.6,
+        "snippet_duration": 102.63333333333334
+    },
+    "video_test_0000367": {
+        "frame_duration": 222.36666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6672,
+        "snippet_length": 6672,
+        "snippet_duration": 222.4
+    },
+    "video_test_0001468": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5537,
+        "snippet_length": 5537,
+        "frame_duration": 184.53333333333333,
+        "snippet_duration": 184.56666666666666
+    },
+    "video_test_0001389": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4246,
+        "snippet_length": 4246,
+        "frame_duration": 141.5,
+        "snippet_duration": 141.53333333333333
+    },
+    "video_test_0000626": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 255.16666666666666,
+        "frame_length": 7656,
+        "snippet_length": 7656,
+        "snippet_duration": 255.2
+    },
+    "video_validation_0000788": {
+        "frame_length": 2023,
+        "snippet_length": 2023,
+        "frame_duration": 67.4,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 67.43333333333334
+    },
+    "video_validation_0000162": {
+        "frame_duration": 198.0,
+        "frame_length": 5941,
+        "snippet_length": 5941,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 198.03333333333333
+    },
+    "video_validation_0000859": {
+        "frame_duration": 62.9,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1888,
+        "snippet_length": 1888,
+        "snippet_duration": 62.93333333333333
+    },
+    "video_validation_0000905": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 169.0,
+        "frame_length": 5071,
+        "snippet_length": 5071,
+        "snippet_duration": 169.03333333333333
+    },
+    "video_validation_0000982": {
+        "frame_duration": 21.3,
+        "frame_length": 640,
+        "snippet_length": 640,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 21.333333333333332
+    },
+    "video_test_0001219": {
+        "frame_duration": 153.23333333333332,
+        "frame_length": 4598,
+        "snippet_length": 4598,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 153.26666666666668
+    },
+    "video_test_0000392": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3312,
+        "snippet_length": 3312,
+        "frame_duration": 110.36666666666666,
+        "snippet_duration": 110.4
+    },
+    "video_validation_0000937": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 57.86666666666667,
+        "frame_length": 1737,
+        "snippet_length": 1737,
+        "snippet_duration": 57.9
+    },
+    "video_test_0000242": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1408,
+        "snippet_length": 1408,
+        "frame_duration": 46.9,
+        "snippet_duration": 46.93333333333333
+    },
+    "video_validation_0000942": {
+        "frame_length": 2390,
+        "snippet_length": 2390,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 79.63333333333334,
+        "snippet_duration": 79.66666666666667
+    },
+    "video_test_0001159": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 603.6,
+        "frame_length": 18109,
+        "snippet_length": 18109,
+        "snippet_duration": 603.6333333333333
+    },
+    "video_validation_0000159": {
+        "frame_length": 13358,
+        "snippet_length": 13358,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 445.23333333333335,
+        "snippet_duration": 445.26666666666665
+    },
+    "video_validation_0000164": {
+        "frame_length": 5201,
+        "snippet_length": 5201,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 173.33333333333334,
+        "snippet_duration": 173.36666666666667
+    },
+    "video_validation_0000163": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7016,
+        "snippet_length": 7016,
+        "frame_duration": 233.83333333333334,
+        "snippet_duration": 233.86666666666667
+    },
+    "video_validation_0000682": {
+        "frame_duration": 169.1,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5074,
+        "snippet_length": 5074,
+        "snippet_duration": 169.13333333333333
+    },
+    "video_validation_0000857": {
+        "frame_duration": 49.06666666666667,
+        "frame_length": 1473,
+        "snippet_length": 1473,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 49.1
+    },
+    "video_test_0001496": {
+        "frame_duration": 150.93333333333334,
+        "frame_length": 4529,
+        "snippet_length": 4529,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 150.96666666666667
+    },
+    "video_validation_0000189": {
+        "frame_length": 3326,
+        "snippet_length": 3326,
+        "frame_duration": 110.83333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 110.86666666666666
+    },
+    "video_validation_0000683": {
+        "frame_duration": 37.9,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1138,
+        "snippet_length": 1138,
+        "snippet_duration": 37.93333333333333
+    },
+    "video_test_0000006": {
+        "frame_duration": 66.96666666666667,
+        "frame_length": 2010,
+        "snippet_length": 2010,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 67.0
+    },
+    "video_test_0001309": {
+        "frame_length": 2545,
+        "snippet_length": 2545,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 84.8,
+        "snippet_duration": 84.83333333333333
+    },
+    "video_test_0001207": {
+        "video_fps": 24.0,
+        "feature_fps": 24.0,
+        "frame_length": 26487,
+        "snippet_length": 26487,
+        "frame_duration": 1103.5833333333333,
+        "snippet_duration": 1103.625
+    },
+    "video_validation_0000204": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 8832,
+        "snippet_length": 8832,
+        "frame_duration": 294.3666666666667,
+        "snippet_duration": 294.4
+    },
+    "video_validation_0000361": {
+        "frame_length": 20891,
+        "snippet_length": 20891,
+        "frame_duration": 696.3333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 696.3666666666667
+    },
+    "video_validation_0000166": {
+        "frame_duration": 145.26666666666668,
+        "frame_length": 4359,
+        "snippet_length": 4359,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 145.3
+    },
+    "video_validation_0000668": {
+        "frame_duration": 370.8333333333333,
+        "frame_length": 11126,
+        "snippet_length": 11126,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 370.8666666666667
+    },
+    "video_validation_0000990": {
+        "frame_duration": 122.43333333333334,
+        "frame_length": 3674,
+        "snippet_length": 3674,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 122.46666666666667
+    },
+    "video_validation_0000154": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1573,
+        "snippet_length": 1573,
+        "frame_duration": 52.4,
+        "snippet_duration": 52.43333333333333
+    },
+    "video_test_0001182": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 119.33333333333333,
+        "frame_length": 3581,
+        "snippet_length": 3581,
+        "snippet_duration": 119.36666666666666
+    },
+    "video_test_0000046": {
+        "frame_duration": 177.83333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5336,
+        "snippet_length": 5336,
+        "snippet_duration": 177.86666666666667
+    },
+    "video_validation_0000420": {
+        "frame_duration": 881.08,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_length": 22028,
+        "snippet_length": 22028,
+        "snippet_duration": 881.12
+    },
+    "video_validation_0000370": {
+        "frame_duration": 754.4333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 22634,
+        "snippet_length": 22634,
+        "snippet_duration": 754.4666666666667
+    },
+    "video_validation_0000853": {
+        "frame_duration": 71.0,
+        "frame_length": 2131,
+        "snippet_length": 2131,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 71.03333333333333
+    },
+    "video_test_0001409": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5178,
+        "snippet_length": 5178,
+        "frame_duration": 172.56666666666666,
+        "snippet_duration": 172.6
+    },
+    "video_validation_0000320": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 15717,
+        "snippet_length": 15717,
+        "frame_duration": 523.8666666666667,
+        "snippet_duration": 523.9
+    },
+    "video_validation_0000487": {
+        "frame_length": 9217,
+        "snippet_length": 9217,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 307.2,
+        "snippet_duration": 307.23333333333335
+    },
+    "video_test_0000903": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 9455,
+        "snippet_length": 9455,
+        "frame_duration": 315.1333333333333,
+        "snippet_duration": 315.1666666666667
+    },
+    "video_test_0001040": {
+        "frame_length": 5307,
+        "snippet_length": 5307,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 176.86666666666667,
+        "snippet_duration": 176.9
+    },
+    "video_validation_0000180": {
+        "frame_length": 6618,
+        "snippet_length": 6618,
+        "frame_duration": 220.56666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 220.6
+    },
+    "video_validation_0000687": {
+        "frame_duration": 32.6,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 979,
+        "snippet_length": 979,
+        "snippet_duration": 32.63333333333333
+    },
+    "video_test_0000444": {
+        "frame_duration": 157.0,
+        "frame_length": 4711,
+        "snippet_length": 4711,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 157.03333333333333
+    },
+    "video_test_0000556": {
+        "frame_duration": 67.63333333333334,
+        "frame_length": 2030,
+        "snippet_length": 2030,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 67.66666666666667
+    },
+    "video_test_0001532": {
+        "frame_duration": 238.76666666666668,
+        "frame_length": 7164,
+        "snippet_length": 7164,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 238.8
+    },
+    "video_test_0000045": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 7060,
+        "snippet_length": 7060,
+        "frame_duration": 235.3,
+        "snippet_duration": 235.33333333333334
+    },
+    "video_validation_0000172": {
+        "frame_duration": 103.66666666666667,
+        "frame_length": 3111,
+        "snippet_length": 3111,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 103.7
+    },
+    "video_test_0001153": {
+        "frame_length": 3850,
+        "snippet_length": 3850,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 128.3,
+        "snippet_duration": 128.33333333333334
+    },
+    "video_validation_0000686": {
+        "frame_length": 922,
+        "snippet_length": 922,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 30.7,
+        "snippet_duration": 30.733333333333334
+    },
+    "video_test_0000039": {
+        "frame_duration": 227.26666666666668,
+        "frame_length": 6819,
+        "snippet_length": 6819,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 227.3
+    },
+    "video_validation_0000662": {
+        "frame_duration": 98.0,
+        "frame_length": 2941,
+        "snippet_length": 2941,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 98.03333333333333
+    },
+    "video_validation_0000057": {
+        "frame_duration": 227.66666666666666,
+        "frame_length": 6831,
+        "snippet_length": 6831,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 227.7
+    },
+    "video_validation_0000269": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 21.833333333333332,
+        "frame_length": 656,
+        "snippet_length": 656,
+        "snippet_duration": 21.866666666666667
+    },
+    "video_test_0000991": {
+        "frame_duration": 82.23333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2468,
+        "snippet_length": 2468,
+        "snippet_duration": 82.26666666666667
+    },
+    "video_validation_0000208": {
+        "frame_length": 4478,
+        "snippet_length": 4478,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 149.23333333333332,
+        "snippet_duration": 149.26666666666668
+    },
+    "video_test_0000560": {
+        "frame_length": 1502,
+        "snippet_length": 1502,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 50.03333333333333,
+        "snippet_duration": 50.06666666666667
+    },
+    "video_validation_0000152": {
+        "frame_length": 4972,
+        "snippet_length": 4972,
+        "frame_duration": 165.7,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 165.73333333333332
+    },
+    "video_validation_0000284": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2038,
+        "snippet_length": 2038,
+        "frame_duration": 67.9,
+        "snippet_duration": 67.93333333333334
+    },
+    "video_validation_0000285": {
+        "frame_length": 3899,
+        "snippet_length": 3899,
+        "frame_duration": 129.93333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 129.96666666666667
+    },
+    "video_validation_0000264": {
+        "frame_length": 8510,
+        "snippet_length": 8510,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 283.6333333333333,
+        "snippet_duration": 283.6666666666667
+    },
+    "video_validation_0000169": {
+        "frame_duration": 194.13333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5825,
+        "snippet_length": 5825,
+        "snippet_duration": 194.16666666666666
+    },
+    "video_validation_0000157": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 50.266666666666666,
+        "frame_length": 1509,
+        "snippet_length": 1509,
+        "snippet_duration": 50.3
+    },
+    "video_test_0000897": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3603,
+        "snippet_length": 3603,
+        "frame_duration": 120.06666666666666,
+        "snippet_duration": 120.1
+    },
+    "video_validation_0000173": {
+        "frame_duration": 209.93333333333334,
+        "frame_length": 6299,
+        "snippet_length": 6299,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 209.96666666666667
+    },
+    "video_test_0000254": {
+        "frame_duration": 209.7,
+        "frame_length": 6292,
+        "snippet_length": 6292,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 209.73333333333332
+    },
+    "video_validation_0000203": {
+        "frame_duration": 189.46666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5685,
+        "snippet_length": 5685,
+        "snippet_duration": 189.5
+    },
+    "video_validation_0000986": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 20.066666666666666,
+        "frame_length": 603,
+        "snippet_length": 603,
+        "snippet_duration": 20.1
+    },
+    "video_validation_0000311": {
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_duration": 698.96,
+        "frame_length": 17475,
+        "snippet_length": 17475,
+        "snippet_duration": 699.0
+    },
+    "video_test_0001319": {
+        "frame_length": 1667,
+        "snippet_length": 1667,
+        "frame_duration": 55.53333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 55.56666666666667
+    },
+    "video_validation_0000184": {
+        "frame_duration": 168.4,
+        "frame_length": 5053,
+        "snippet_length": 5053,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 168.43333333333334
+    },
+    "video_test_0000786": {
+        "frame_duration": 98.0,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2941,
+        "snippet_length": 2941,
+        "snippet_duration": 98.03333333333333
+    },
+    "video_test_0001174": {
+        "frame_duration": 233.9,
+        "frame_length": 7018,
+        "snippet_length": 7018,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 233.93333333333334
+    },
+    "video_test_0001168": {
+        "frame_duration": 109.63333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3290,
+        "snippet_length": 3290,
+        "snippet_duration": 109.66666666666667
+    },
+    "video_test_0000308": {
+        "frame_length": 7262,
+        "snippet_length": 7262,
+        "frame_duration": 242.03333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 242.06666666666666
+    },
+    "video_test_0001223": {
+        "frame_duration": 116.0,
+        "frame_length": 3481,
+        "snippet_length": 3481,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 116.03333333333333
+    },
+    "video_validation_0000412": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 11510,
+        "snippet_length": 11510,
+        "frame_duration": 383.6333333333333,
+        "snippet_duration": 383.6666666666667
+    },
+    "video_test_0000602": {
+        "frame_duration": 207.76666666666668,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6234,
+        "snippet_length": 6234,
+        "snippet_duration": 207.8
+    },
+    "video_test_0000767": {
+        "frame_duration": 77.2,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2317,
+        "snippet_length": 2317,
+        "snippet_duration": 77.23333333333333
+    },
+    "video_test_0000635": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 31.5,
+        "frame_length": 946,
+        "snippet_length": 946,
+        "snippet_duration": 31.533333333333335
+    },
+    "video_validation_0000207": {
+        "frame_length": 5506,
+        "snippet_length": 5506,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 183.5,
+        "snippet_duration": 183.53333333333333
+    },
+    "video_validation_0000485": {
+        "frame_duration": 274.8333333333333,
+        "frame_length": 8246,
+        "snippet_length": 8246,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 274.8666666666667
+    },
+    "video_validation_0000939": {
+        "frame_length": 4670,
+        "snippet_length": 4670,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 155.63333333333333,
+        "snippet_duration": 155.66666666666666
+    },
+    "video_test_0000785": {
+        "frame_length": 2636,
+        "snippet_length": 2636,
+        "frame_duration": 87.83333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 87.86666666666666
+    },
+    "video_test_0000220": {
+        "frame_length": 7378,
+        "snippet_length": 7378,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 245.9,
+        "snippet_duration": 245.93333333333334
+    },
+    "video_test_0000756": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 35.93333333333333,
+        "frame_length": 1079,
+        "snippet_length": 1079,
+        "snippet_duration": 35.96666666666667
+    },
+    "video_test_0001325": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 175.06666666666666,
+        "frame_length": 5253,
+        "snippet_length": 5253,
+        "snippet_duration": 175.1
+    },
+    "video_validation_0000901": {
+        "frame_length": 3640,
+        "snippet_length": 3640,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 121.3,
+        "snippet_duration": 121.33333333333333
+    },
+    "video_test_0000617": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 9806,
+        "snippet_length": 9806,
+        "frame_duration": 326.8333333333333,
+        "snippet_duration": 326.8666666666667
+    },
+    "video_validation_0000181": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 148.83333333333334,
+        "frame_length": 4466,
+        "snippet_length": 4466,
+        "snippet_duration": 148.86666666666667
+    },
+    "video_validation_0000414": {
+        "frame_length": 9084,
+        "snippet_length": 9084,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 302.76666666666665,
+        "snippet_duration": 302.8
+    },
+    "video_test_0000796": {
+        "frame_length": 3819,
+        "snippet_length": 3819,
+        "frame_duration": 127.26666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 127.3
+    },
+    "video_validation_0000486": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5748,
+        "snippet_length": 5748,
+        "frame_duration": 191.56666666666666,
+        "snippet_duration": 191.6
+    },
+    "video_test_0001369": {
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "frame_duration": 576.6427333333334,
+        "frame_length": 17283,
+        "snippet_length": 17283,
+        "snippet_duration": 576.6761
+    },
+    "video_test_0000624": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3594,
+        "snippet_length": 3594,
+        "frame_duration": 119.76666666666667,
+        "snippet_duration": 119.8
+    },
+    "video_validation_0000282": {
+        "frame_length": 1152,
+        "snippet_length": 1152,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 38.36666666666667,
+        "snippet_duration": 38.4
+    },
+    "video_test_0001080": {
+        "frame_duration": 69.06666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2073,
+        "snippet_length": 2073,
+        "snippet_duration": 69.1
+    },
+    "video_validation_0000985": {
+        "frame_duration": 186.36666666666667,
+        "frame_length": 5592,
+        "snippet_length": 5592,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 186.4
+    },
+    "video_test_0000273": {
+        "frame_length": 3856,
+        "snippet_length": 3856,
+        "frame_duration": 128.6285,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "snippet_duration": 128.66186666666667
+    },
+    "video_validation_0000484": {
+        "frame_duration": 948.68,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_length": 23718,
+        "snippet_length": 23718,
+        "snippet_duration": 948.72
+    },
+    "video_test_0001058": {
+        "frame_duration": 965.84,
+        "frame_length": 24147,
+        "snippet_length": 24147,
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "snippet_duration": 965.88
+    },
+    "video_validation_0000268": {
+        "frame_duration": 306.23333333333335,
+        "frame_length": 9188,
+        "snippet_length": 9188,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 306.26666666666665
+    },
+    "video_validation_0000281": {
+        "frame_duration": 227.73333333333332,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 6833,
+        "snippet_length": 6833,
+        "snippet_duration": 227.76666666666668
+    },
+    "video_validation_0000262": {
+        "frame_length": 976,
+        "snippet_length": 976,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 32.5,
+        "snippet_duration": 32.53333333333333
+    },
+    "video_test_0001162": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 120.7,
+        "frame_length": 3622,
+        "snippet_length": 3622,
+        "snippet_duration": 120.73333333333333
+    },
+    "video_validation_0000411": {
+        "frame_length": 19439,
+        "snippet_length": 19439,
+        "frame_duration": 809.9166666666666,
+        "video_fps": 24.0,
+        "feature_fps": 24.0,
+        "snippet_duration": 809.9583333333334
+    },
+    "video_test_0000771": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 223.13333333333333,
+        "frame_length": 6695,
+        "snippet_length": 6695,
+        "snippet_duration": 223.16666666666666
+    },
+    "video_validation_0000319": {
+        "frame_length": 8906,
+        "snippet_length": 8906,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 296.8333333333333,
+        "snippet_duration": 296.8666666666667
+    },
+    "video_test_0000577": {
+        "frame_duration": 164.26666666666668,
+        "frame_length": 4929,
+        "snippet_length": 4929,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 164.3
+    },
+    "video_test_0001098": {
+        "frame_length": 4987,
+        "snippet_length": 4987,
+        "frame_duration": 166.2,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 166.23333333333332
+    },
+    "video_test_0001076": {
+        "frame_length": 1940,
+        "snippet_length": 1940,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 64.63333333333334,
+        "snippet_duration": 64.66666666666667
+    },
+    "video_test_0001433": {
+        "frame_length": 588,
+        "snippet_length": 588,
+        "frame_duration": 19.566666666666666,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 19.6
+    },
+    "video_test_0000718": {
+        "frame_duration": 40.56666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1218,
+        "snippet_length": 1218,
+        "snippet_duration": 40.6
+    },
+    "video_test_0000762": {
+        "frame_duration": 132.96666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3990,
+        "snippet_length": 3990,
+        "snippet_duration": 133.0
+    },
+    "video_validation_0000789": {
+        "frame_length": 5488,
+        "snippet_length": 5488,
+        "frame_duration": 182.9,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 182.93333333333334
+    },
+    "video_test_0000270": {
+        "frame_length": 5284,
+        "snippet_length": 5284,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 176.1,
+        "snippet_duration": 176.13333333333333
+    },
+    "video_validation_0000419": {
+        "video_fps": 25.0,
+        "feature_fps": 25.0,
+        "frame_duration": 904.96,
+        "frame_length": 22625,
+        "snippet_length": 22625,
+        "snippet_duration": 905.0
+    },
+    "video_validation_0000490": {
+        "frame_length": 10322,
+        "snippet_length": 10322,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 344.03333333333336,
+        "snippet_duration": 344.06666666666666
+    },
+    "video_validation_0000177": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 4548,
+        "snippet_length": 4548,
+        "frame_duration": 151.56666666666666,
+        "snippet_duration": 151.6
+    },
+    "video_test_0001508": {
+        "frame_length": 5596,
+        "snippet_length": 5596,
+        "frame_duration": 186.5,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 186.53333333333333
+    },
+    "video_validation_0000782": {
+        "frame_duration": 120.4,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3613,
+        "snippet_length": 3613,
+        "snippet_duration": 120.43333333333334
+    },
+    "video_test_0001201": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 12388,
+        "snippet_length": 12388,
+        "frame_duration": 412.9,
+        "snippet_duration": 412.93333333333334
+    },
+    "video_test_0001276": {
+        "frame_length": 1868,
+        "snippet_length": 1868,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 62.233333333333334,
+        "snippet_duration": 62.266666666666666
+    },
+    "video_validation_0000182": {
+        "frame_length": 3038,
+        "snippet_length": 3038,
+        "frame_duration": 101.23333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 101.26666666666667
+    },
+    "video_validation_0000906": {
+        "frame_length": 12410,
+        "snippet_length": 12410,
+        "frame_duration": 413.6333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 413.6666666666667
+    },
+    "video_test_0000611": {
+        "frame_length": 5359,
+        "snippet_length": 5359,
+        "frame_duration": 178.6,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 178.63333333333333
+    },
+    "video_test_0001202": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1375,
+        "snippet_length": 1375,
+        "frame_duration": 45.8,
+        "snippet_duration": 45.833333333333336
+    },
+    "video_validation_0000690": {
+        "frame_length": 8407,
+        "snippet_length": 8407,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 280.2,
+        "snippet_duration": 280.23333333333335
+    },
+    "video_validation_0000287": {
+        "frame_length": 3872,
+        "snippet_length": 3872,
+        "frame_duration": 129.03333333333333,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 129.06666666666666
+    },
+    "video_test_0001452": {
+        "frame_duration": 72.7,
+        "frame_length": 2182,
+        "snippet_length": 2182,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 72.73333333333333
+    },
+    "video_validation_0000270": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2028,
+        "snippet_length": 2028,
+        "frame_duration": 67.56666666666666,
+        "snippet_duration": 67.6
+    },
+    "video_test_0001339": {
+        "frame_duration": 156.23333333333332,
+        "frame_length": 4688,
+        "snippet_length": 4688,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 156.26666666666668
+    },
+    "video_validation_0000689": {
+        "frame_duration": 20.3,
+        "frame_length": 610,
+        "snippet_length": 610,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 20.333333333333332
+    },
+    "video_validation_0000934": {
+        "frame_length": 2291,
+        "snippet_length": 2291,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 76.33333333333333,
+        "snippet_duration": 76.36666666666666
+    },
+    "video_test_0001127": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5426,
+        "snippet_length": 5426,
+        "frame_duration": 180.83333333333334,
+        "snippet_duration": 180.86666666666667
+    },
+    "video_validation_0000364": {
+        "frame_duration": 112.5,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 3376,
+        "snippet_length": 3376,
+        "snippet_duration": 112.53333333333333
+    },
+    "video_test_0001483": {
+        "frame_length": 1248,
+        "snippet_length": 1248,
+        "frame_duration": 41.56666666666667,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 41.6
+    },
+    "video_validation_0000933": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 5237,
+        "snippet_length": 5237,
+        "frame_duration": 174.53333333333333,
+        "snippet_duration": 174.56666666666666
+    },
+    "video_test_0000007": {
+        "frame_duration": 482.7,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 14482,
+        "snippet_length": 14482,
+        "snippet_duration": 482.73333333333335
+    },
+    "video_validation_0000987": {
+        "frame_length": 3086,
+        "snippet_length": 3086,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 102.83333333333333,
+        "snippet_duration": 102.86666666666666
+    },
+    "video_test_0000814": {
+        "frame_length": 5434,
+        "snippet_length": 5434,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 181.1,
+        "snippet_duration": 181.13333333333333
+    },
+    "video_validation_0000984": {
+        "frame_duration": 46.3,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 1390,
+        "snippet_length": 1390,
+        "snippet_duration": 46.333333333333336
+    },
+    "video_validation_0000938": {
+        "frame_length": 1040,
+        "snippet_length": 1040,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 34.63333333333333,
+        "snippet_duration": 34.666666666666664
+    },
+    "video_test_0001527": {
+        "frame_duration": 212.56666666666666,
+        "frame_length": 6378,
+        "snippet_length": 6378,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "snippet_duration": 212.6
+    },
+    "video_test_0000716": {
+        "frame_duration": 670.67,
+        "frame_length": 20101,
+        "snippet_length": 20101,
+        "video_fps": 29.97002997002997,
+        "feature_fps": 29.97002997002997,
+        "snippet_duration": 670.7033666666666
+    },
+    "video_test_0000569": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 2643,
+        "snippet_length": 2643,
+        "frame_duration": 88.06666666666666,
+        "snippet_duration": 88.1
+    },
+    "video_test_0000882": {
+        "frame_length": 7452,
+        "snippet_length": 7452,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 248.36666666666667,
+        "snippet_duration": 248.4
+    },
+    "video_validation_0000153": {
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 171.3,
+        "frame_length": 5140,
+        "snippet_length": 5140,
+        "snippet_duration": 171.33333333333334
+    },
+    "video_test_0000981": {
+        "frame_duration": 27.933333333333334,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_length": 839,
+        "snippet_length": 839,
+        "snippet_duration": 27.966666666666665
+    },
+    "video_validation_0000367": {
+        "frame_length": 4051,
+        "snippet_length": 4051,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 135.0,
+        "snippet_duration": 135.03333333333333
+    },
+    "video_test_0000798": {
+        "frame_length": 3261,
+        "snippet_length": 3261,
+        "video_fps": 30.0,
+        "feature_fps": 30.0,
+        "frame_duration": 108.66666666666667,
+        "snippet_duration": 108.7
+    }
+}

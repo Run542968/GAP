@@ -386,8 +386,8 @@ class ConditionalDETR(nn.Module):
                 tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
                 outputs_coord = tmp.sigmoid() # [b,num_queries,2]
 
-            roi_pos = self._roi_align(outputs_coord,pos[-1],mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
-            roi_feat = self._roi_align(outputs_coord,clip_feat,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+            roi_pos = self._roi_align(outputs_coord,pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+            roi_feat = self._roi_align(outputs_coord,clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
             b,q,l,d = roi_feat.shape
             refine_hs = self.refine_decoder(hs[-1],clip_feat,roi_feat,
                                     video_feat_key_padding_mask=mask,

@@ -66,6 +66,7 @@ class BaseDataset(Dataset):
 
         self.slice_size = args.slice_size
         self.slice_overlap = args.slice_overlap if self.mode=="train" else args.inference_slice_overlap
+        self.inference_entire = args.inference_entire if self.mode=="inference" else False 
 
         self.classes, self.valid_anno_dict, self.valid_video_list, self.anno_dict, self.feature_info, self.src_valid_anno_dict = self._prepare_gt()
         self.description_dict = self._get_description(self.description_file_path)
@@ -199,7 +200,17 @@ class BaseDataset(Dataset):
             target['instance_masks'][seg_anno['label']]['mask'][start_idx:end_idx] = False
 
             # update segmentation labels 
-            target['segmentation_onehot_labels'][start_idx:end_idx,:] = np.repeat(id2onehot(num_classes,semantic_label).reshape(1,-1),end_idx-start_idx,axis=0)
+            try:
+                target['segmentation_onehot_labels'][start_idx:end_idx,:] = np.repeat(id2onehot(num_classes,semantic_label).reshape(1,-1),end_idx-start_idx,axis=0)
+            except:
+                print(f"video_name:{video_name}")
+                print(f"segment:{segment}")
+                print(f"feature_duration:{feature_duration}")
+                print(f"feat_length:{feat_length}")
+                print(f"end_idx:{end_idx}")
+                print(f"start_idx:{start_idx}")
+                print(f"id2onehot(num_classes,semantic_label).reshape(1,-1):{id2onehot(num_classes,semantic_label).reshape(1,-1)}")
+                raise
             target['segmentation_labels'][start_idx:end_idx] = semantic_label
 
             # update class-agnostic mask labels
@@ -322,7 +333,7 @@ class Thumos14Dataset(BaseDataset):
         video_set = set([x for x in anno_data if anno_data[x]['subset'] in subset]) # get the video name that belongs to 'subset'
         video_set = video_set.intersection(feature_info.keys()) # get the video name belongs both anno_dict and feature_info
         
-        exclude_videos = ['video_test_0000270', 'video_test_0001292', 'video_test_0001496']
+        exclude_videos = ['video_test_0000270', 'video_test_0001292', 'video_test_0001496', 'video_test_0000814'] # the annotation of 'video_test_0000814' is wrong, emm, segment second larger than video duration
         if exclude_videos is not None:
             assert isinstance(exclude_videos, (list, tuple))
             video_set = video_set.difference(exclude_videos)
@@ -352,44 +363,55 @@ class Thumos14Dataset(BaseDataset):
             valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > (feature_stride/video_fps)]
             
 
-            # crop video into slices of fixed window length, i.e., 128
-            # slice is the index to get feat
-            slide = int(slice_size * (1 - slice_overlap))
-            if feature_length <= slice_size:
-                slices = [[0,feature_length-1]]
+            if self.inference_entire:
+                if len(valid_annotations) > 0: # avoid the empty annotations (mainly applied for zero-set) 
+                    valid_anno_dict[video_name] = {
+                        'video_name': video_name, 'annotations': valid_annotations, 
+                        'video_fps': video_fps, 'feature_length': feature_length,
+                        'subset': anno_data[video_name]['subset'], 'feature_duration': feature_duration}
+                    valid_video_list.append(video_name)
+                    src_valid_anno_dict[video_name] = valid_anno_dict[video_name]
+                else:
+                    continue
             else:
-                # (length-kernel)/stride + 1
-                num_complete_slices = math.floor((feature_length-slice_size)/slide) + 1
-                slices = [[int(i*slide), int((i*slide)+slice_size-1)] for i in range(num_complete_slices)]
+                # crop video into slices of fixed window length, i.e., 128
+                # slice is the index to get feat
+                slide = int(slice_size * (1 - slice_overlap))
+                if feature_length <= slice_size:
+                    slices = [[0,feature_length-1]]
+                else:
+                    # (length-kernel)/stride + 1
+                    num_complete_slices = math.floor((feature_length-slice_size)/slide) + 1
+                    slices = [[int(i*slide), int((i*slide)+slice_size-1)] for i in range(num_complete_slices)]
 
-                if (num_complete_slices-1)*slide + slice_size < feature_length:
-                    if mode == "inference":
-                        # take the last incomplete slice
-                        last_slice_start = int(slide * num_complete_slices)
-                    else:
-                        # move left to get a complete slice.
-                        # This is a historical issue. The performance might be better
-                        # if we keep the same rule for training and inference 
-                        last_slice_start = max(0, feature_length - slice_size)
-                    slices.append([last_slice_start, feature_length-1])
-            
-            for slice in slices:
-                time_slices = [slice[0] / feature_fps, slice[1] / feature_fps]
-                feature_second = time_slices[1] - time_slices[0]
-                # perform integrity-based instance filtering
-                valid_window_annotations = self.get_valid_anno(valid_annotations, time_slices)
+                    if (num_complete_slices-1)*slide + slice_size < feature_length:
+                        if mode == "inference":
+                            # take the last incomplete slice
+                            last_slice_start = int(slide * num_complete_slices)
+                        else:
+                            # move left to get a complete slice.
+                            # This is a historical issue. The performance might be better
+                            # if we keep the same rule for training and inference 
+                            last_slice_start = max(0, feature_length - slice_size)
+                        slices.append([last_slice_start, feature_length-1])
                 
-                if mode == "inference" or len(valid_window_annotations) >= 1: # test phrase will add all slices, although it has empty annotation
-                    # rename the video slice
-                    new_vid_name = video_name + '_window_{}_{}'.format(*slice)
-                    new_vid_info = {
-                        'annotations': valid_window_annotations, 'src_video_name': video_name, 
-                        'video_fps': video_fps, 'feature_fps': feature_fps,
-                        # 'feature_length': slice_size, 
-                        'subset': anno_data[video_name]['subset'], 'feature_duration': feature_second, 'time_offset': time_slices[0]}
-                    valid_anno_dict[new_vid_name] = new_vid_info
-                    valid_video_list.append(new_vid_name)
-            
+                for slice in slices:
+                    time_slices = [slice[0] / feature_fps, slice[1] / feature_fps]
+                    feature_second = time_slices[1] - time_slices[0]
+                    # perform integrity-based instance filtering
+                    valid_window_annotations = self.get_valid_anno(valid_annotations, time_slices)
+                    
+                    if mode == "inference" or len(valid_window_annotations) >= 1: # test phrase will add all slices, although it has empty annotation
+                        # rename the video slice
+                        new_vid_name = video_name + '_window_{}_{}'.format(*slice)
+                        new_vid_info = {
+                            'annotations': valid_window_annotations, 'src_video_name': video_name, 
+                            'video_fps': video_fps, 'feature_fps': feature_fps,
+                            # 'feature_length': slice_size, 
+                            'subset': anno_data[video_name]['subset'], 'feature_duration': feature_second, 'time_offset': time_slices[0]}
+                        valid_anno_dict[new_vid_name] = new_vid_info
+                        valid_video_list.append(new_vid_name)
+                
             
             # store the origin annotation for evaluate
             if len(valid_annotations) > 0: # avoid the empty annotations (mainly applied for zero-set) 
@@ -404,34 +426,49 @@ class Thumos14Dataset(BaseDataset):
  
     def _get_feature(self,video_name, feature_path, feature_type):
         
-        src_video_name = self.valid_anno_dict[video_name]['src_video_name']
-        if feature_type == "CLIP":
-            feat_path = os.path.join(feature_path, src_video_name+".npy")
-        elif feature_type == "I3D":
-            raise NotImplementedError
-        
-        if os.path.exists(feat_path):
-            video_feat = np.load(feat_path, allow_pickle=True) # T,dim
+        if self.inference_entire:
+            if feature_type == "CLIP":
+                feat_path = os.path.join(feature_path, video_name+".npy")
+            elif feature_type == "I3D":
+                raise NotImplementedError
+            
+            if os.path.exists(feat_path):
+                video_feat = np.load(feat_path, allow_pickle=True) # T,dim
+            else:
+                raise ValueError(f"Don't exist the feat: {feat_path}")
+            
+            feature_data = torch.from_numpy(video_feat).float().contiguous() # Txdim
+
+            feature = feature_data
         else:
-            raise ValueError(f"Don't exist the feat: {feat_path}")
-        
-        feature_data = torch.from_numpy(video_feat).float().contiguous() # Txdim
+            src_video_name = self.valid_anno_dict[video_name]['src_video_name']
+            if feature_type == "CLIP":
+                feat_path = os.path.join(feature_path, src_video_name+".npy")
+            elif feature_type == "I3D":
+                raise NotImplementedError
+            
+            if os.path.exists(feat_path):
+                video_feat = np.load(feat_path, allow_pickle=True) # T,dim
+            else:
+                raise ValueError(f"Don't exist the feat: {feat_path}")
+            
+            feature_data = torch.from_numpy(video_feat).float().contiguous() # Txdim
 
-        slice_start, slice_end = [int(x) for x in video_name.split('_')[-2:]]
-        assert slice_end  > slice_start
-        assert slice_start < feature_data.shape[0]
-        feature_data = feature_data[slice_start:slice_end+1,:] # Txdim
+            slice_start, slice_end = [int(x) for x in video_name.split('_')[-2:]]
+            assert slice_end  > slice_start
+            assert slice_start < feature_data.shape[0]
+            feature_data = feature_data[slice_start:slice_end+1,:] # Txdim
 
-        # if feature_data.shape[0] < self.slice_size: # only appearing in inference stage and feature_length < slice_size
-        #     diff = self.slice_size - feature_data.shape[0]
-        #     feature_data = np.pad(
-        #         feature_data, ((0, diff), (0, 0)), mode='constant') # padding zero in tail
+            # if feature_data.shape[0] < self.slice_size: # only appearing in inference stage and feature_length < slice_size
+            #     diff = self.slice_size - feature_data.shape[0]
+            #     feature_data = np.pad(
+            #         feature_data, ((0, diff), (0, 0)), mode='constant') # padding zero in tail
 
-        #     # IMPORATANT: if padded is done, the length info must be modified
-        #     self.valid_anno_dict[video_name]['feature_length'] = self.slice_size
-        #     self.valid_anno_dict[video_name]['feature_duration'] = self.slice_size / self.valid_anno_dict[video_name]['feature_fps']
-        
-        feature = torch.Tensor(feature_data).float().contiguous()
+            #     # IMPORATANT: if padded is done, the length info must be modified
+            #     self.valid_anno_dict[video_name]['feature_length'] = self.slice_size
+            #     self.valid_anno_dict[video_name]['feature_duration'] = self.slice_size / self.valid_anno_dict[video_name]['feature_fps']
+            
+            feature = torch.Tensor(feature_data).float().contiguous()
 
         return feature
 
@@ -521,7 +558,8 @@ class ActivityNet13Dataset(BaseDataset):
                 raise ValueError(f"Don't define this task: {task}")
 
             # Remove incorrect annotions on ActivityNet (0.02 duration). Beside, because a snippet need 16 frames, the fps is 30. it must meet the minimum snippet length
-            valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > (feature_stride/video_fps) and x['segment'][1] - x['segment'][0] > 0.02]
+            # valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > (feature_stride/video_fps) and x['segment'][1] - x['segment'][0] > 0.02]
+            valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > 0.02]
 
 
             # fliter zero instance video

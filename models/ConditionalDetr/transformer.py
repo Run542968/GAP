@@ -296,11 +296,11 @@ class TransformerDecoder(nn.Module):
                     tmp[..., :1] += ref_points_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
                     outputs_coord = tmp.sigmoid() # [b,num_queries,2]
 
-                roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 if self.injection_type == "vfeat":
-                    roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 elif self.injection_type == "memory":
-                    roi_feat = _roi_align(outputs_coord,memory.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    roi_feat = _roi_align(outputs_coord,memory.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 else:
                     raise ValueError(f"ValueError:{self.injection_type}")
                 b,q,l,d = roi_feat.shape
@@ -355,11 +355,11 @@ class TransformerDecoder(nn.Module):
                     tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
                     outputs_coord = tmp.sigmoid() # [b,num_queries,2]
 
-                roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                roi_pos = _roi_align(outputs_coord,pos.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 if self.injection_type == "vfeat":
-                    roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    roi_feat = _roi_align(outputs_coord,clip_feat,memory_key_padding_mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 elif self.injection_type == "memory":
-                    roi_feat = _roi_align(outputs_coord,memory.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                    roi_feat = _roi_align(outputs_coord,memory.permute(1,0,2),memory_key_padding_mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 else:
                     raise ValueError(f"ValueError:{self.injection_type}")
                 b,q,l,d = roi_feat.shape
