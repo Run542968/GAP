@@ -64,7 +64,7 @@ class BaseDataset(Dataset):
         self.split = args.split
         self.split_id = args.split_id
         self.target_type = args.target_type
-        self.rank_loss = args.rank_loss
+        self.enable_relaxGT = args.enable_relaxGT
         self.shift_eps = args.shift_eps
         # self.binary = args.binary
 
@@ -195,11 +195,7 @@ class BaseDataset(Dataset):
             'semantic_labels':[],
             'label_names': [],
             'video_name': video_name,
-            'video_duration': feature_duration,   # only used in inference
-            # 'instance_masks':{}, # the mask to get action instance
-            # 'segmentation_labels': np.full(feat_length,num_classes), # [T]
-            # 'segmentation_onehot_labels': np.full((feat_length,num_classes),1/num_classes), # [T,num_classes], the label for snippet-level semantic segmentation
-            # 'mask_labels':np.full(feat_length,0) # [T]
+            'video_duration': feature_duration   # only used in inference
             }
         
         # sort the segments follow time sequence
@@ -229,7 +225,7 @@ class BaseDataset(Dataset):
             semantic_label = classes.index(seg_anno['label']) # the category labels for semantic classification
             target['semantic_labels'].append(semantic_label)
             
-            if self.rank_loss:
+            if self.enable_relaxGT:
                 inner_segment = self.generate_inner_segment_with_eps(segment,self.shift_eps)
                 outer_segment = self.generate_outer_segment_with_random_shifted(segment,self.shift_eps,0,feature_duration)
                 if self.target_type != "none":
@@ -251,31 +247,6 @@ class BaseDataset(Dataset):
                 target['semantic_labels'].append(semantic_label)
                 target['semantic_labels'].append(semantic_label)
 
-            # # add instance_masks to target dict
-            # if seg_anno['label'] not in target['instance_masks'].keys():
-            #     target['instance_masks'][seg_anno['label']] = {'label_id':semantic_label,'mask':np.ones(feat_length,dtype=bool)}
-            
-            # start_float, end_float = np.array(segment)/feature_duration*feat_length
-            # start, end = np.floor(start_float).astype(int), np.ceil(end_float).astype(int)
-            # start_idx, end_idx = max(start,0), min(end + 1,feat_length)
-            # target['instance_masks'][seg_anno['label']]['mask'][start_idx:end_idx] = False
-
-            # # update segmentation labels 
-            # try:
-            #     target['segmentation_onehot_labels'][start_idx:end_idx,:] = np.repeat(id2onehot(num_classes,semantic_label).reshape(1,-1),end_idx-start_idx,axis=0)
-            # except:
-            #     print(f"video_name:{video_name}")
-            #     print(f"segment:{segment}")
-            #     print(f"feature_duration:{feature_duration}")
-            #     print(f"feat_length:{feat_length}")
-            #     print(f"end_idx:{end_idx}")
-            #     print(f"start_idx:{start_idx}")
-            #     print(f"id2onehot(num_classes,semantic_label).reshape(1,-1):{id2onehot(num_classes,semantic_label).reshape(1,-1)}")
-            #     raise
-            # target['segmentation_labels'][start_idx:end_idx] = semantic_label
-
-            # # update class-agnostic mask labels
-            # target['mask_labels'][start_idx:end_idx] = 1
 
 
         # normalized the coordinate
@@ -289,17 +260,6 @@ class BaseDataset(Dataset):
                 if not isinstance(target[k], torch.Tensor):
                     target[k] = torch.from_numpy(np.array(target[k], dtype=dtype))
             
-            # # add instance_masks to target dict, cover to torch format
-            # for label_name in target['instance_masks'].keys():
-            #     target['instance_masks'][label_name]['mask'] = torch.from_numpy(target['instance_masks'][label_name]['mask'])
-            #     target['instance_masks'][label_name]['label_id'] = torch.from_numpy(np.array(target['instance_masks'][label_name]['label_id'],dtype='int64'))
-
-            # # convert 'segmentation_onehot_labels' to torch format
-            # target['segmentation_onehot_labels'] = torch.from_numpy(target['segmentation_onehot_labels'])
-            # target['segmentation_labels'] = torch.from_numpy(target['segmentation_labels'])
-
-            # # covert 'mask_labels' to torch format
-            # target['mask_labels'] = torch.from_numpy(target['mask_labels'])
 
             # covert 'semantic_labels' to torch format
             target['semantic_labels'] = torch.from_numpy(np.array(target['semantic_labels'],dtype='int64'))

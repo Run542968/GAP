@@ -77,6 +77,8 @@ parser.add_argument('--enable_injection', action='store_true', default=False)
 parser.add_argument('--injection_type', type=str, default='vfeat', choices=('vfeat', 'memory'))
 parser.add_argument('--injection_fuseType', type=str, default='add', choices=('add', 'mlp'))
 
+parser.add_argument('--enable_relaxGT', action='store_true', default=False)
+parser.add_argument('--shift_eps', type=float, default=0.7)
 
 
 # Loss
@@ -91,7 +93,6 @@ parser.add_argument('--actionness_loss', action='store_true', default=False)
 parser.add_argument('--actionness_loss_coef', type=float, default=2)
 
 parser.add_argument('--rank_loss', action='store_true', default=False)
-parser.add_argument('--shift_eps', type=float, default=0.7)
 
 
 
