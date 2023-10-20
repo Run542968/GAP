@@ -25,6 +25,8 @@ from utils.misc import collate_fn
 from utils.util import id2onehot
 import os
 import math
+import random
+
 
 logger = logging.getLogger()
 
@@ -63,6 +65,7 @@ class BaseDataset(Dataset):
         self.split_id = args.split_id
         self.target_type = args.target_type
         self.rank_loss = args.rank_loss
+        self.shift_eps = args.shift_eps
         # self.binary = args.binary
 
         self.slice_size = args.slice_size
@@ -140,6 +143,42 @@ class BaseDataset(Dataset):
 
         return feature
 
+
+    def generate_inner_segment_with_eps(self, origin_seg, eps):
+        origin_length = origin_seg[1] - origin_seg[0]
+        
+        # 计算允许的交集范围
+        allowed_intersection_length = origin_length * eps
+        
+        # 随机生成新段的长度
+        new_segment_length = random.uniform(allowed_intersection_length, origin_length)
+        
+        # 随机生成新段的起始位置
+        new_segment_start = random.uniform(origin_seg[0], origin_seg[1] - new_segment_length)
+        new_segment_end = new_segment_start + new_segment_length
+        
+        new_segment = [new_segment_start, new_segment_end]
+        return new_segment
+
+    def generate_outer_segment_with_random_shifted(self, origin_seg, eps, start_bound, end_bound):
+        # 计算允许的最大偏移量，以便新的段与原始段的交集占据比例为 eps
+        origin_length = origin_seg[1] - origin_seg[0]
+        max_offset = origin_length * (1 - eps)
+        
+        # 随机生成一个允许的偏移量
+        offset = random.uniform(-max_offset, max_offset)
+        
+        # 计算新段的位置
+        new_segment_start = origin_seg[0] + offset
+        new_segment_end = origin_seg[1] + offset
+        
+        # 确保新段不超出指定的边界
+        new_segment_start = max(new_segment_start, start_bound)
+        new_segment_end = min(new_segment_end, end_bound)
+        
+        new_segment = [new_segment_start, new_segment_end]
+        return new_segment
+    
     def _get_train_label(self, video_name, valid_anno_dict, classes, feat_length):
         
         '''get normalized target'''
@@ -157,10 +196,10 @@ class BaseDataset(Dataset):
             'label_names': [],
             'video_name': video_name,
             'video_duration': feature_duration,   # only used in inference
-            'instance_masks':{}, # the mask to get action instance
-            'segmentation_labels': np.full(feat_length,num_classes), # [T]
-            'segmentation_onehot_labels': np.full((feat_length,num_classes),1/num_classes), # [T,num_classes], the label for snippet-level semantic segmentation
-            'mask_labels':np.full(feat_length,0) # [T]
+            # 'instance_masks':{}, # the mask to get action instance
+            # 'segmentation_labels': np.full(feat_length,num_classes), # [T]
+            # 'segmentation_onehot_labels': np.full((feat_length,num_classes),1/num_classes), # [T,num_classes], the label for snippet-level semantic segmentation
+            # 'mask_labels':np.full(feat_length,0) # [T]
             }
         
         # sort the segments follow time sequence
@@ -170,7 +209,6 @@ class BaseDataset(Dataset):
         for seg_anno in segments_anno: # a list of dict [{'segment': ,'labels': }, ]
             
             segment = seg_anno['segment'] 
-
 
             # special rule for thumos14, treat ambiguous instances as negatives, although the ambiguous has been dropped in self.parse_gt()
             if seg_anno['label'] not in classes:
@@ -191,31 +229,53 @@ class BaseDataset(Dataset):
             semantic_label = classes.index(seg_anno['label']) # the category labels for semantic classification
             target['semantic_labels'].append(semantic_label)
             
-            # add instance_masks to target dict
-            if seg_anno['label'] not in target['instance_masks'].keys():
-                target['instance_masks'][seg_anno['label']] = {'label_id':semantic_label,'mask':np.ones(feat_length,dtype=bool)}
+            if self.rank_loss:
+                inner_segment = self.generate_inner_segment_with_eps(segment,self.shift_eps)
+                outer_segment = self.generate_outer_segment_with_random_shifted(segment,self.shift_eps,0,feature_duration)
+                if self.target_type != "none":
+                    inter_id = 0
+                    inter_name = 'foreground'
+                    outer_id = 0
+                    outer_name = 'foreground'
+                else:
+                    inter_id = classes.index(seg_anno['label']) # the index come from the classes in anno_file
+                    inter_name = seg_anno['label']
+                    outer_id = classes.index(seg_anno['label']) # the index come from the classes in anno_file
+                    outer_name = seg_anno['label']
+                target['segments'].append(inner_segment)
+                target['labels'].append(inter_id)  # the category labels for detector to classify
+                target['label_names'].append(inter_name)
+                target['segments'].append(outer_segment)
+                target['labels'].append(outer_id)  # the category labels for detector to classify
+                target['label_names'].append(outer_name)
+                target['semantic_labels'].append(semantic_label)
+                target['semantic_labels'].append(semantic_label)
+
+            # # add instance_masks to target dict
+            # if seg_anno['label'] not in target['instance_masks'].keys():
+            #     target['instance_masks'][seg_anno['label']] = {'label_id':semantic_label,'mask':np.ones(feat_length,dtype=bool)}
             
-            start_float, end_float = np.array(segment)/feature_duration*feat_length
-            start, end = np.floor(start_float).astype(int), np.ceil(end_float).astype(int)
-            start_idx, end_idx = max(start,0), min(end + 1,feat_length)
-            target['instance_masks'][seg_anno['label']]['mask'][start_idx:end_idx] = False
+            # start_float, end_float = np.array(segment)/feature_duration*feat_length
+            # start, end = np.floor(start_float).astype(int), np.ceil(end_float).astype(int)
+            # start_idx, end_idx = max(start,0), min(end + 1,feat_length)
+            # target['instance_masks'][seg_anno['label']]['mask'][start_idx:end_idx] = False
 
-            # update segmentation labels 
-            try:
-                target['segmentation_onehot_labels'][start_idx:end_idx,:] = np.repeat(id2onehot(num_classes,semantic_label).reshape(1,-1),end_idx-start_idx,axis=0)
-            except:
-                print(f"video_name:{video_name}")
-                print(f"segment:{segment}")
-                print(f"feature_duration:{feature_duration}")
-                print(f"feat_length:{feat_length}")
-                print(f"end_idx:{end_idx}")
-                print(f"start_idx:{start_idx}")
-                print(f"id2onehot(num_classes,semantic_label).reshape(1,-1):{id2onehot(num_classes,semantic_label).reshape(1,-1)}")
-                raise
-            target['segmentation_labels'][start_idx:end_idx] = semantic_label
+            # # update segmentation labels 
+            # try:
+            #     target['segmentation_onehot_labels'][start_idx:end_idx,:] = np.repeat(id2onehot(num_classes,semantic_label).reshape(1,-1),end_idx-start_idx,axis=0)
+            # except:
+            #     print(f"video_name:{video_name}")
+            #     print(f"segment:{segment}")
+            #     print(f"feature_duration:{feature_duration}")
+            #     print(f"feat_length:{feat_length}")
+            #     print(f"end_idx:{end_idx}")
+            #     print(f"start_idx:{start_idx}")
+            #     print(f"id2onehot(num_classes,semantic_label).reshape(1,-1):{id2onehot(num_classes,semantic_label).reshape(1,-1)}")
+            #     raise
+            # target['segmentation_labels'][start_idx:end_idx] = semantic_label
 
-            # update class-agnostic mask labels
-            target['mask_labels'][start_idx:end_idx] = 1
+            # # update class-agnostic mask labels
+            # target['mask_labels'][start_idx:end_idx] = 1
 
 
         # normalized the coordinate
@@ -229,17 +289,17 @@ class BaseDataset(Dataset):
                 if not isinstance(target[k], torch.Tensor):
                     target[k] = torch.from_numpy(np.array(target[k], dtype=dtype))
             
-            # add instance_masks to target dict, cover to torch format
-            for label_name in target['instance_masks'].keys():
-                target['instance_masks'][label_name]['mask'] = torch.from_numpy(target['instance_masks'][label_name]['mask'])
-                target['instance_masks'][label_name]['label_id'] = torch.from_numpy(np.array(target['instance_masks'][label_name]['label_id'],dtype='int64'))
+            # # add instance_masks to target dict, cover to torch format
+            # for label_name in target['instance_masks'].keys():
+            #     target['instance_masks'][label_name]['mask'] = torch.from_numpy(target['instance_masks'][label_name]['mask'])
+            #     target['instance_masks'][label_name]['label_id'] = torch.from_numpy(np.array(target['instance_masks'][label_name]['label_id'],dtype='int64'))
 
-            # convert 'segmentation_onehot_labels' to torch format
-            target['segmentation_onehot_labels'] = torch.from_numpy(target['segmentation_onehot_labels'])
-            target['segmentation_labels'] = torch.from_numpy(target['segmentation_labels'])
+            # # convert 'segmentation_onehot_labels' to torch format
+            # target['segmentation_onehot_labels'] = torch.from_numpy(target['segmentation_onehot_labels'])
+            # target['segmentation_labels'] = torch.from_numpy(target['segmentation_labels'])
 
-            # covert 'mask_labels' to torch format
-            target['mask_labels'] = torch.from_numpy(target['mask_labels'])
+            # # covert 'mask_labels' to torch format
+            # target['mask_labels'] = torch.from_numpy(target['mask_labels'])
 
             # covert 'semantic_labels' to torch format
             target['semantic_labels'] = torch.from_numpy(np.array(target['semantic_labels'],dtype='int64'))
@@ -580,10 +640,12 @@ class ActivityNet13Dataset(BaseDataset):
 
 
 if __name__ == "__main__":
+    from utils.util import get_logger, setup_seed
     args = options.parser.parse_args()
     if args.cfg_path is not None:
         args = merge_cfg_from_file(args,args.cfg_path) # NOTE that the config comes from yaml file is the latest one.
-
+    seed=args.seed
+    setup_seed(seed)
     print(args)
     train_dataset = Thumos14Dataset(subset='train', mode='train', args=args)
     # print(f"dataset.description:{train_dataset.description_dict}")
@@ -607,8 +669,10 @@ if __name__ == "__main__":
     # print(f"gt_labels:{gt_labels}")
     # gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num,1]->"class id"
     # print(f"gt_labels.shape:{gt_labels.shape}")
-    print(f"target[0]['mask_labels']:{target[0]['mask_labels']}")
+    # print(f"target[0]['mask_labels']:{target[0]['mask_labels']}")
     print(f"target[0]['semantic_labels']:{target[0]['semantic_labels']}")
     print(f"target[0]['segments']:{target[0]['segments']}")
+    print(f"target[0]['labels']:{target[0]['labels']}")
+    print(f"target[0]['label_names']:{target[0]['label_names']}")
 
 # CUDA_VISIBLE_DEVICES=4 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"

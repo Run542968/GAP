@@ -91,6 +91,8 @@ parser.add_argument('--actionness_loss', action='store_true', default=False)
 parser.add_argument('--actionness_loss_coef', type=float, default=2)
 
 parser.add_argument('--rank_loss', action='store_true', default=False)
+parser.add_argument('--shift_eps', type=float, default=0.7)
+
 
 
 # Matcher
