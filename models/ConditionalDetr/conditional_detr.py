@@ -565,7 +565,9 @@ def build(args, device):
     
     if args.actionness_loss or args.eval_proposal or args.enable_classAgnostic:
         weight_dict['loss_actionness'] = args.actionness_loss_coef
-
+    if args.rank_loss and args.enable_relaxGT:
+        weight_dict['loss_rank'] = args.rank_loss_coef
+        print(f"Warning!!!!! Please tuning the num_queries when you adopt rank loss!!!!!!!!!!!")
 
     # TODO this is a hack
     if args.aux_loss:

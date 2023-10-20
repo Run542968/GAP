@@ -58,6 +58,9 @@ class SetCriterion(nn.Module):
         self.eval_proposal = args.eval_proposal
         self.enable_classAgnostic = args.enable_classAgnostic
 
+        self.enable_relaxGT = args.enable_relaxGT
+        self.rank_loss = args.rank_loss
+
         if self.eval_proposal or self.enable_classAgnostic:
             self.base_losses = ['boxes','actionness']
         elif self.actionness_loss:
@@ -508,6 +511,55 @@ class SetCriterion(nn.Module):
 
         return losses
 
+    def loss_rank(self, outputs, targets, indices, num_boxes, log=True):
+        """
+            Rank loss, for fine-grained boundary perception
+            NOTE: If the num_queries is so small, can not cover all gt, an error will appear here
+        """
+        def rank_loss(center_logits, inner_logits, outer_logits, margin=0.3):
+            # 计算 pairwise ranking loss
+            center_logits = center_logits.sigmoid()
+            inner_logits = inner_logits.sigmoid()
+            outer_logits = outer_logits.sigmoid()
+
+            loss = torch.relu(margin + inner_logits - center_logits) + torch.relu(margin + outer_logits - inner_logits)
+            return loss.mean()
+        
+        assert 'actionness_logits' in outputs
+        src_logits = outputs['actionness_logits'] # [bs,num_queries,1]
+
+        batch_center_logits = []
+        batch_inner_logits = []
+        batch_outer_logits = []
+        for i, (src,tgt) in enumerate(indices):
+            batch_idx = torch.full_like(src[0::3],i) # [num_tgt]
+            src_idx = src # [num_tgt]
+            tgt_idx = tgt # [num_tgt]
+
+            sorted_pairs = sorted(zip(tgt_idx, src_idx))
+            sorted_tgt_idx, sorted_src_idx = zip(*sorted_pairs)
+            center_tgt, center_src = sorted_tgt_idx[0::3], sorted_src_idx[0::3]
+            inner_tgt, inner_src = sorted_tgt_idx[1::3], sorted_src_idx[1::3]
+            outer_tgt, outer_src = sorted_tgt_idx[2::3], sorted_src_idx[2::3]
+
+            center_logits = src_logits[(batch_idx,center_src)] # [num_tgt,1]
+            batch_center_logits.append(center_logits)
+            inner_logits = src_logits[(batch_idx,inner_src)] # [num_tgt,1]
+            batch_inner_logits.append(inner_logits)
+            outer_logits = src_logits[(batch_idx,outer_src)] # [num_tgt,1]
+            batch_outer_logits.append(outer_logits)
+
+        batch_center_logits = torch.cat(batch_center_logits,dim=0)
+        batch_inner_logits = torch.cat(batch_inner_logits,dim=0)
+        batch_outer_logits = torch.cat(batch_outer_logits,dim=0)
+        
+        loss_rank = rank_loss(batch_center_logits,batch_inner_logits,batch_outer_logits,margin=0.2)
+            
+        losses = {'loss_rank': loss_rank}
+
+        return losses
+
+
 
     def _get_src_permutation_idx(self, indices):
         # permute predictions following indices
@@ -571,13 +623,13 @@ class SetCriterion(nn.Module):
         for loss in self.base_losses:
             losses.update(self.get_loss(loss, outputs, targets, indices, num_boxes))
 
-        # In case of auxiliary losses, we repeat this process with the output of each intermediate layer.
+        # In case of auxiliary losses, we repeat this process with the output of each innermediate layer.
         if 'aux_outputs' in outputs:
             for i, aux_outputs in enumerate(outputs['aux_outputs']):
                 indices = self.matcher(aux_outputs, targets)
                 for loss in self.base_losses:
                     if loss == 'masks':
-                        # masks loss don't have intermediate feature of decoder, ignore it
+                        # masks loss don't have innermediate feature of decoder, ignore it
                         continue
                     kwargs = {}
                     if loss == 'labels':
@@ -590,7 +642,9 @@ class SetCriterion(nn.Module):
         # if self.actionness_loss or self.eval_proposal:
         #     actionness_loss = self.loss_actionness(outputs, targets, indices, num_boxes)
         #     losses.update(actionness_loss)
-
+        if self.rank_loss and self.enable_relaxGT:
+            rank_loss = self.loss_rank(outputs, targets, indices, num_boxes)
+            losses.update(rank_loss)
 
         return losses
 

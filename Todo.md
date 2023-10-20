@@ -392,3 +392,6 @@
   - 视觉的pooling方式，average or max
   - visual和text计算相似度的方式，细粒度的匹配（word和frame） or 细粒度的注意力聚合 
   - 用LLM生成更具区分性的description
+- [x] 增加了--enable_relaxGT
+- [x] 增加了--rank_loss
+  - 发现即使采用了slide window，Thumos14的动作实例竟然还能密集到存在某个window中实例数超过50/3
