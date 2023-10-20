@@ -62,6 +62,7 @@ class BaseDataset(Dataset):
         self.split = args.split
         self.split_id = args.split_id
         self.target_type = args.target_type
+        self.rank_loss = args.rank_loss
         # self.binary = args.binary
 
         self.slice_size = args.slice_size
@@ -164,8 +165,8 @@ class BaseDataset(Dataset):
         
         # sort the segments follow time sequence
         segments_anno = list(sorted(segments_anno, key=lambda x: sum(x['segment'])))
-        bg_start = 0
-        bg_end = feature_duration
+        # bg_start = 0
+        # bg_end = feature_duration
         for seg_anno in segments_anno: # a list of dict [{'segment': ,'labels': }, ]
             
             segment = seg_anno['segment'] 

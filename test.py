@@ -15,13 +15,16 @@ def test(model,
          dataset_name, 
          epoch,
          device, 
-         args):
+         args,
+         verbose=None):
     model.eval()
     criterion.eval()
     postprocessor.eval()
 
     iou_range = [0.3, 0.4, 0.5, 0.6, 0.7] if dataset_name == 'Thumos14' else [num/100 for num in range(50, 100, 5)]
     logger.info(f'iou range {iou_range} in dataset {dataset_name}.')
+    if verbose != None:
+        print(f'iou range {iou_range} in dataset {dataset_name}.')
 
     # action_evaluator = None
     action_evaluator = getattr(tad_eval,dataset_name+"Evaluator")(dataset_name=dataset_name, epoch=epoch, dataset=data_loader.dataset, iou_range=iou_range,
@@ -69,6 +72,9 @@ def test(model,
         
         count = count + len(targets)
         logger.info(f"Inference Epoch: {epoch} ({count}/{len(data_loader)*len(targets)})")
+        if verbose != None:
+            print(f"Inference Epoch: {epoch} ({count}/{len(data_loader)*len(targets)})")
+
         # logger.info(f"Inference Epoch: {epoch} ({count}/{len(data_loader)*len(targets)}), loss_value:{loss_value}, loss_dict_scaled:{loss_dict_scaled}")
         # logger.info(f"Inference Epoch: {epoch} ({count}/{len(data_loader)*len(targets)}), loss_dict_unscaled:{loss_dict_unscaled}")
         
@@ -121,14 +127,12 @@ def test(model,
 if __name__ == "__main__":
     import options
     from options import merge_cfg_from_file
-    from utils.util import get_logger, setup_seed
+    from utils.util import setup_seed
     import dataset
     from torch.utils.data import DataLoader
     from utils.misc import collate_fn
     from models.ConditionalDetr import build_model
     import os
-    import matplotlib.pyplot as plt
-    import seaborn as sns
 
     args = options.parser.parse_args()
     if args.cfg_path is not None:
@@ -139,44 +143,86 @@ if __name__ == "__main__":
     setup_seed(seed)
 
     # load dataset
-    train_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='train', mode='train', args=args)
+    print(f"Loading the dataset...")
+    # train_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='train', mode='train', args=args)
     val_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='inference', mode='inference', args=args)
 
-    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=True, drop_last=True)
-    # val_loader = DataLoader(val_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
+    # train_loader = DataLoader(train_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=True, drop_last=True)
+    val_loader = DataLoader(val_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
     # train_val_loader = DataLoader(train_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
 
     # load model
+    print(f"Building the model...")
     model, criterion, postprocessor = build_model(args,device)
     ckpt_path = os.path.join("./ckpt",args.dataset_name,"best_"+args.model_name+".pkl")
     model.load_state_dict(torch.load(ckpt_path))
     model.to(device)
 
-    iters = iter(train_loader)
-    samples, targets = next(iters)
-    samples = samples.to(device)
-    # targets = [{k: v.to(device) if k in ['segments', 'labels'] else v for k, v in t.items()} for t in targets] # Not Required in inferene stage
-    
-    classes = train_loader.dataset.classes
-    description_dict = train_loader.dataset.description_dict
-    outputs = model(samples, classes, description_dict,targets)
+    print(f"Starting the inference...")
+    test_stats = test(model,criterion,postprocessor,val_loader,args.dataset_name,-1,device,args,verbose=True)
+    print('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
+    print('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
+    print('Intermediate AR@1: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
 
-    memory = outputs['memory'][-1] # [enc_layers, b,t,c]
-    idx = 9
-    save_dir = os.path.join('./heatmap',args.target_type+"_memory",targets[idx]['video_name'])
-    if not os.path.exists(save_dir):
-        os.makedirs(save_dir)
 
-    # 可视化特征的self-similarity matirx
-    self_similarity = torch.einsum("td,ld->tl",memory[idx],memory[idx])
-    self_similarity = self_similarity.cpu().detach().numpy()
-    fig = plt.figure(figsize=(16,6))
-    sns.heatmap(self_similarity,cmap="YlGnBu")
-    plt.savefig(os.path.join(save_dir,'memory_self_similarity.png'))
-    
-    print(targets[idx]['video_name'])
-    print(targets[idx]['mask_labels'])
-    print(targets[idx]['semantic_labels'])
-    print(targets[idx]['segments'])
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4
 
-# CUDA_VISIBLE_DEVICES=2 python test.py --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --batch_size 16 --target_type "prompt" --model_name "ActivityNet13_CLIP_prompt_zs_v6_1" --num_queries 5 --enc_layers 2 --dec_layers 2 --enable_backbone
+# 18.620
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic
+# 18.620
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --filter_threshold 0.1
+# 19.876
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax"
+# 19.50
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --ROIalign_size 32
+# 19.49
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --ROIalign_size 8
+# 11.303
+# CUDA_VISIBLE_DEVICES=2 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --target_type "description"
+# 18.43
+# CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --target_type "name"
+# 19.44
+# CUDA_VISIBLE_DEVICES=4 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --ROIalign_strategy "after_pred"
+# 19.036
+# CUDA_VISIBLE_DEVICES=5 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "max"
+# 18.362
+# CUDA_VISIBLE_DEVICES=6 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "center1"
+# 17.66
+# CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "center2"
+
+
+
+
+
+
+# 19.77
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --ROIalign_strategy "after_pred"
+# 19.32
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "max"
+# 18.84
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "center1"
+# 18.15
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "center2"
+
+
+# 20.55
+# CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 2 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_specific"
+# 19.17
+# CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 1 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_specific"
+# 25.04
+# CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 2 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_specific" --split_id 1
+
+
+
+
+# 19.647
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 1 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_one"
+# 25.73
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 1 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_one" --split_id 1
+# 24.82
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 1 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_one" --split_id 2
+# 17.85
+# CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 1 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_one" --split_id 3
+
+
+

@@ -90,6 +90,7 @@ parser.add_argument('--gamma', type=float, default=2)
 parser.add_argument('--actionness_loss', action='store_true', default=False)
 parser.add_argument('--actionness_loss_coef', type=float, default=2)
 
+parser.add_argument('--rank_loss', action='store_true', default=False)
 
 
 # Matcher
@@ -124,6 +125,7 @@ parser.add_argument('--filter_threshold', type=float, default=0, help="the thres
 parser.add_argument('--proposals_weight_type', default="before_softmax", choices=("before_softmax","after_softmax"), help="the way to perform multiple between detector scores and ROIalign proposals")
 parser.add_argument('--prob_type', type=str, default="softmax", choices=("softmax","sigmoid", "none_mul"), help="the strategy to get normalized probability")
 parser.add_argument('--inference_entire', action='store_true', default=False, help="Whether to test entire video instead of slide window")
+parser.add_argument('--pooling_type', type=str, default="average", choices=("average","max", "center1", "center2"), help="the strategy to get normalized probability")
 
 
 def merge_cfg_from_file(args,cfg_path):

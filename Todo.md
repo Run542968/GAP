@@ -362,7 +362,7 @@
 - 🚩发现将drop_lr参数设置小，很早的降低学习率能够很快的收敛，`Thumos14_CLIP_prompt_zs50_8frame_v7_13`
   - 找到了原因，原来这个在StepLr的作用是每间隔多少epoch按照0.1的因子降低学习率。
   - 如果间隔太密，后面学习率就特别小，怪不得收敛了，原来是不动了
-- [ ] 新增加了一个enable_injection
+- [x] 新增加了一个enable_injection
   - 代码目的是在训练的时候注入语义信息
   - 方案：
     - decoder的每一层都会输出一个更新后的query，用bbox_embed函数得到这个query对应的坐标，然后在CLIP的原始特征上拿到对应segment的特征，做cross-attention更新query，然后更新后的query之间再self-attention。
@@ -388,3 +388,7 @@
   - Relaxed Transformer
 - 写作参考：
   - A Simple Framework for Contrastive Learning of Visual Representations
+- [ ] CLIP分类这边还要加点东西：
+  - 视觉的pooling方式，average or max
+  - visual和text计算相似度的方式，细粒度的匹配（word和frame） or 细粒度的注意力聚合 
+  - 用LLM生成更具区分性的description

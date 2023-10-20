@@ -100,7 +100,7 @@ if __name__ == '__main__':
     val_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='inference', mode='inference', args=args)
 
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=True, drop_last=True)
-    val_loader = DataLoader(val_dataset, batch_size=1, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
+    val_loader = DataLoader(val_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
     train_val_loader = DataLoader(train_dataset, batch_size=args.batch_size, collate_fn=collate_fn, num_workers=args.num_workers, pin_memory=True, shuffle=False, drop_last=False)
 
     # load model
@@ -155,9 +155,15 @@ if __name__ == '__main__':
             train_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=train_val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
             logger.info('||'.join(['Train map @ {} = {:.3f} '.format(train_stats['iou_range'][i],train_stats['per_iou_ap_raw'][i]*100) for i in range(len(train_stats['iou_range']))]))
             logger.info('Intermediate Train mAP Avg ALL: {}'.format(train_stats['mAP_raw']*100))
+            logger.info('Intermediate Train AR@1: {}, AR@50: {}, AR@100: {}'.format(train_stats['AR@1_raw']*100, train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100))
+
             if args.use_mlflow: # for mlflow
                     res_dict = {'train_IoU_'+str(k):v*100 for k,v in zip(train_stats['iou_range'],train_stats['per_iou_ap_raw'])}
                     res_dict.update({"train_mAP":train_stats['mAP_raw']*100})
+                    res_dict.update({
+                                 "train_AR-1":train_stats['AR@1_raw']*100,
+                                 "train_AR-50":train_stats['AR@50_raw']*100,
+                                 "train_AR-100":train_stats['AR@50_raw']*100})
                     log_metrics(res_dict,step=epoch)
 
         

@@ -93,6 +93,7 @@ class ConditionalDETR(nn.Module):
         self.results_ensemble = args.results_ensemble
         self.ensemble_rate = args.ensemble_rate
         self.ensemble_strategy = args.ensemble_strategy
+        self.pooling_type = args.pooling_type
 
         self.eval_proposal = args.eval_proposal 
 
@@ -461,7 +462,7 @@ class ConditionalDETR(nn.Module):
 
                 if self.results_ensemble and not self.enable_classAgnostic:
                     fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, "prompt") # [N classes,dim]
-
+                    
                     if self.ROIalign_strategy == "before_pred":
                         ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],fixed_text_feats,self.ROIalign_size)
                     else:
@@ -480,15 +481,34 @@ class ConditionalDETR(nn.Module):
                     out['class_logits'] = prob
 
                 elif self.enable_classAgnostic:
-                    fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, "prompt") # [N classes,dim]
+                    fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
-                    if self.ROIalign_strategy == "before_pred":
-                        ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],fixed_text_feats,self.ROIalign_size)
-                    else:
-                        visual_feats = clip_feat + 1e-8 # avoid the NaN [B,T,dim]
-                        snippet_logits = self._compute_similarity(visual_feats,fixed_text_feats) # [b,T,num_classes]
-                        ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
-                    
+                    if self.pooling_type == "average":
+                        if self.ROIalign_strategy == "before_pred":
+                            ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],fixed_text_feats,self.ROIalign_size)
+                        else:
+                            visual_feats = clip_feat + 1e-8 # avoid the NaN [B,T,dim]
+                            snippet_logits = self._compute_similarity(visual_feats,fixed_text_feats) # [b,T,num_classes]
+                            ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
+                    elif self.pooling_type == "max":
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        roi_feat = roi_feat.max(dim=2)[0] # [bs,num_queries,dim]
+
+                        ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
+                    elif self.pooling_type == "center1":
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        center_idx = int(roi_feat.shape[2] / 2)
+                        roi_feat = roi_feat[:,:,center_idx,:] 
+                        ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
+                    elif self.pooling_type == "center2":
+                        rois = out['pred_boxes'] # [b,n,2]
+                        rois_center = rois[:, :, 0:1] # [B,N,1]
+                        # rois_size = rois[:, :, 1:2] * scale_factor # [B,N,1]
+                        truely_length = t-torch.sum(mask,dim=1) # [B]
+                        truely_length = truely_length.reshape(-1,1,1) # [B,1,1]
+                        center_idx = (rois_center*truely_length).long() # [b,n,1]
+                        roi_feat = torch.gather(clip_feat, dim=1, index=center_idx.expand(-1, -1, clip_feat.shape[-1]))
+                        ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
                     out['class_logits'] = ROIalign_logits 
 
 
