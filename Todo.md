@@ -393,5 +393,11 @@
   - visual和text计算相似度的方式，细粒度的匹配（word和frame） or 细粒度的注意力聚合 
   - 用LLM生成更具区分性的description
 - [x] 增加了--enable_relaxGT
+  - 注意正样本多了，要调整--num_queries
 - [x] 增加了--rank_loss
   - 发现即使采用了slide window，Thumos14的动作实例竟然还能密集到存在某个window中实例数超过50/3
+  - 注意正样本多了，要调整--num_queries
+- [x] 添加了--salient_loss
+  - 初衷是利用CLIP的分了能力和训练集提供的类别标签，找到一个GT动作实例中的最显著点
+  - 从而在训练的时候能够给memory增加监督，提高对显著(语义丰富的frame，因为CLIP的分类分数最高)frame的特征增强
+  - [x] 💣，注意在Thumos14处理数据的时候，如果feature_length小于slice_length，是直接拿来用的，并没有进行padding。所以在进行forward的时候，要自适应的在末尾padding一下

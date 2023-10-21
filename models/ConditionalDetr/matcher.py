@@ -82,7 +82,7 @@ class HungarianMatcher(nn.Module):
         # NOTE that: for temporal data, then generalized_seg_iou is equal to seg_iou, since the area==union
         cost_giou = -segment_iou(
                     segment_cw_to_t1t2(out_bbox).clamp(min=0,max=1), 
-                    segment_cw_to_t1t2(tgt_bbox)
+                    segment_cw_to_t1t2(tgt_bbox).clamp(min=0,max=1)
                     ) # [b*num_queries, gt_instance_num], the clamp is to deal with the case "center"-"width/2" < 0 and "center"+"width/2" < 1
 
         # Final cost matrix

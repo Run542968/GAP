@@ -144,19 +144,23 @@ class BaseDataset(Dataset):
         return feature
 
 
-    def generate_inner_segment_with_eps(self, origin_seg, eps):
+    def generate_inner_segment_with_eps(self, origin_seg, eps, start_bound, end_bound):
         origin_length = origin_seg[1] - origin_seg[0]
         
         # 计算允许的交集范围
         allowed_intersection_length = origin_length * eps
         
         # 随机生成新段的长度
-        new_segment_length = random.uniform(allowed_intersection_length, origin_length)
+        new_segment_length = random.uniform(origin_length*0.5, allowed_intersection_length)
         
         # 随机生成新段的起始位置
         new_segment_start = random.uniform(origin_seg[0], origin_seg[1] - new_segment_length)
         new_segment_end = new_segment_start + new_segment_length
         
+        new_segment_start = max(new_segment_start, start_bound)
+        new_segment_end = min(new_segment_end, end_bound)
+        
+        assert new_segment_end-new_segment_start>0, f"new_segment_start:{new_segment_start},new_segment_end:{new_segment_end},origin_seg:{origin_seg}"
         new_segment = [new_segment_start, new_segment_end]
         return new_segment
 
@@ -176,6 +180,7 @@ class BaseDataset(Dataset):
         new_segment_start = max(new_segment_start, start_bound)
         new_segment_end = min(new_segment_end, end_bound)
         
+        assert new_segment_end-new_segment_start>0,  f"new_segment_start:{new_segment_start},new_segment_end:{new_segment_end},origin_seg:{origin_seg}"
         new_segment = [new_segment_start, new_segment_end]
         return new_segment
     
@@ -195,7 +200,8 @@ class BaseDataset(Dataset):
             'semantic_labels':[],
             'label_names': [],
             'video_name': video_name,
-            'video_duration': feature_duration   # only used in inference
+            'video_duration': feature_duration,   # only used in inference
+            'salient_mask': [] # the mask to get action instance 
             }
         
         # sort the segments follow time sequence
@@ -226,7 +232,7 @@ class BaseDataset(Dataset):
             target['semantic_labels'].append(semantic_label)
             
             if self.enable_relaxGT:
-                inner_segment = self.generate_inner_segment_with_eps(segment,self.shift_eps)
+                inner_segment = self.generate_inner_segment_with_eps(segment,self.shift_eps,0,feature_duration)
                 outer_segment = self.generate_outer_segment_with_random_shifted(segment,self.shift_eps,0,feature_duration)
                 if self.target_type != "none":
                     inter_id = 0
@@ -247,6 +253,13 @@ class BaseDataset(Dataset):
                 target['semantic_labels'].append(semantic_label)
                 target['semantic_labels'].append(semantic_label)
 
+            # add salient mask
+            start_float, end_float = np.array(segment)/feature_duration*feat_length
+            start, end = np.floor(start_float).astype(int), np.ceil(end_float).astype(int)
+            start_idx, end_idx = max(start,0), min(end + 1,feat_length)
+            mask_salient = np.ones(feat_length,dtype=bool) # [feat_length]
+            mask_salient[start_idx:end_idx] = False
+            target['salient_mask'].append(mask_salient)
 
 
         # normalized the coordinate
@@ -260,9 +273,12 @@ class BaseDataset(Dataset):
                 if not isinstance(target[k], torch.Tensor):
                     target[k] = torch.from_numpy(np.array(target[k], dtype=dtype))
             
-
             # covert 'semantic_labels' to torch format
             target['semantic_labels'] = torch.from_numpy(np.array(target['semantic_labels'],dtype='int64'))
+
+            # covert 'salient_mask' to torch format
+            target['salient_mask'] = torch.from_numpy(np.array(target['salient_mask']))
+
         return target
 
     def __getitem__(self, index):
@@ -580,7 +596,8 @@ class ActivityNet13Dataset(BaseDataset):
 
             # Remove incorrect annotions on ActivityNet (0.02 duration). Beside, because a snippet need 16 frames, the fps is 30. it must meet the minimum snippet length
             # valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > (feature_stride/video_fps) and x['segment'][1] - x['segment'][0] > 0.02]
-            valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > 0.02]
+            # valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > 0.02]
+            valid_annotations = [x for x in annotations if x['segment'][1] - x['segment'][0] > 1]
 
 
             # fliter zero instance video
@@ -634,5 +651,6 @@ if __name__ == "__main__":
     print(f"target[0]['segments']:{target[0]['segments']}")
     print(f"target[0]['labels']:{target[0]['labels']}")
     print(f"target[0]['label_names']:{target[0]['label_names']}")
+    print(f"target[0]['salient_mask']:{target[0]['salient_mask']}")
 
 # CUDA_VISIBLE_DEVICES=4 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"

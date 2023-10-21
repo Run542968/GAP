@@ -109,6 +109,8 @@ class ConditionalDETR(nn.Module):
 
         self.enable_injection = args.enable_injection
 
+        self.salient_loss = args.salient_loss
+
         hidden_dim = transformer.d_model
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
         # init bbox_mebed
@@ -146,6 +148,13 @@ class ConditionalDETR(nn.Module):
             bias_value = -math.log((1 - prior_prob) / prior_prob)
             self.actionness_embed.bias.data = torch.ones(1) * bias_value
 
+
+        if self.salient_loss:
+            self.salient_head = nn.Sequential(
+                nn.Conv1d(hidden_dim, hidden_dim, kernel_size=3, padding=1),
+                nn.LeakyReLU(0.2),
+                nn.Conv1d(hidden_dim, 1, kernel_size=1)
+            )
 
 
         if self.target_type != "none":
@@ -377,7 +386,36 @@ class ConditionalDETR(nn.Module):
         out = {}
         out['memory'] = memory
         out['hs'] = hs
+
         
+        # generate the salient gt
+        if self.salient_loss:
+            if self.training: # only generate gt in training phase
+                salient_gt = torch.zeros((bs,t),device=self.device) # [bs,t]
+                cam = self._compute_similarity(clip_feat,text_feats) # [b,t,num_classes]
+                cam_softmax = cam.softmax(dim=-1)
+                for i, tgt in enumerate(targets):
+                    cam_i = cam_softmax[i] # [t,num_classes]
+                    semantic_labels = tgt['semantic_labels'] # [num_tgt]
+                    salient_mask = tgt['salient_mask'] # [num_tgt,T]
+                    num_to_pad = t - salient_mask.shape[1]
+                    if num_to_pad > 0:
+                        padding = torch.ones((salient_mask.shape[0], num_to_pad), dtype=torch.bool, device=salient_mask.device)
+                        salient_mask = torch.cat((salient_mask, padding), dim=1)
+                    for salient_mask_j,semantic_label in zip(salient_mask,semantic_labels):
+                        un_salient_mask = ~salient_mask_j.unsqueeze(dim=1) # [T,1]
+                        # print(f"un_salient_mask.shape:{un_salient_mask.shape}")
+                        # print(f"un_salient_mask:{un_salient_mask}")
+                        masked_cam = cam_i*un_salient_mask # [t,num_classes]
+                        masked_cam_class = masked_cam[:,semantic_label] # [T]
+                        masked_cam_class_Tsoftmax = masked_cam_class.softmax(dim=0)
+                        max_idx = masked_cam_class_Tsoftmax.max(dim=0)[1]
+                        salient_gt[i,max_idx] = 1
+                out['salient_gt'] = salient_gt
+
+            salient_logits = self.salient_head(memory[-1].permute(0,2,1)).permute(0,2,1) # [b,t,1]
+            out['mask'] = mask
+            out['salient_logits'] = salient_logits
         
         # refine encoder
         if self.enable_refine:
@@ -568,6 +606,9 @@ def build(args, device):
     if args.rank_loss and args.enable_relaxGT:
         weight_dict['loss_rank'] = args.rank_loss_coef
         print(f"Warning!!!!! Please tuning the num_queries when you adopt rank loss!!!!!!!!!!!")
+    if args.salient_loss:
+        weight_dict['loss_salient'] = args.salient_loss_coef
+
 
     # TODO this is a hack
     if args.aux_loss:

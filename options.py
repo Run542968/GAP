@@ -78,7 +78,7 @@ parser.add_argument('--injection_type', type=str, default='vfeat', choices=('vfe
 parser.add_argument('--injection_fuseType', type=str, default='add', choices=('add', 'mlp'))
 
 parser.add_argument('--enable_relaxGT', action='store_true', default=False)
-parser.add_argument('--shift_eps', type=float, default=0.7)
+parser.add_argument('--shift_eps', type=float, default=0.9)
 
 
 # Loss
@@ -95,6 +95,9 @@ parser.add_argument('--actionness_loss_coef', type=float, default=2)
 parser.add_argument('--rank_loss', action='store_true', default=False)
 parser.add_argument('--rank_loss_coef', type=float, default=2)
 
+parser.add_argument('--salient_loss', action='store_true', default=False)
+parser.add_argument('--salient_loss_coef', type=float, default=2)
+parser.add_argument('--salient_loss_impl', type=str, default="BCE", choices=('BCE','CE'))
 
 
 # Matcher

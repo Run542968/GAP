@@ -29,7 +29,7 @@ def train(model: torch.nn.Module,
 
     for samples, targets in data_loader:
         samples = samples.to(device)
-        targets = [{k: v.to(device) if k in ['segments', 'labels', 'segmentation_onehot_labels', 'semantic_labels'] else v for k, v in t.items()} for t in targets]
+        targets = [{k: v.to(device) if k in ['segments', 'labels', 'salient_mask', 'semantic_labels'] else v for k, v in t.items()} for t in targets]
         classes = data_loader.dataset.classes
         description_dict = data_loader.dataset.description_dict
 

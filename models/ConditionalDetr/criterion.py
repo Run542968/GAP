@@ -60,6 +60,9 @@ class SetCriterion(nn.Module):
 
         self.enable_relaxGT = args.enable_relaxGT
         self.rank_loss = args.rank_loss
+        self.salient_loss = args.salient_loss
+        self.salient_loss_impl = args.salient_loss_impl
+
 
         if self.eval_proposal or self.enable_classAgnostic:
             self.base_losses = ['boxes','actionness']
@@ -559,6 +562,52 @@ class SetCriterion(nn.Module):
 
         return losses
 
+    def loss_salient(self, outputs, targets, indices, num_boxes, log=True):
+        """
+            Rank loss, for fine-grained boundary perception
+            NOTE: If the num_queries is so small, can not cover all gt, an error will appear here
+        """
+
+        assert 'salient_logits' in outputs
+        assert 'mask' in outputs
+        assert 'salient_gt' in outputs
+        salient_logits = outputs['salient_logits'] # [bs,t,1]
+        salient_logits = salient_logits.squeeze(dim=2) # [bs,t]
+        mask = outputs['mask'] # [bs,t]
+        salient_gt = outputs['salient_gt'] # [bs,t]
+
+        if self.salient_loss_impl == "BCE":
+            prob = salient_logits.sigmoid() # [bs,t]
+            ce_loss = F.binary_cross_entropy_with_logits(salient_logits, salient_gt, reduction="none")
+            p_t = prob * salient_gt + (1 - prob) * (1 - salient_gt) # [bs,t]
+            loss = ce_loss * ((1 - p_t) ** self.gamma)
+
+            if self.focal_alpha >= 0:
+                alpha_t = self.focal_alpha * salient_gt + (1 - self.focal_alpha) * (1 - salient_gt)
+                loss = alpha_t * loss
+
+            un_mask = ~mask
+            loss_salient = loss*un_mask
+
+            loss_salient = loss_salient.mean(1).sum() / num_boxes 
+
+        elif self.salient_loss_impl == "CE":
+
+            salient_gt = salient_gt / (torch.sum(salient_gt, dim=1, keepdim=True) + 1e-4) # [b,t]
+
+            loss_salient = -(salient_gt * F.log_softmax(salient_logits, dim=-1)) # [b,t]
+            
+            un_mask = ~mask
+            loss_salient = loss_salient*un_mask
+            loss_salient = loss_salient.sum(dim=1).mean()
+        else:
+            raise ValueError
+ 
+        losses = {'loss_salient': loss_salient}
+
+        return losses
+
+
 
 
     def _get_src_permutation_idx(self, indices):
@@ -645,6 +694,11 @@ class SetCriterion(nn.Module):
         if self.rank_loss and self.enable_relaxGT:
             rank_loss = self.loss_rank(outputs, targets, indices, num_boxes)
             losses.update(rank_loss)
+
+        if self.salient_loss:
+            salient_loss = self.loss_salient(outputs, targets, indices, num_boxes)
+            losses.update(salient_loss)
+
 
         return losses
 
