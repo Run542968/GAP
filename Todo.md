@@ -401,3 +401,15 @@
   - 初衷是利用CLIP的分了能力和训练集提供的类别标签，找到一个GT动作实例中的最显著点
   - 从而在训练的时候能够给memory增加监督，提高对显著(语义丰富的frame，因为CLIP的分类分数最高)frame的特征增强
   - [x] 💣，注意在Thumos14处理数据的时候，如果feature_length小于slice_length，是直接拿来用的，并没有进行padding。所以在进行forward的时候，要自适应的在末尾padding一下
+- 🚩 直接用binary模型测试
+  - 直接用binary的模型测试的话，需要把--eval_proposal改为--enabel_classAgnostic 
+- [x] 更新了salient_loss的实现
+  - alias了原来的实现为"top"
+    - 仅仅设置显著点gt为1，其他所有点(背景+非显著前景)都设置为0
+  - 增加了"point"
+    - 这个模式下在计算loss的时候，正样本只计算显著点，负样本是所有背景点
+  - 增加了"all"
+    - 这个模式就是masking_loss，前景点全是1，背景点全是0
+- [x] 完善了refine_decoder
+  - [x] 增加了self-attention后不进行residual connect的选项
+  - [x] 增加了直接丢弃self-attention的选项 

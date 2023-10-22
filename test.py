@@ -203,8 +203,6 @@ if __name__ == "__main__":
 # CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "center1"
 # 18.15
 # CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --pooling_type "center2"
-
-
 # 20.55
 # CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 2 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_specific"
 # 19.17

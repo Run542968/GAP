@@ -338,7 +338,8 @@ class RefineDecoderV2(nn.Module):
         super().__init__()
         self.cross_attn_local = nn.MultiheadAttention(d_model,nheads)
         self.self_attn = nn.MultiheadAttention(d_model,nheads)
-
+        self.refine_drop_saResidual = args.refine_drop_saResidual
+        self.refine_drop_sa = args.refine_drop_sa
 
 
     def forward(self, query_feat, video_feat, roi_segment_feat,
@@ -365,13 +366,19 @@ class RefineDecoderV2(nn.Module):
                                      value=segment_feat)[0] # [1,n*b,dim]
         tgt1 = tgt1.reshape(n,b,dim)
 
-        query_feat = query_feat + tgt1
+        if self.refine_drop_sa:
+            query_feat = tgt1
+        else:
+            query_feat = query_feat + tgt1
 
-        # self-attetnion between different query
-        tgt2 = self.self_attn(query=query_feat,
-                              key=query_feat,
-                              value=query_feat)[0]
-        query_feat = query_feat + tgt2
+            # self-attetnion between different query
+            tgt2 = self.self_attn(query=query_feat,
+                                key=query_feat,
+                                value=query_feat)[0]
+            if self.refine_drop_saResidual:
+                query_feat = tgt2
+            else:
+                query_feat = query_feat + tgt2
 
         query_feat = query_feat.permute(1,0,2) # [b,n,dim]
         return query_feat

@@ -569,11 +569,11 @@ class SetCriterion(nn.Module):
         """
 
         assert 'salient_logits' in outputs
-        assert 'mask' in outputs
+        assert 'salient_mask' in outputs
         assert 'salient_gt' in outputs
         salient_logits = outputs['salient_logits'] # [bs,t,1]
         salient_logits = salient_logits.squeeze(dim=2) # [bs,t]
-        mask = outputs['mask'] # [bs,t]
+        mask = outputs['salient_loss_mask'] # [bs,t]
         salient_gt = outputs['salient_gt'] # [bs,t]
 
         if self.salient_loss_impl == "BCE":

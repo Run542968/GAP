@@ -110,6 +110,7 @@ class ConditionalDETR(nn.Module):
         self.enable_injection = args.enable_injection
 
         self.salient_loss = args.salient_loss
+        self.salient_loss_type = args.salient_loss_type
 
         hidden_dim = transformer.d_model
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
@@ -392,29 +393,39 @@ class ConditionalDETR(nn.Module):
         if self.salient_loss:
             if self.training: # only generate gt in training phase
                 salient_gt = torch.zeros((bs,t),device=self.device) # [bs,t]
+                salient_loss_mask = mask # [bs,t]
                 cam = self._compute_similarity(clip_feat,text_feats) # [b,t,num_classes]
                 cam_softmax = cam.softmax(dim=-1)
+                
                 for i, tgt in enumerate(targets):
                     cam_i = cam_softmax[i] # [t,num_classes]
                     semantic_labels = tgt['semantic_labels'] # [num_tgt]
                     salient_mask = tgt['salient_mask'] # [num_tgt,T]
+
+                    # padding the salient mask
                     num_to_pad = t - salient_mask.shape[1]
                     if num_to_pad > 0:
                         padding = torch.ones((salient_mask.shape[0], num_to_pad), dtype=torch.bool, device=salient_mask.device)
                         salient_mask = torch.cat((salient_mask, padding), dim=1)
+
                     for salient_mask_j,semantic_label in zip(salient_mask,semantic_labels):
                         un_salient_mask = ~salient_mask_j.unsqueeze(dim=1) # [T,1]
-                        # print(f"un_salient_mask.shape:{un_salient_mask.shape}")
-                        # print(f"un_salient_mask:{un_salient_mask}")
                         masked_cam = cam_i*un_salient_mask # [t,num_classes]
                         masked_cam_class = masked_cam[:,semantic_label] # [T]
                         masked_cam_class_Tsoftmax = masked_cam_class.softmax(dim=0)
                         max_idx = masked_cam_class_Tsoftmax.max(dim=0)[1]
-                        salient_gt[i,max_idx] = 1
+                        if self.salient_loss_type == "all":
+                            salient_gt[i,:] = (salient_gt[i,:] + (~salient_mask_j).float()).clamp(0,1)
+                        else:
+                            salient_gt[i,max_idx] = 1
+
+                        if self.salient_loss_type == "point":
+                            salient_loss_mask[i,:] = salient_loss_mask[i,:] | (~salient_mask_j)
+                            salient_loss_mask[i,max_idx] = False
                 out['salient_gt'] = salient_gt
 
             salient_logits = self.salient_head(memory[-1].permute(0,2,1)).permute(0,2,1) # [b,t,1]
-            out['mask'] = mask
+            out['salient_loss_mask'] = salient_loss_mask
             out['salient_logits'] = salient_logits
         
         # refine encoder

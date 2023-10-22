@@ -68,6 +68,9 @@ parser.add_argument('--subaction_version', type=str, default='v3', choices=('v1'
 
 
 parser.add_argument('--enable_refine', action='store_true', default=False)
+parser.add_argument('--refine_drop_saResidual', action='store_true', default=False)
+parser.add_argument('--refine_drop_sa', action='store_true', default=False)
+
 
 parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
 
@@ -98,6 +101,7 @@ parser.add_argument('--rank_loss_coef', type=float, default=2)
 parser.add_argument('--salient_loss', action='store_true', default=False)
 parser.add_argument('--salient_loss_coef', type=float, default=2)
 parser.add_argument('--salient_loss_impl', type=str, default="BCE", choices=('BCE','CE'))
+parser.add_argument('--salient_loss_type', type=str, default="top", choices=('top','point','all'),help="top denotes only salient point is 1, all other (foreground and background) 0; point denotes the salient is 1, and background frames are 0, relax other foreground frame; all denotes all foreground frames are 1, background frames are 0")
 
 
 # Matcher
