@@ -569,7 +569,7 @@ class SetCriterion(nn.Module):
         """
 
         assert 'salient_logits' in outputs
-        assert 'salient_mask' in outputs
+        assert 'salient_loss_mask' in outputs
         assert 'salient_gt' in outputs
         salient_logits = outputs['salient_logits'] # [bs,t,1]
         salient_logits = salient_logits.squeeze(dim=2) # [bs,t]

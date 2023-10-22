@@ -393,7 +393,7 @@ class ConditionalDETR(nn.Module):
         if self.salient_loss:
             if self.training: # only generate gt in training phase
                 salient_gt = torch.zeros((bs,t),device=self.device) # [bs,t]
-                salient_loss_mask = mask # [bs,t]
+                salient_loss_mask = mask.clone() # [bs,t]
                 cam = self._compute_similarity(clip_feat,text_feats) # [b,t,num_classes]
                 cam_softmax = cam.softmax(dim=-1)
                 
@@ -423,9 +423,9 @@ class ConditionalDETR(nn.Module):
                             salient_loss_mask[i,:] = salient_loss_mask[i,:] | (~salient_mask_j)
                             salient_loss_mask[i,max_idx] = False
                 out['salient_gt'] = salient_gt
-
+                out['salient_loss_mask'] = salient_loss_mask
+            
             salient_logits = self.salient_head(memory[-1].permute(0,2,1)).permute(0,2,1) # [b,t,1]
-            out['salient_loss_mask'] = salient_loss_mask
             out['salient_logits'] = salient_logits
         
         # refine encoder

@@ -144,51 +144,52 @@ if __name__ == '__main__':
 
 
     best_stats = {}
-    for epoch in tqdm(range(args.epochs)):
-        epoch_loss_dict_scaled = train(model=model, criterion=criterion, data_loader=train_loader, optimizer=optimizer, device=device, epoch=epoch, max_norm=args.clip_max_norm)
-        if args.use_mlflow: # for mlflow
-            log_metrics(epoch_loss_dict_scaled,step=epoch)
-        lr_scheduler.step()
-        torch.save(model.state_dict(), os.path.join('./ckpt/',args.dataset_name,'last_' + args.model_name + '.pkl'))
-
-        if epoch % args.train_interval == 0 and args.train_interval != -1:
-            train_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=train_val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
-            logger.info('||'.join(['Train map @ {} = {:.3f} '.format(train_stats['iou_range'][i],train_stats['per_iou_ap_raw'][i]*100) for i in range(len(train_stats['iou_range']))]))
-            logger.info('Intermediate Train mAP Avg ALL: {}'.format(train_stats['mAP_raw']*100))
-            logger.info('Intermediate Train AR@1: {}, AR@50: {}, AR@100: {}'.format(train_stats['AR@1_raw']*100, train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100))
-
+    with torch.autograd.set_detect_anomaly(True):
+        for epoch in tqdm(range(args.epochs)):
+            epoch_loss_dict_scaled = train(model=model, criterion=criterion, data_loader=train_loader, optimizer=optimizer, device=device, epoch=epoch, max_norm=args.clip_max_norm)
             if args.use_mlflow: # for mlflow
-                    res_dict = {'train_IoU_'+str(k):v*100 for k,v in zip(train_stats['iou_range'],train_stats['per_iou_ap_raw'])}
-                    res_dict.update({"train_mAP":train_stats['mAP_raw']*100})
+                log_metrics(epoch_loss_dict_scaled,step=epoch)
+            lr_scheduler.step()
+            torch.save(model.state_dict(), os.path.join('./ckpt/',args.dataset_name,'last_' + args.model_name + '.pkl'))
+
+            if epoch % args.train_interval == 0 and args.train_interval != -1:
+                train_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=train_val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
+                logger.info('||'.join(['Train map @ {} = {:.3f} '.format(train_stats['iou_range'][i],train_stats['per_iou_ap_raw'][i]*100) for i in range(len(train_stats['iou_range']))]))
+                logger.info('Intermediate Train mAP Avg ALL: {}'.format(train_stats['mAP_raw']*100))
+                logger.info('Intermediate Train AR@1: {}, AR@50: {}, AR@100: {}'.format(train_stats['AR@1_raw']*100, train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100))
+
+                if args.use_mlflow: # for mlflow
+                        res_dict = {'train_IoU_'+str(k):v*100 for k,v in zip(train_stats['iou_range'],train_stats['per_iou_ap_raw'])}
+                        res_dict.update({"train_mAP":train_stats['mAP_raw']*100})
+                        res_dict.update({
+                                    "train_AR-1":train_stats['AR@1_raw']*100,
+                                    "train_AR-50":train_stats['AR@50_raw']*100,
+                                    "train_AR-100":train_stats['AR@50_raw']*100})
+                        log_metrics(res_dict,step=epoch)
+
+            
+            if epoch % args.test_interval == 0 and args.test_interval != -1:
+                test_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
+                logger.info('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
+                logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
+                logger.info('Intermediate AR@1: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
+
+                if args.use_mlflow: # for mlflow
+                    res_dict = {'IoU_'+str(k):v*100 for k,v in zip(test_stats['iou_range'],test_stats['per_iou_ap_raw'])}
+                    res_dict.update({"mAP":test_stats['mAP_raw']*100})
                     res_dict.update({
-                                 "train_AR-1":train_stats['AR@1_raw']*100,
-                                 "train_AR-50":train_stats['AR@50_raw']*100,
-                                 "train_AR-100":train_stats['AR@50_raw']*100})
+                                    "AR-1":test_stats['AR@1_raw']*100,
+                                    "AR-50":test_stats['AR@50_raw']*100,
+                                    "AR-100":test_stats['AR@50_raw']*100})
                     log_metrics(res_dict,step=epoch)
 
-        
-        if epoch % args.test_interval == 0 and args.test_interval != -1:
-            test_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
-            logger.info('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
-            logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
-            logger.info('Intermediate AR@1: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
+                # update best
+                if test_stats['mAP_raw'] > best_stats.get('mAP_raw',0.0):
+                    best_stats = test_stats
+                    logger.info('new best metric {:.4f}@epoch{}'.format(best_stats['mAP_raw']*100, epoch))
+                    torch.save(model.state_dict(), os.path.join('./ckpt/',args.dataset_name,'best_' + args.model_name + '.pkl'))
 
-            if args.use_mlflow: # for mlflow
-                res_dict = {'IoU_'+str(k):v*100 for k,v in zip(test_stats['iou_range'],test_stats['per_iou_ap_raw'])}
-                res_dict.update({"mAP":test_stats['mAP_raw']*100})
-                res_dict.update({
-                                 "AR-1":test_stats['AR@1_raw']*100,
-                                 "AR-50":test_stats['AR@50_raw']*100,
-                                 "AR-100":test_stats['AR@50_raw']*100})
-                log_metrics(res_dict,step=epoch)
-
-            # update best
-            if test_stats['mAP_raw'] > best_stats.get('mAP_raw',0.0):
-                best_stats = test_stats
-                logger.info('new best metric {:.4f}@epoch{}'.format(best_stats['mAP_raw']*100, epoch))
-                torch.save(model.state_dict(), os.path.join('./ckpt/',args.dataset_name,'best_' + args.model_name + '.pkl'))
-
-            logger.info('Current best metric from {:.4f}@epoch{}'.format(best_stats['mAP_raw']*100, best_stats['epoch']))
+                logger.info('Current best metric from {:.4f}@epoch{}'.format(best_stats['mAP_raw']*100, best_stats['epoch']))
 
     
     iou = best_stats['iou_range']
