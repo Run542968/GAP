@@ -111,6 +111,7 @@ class ConditionalDETR(nn.Module):
 
         self.salient_loss = args.salient_loss
         self.salient_loss_type = args.salient_loss_type
+        self.salient_oic_delta = args.salient_oic_delta
 
         hidden_dim = transformer.d_model
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
@@ -393,7 +394,10 @@ class ConditionalDETR(nn.Module):
         if self.salient_loss:
             if self.training: # only generate gt in training phase
                 salient_gt = torch.zeros((bs,t),device=self.device) # [bs,t]
-                salient_loss_mask = mask.clone() # [bs,t]
+                if self.salient_loss_type == "oic":
+                    salient_loss_mask = torch.ones_like(mask) # [bs,t]
+                else:
+                    salient_loss_mask = mask.clone() # [bs,t]
                 cam = self._compute_similarity(clip_feat,text_feats) # [b,t,num_classes]
                 cam_softmax = cam.softmax(dim=-1)
                 
@@ -414,7 +418,7 @@ class ConditionalDETR(nn.Module):
                         masked_cam_class = masked_cam[:,semantic_label] # [T]
                         masked_cam_class_Tsoftmax = masked_cam_class.softmax(dim=0)
                         max_idx = masked_cam_class_Tsoftmax.max(dim=0)[1]
-                        if self.salient_loss_type == "all":
+                        if self.salient_loss_type == "all" or self.salient_loss_type == "oic":
                             salient_gt[i,:] = (salient_gt[i,:] + (~salient_mask_j).float()).clamp(0,1)
                         else:
                             salient_gt[i,max_idx] = 1
@@ -422,6 +426,19 @@ class ConditionalDETR(nn.Module):
                         if self.salient_loss_type == "point":
                             salient_loss_mask[i,:] = salient_loss_mask[i,:] | (~salient_mask_j)
                             salient_loss_mask[i,max_idx] = False
+                        elif self.salient_loss_type == "oic":
+                            false_indices = torch.where(salient_mask_j == False)[0]
+                            start_index = false_indices[0]
+                            end_index = false_indices[-1]
+                            false_len = end_index - start_index + 1
+                            expansion = int((end_index - start_index + 1) * self.salient_oic_delta)
+                            inflated_start = max(0,start_index - expansion)
+                            inflated_end = min(len(salient_mask_j)-1, end_index + expansion)
+
+                            expanded_tensor = torch.clone(salient_mask_j)
+                            expanded_tensor[inflated_start:inflated_end + 1] = False
+                            salient_loss_mask[i,:] = salient_loss_mask[i,:] & expanded_tensor
+
                 out['salient_gt'] = salient_gt
                 out['salient_loss_mask'] = salient_loss_mask
             
