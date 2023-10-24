@@ -113,6 +113,10 @@ class ConditionalDETR(nn.Module):
         self.salient_loss_type = args.salient_loss_type
         self.salient_oic_delta = args.salient_oic_delta
 
+        self.adapterCLS_loss = args.adapterCLS_loss
+        self.adapterCLS_type = args.adapterCLS_type
+
+
         hidden_dim = transformer.d_model
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
         # init bbox_mebed
@@ -158,6 +162,15 @@ class ConditionalDETR(nn.Module):
                 nn.Conv1d(hidden_dim, 1, kernel_size=1)
             )
 
+        if self.adapterCLS_loss:
+            if self.adapterCLS_type == "sa":
+                self.adapter = nn.MultiheadAttention(embed_dim=hidden_dim,num_heads=4)
+            elif self.adapterCLS_type == "conv_avg":
+                self.adapter = nn.Conv1d(in_channels=hidden_dim,out_channels=hidden_dim,kernel_size=3,padding=1)
+            elif self.adapterCLS_type == "conv_add":
+                self.adapter = nn.Conv1d(in_channels=hidden_dim,out_channels=1,kernel_size=3,padding=1)
+            else:
+                raise ValueError
 
         if self.target_type != "none":
             logger.info(f"The target_type is {self.target_type}, using text embedding as target, on task: {args.task}!")
@@ -334,6 +347,47 @@ class ConditionalDETR(nn.Module):
         else:
             NotImplementedError
 
+    def _adapter_forward(self, roi_feat, roi_pos=None):
+        '''
+        roi_feat: [b,q,l,dim]
+        '''
+        def with_pos_embed(tensor, pos=None):
+            return tensor if pos is None else tensor + pos
+
+
+        b,q,l,d = roi_feat.shape
+        if self.adapterCLS_type == "sa":
+            roi_feat = roi_feat.permute(2,0,1,3)
+            roi_feat = roi_feat.reshape(l,b*q,d)
+            roi_pos = roi_pos.permute(2,0,1,3)
+            roi_pos = roi_pos.reshape(l,b*q,d)
+            query = key = with_pos_embed(roi_feat,roi_pos)
+            value = roi_feat
+            adapted_roi_feat = self.adapter(query=query,
+                                            key=key,
+                                            value=value
+                                            )[0] # [l,b*q,dim]
+            adapted_roi_feat = adapted_roi_feat.mean(0) # [b*q,dim]
+            adapted_roi_feat = adapted_roi_feat.reshape(b,q,d) # [b,q,dim]
+
+        elif self.adapterCLS_type == "conv_avg":
+            roi_feat = roi_feat.reshape(b*q,l,d) # [b*q,l,d]
+            roi_feat = roi_feat.permute(0,2,1) # [b*q,dim,l]
+            adapted_roi_feat = self.adapter(roi_feat).permute(0,2,1) # [b*q,l,dim]
+            adapted_roi_feat = adapted_roi_feat.reshape(b,q,l,d)
+            adapted_roi_feat = adapted_roi_feat.mean(2) # [b,q,dim]
+        elif self.adapterCLS_type == "conv_add":
+            roi_feat_re = roi_feat.reshape(b*q,l,d) # [b*q,l,d]
+            roi_feat_weight = self.adapter(roi_feat_re.permute(0,2,1)).permute(0,2,1) # [b*q,l,1]
+            roi_feat_weight = roi_feat_weight.reshape(b,q,l,1)
+            roi_feat_weight = roi_feat_weight.sigmoid()
+            adapted_roi_feat = (roi_feat * roi_feat_weight).sum(2) # [b,q,dim]
+        else:
+            raise ValueError
+        
+        return adapted_roi_feat
+       
+
     def forward(self, samples: NestedTensor, classes_name, description_dict, targets, epoch):
         """ The forward expects a NestedTensor, which consists of:
                - samples.tensor: batched video, of shape [batch_size x T x C]
@@ -445,20 +499,24 @@ class ConditionalDETR(nn.Module):
             salient_logits = self.salient_head(memory[-1].permute(0,2,1)).permute(0,2,1) # [b,t,1]
             out['salient_logits'] = salient_logits
         
-        # refine encoder
-        if self.enable_refine:
+        # get the ROI align feat
+        if self.enable_refine or self.adapterCLS_loss:
             with torch.no_grad():
                 reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
                 tmp = self.bbox_embed(hs[-1]) # [b,num_queries,2], tmp is the predicted offset value.
                 tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
                 outputs_coord = tmp.sigmoid() # [b,num_queries,2]
+                roi_pos = self._roi_align(outputs_coord,pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                roi_feat = self._roi_align(outputs_coord,clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+    
 
-            roi_pos = self._roi_align(outputs_coord,pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-            roi_feat = self._roi_align(outputs_coord,clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+
+        # refine encoder
+        if self.enable_refine:
             b,q,l,d = roi_feat.shape
             refine_hs = self.refine_decoder(hs[-1],clip_feat,roi_feat,
                                     video_feat_key_padding_mask=mask,
-                                    video_pos=pos,
+                                    video_pos=pos[-1],
                                     roi_pos=roi_pos)
 
             refine_hs = hs[-1] + refine_hs
@@ -489,6 +547,11 @@ class ConditionalDETR(nn.Module):
                 actionness_logits = self.actionness_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,2]
                 out['actionness_logits'] = actionness_logits
             
+        if self.adapterCLS_loss:
+            adapted_roi_feat = self._adapter_forward(roi_feat, roi_pos) # [b,q,dim]
+            adapted_roi_feat_logits = self._compute_similarity(adapted_roi_feat,text_feats) # [b,q,c]
+            out['adapted_roi_feat_logits'] = adapted_roi_feat_logits
+
 
         if self.target_type != "none":
            
@@ -575,6 +638,12 @@ class ConditionalDETR(nn.Module):
                         center_idx = (rois_center*truely_length).long() # [b,n,1]
                         roi_feat = torch.gather(clip_feat, dim=1, index=center_idx.expand(-1, -1, clip_feat.shape[-1]))
                         ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
+                    elif self.adapterCLS_loss:
+                        roi_pos = self._roi_align(out['pred_boxes'],pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        adapted_roi_feat = self._adapter_forward(roi_feat,roi_pos)
+                        ROIalign_logits = self._compute_similarity(adapted_roi_feat,text_feats)
+                    
                     out['class_logits'] = ROIalign_logits 
 
 
@@ -636,6 +705,8 @@ def build(args, device):
         print(f"Warning!!!!! Please tuning the num_queries when you adopt rank loss!!!!!!!!!!!")
     if args.salient_loss:
         weight_dict['loss_salient'] = args.salient_loss_coef
+    if args.adapterCLS_loss:
+        weight_dict['loss_adapterCLS'] = args.adapterCLS_loss_coef
 
 
     # TODO this is a hack

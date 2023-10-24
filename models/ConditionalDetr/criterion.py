@@ -62,6 +62,7 @@ class SetCriterion(nn.Module):
         self.rank_loss = args.rank_loss
         self.salient_loss = args.salient_loss
         self.salient_loss_impl = args.salient_loss_impl
+        self.adapterCLS_loss = args.adapterCLS_loss
 
 
         if self.eval_proposal or self.enable_classAgnostic:
@@ -607,6 +608,31 @@ class SetCriterion(nn.Module):
 
         return losses
 
+    def loss_adapterCLS(self, outputs, targets, indices, num_boxes, log=True):
+        """
+        align loss
+        """
+        assert 'adapted_roi_feat_logits' in outputs
+        adapted_roi_feat_logits = outputs['adapted_roi_feat_logits'] # [bs,num_queries,num_classes]
+
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        target_classes_o = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        target_classes = torch.full(adapted_roi_feat_logits.shape[:2], adapted_roi_feat_logits.shape[2],
+                                    dtype=torch.int64, device=adapted_roi_feat_logits.device) # [bs,num_queries]
+        target_classes[idx] = target_classes_o # [bs,num_queries]
+
+        target_classes_onehot = torch.zeros([adapted_roi_feat_logits.shape[0], adapted_roi_feat_logits.shape[1], adapted_roi_feat_logits.shape[2]+1],
+                                            dtype=adapted_roi_feat_logits.dtype, layout=adapted_roi_feat_logits.layout, device=adapted_roi_feat_logits.device) # [bs,num_queries,num_classes+1]
+        target_classes_onehot.scatter_(2, target_classes.unsqueeze(-1), 1)
+
+        target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
+        
+        adapted_roi_feat_logits = adapted_roi_feat_logits.sigmoid()
+        loss_adapterCLS = (-target_classes_onehot*torch.log(adapted_roi_feat_logits)).mean()
+
+        losses = {'loss_adapterCLS': loss_adapterCLS}
+
+        return losses
 
 
 
@@ -699,6 +725,9 @@ class SetCriterion(nn.Module):
             salient_loss = self.loss_salient(outputs, targets, indices, num_boxes)
             losses.update(salient_loss)
 
+        if self.adapterCLS_loss:
+            adpterCLS_loss = self.loss_adapterCLS(outputs, targets, indices, num_boxes)
+            losses.update(adpterCLS_loss)
 
         return losses
 

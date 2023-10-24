@@ -413,3 +413,20 @@
 - [x] 完善了refine_decoder
   - [x] 增加了self-attention后不进行residual connect的选项
   - [x] 增加了直接丢弃self-attention的选项 
+- [x] 在训练过程中增加action特性的分类, --adapterCLS_loss，20231024
+  - [x] 在crop出来的CLIP visual特征上面加一层时序建模, 然后匹配到的类别算NLL loss
+  - [x] 不需要和其他类别对比，我只需要让检测出来的这个action instance，通过某种加权聚合方式，能更好的和class name匹配就行。不需要对比，就不会破坏泛化能力，而是学到一种temporal建模的能力
+  - [x] 像是增加了一层CLIP到识别action的adapter
+  - [x] 实现方面：
+    - [x] 第一种，先过一层Conv1D，然后average pooling, --adapterCLS_type "conv_avg"
+    - [x] 第二种，过一层Conv1D，输出一个soft的attention加权weight，进行加权, --adapterCLS_type "conv_avg"
+    - [x] 第三种，过一层self-attention，然后average pooling, --adapterCLS_type "sa"
+- 📕 已经测明的涨点策略
+  - [ ] Thumos14改变 --slice_size，--inference_slice_overlap, --slice_overlap
+  - [ ] ActivityNet1.3 加了--enabel_refiene后改变学习率到e-5
+  - [ ] ActivityNet1.3调整salient_loss_coef大一点
+  - [ ] Thumos14的salient_loss_coef别太大
+  - [ ] 后处理中--postprocess_topk可以改变
+  - [ ] 后处理中--proposals_weight_type 一般来讲"after_softmax"会好一点
+  - [ ] 调整--num_queries也可能涨点
+  - [ ] 在--eval_proposal求的最好，不一定是加了分类的最好
