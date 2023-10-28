@@ -389,7 +389,7 @@ def compute_average_precision_detection(ground_truth, prediction, tiou_threshold
 #                                    ground_truth,
 #                                    tiou_thresholds=np.linspace(0.5, 1.0, 11)):
 #     """Computes the average recall given an average number of proposals per
-#     video.
+#     video. This code from RTD-Net.
 
 #     Parameters
 #     ----------
@@ -482,7 +482,7 @@ def average_recall_vs_avg_nr_proposals(proposals, ground_truth,
                                        max_avg_nr_proposals=None,
                                        tiou_thresholds=np.linspace(0.5, 0.95, 10)):
     """ Computes the average recall given an average number 
-        of proposals per video.
+        of proposals per video. This code from BMN.
     
     Parameters
     ----------

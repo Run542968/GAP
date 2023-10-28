@@ -321,7 +321,7 @@
 - [ ] 调整position embedding的温度系数
 - [ ] 试一下前5个epoch用encoder的输出作为decoder的输入，后几个epoch用clip feat作为decoder的输入，测试二分类的质量
 
-#### 第七次大版本
+#### 第七次大版本, 20231028最后一次提交到github，comit id=`seventh backup`
 - 级联的定位refine
   - [x] 首先在一个正常的transformer训练一个class-agnostic的检测器
     - [x] --enable_classAgnostic True开启这个模式
@@ -421,6 +421,10 @@
     - [x] 第一种，先过一层Conv1D，然后average pooling, --adapterCLS_type "conv_avg"
     - [x] 第二种，过一层Conv1D，输出一个soft的attention加权weight，进行加权, --adapterCLS_type "conv_avg"
     - [x] 第三种，过一层self-attention，然后average pooling, --adapterCLS_type "sa"
+
+#### 第八次大版本
+- [x] 🚩整理消融，进行分析实验
+- [x] 方法整体结构不变了
 - 📕 已经测明的涨点策略
   - [ ] Thumos14改变 --slice_size，--inference_slice_overlap, --slice_overlap
   - [ ] ActivityNet1.3 加了--enabel_refiene后改变学习率到e-5
@@ -436,3 +440,5 @@
   - [ ] 消融不同的num_queries
   - [ ] 设计不同的后处理策略
   - [ ] 跨域的识别
+- 写作话术
+  -  adopt prompt tuning in the text stream

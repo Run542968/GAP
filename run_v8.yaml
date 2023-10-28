@@ -1,0 +1,118 @@
+env: tadtr
+model: ZeroShotTAL
+
+
+Binary Classification in CLIP feature:
+    close-set:
+
+    zero-shot:
+        split_75:
+            clip: 
+                activitynet1.3:
+       
+                thumos14:
+
+        split_50:
+            clip: 
+                activitynet1.3:
+
+                thumos14:
+
+
+Zero-Shot:
+    split_75:
+        clip:
+            activitynet1.3: 
+                description:
+                    
+                prompt: 
+
+            thumos14:
+                description:
+                    
+                prompt: 
+
+
+        i3d:
+            activitynet1.3: 
+            thumos14:
+    split_50:
+        clip:
+            activitynet1.3: 
+                description:
+                    
+                prompt:
+
+
+            thumos14:
+                description:
+                    
+                prompt:
+
+                name:    
+
+        i3d:
+            activitynet1.3: 
+
+            thumos14:
+
+
+Direct_Test:
+    split_75:
+        activitynet1.3:
+            AR@1:
+                baseline:
+
+                baseline + refine:
+
+                baseline + refine + salient:
+
+            mAP:
+                baseline:
+
+                baseline + refine:  
+
+                baseline + salient:
+   
+                baseline + refine + salient: 
+ 
+        thumos14:
+                AR:
+                    baseline:
+
+                    baseline + refine:
+   
+                    baseline + salient:
+
+                    baseline + refine + salient:
+
+                mAP:
+                    baseline:
+
+                    baseline + refine:
+
+                    baseline + salient:
+
+                    base + refine + salient:
+
+    split_50:
+        activitynet1.3:
+       
+        thumos14:
+
+                  
+
+debug:
+# 在Thumos14的训练集上上拿GT直接用CLIP分类能达到63.67的acc, 在Thumos14的inference集上拿GT直接用CLIP分类能达到83.8
+# 在ActivityNet的训练集上拿GT直接用CLIP分类能达到51.45，在ActivityNet的inference集上拿GT直接用CLIP分类能达到82.76
+#
+CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_debug" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale
+# --actionness_loss
+CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_debug1" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --actionness_loss
+# --enable_classAgnostic
+CUDA_VISIBLE_DEVICES=5 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_debug2" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --enable_classAgnostic
+# --enable_classAgnostic --enable_relaxGT --rank_loss
+CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_debug3" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 4 --norm_embed --exp_logit_scale --enable_classAgnostic --enable_relaxGT --rank_loss
+
+# 
+CUDA_VISIBLE_DEVICES=1 python main.py --model_name "ActivityNet13_CLIP_prompt_zs_debug" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-2 --exp_logit_scale

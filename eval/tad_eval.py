@@ -8,7 +8,7 @@ import numpy as np
 import logging
 import concurrent.futures
 import sys
-from .eval_detection import compute_average_precision_detection,average_recall_vs_nr_proposals,average_recall_vs_avg_nr_proposals
+from .eval_detection import compute_average_precision_detection,average_recall_vs_avg_nr_proposals
 from scipy.interpolate import interp1d
 from utils.misc import all_gather
 from utils.segment_ops import soft_nms, temporal_nms
