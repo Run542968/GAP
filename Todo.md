@@ -430,3 +430,9 @@
   - [ ] 后处理中--proposals_weight_type 一般来讲"after_softmax"会好一点
   - [ ] 调整--num_queries也可能涨点
   - [ ] 在--eval_proposal求的最好，不一定是加了分类的最好
+- 分析性实验
+  - [ ] 辅助loss
+  - [ ] 消融不同的num_layer
+  - [ ] 消融不同的num_queries
+  - [ ] 设计不同的后处理策略
+  - [ ] 跨域的识别

@@ -1,6 +1,6 @@
 # basic
 task: "zero_shot"
-save_result: True
+# save_result: True
 
 # model
 exp_logit_scale: True
@@ -19,5 +19,5 @@ num_classes: 20
 # slice_overlap: 0.75
 # inference_slice_overlap: 0.25
 split: 50
-split_id: 0
+# split_id: 0
 

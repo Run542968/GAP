@@ -8,7 +8,7 @@ import numpy as np
 import logging
 import concurrent.futures
 import sys
-from .eval_detection import compute_average_precision_detection,average_recall_vs_nr_proposals
+from .eval_detection import compute_average_precision_detection,average_recall_vs_nr_proposals,average_recall_vs_avg_nr_proposals
 from scipy.interpolate import interp1d
 from utils.misc import all_gather
 from utils.segment_ops import soft_nms, temporal_nms
@@ -140,26 +140,39 @@ class TADEvaluator(object):
         # ground_truth = pd.read_csv('datasets/thumos14_test_groundtruth.csv')
 
         # Computes average recall vs average number of proposals.
-        average_recall, average_nr_proposals = average_recall_vs_nr_proposals(
-            self.all_pred[nms_mode], self.all_gt)
+        # average_recall, average_nr_proposals = average_recall_vs_nr_proposals(
+        #     self.all_pred[nms_mode], self.all_gt)
 
-        f = interp1d(average_nr_proposals,
-                    average_recall,
-                    axis=0,
-                    fill_value='extrapolate')
+        # f = interp1d(average_nr_proposals,
+        #             average_recall,
+        #             axis=0,
+        #             fill_value='extrapolate')
 
         # return {
-        #     'AR@50': str(f(50)),
-        #     'AR@100': str(f(100)),
-        #     'AR@200': str(f(200)),
-        #     'AR@500': str(f(500))
+        #     'AR@1': f(1),
+        #     'AR@50': f(50),
+        #     'AR@100': f(100),
+        #     'AR@200': f(200),
+        #     'AR@500': f(500)
         # }
+
+        recall, avg_recall, proposals_per_video = average_recall_vs_avg_nr_proposals(
+            self.all_pred[nms_mode], self.all_gt,
+            max_avg_nr_proposals=100,
+            tiou_thresholds=np.linspace(0.5, 0.95, 10))
+        
+        area_under_curve = np.trapz(avg_recall, proposals_per_video)
+
+
+        logger.info('[RESULTS] Performance on ActivityNet proposal task.')
+        logger.info('\tArea Under the AR vs AN curve: {}%'.format(100.*float(area_under_curve)/proposals_per_video[-1]))
+
         return {
-            'AR@1': f(1),
-            'AR@50': f(50),
-            'AR@100': f(100),
-            'AR@200': f(200),
-            'AR@500': f(500)
+            'AR@1': np.mean(recall[:,0]),
+            'AR@5': np.mean(recall[:,4]),
+            'AR@10': np.mean(recall[:,9]),
+            'AR@50': np.mean(recall[:,49]),
+            'AR@100': np.mean(recall[:,-1])
         }
 
 

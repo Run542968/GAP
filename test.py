@@ -162,7 +162,7 @@ if __name__ == "__main__":
     test_stats = test(model,criterion,postprocessor,val_loader,args.dataset_name,-1,device,args,verbose=True)
     print('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
     print('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
-    print('Intermediate AR@1: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
+    print('Intermediate AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@5_raw']*100, test_stats['AR@10_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
 
 
 # CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4

@@ -1,6 +1,6 @@
 # basic
 task: "zero_shot"
-save_result: True
+# save_result: True
 
 # model
 
@@ -14,4 +14,4 @@ feature_stride: 16
 feature_type: "CLIP"
 num_classes: 200
 split: 75
-split_id: 0
+# split_id: 0

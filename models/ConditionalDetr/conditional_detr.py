@@ -499,8 +499,9 @@ class ConditionalDETR(nn.Module):
             salient_logits = self.salient_head(memory[-1].permute(0,2,1)).permute(0,2,1) # [b,t,1]
             out['salient_logits'] = salient_logits
         
-        # get the ROI align feat
-        if self.enable_refine or self.adapterCLS_loss:
+
+        # refine encoder
+        if self.enable_refine:
             with torch.no_grad():
                 reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
                 tmp = self.bbox_embed(hs[-1]) # [b,num_queries,2], tmp is the predicted offset value.
@@ -509,10 +510,6 @@ class ConditionalDETR(nn.Module):
                 roi_pos = self._roi_align(outputs_coord,pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 roi_feat = self._roi_align(outputs_coord,clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
     
-
-
-        # refine encoder
-        if self.enable_refine:
             b,q,l,d = roi_feat.shape
             refine_hs = self.refine_decoder(hs[-1],clip_feat,roi_feat,
                                     video_feat_key_padding_mask=mask,
@@ -546,9 +543,14 @@ class ConditionalDETR(nn.Module):
                 # compute the class-agnostic foreground score
                 actionness_logits = self.actionness_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,2]
                 out['actionness_logits'] = actionness_logits
-            
+        
+        # adopt adapterCLS_loss
         if self.adapterCLS_loss:
-            adapted_roi_feat = self._adapter_forward(roi_feat, roi_pos) # [b,q,dim]
+            with torch.no_grad():
+                adapter_roi_pos = self._roi_align(out['pred_boxes'],pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                adapter_roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+    
+            adapted_roi_feat = self._adapter_forward(adapter_roi_feat, adapter_roi_pos) # [b,q,dim]
             adapted_roi_feat_logits = self._compute_similarity(adapted_roi_feat,text_feats) # [b,q,c]
             out['adapted_roi_feat_logits'] = adapted_roi_feat_logits
 
@@ -612,24 +614,24 @@ class ConditionalDETR(nn.Module):
                 elif self.enable_classAgnostic:
                     fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
-                    if self.pooling_type == "average":
+                    if self.pooling_type == "average" and not self.adapterCLS_loss:
                         if self.ROIalign_strategy == "before_pred":
                             ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],fixed_text_feats,self.ROIalign_size)
                         else:
                             visual_feats = clip_feat + 1e-8 # avoid the NaN [B,T,dim]
                             snippet_logits = self._compute_similarity(visual_feats,fixed_text_feats) # [b,T,num_classes]
                             ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
-                    elif self.pooling_type == "max":
+                    elif self.pooling_type == "max" and not self.adapterCLS_loss:
                         roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                         roi_feat = roi_feat.max(dim=2)[0] # [bs,num_queries,dim]
 
                         ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
-                    elif self.pooling_type == "center1":
+                    elif self.pooling_type == "center1" and not self.adapterCLS_loss:
                         roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                         center_idx = int(roi_feat.shape[2] / 2)
                         roi_feat = roi_feat[:,:,center_idx,:] 
                         ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
-                    elif self.pooling_type == "center2":
+                    elif self.pooling_type == "center2" and not self.adapterCLS_loss:
                         rois = out['pred_boxes'] # [b,n,2]
                         rois_center = rois[:, :, 0:1] # [B,N,1]
                         # rois_size = rois[:, :, 1:2] * scale_factor # [B,N,1]
@@ -639,10 +641,7 @@ class ConditionalDETR(nn.Module):
                         roi_feat = torch.gather(clip_feat, dim=1, index=center_idx.expand(-1, -1, clip_feat.shape[-1]))
                         ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
                     elif self.adapterCLS_loss:
-                        roi_pos = self._roi_align(out['pred_boxes'],pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                        adapted_roi_feat = self._adapter_forward(roi_feat,roi_pos)
-                        ROIalign_logits = self._compute_similarity(adapted_roi_feat,text_feats)
+                        ROIalign_logits = out['adapted_roi_feat_logits']
                     
                     out['class_logits'] = ROIalign_logits 
 

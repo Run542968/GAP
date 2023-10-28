@@ -156,7 +156,7 @@ if __name__ == '__main__':
                 train_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=train_val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
                 logger.info('||'.join(['Train map @ {} = {:.3f} '.format(train_stats['iou_range'][i],train_stats['per_iou_ap_raw'][i]*100) for i in range(len(train_stats['iou_range']))]))
                 logger.info('Intermediate Train mAP Avg ALL: {}'.format(train_stats['mAP_raw']*100))
-                logger.info('Intermediate Train AR@1: {}, AR@50: {}, AR@100: {}'.format(train_stats['AR@1_raw']*100, train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100))
+                logger.info('Intermediate Train AR@1: {}, AR@5: {}, AR@10: {}, AR@50:{}, AR@100:{}'.format(train_stats['AR@1_raw']*100, train_stats['AR@5_raw']*100,train_stats['AR@10_raw']*100,train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100))
 
                 if args.use_mlflow: # for mlflow
                         res_dict = {'train_IoU_'+str(k):v*100 for k,v in zip(train_stats['iou_range'],train_stats['per_iou_ap_raw'])}
@@ -172,7 +172,7 @@ if __name__ == '__main__':
                 test_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
                 logger.info('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
                 logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
-                logger.info('Intermediate AR@1: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
+                logger.info('Intermediate AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@15_raw']*100, test_stats['AR@10_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
 
                 if args.use_mlflow: # for mlflow
                     res_dict = {'IoU_'+str(k):v*100 for k,v in zip(test_stats['iou_range'],test_stats['per_iou_ap_raw'])}

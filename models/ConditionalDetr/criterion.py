@@ -627,8 +627,14 @@ class SetCriterion(nn.Module):
 
         target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
         
-        adapted_roi_feat_logits = adapted_roi_feat_logits.sigmoid()
-        loss_adapterCLS = (-target_classes_onehot*torch.log(adapted_roi_feat_logits)).mean()
+        # adapted_roi_feat_logits = adapted_roi_feat_logits.sigmoid()
+        # loss_adapterCLS = (-target_classes_onehot*torch.log(adapted_roi_feat_logits)).sum()
+        # loss_adapterCLS = loss_adapterCLS/num_boxes
+
+        matched_classes_onehot = target_classes_onehot[idx] # [batch_matched_queries,num_classes]
+        matched_adapted_roi_feat_logits = adapted_roi_feat_logits[idx] # [batch_matched_queries,num_classes]
+
+        loss_adapterCLS = sigmoid_focal_loss(matched_adapted_roi_feat_logits, matched_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma)
 
         losses = {'loss_adapterCLS': loss_adapterCLS}
 
