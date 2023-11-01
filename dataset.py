@@ -64,9 +64,6 @@ class BaseDataset(Dataset):
         self.split = args.split
         self.split_id = args.split_id
         self.target_type = args.target_type
-        self.enable_relaxGT = args.enable_relaxGT
-        self.shift_eps = args.shift_eps
-        # self.binary = args.binary
 
         self.slice_size = args.slice_size
         self.slice_overlap = args.slice_overlap if self.mode=="train" else args.inference_slice_overlap
@@ -232,27 +229,6 @@ class BaseDataset(Dataset):
             semantic_label = classes.index(seg_anno['label']) # the category labels for semantic classification
             target['semantic_labels'].append(semantic_label)
             
-            if self.enable_relaxGT:
-                inner_segment = self.generate_inner_segment_with_eps(segment,self.shift_eps,0,feature_duration)
-                outer_segment = self.generate_outer_segment_with_random_shifted(segment,self.shift_eps,0,feature_duration)
-                if self.target_type != "none":
-                    inter_id = 0
-                    inter_name = 'foreground'
-                    outer_id = 0
-                    outer_name = 'foreground'
-                else:
-                    inter_id = classes.index(seg_anno['label']) # the index come from the classes in anno_file
-                    inter_name = seg_anno['label']
-                    outer_id = classes.index(seg_anno['label']) # the index come from the classes in anno_file
-                    outer_name = seg_anno['label']
-                target['segments'].append(inner_segment)
-                target['labels'].append(inter_id)  # the category labels for detector to classify
-                target['label_names'].append(inter_name)
-                target['segments'].append(outer_segment)
-                target['labels'].append(outer_id)  # the category labels for detector to classify
-                target['label_names'].append(outer_name)
-                target['semantic_labels'].append(semantic_label)
-                target['semantic_labels'].append(semantic_label)
 
             # add salient mask
             start_float, end_float = np.array(segment)/feature_duration*feat_length

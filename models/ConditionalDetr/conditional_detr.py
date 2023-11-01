@@ -90,9 +90,6 @@ class ConditionalDETR(nn.Module):
         self.ROIalign_strategy = args.ROIalign_strategy
         self.ROIalign_size = args.ROIalign_size
         
-        self.results_ensemble = args.results_ensemble
-        self.ensemble_rate = args.ensemble_rate
-        self.ensemble_strategy = args.ensemble_strategy
         self.pooling_type = args.pooling_type
 
         self.eval_proposal = args.eval_proposal 
@@ -106,8 +103,6 @@ class ConditionalDETR(nn.Module):
 
         self.enable_refine = args.enable_refine
         self.enable_posPrior = args.enable_posPrior
-
-        self.enable_injection = args.enable_injection
 
         self.salient_loss = args.salient_loss
         self.salient_loss_type = args.salient_loss_type
@@ -124,7 +119,7 @@ class ConditionalDETR(nn.Module):
         nn.init.constant_(self.bbox_embed.layers[-1].weight.data, 0)
         nn.init.constant_(self.bbox_embed.layers[-1].bias.data, 0)
         
-        if self.enable_refine or self.enable_injection:
+        if self.enable_refine:
             self.refine_decoder = refine_decoder
 
         if self.enable_posPrior:
@@ -421,6 +416,53 @@ class ConditionalDETR(nn.Module):
         
         return adapted_roi_feat, roi_feat_weight
        
+    def _temporal_pooling(self,pooling_type,coordinate,clip_feat,mask,ROIalign_size,text_feats):
+        
+        if pooling_type == "average":
+            roi_feat = self._roi_align(rois=coordinate,origin_feat=clip_feat+1e-4,mask=mask,ROIalign_size=ROIalign_size).mean(-2) # [B,Q,dim]
+
+            ROIalign_logits = self._compute_similarity(roi_feat,text_feats) # [b,Q,num_classes]
+        elif pooling_type == "max":
+            roi_feat = self._roi_align(coordinate,clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+            roi_feat = roi_feat.max(dim=2)[0] # [bs,num_queries,dim]
+
+            ROIalign_logits = self._compute_similarity(roi_feat,text_feats)
+        elif pooling_type == "center1":
+            roi_feat = self._roi_align(coordinate,clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+            center_idx = int(roi_feat.shape[2] / 2)
+            roi_feat = roi_feat[:,:,center_idx,:] 
+            ROIalign_logits = self._compute_similarity(roi_feat,text_feats)
+        elif pooling_type == "center2":
+            rois = coordinate # [b,n,2]
+            rois_center = rois[:, :, 0:1] # [B,N,1]
+            # rois_size = rois[:, :, 1:2] * scale_factor # [B,N,1]
+            truely_length = t-torch.sum(mask,dim=1) # [B]
+            truely_length = truely_length.reshape(-1,1,1) # [B,1,1]
+            center_idx = (rois_center*truely_length).long() # [b,n,1]
+            roi_feat = torch.gather(clip_feat + 1e-4, dim=1, index=center_idx.expand(-1, -1, clip_feat.shape[-1]))
+            ROIalign_logits = self._compute_similarity(roi_feat,text_feats)
+        elif pooling_type == "self_attention":
+            roi_feat = self._roi_align(coordinate,clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+            attention_weights = F.softmax(torch.matmul(roi_feat, roi_feat.transpose(-2, -1)), dim=-1)
+            roi_feat_sa = torch.matmul(attention_weights, roi_feat)
+            roi_feat_sa = roi_feat_sa.mean(2)
+            ROIalign_logits = self._compute_similarity(roi_feat_sa,text_feats)
+        elif pooling_type == "slow_fast":
+            roi_feat = self._roi_align(coordinate,clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+            fast_feat = roi_feat.mean(dim=2) # [b,q,d]
+            step = int(self.ROIalign_size // 4)
+            slow_feat = roi_feat[:,:,::step,:].mean(dim=2) # [b,q,d]
+            roi_feat_final = (fast_feat + slow_feat)/2
+            ROIalign_logits = self._compute_similarity(roi_feat_final,text_feats)
+        elif pooling_type == "sparse":
+            roi_feat = self._roi_align(coordinate,clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+            step = int(self.ROIalign_size // 4)
+            slow_feat = roi_feat[:,:,::step,:].mean(dim=2) # [b,q,d]
+            ROIalign_logits = self._compute_similarity(slow_feat,text_feats)
+        else:
+            raise ValueError
+
+        return ROIalign_logits   
 
     def forward(self, samples: NestedTensor, classes_name, description_dict, targets, epoch):
         """ The forward expects a NestedTensor, which consists of:
@@ -467,10 +509,7 @@ class ConditionalDETR(nn.Module):
         assert mask is not None
         src = self.input_proj(src.permute(0,2,1)).permute(0,2,1)
         
-        if self.enable_injection:
-            memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1], clip_feat, self.bbox_embed, self.refine_decoder) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
-        else:
-            memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1]) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
+        memory, hs, reference = self.transformer(src, mask, self.query_embed.weight, pos[-1]) # [enc_layers, b,t,c], [dec_layers,b,num_queries,c], [b,num_queries,1]
 
         # record result
         out = {}
@@ -561,7 +600,6 @@ class ConditionalDETR(nn.Module):
                 # compute the class-agnostic foreground score
                 actionness_logits = self.actionness_embed(refine_hs) # [b,num_queries,2]
                 out['actionness_logits'] = actionness_logits
-
         else:
             reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
             outputs_coords = []
@@ -592,124 +630,29 @@ class ConditionalDETR(nn.Module):
                 out['roi_feat_logits'] = self._compute_similarity(adapter_roi_feat,text_feats) # [b,q,l,c]
 
 
-        if self.target_type != "none":
-           
-            if not self.eval_proposal and not self.enable_classAgnostic:
-                class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
-                class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes]
-                out['class_logits'] = class_logits
+        if not self.eval_proposal and not self.enable_classAgnostic:
+            class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
+            class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes]
+            out['class_logits'] = class_logits
 
 
-            ## compute the classification accuate of CLIP
-            # prepare instance coordination
-            # gt_roi_feat = [] 
-            # gt_labels = []
-            # for i, t in enumerate(targets):
-            #     if len(t['segments']) > 0 :
-            #         gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
-            #         visual_feat_i = clip_feat[i].unsqueeze(0) # [1,T,dim]
-            #         mask_i = mask[i].unsqueeze(0) # [1,T]
-            #         roi_feat = self._roi_align(gt_coordinations,visual_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
-            #         gt_roi_feat.append(roi_feat)
-            #         gt_lbl = t['semantic_labels'] # [num]
-            #         gt_labels.append(gt_lbl)
-            # if len(gt_labels) > 0:
-            #     gt_roi_feat = torch.cat(gt_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
-            #     gt_roi_feat = gt_roi_feat.mean(dim=1) # [batch_instance_num,dim]
-            #     gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num]
+        # obtain the ROIalign logits
+        if not self.training: # only in inference stage
 
-            #     gt_logits = self._compute_similarity(gt_roi_feat,text_feats) # [batch_instance_num,num_classes]
+            if self.enable_classAgnostic:
+                fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+
+                if self.adapterCLS_loss:
+                    ROIalign_logits = out['adapted_roi_feat_logits']
+                else:
+                    ROIalign_logits = self._temporal_pooling(self.pooling_type, out['pred_boxes'], clip_feat, mask, self.ROIalign_size, fixed_text_feats)
                 
-            #     out['gt_labels'] = gt_labels
-            #     out['gt_logits'] = gt_logits
-            ## compute the classification accuate of CLIP
+                out['class_logits'] = ROIalign_logits 
+            
+            else:
+                assert "class_logits" in out, "please check the code of self.class_embed"
+            
 
-
-            # obtain the ROIalign logits
-            if not self.training: # only in inference stage
-
-                if self.results_ensemble and not self.enable_classAgnostic:
-                    fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, "prompt") # [N classes,dim]
-                    
-                    if self.ROIalign_strategy == "before_pred":
-                        ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],fixed_text_feats,self.ROIalign_size)
-                    else:
-                        visual_feats = clip_feat + 1e-8 # avoid the NaN [B,T,dim]
-                        snippet_logits = self._compute_similarity(visual_feats,fixed_text_feats) # [b,T,num_classes]
-                        ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
-                    
-                    semantic_logits = out['class_logits']
-
-                    if self.ensemble_strategy == "arithmetic":
-                        prob = self.ensemble_rate*semantic_logits + (1-self.ensemble_rate)*ROIalign_logits
-                    elif self.ensemble_strategy == "geomethric":
-                        prob = torch.mul(semantic_logits.pow(self.ensemble_rate),ROIalign_logits.pow(1-self.ensemble_rate))
-                    else:
-                        NotImplementedError
-                    out['class_logits'] = prob
-
-                elif self.enable_classAgnostic:
-                    fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
-
-                    if self.pooling_type == "average" and not self.adapterCLS_loss:
-                        if self.ROIalign_strategy == "before_pred":
-                            ROIalign_logits = self._get_roi_prediction_v1(samples,out['pred_boxes'],fixed_text_feats,self.ROIalign_size)
-                        else:
-                            visual_feats = clip_feat + 1e-8 # avoid the NaN [B,T,dim]
-                            snippet_logits = self._compute_similarity(visual_feats,fixed_text_feats) # [b,T,num_classes]
-                            ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
-                    elif self.pooling_type == "max" and not self.adapterCLS_loss:
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                        roi_feat = roi_feat.max(dim=2)[0] # [bs,num_queries,dim]
-
-                        ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
-                    elif self.pooling_type == "center1" and not self.adapterCLS_loss:
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                        center_idx = int(roi_feat.shape[2] / 2)
-                        roi_feat = roi_feat[:,:,center_idx,:] 
-                        ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
-                    elif self.pooling_type == "center2" and not self.adapterCLS_loss:
-                        rois = out['pred_boxes'] # [b,n,2]
-                        rois_center = rois[:, :, 0:1] # [B,N,1]
-                        # rois_size = rois[:, :, 1:2] * scale_factor # [B,N,1]
-                        truely_length = t-torch.sum(mask,dim=1) # [B]
-                        truely_length = truely_length.reshape(-1,1,1) # [B,1,1]
-                        center_idx = (rois_center*truely_length).long() # [b,n,1]
-                        roi_feat = torch.gather(clip_feat + 1e-4, dim=1, index=center_idx.expand(-1, -1, clip_feat.shape[-1]))
-                        ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
-                    elif self.pooling_type == "self_attention" and not self.adapterCLS_loss:
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                        attention_weights = F.softmax(torch.matmul(roi_feat, roi_feat.transpose(-2, -1)), dim=-1)
-                        roi_feat_sa = torch.matmul(attention_weights, roi_feat)
-                        roi_feat_sa = roi_feat_sa.mean(2)
-                        ROIalign_logits = self._compute_similarity(roi_feat_sa,fixed_text_feats)
-                    elif self.pooling_type == "slow_fast" and not self.adapterCLS_loss:
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                        fast_feat = roi_feat.mean(dim=2) # [b,q,d]
-                        step = int(self.ROIalign_size // 4)
-                        slow_feat = roi_feat[:,:,::step,:].mean(dim=2) # [b,q,d]
-                        roi_feat_final = (fast_feat + slow_feat)/2
-                        ROIalign_logits = self._compute_similarity(roi_feat_final,fixed_text_feats)
-                    elif self.pooling_type == "sparse" and not self.adapterCLS_loss:
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                        step = int(self.ROIalign_size // 4)
-                        slow_feat = roi_feat[:,:,::step,:].mean(dim=2) # [b,q,d]
-                        ROIalign_logits = self._compute_similarity(slow_feat,fixed_text_feats)
-                    elif self.adapterCLS_loss:
-                        ROIalign_logits = out['adapted_roi_feat_logits']
-                    else:
-                        raise ValueError
-                    out['class_logits'] = ROIalign_logits 
-
-
-        else:
-            detector_logits = self.class_embed(hs) # [dec_layers,b,num_queries,num_classes]
-            out['pred_logits'] = detector_logits[-1]
-
-        # aux_loss
-        if self.aux_loss:
-            out['aux_outputs'] = self._set_aux_loss(detector_logits, outputs_coord)
-        
         return out
 
     @torch.jit.unused
@@ -733,7 +676,7 @@ def build(args, device):
     backbone = build_backbone(args)
     transformer = build_transformer(args)
     # semantic_vhead,semantic_thead = build_semantic_head(args)
-    if args.enable_refine or args.enable_injection:
+    if args.enable_refine:
         refine_decoder = build_refine_decoder(args)
     else:
         refine_decoder = None
@@ -755,9 +698,6 @@ def build(args, device):
     
     if args.actionness_loss or args.eval_proposal or args.enable_classAgnostic:
         weight_dict['loss_actionness'] = args.actionness_loss_coef
-    if args.rank_loss and args.enable_relaxGT:
-        weight_dict['loss_rank'] = args.rank_loss_coef
-        print(f"Warning!!!!! Please tuning the num_queries when you adopt rank loss!!!!!!!!!!!")
     if args.salient_loss:
         weight_dict['loss_salient'] = args.salient_loss_coef
     if args.adapterCLS_loss:

@@ -71,17 +71,9 @@ parser.add_argument('--enable_refine', action='store_true', default=False)
 parser.add_argument('--refine_drop_saResidual', action='store_true', default=False)
 parser.add_argument('--refine_drop_sa', action='store_true', default=False)
 
-
 parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
 
 parser.add_argument('--enable_posPrior', action='store_true', default=False)
-
-parser.add_argument('--enable_injection', action='store_true', default=False)
-parser.add_argument('--injection_type', type=str, default='vfeat', choices=('vfeat', 'memory'))
-parser.add_argument('--injection_fuseType', type=str, default='add', choices=('add', 'mlp'))
-
-parser.add_argument('--enable_relaxGT', action='store_true', default=False)
-parser.add_argument('--shift_eps', type=float, default=0.9)
 
 
 

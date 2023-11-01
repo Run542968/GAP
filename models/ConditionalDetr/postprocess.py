@@ -57,13 +57,10 @@ class PostProcess(nn.Module):
                         prob = class_logits.sigmoid()
                     else:
                         raise NotImplementedError
-        elif self.target_type == "none" and not eval_proposal:
-            assert 'class_logits' in outputs
-            out_logits = outputs['pred_logits'] # [bs,num_queries,num_classes]
-            prob = out_logits.sigmoid() # [bs,num_queries,num_classes]
         else:
             raise ValueError("Don't have this case.")
     
+
         B,Q,num_classes = prob.shape
         assert len(prob) == len(target_sizes)
 

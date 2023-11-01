@@ -58,8 +58,7 @@ class SetCriterion(nn.Module):
         self.eval_proposal = args.eval_proposal
         self.enable_classAgnostic = args.enable_classAgnostic
 
-        self.enable_relaxGT = args.enable_relaxGT
-        self.rank_loss = args.rank_loss
+
         self.salient_loss = args.salient_loss
         self.salient_loss_impl = args.salient_loss_impl
         self.adapterCLS_loss = args.adapterCLS_loss
@@ -755,12 +754,6 @@ class SetCriterion(nn.Module):
                     l_dict = {k + f'_{i}': v for k, v in l_dict.items()}
                     losses.update(l_dict)
 
-        # if self.actionness_loss or self.eval_proposal:
-        #     actionness_loss = self.loss_actionness(outputs, targets, indices, num_boxes)
-        #     losses.update(actionness_loss)
-        if self.rank_loss and self.enable_relaxGT:
-            rank_loss = self.loss_rank(outputs, targets, indices, num_boxes)
-            losses.update(rank_loss)
 
         if self.salient_loss:
             salient_loss = self.loss_salient(outputs, targets, indices, num_boxes)
