@@ -3,6 +3,7 @@ import torch
 import random
 import os
 import numpy as np
+import csv
 
 #################### logger #####################
 def get_logger(filename, verbosity=1, name=None):
@@ -48,3 +49,23 @@ def id2onehot(num_classes,id):
     onehot[id] = 1
     
     return onehot
+
+
+def write_to_csv(dname, test_stats, epoch):
+    path = dname + "_results.csv"
+    data_row=[]
+
+    test_stats['per_iou_ap_raw'], test_stats['mAP_raw'],
+    data_row.append(epoch)
+    for item in test_stats['per_iou_ap_raw']:
+        data_row.append(np.round(item*100,6))
+    data_row.append(np.round(test_stats['mAP_raw']*100,6))
+    data_row.append(np.round(test_stats['AR@1_raw']*100,6))
+    data_row.append(np.round(test_stats['AR@5_raw']*100,6))
+    data_row.append(np.round(test_stats['AR@10_raw']*100,6))
+    data_row.append(np.round(test_stats['AR@50_raw']*100,6))
+    data_row.append(np.round(test_stats['AR@100_raw']*100,6))
+
+    with open(path,'a+',newline="") as f:
+        csv_write = csv.writer(f)
+        csv_write.writerow(data_row)

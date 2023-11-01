@@ -21,7 +21,7 @@ import options
 from options import merge_cfg_from_file
 import numpy as np
 from tqdm import tqdm
-from utils.util import get_logger, setup_seed
+from utils.util import get_logger, setup_seed, write_to_csv
 import dataset
 from models.ConditionalDetr import build_model
 from train import train
@@ -51,6 +51,12 @@ def check_directory(args):
         os.makedirs(os.path.join('./results/',args.dataset_name,args.model_name))
     if os.path.exists(os.path.join('./results/',args.dataset_name,args.model_name)): 
         shutil.rmtree(os.path.join('./results/',args.dataset_name,args.model_name))
+
+    if not os.path.exists(os.path.join('./results/excel',args.dataset_name)):
+        os.makedirs(os.path.join('./results/excel',args.dataset_name))
+    if os.path.exists(os.path.join('./results/excel',args.dataset_name,args.model_name + "_results.csv")): 
+        os.remove(os.path.join('./results/excel',args.dataset_name,args.model_name + "_results.csv"))
+
     return logger
 
 if __name__ == '__main__':
@@ -172,7 +178,8 @@ if __name__ == '__main__':
                 test_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
                 logger.info('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
                 logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
-                logger.info('Intermediate AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@15_raw']*100, test_stats['AR@10_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
+                logger.info('Intermediate AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@5_raw']*100, test_stats['AR@10_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
+                write_to_csv(os.path.join('./results/excel',args.dataset_name,args.model_name), test_stats, epoch)
 
                 if args.use_mlflow: # for mlflow
                     res_dict = {'IoU_'+str(k):v*100 for k,v in zip(test_stats['iou_range'],test_stats['per_iou_ap_raw'])}

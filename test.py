@@ -223,4 +223,12 @@ if __name__ == "__main__":
 # CUDA_VISIBLE_DEVICES=3 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_5" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --postprocess_type "class_agnostic" --postprocess_topk 1 --num_queries 40 --enc_layers 2 --dec_layers 4 --slice_size 1024 --inference_slice_overlap 0.4 --enable_classAgnostic --proposals_weight_type "after_softmax" --postprocess_type "class_one" --split_id 3
 
 
+# 19.76
+# CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_9" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --enable_classAgnostic --actionness_loss_coef 2 --slice_size 1024 --inference_slice_overlap 0.4 --slice_overlap 0.8
+# 20.44
+# CUDA_VISIBLE_DEVICES=7 python test.py --model_name "Thumos14_CLIP_prompt_zs50_1frame_binary_v7_9" --cfg_path "./config/Thumos14_CLIP_zs_50_1frame.yaml" --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 10 --num_queries 40 --enc_layers 2 --dec_layers 4 --enable_classAgnostic --actionness_loss_coef 2 --slice_size 1024 --inference_slice_overlap 0.4 --slice_overlap 0.8 --proposals_weight_type "after_softmax"
 
+
+# 
+# CUDA_VISIBLE_DEVICES=5 python test.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_v7_96" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --enable_classAgnostic --actionness_loss_coef 3 --enable_refine --refine_drop_saResidual --split_id 1
+# CUDA_VISIBLE_DEVICES=5 python test.py --model_name "Thumos14_CLIP_prompt_zs_8frame_binary_v7_96" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --enable_classAgnostic --actionness_loss_coef 3 --enable_refine --refine_drop_saResidual --split_id 1 --proposals_weight_type "after_softmax"

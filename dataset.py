@@ -201,7 +201,8 @@ class BaseDataset(Dataset):
             'label_names': [],
             'video_name': video_name,
             'video_duration': feature_duration,   # only used in inference
-            'salient_mask': [] # the mask to get action instance 
+            'salient_mask': [], # the mask to get action instance 
+            'mask_labels':np.full(feat_length,0) # [T]
             }
         
         # sort the segments follow time sequence
@@ -260,7 +261,9 @@ class BaseDataset(Dataset):
             mask_salient = np.ones(feat_length,dtype=bool) # [feat_length]
             mask_salient[start_idx:end_idx] = False
             target['salient_mask'].append(mask_salient)
-
+            
+            # update class-agnostic mask labels
+            target['mask_labels'][start_idx:end_idx] = 1
 
         # normalized the coordinate
         target['segments'] = np.array(target['segments']) / feature_duration
@@ -279,6 +282,9 @@ class BaseDataset(Dataset):
             # covert 'salient_mask' to torch format
             target['salient_mask'] = torch.from_numpy(np.array(target['salient_mask']))
 
+            # covert 'mask_labels' to torch format
+            target['mask_labels'] = torch.from_numpy(target['mask_labels'])
+            
         return target
 
     def __getitem__(self, index):

@@ -115,6 +115,7 @@ class ConditionalDETR(nn.Module):
 
         self.adapterCLS_loss = args.adapterCLS_loss
         self.adapterCLS_type = args.adapterCLS_type
+        self.adapterCLS_conv_weight_type = args.adapterCLS_conv_weight_type
 
 
         hidden_dim = transformer.d_model
@@ -169,6 +170,12 @@ class ConditionalDETR(nn.Module):
                 self.adapter = nn.Conv1d(in_channels=hidden_dim,out_channels=hidden_dim,kernel_size=3,padding=1)
             elif self.adapterCLS_type == "conv_add":
                 self.adapter = nn.Conv1d(in_channels=hidden_dim,out_channels=1,kernel_size=3,padding=1)
+            elif self.adapterCLS_type == "conv_weight":
+                self.adapter = nn.Sequential(
+                    nn.Conv1d(in_channels=hidden_dim,out_channels=1,kernel_size=3,padding=1),
+                    # nn.LeakyReLU(0.2),
+                    # nn.Conv1d(in_channels=hidden_dim,out_channels=1,kernel_size=3,padding=1)
+                )
             else:
                 raise ValueError
 
@@ -316,6 +323,7 @@ class ConditionalDETR(nn.Module):
 
         return roi_logits
     
+    @torch.no_grad()
     def _compute_similarity(self, visual_feats, text_feats):
         '''
         text_feats: [num_classes,dim]
@@ -344,8 +352,21 @@ class ConditionalDETR(nn.Module):
             else:
                 logits = torch.einsum("bqd,cd->bqc",visual_feats,text_feats)
             return logits
+        elif len(visual_feats.shape)==4:# batch,num_queries,snippet_length,dim
+            if self.norm_embed:
+                visual_feats = visual_feats / visual_feats.norm(dim=-1,keepdim=True)
+                text_feats = text_feats / text_feats.norm(dim=-1,keepdim=True)
+                if self.exp_logit_scale:
+                    logit_scale = self.logit_scale.exp()
+                else:
+                    logit_scale = self.logit_scale
+                logits = torch.einsum("bqld,cd->bqlc",logit_scale*visual_feats,text_feats)
+            else:
+                logits = torch.einsum("bqld,cd->bqlc",visual_feats,text_feats)
+            return logits
+        
         else:
-            NotImplementedError
+            raise NotImplementedError
 
     def _adapter_forward(self, roi_feat, roi_pos=None):
         '''
@@ -369,23 +390,36 @@ class ConditionalDETR(nn.Module):
                                             )[0] # [l,b*q,dim]
             adapted_roi_feat = adapted_roi_feat.mean(0) # [b*q,dim]
             adapted_roi_feat = adapted_roi_feat.reshape(b,q,d) # [b,q,dim]
-
+            roi_feat_weight = None
         elif self.adapterCLS_type == "conv_avg":
             roi_feat = roi_feat.reshape(b*q,l,d) # [b*q,l,d]
             roi_feat = roi_feat.permute(0,2,1) # [b*q,dim,l]
             adapted_roi_feat = self.adapter(roi_feat).permute(0,2,1) # [b*q,l,dim]
             adapted_roi_feat = adapted_roi_feat.reshape(b,q,l,d)
             adapted_roi_feat = adapted_roi_feat.mean(2) # [b,q,dim]
+
+            roi_feat_weight= None
         elif self.adapterCLS_type == "conv_add":
             roi_feat_re = roi_feat.reshape(b*q,l,d) # [b*q,l,d]
-            roi_feat_weight = self.adapter(roi_feat_re.permute(0,2,1)).permute(0,2,1) # [b*q,l,1]
+            roi_feat_weight = self.adapter(roi_feat_re.permute(0,2,1)).permute(0,2,1) # [b*q,l]
             roi_feat_weight = roi_feat_weight.reshape(b,q,l,1)
             roi_feat_weight = roi_feat_weight.sigmoid()
             adapted_roi_feat = (roi_feat * roi_feat_weight).sum(2) # [b,q,dim]
+        elif self.adapterCLS_type == "conv_weight":
+            roi_feat_re = roi_feat.reshape(b*q,l,d) # [b*q,l,d]
+            roi_feat_weight = self.adapter(roi_feat_re.permute(0,2,1)).permute(0,2,1) # [b*q,l]
+            roi_feat_weight = roi_feat_weight.reshape(b,q,l,1)
+            if self.adapterCLS_conv_weight_type == "kl":
+                roi_feat_weight_ = (roi_feat_weight+1e-4).softmax(dim=2)
+            elif self.adapterCLS_conv_weight_type == "l1":
+                roi_feat_weight_ = (roi_feat_weight+1e-4).sigmoid()
+            else:
+                raise ValueError
+            adapted_roi_feat = (roi_feat * roi_feat_weight_).sum(2) # [b,q,dim]
         else:
             raise ValueError
         
-        return adapted_roi_feat
+        return adapted_roi_feat, roi_feat_weight
        
 
     def forward(self, samples: NestedTensor, classes_name, description_dict, targets, epoch):
@@ -548,11 +582,14 @@ class ConditionalDETR(nn.Module):
         if self.adapterCLS_loss:
             with torch.no_grad():
                 adapter_roi_pos = self._roi_align(out['pred_boxes'],pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-                adapter_roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
-    
-            adapted_roi_feat = self._adapter_forward(adapter_roi_feat, adapter_roi_pos) # [b,q,dim]
+                adapter_roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+
+            adapted_roi_feat,roi_feat_weight = self._adapter_forward(adapter_roi_feat, adapter_roi_pos) # [b,q,dim], [b,q,l,1]
             adapted_roi_feat_logits = self._compute_similarity(adapted_roi_feat,text_feats) # [b,q,c]
             out['adapted_roi_feat_logits'] = adapted_roi_feat_logits
+            if self.adapterCLS_type == "conv_weight":
+                out['roi_feat_weight'] = roi_feat_weight # [b,q,l,1]
+                out['roi_feat_logits'] = self._compute_similarity(adapter_roi_feat,text_feats) # [b,q,l,c]
 
 
         if self.target_type != "none":

@@ -106,8 +106,9 @@ parser.add_argument('--salient_loss_type', type=str, default="top", choices=('to
 parser.add_argument('--salient_oic_delta', type=float, default=0.25)
 
 parser.add_argument('--adapterCLS_loss', action='store_true', default=False)
-parser.add_argument('--adapterCLS_type', type=str, default='conv_avg', choices=('conv_avg', 'conv_add', 'sa'))
+parser.add_argument('--adapterCLS_type', type=str, default='conv_avg', choices=('conv_avg', 'conv_add', 'sa', 'conv_weight'))
 parser.add_argument('--adapterCLS_loss_coef', type=float, default=1)
+parser.add_argument('--adapterCLS_conv_weight_type', type=str, default='l1', choices=('l1', 'kl'))
 
 
 # Matcher

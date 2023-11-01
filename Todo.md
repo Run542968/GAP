@@ -414,14 +414,18 @@
   - [x] 增加了self-attention后不进行residual connect的选项
   - [x] 增加了直接丢弃self-attention的选项 
 - [x] 在训练过程中增加action特性的分类, --adapterCLS_loss，20231024
-  - [x] 在crop出来的CLIP visual特征上面加一层时序建模, 然后匹配到的类别算NLL loss
+  - [x] 在crop出来的CLIP visual特征上面加一层时序建模, 然后**匹配到的类别**算NLL loss
   - [x] 不需要和其他类别对比，我只需要让检测出来的这个action instance，通过某种加权聚合方式，能更好的和class name匹配就行。不需要对比，就不会破坏泛化能力，而是学到一种temporal建模的能力
   - [x] 像是增加了一层CLIP到识别action的adapter
   - [x] 实现方面：
     - [x] 第一种，先过一层Conv1D，然后average pooling, --adapterCLS_type "conv_avg"
     - [x] 第二种，过一层Conv1D，输出一个soft的attention加权weight，进行加权, --adapterCLS_type "conv_avg"
     - [x] 第三种，过一层self-attention，然后average pooling, --adapterCLS_type "sa"
-
+    - [ ] 第四种，过一层Conv1D，输出一个soft的加权weight，但是用文本和snippet的相似度得分计算监督loss，--adapterCLS_type "conv_weight"
+      - 只给匹配到的query计算这个显著性分数，有两种实现
+      - [ ] 一种是cross-entropy，在ROIalign出来的segment上选一个最大的增强（感觉这个更合理）
+      - [ ] 一种是binary cross-entropy，在ROIalign出来的segment上每一个都算一个空间匹配分数
+- [x] 计算AR的时候采用BMN的代码，而不是RTD-Net的代码，能涨点
 #### 第八次大版本
 - [x] 🚩整理消融，进行分析实验
 - [x] 方法整体结构不变了
@@ -442,3 +446,9 @@
   - [ ] 跨域的识别
 - 写作话术
   -  adopt prompt tuning in the text stream
+- [x] 改一下Thumos的代码，做一个纯粹的zero-shot setting
+  - [x] 训练和测试的时候，把所有具备两个类的视频都删掉，不要了
+  - 试了一下并没有涨点很多。想了一下发现这样做没必要，因为本来测试的时候gt就只有unseen类的GT，即使假设diving=seen class, cliffdiving=unseen class，测试的时候也只有cliffdiving的GT 
+- [x] 添加了一个把结果记录在cvs文件，mlflow太卡了，唉
+- [x] 突然发现不应该做什么binary的测试，因为最关注的指标就是mAP。记录结果的时候找对应的AR就行了，因为计算AR的时候是不考虑类别的，后处理的时候置信度分数带了类别也没关系，仅仅是proposal的重复数量变多了，置信度分数有一点点轻微改变而已
+  - [x] 这样的结果是没有bias的

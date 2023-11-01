@@ -89,6 +89,29 @@ if __name__ == "__main__":
     logit_scale = logit_scale.exp()
     logits = torch.einsum("btd,cd->btc",logit_scale*visual_feats,text_feats)
 
+
+    # 加载模型
+    with torch.no_grad():
+        model, criterion, postprocessor = build_model(args,device)
+        ckpt_path = os.path.join("./ckpt",args.dataset_name,"best_"+args.model_name+".pkl")
+        model.load_state_dict(torch.load(ckpt_path))
+        model.to(device)
+        model.eval()
+
+        samples = feat.to(device)
+        # targets = [{k: v.to(device) if k in ['segments', 'labels'] else v for k, v in t.items()} for t in targets] # Not Required in inferene stage
+        
+        classes = data_loader.dataset.classes
+        description_dict = data_loader.dataset.description_dict
+        
+        outputs = model(samples, classes, description_dict,target,-1)
+        memory = outputs['memory'][-1] # [enc_layers, b,t,c]
+        memory = memory / memory.norm(dim=-1,keepdim=True)
+        memory = torch.einsum("btc,bt->btc",memory, ~mask)
+
+
+
+
     for idx in range(len(logits)):
         # idx = 5
         save_dir = os.path.join('./heatmap',args.target_type,target[idx]['video_name'])
@@ -155,23 +178,8 @@ if __name__ == "__main__":
         plt.savefig(os.path.join(save_dir,'visual_norm.png'))
         plt.close()
 
+
         # 可视化模型特征的self-similarity matirx
-        model, criterion, postprocessor = build_model(args,device)
-        ckpt_path = os.path.join("./ckpt",args.dataset_name,"best_"+args.model_name+".pkl")
-        model.load_state_dict(torch.load(ckpt_path))
-        model.to(device)
-        model.eval()
-
-        samples = feat.to(device)
-        # targets = [{k: v.to(device) if k in ['segments', 'labels'] else v for k, v in t.items()} for t in targets] # Not Required in inferene stage
-        
-        classes = data_loader.dataset.classes
-        description_dict = data_loader.dataset.description_dict
-        outputs = model(samples, classes, description_dict,target,-1)
-        memory = outputs['memory'][-1] # [enc_layers, b,t,c]
-        memory = memory / memory.norm(dim=-1,keepdim=True)
-        memory = torch.einsum("btc,bt->btc",memory, ~mask)
-
         memory_self_similarity = torch.einsum("td,ld->tl",memory[idx],memory[idx])
         memory_self_similarity = memory_self_similarity.cpu().detach().numpy()
         fig = plt.figure(figsize=(16,6))
@@ -187,6 +195,13 @@ if __name__ == "__main__":
         plt.savefig(os.path.join(save_dir,'memory_cls.png'))
         plt.close()
 
+        # 可视化memory的分类结果
+        memory_cls_softamx = torch.einsum("btc,nc->btn",memory, text_feats).softmax(-1)
+        memory_cls_softamx = memory_cls_softamx.cpu().detach().numpy()
+        fig = plt.figure(figsize=(16,6))
+        sns.heatmap(memory_cls_softamx[idx].transpose(1,0),cmap="YlGnBu")
+        plt.savefig(os.path.join(save_dir,'memory_cls_softamx.png'))
+        plt.close()
 
         # 可视化query和memory的相似度
         hs = outputs['hs'] # [dec_layers,b,num_queries,c]

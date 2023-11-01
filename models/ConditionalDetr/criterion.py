@@ -63,6 +63,8 @@ class SetCriterion(nn.Module):
         self.salient_loss = args.salient_loss
         self.salient_loss_impl = args.salient_loss_impl
         self.adapterCLS_loss = args.adapterCLS_loss
+        self.adapterCLS_type = args.adapterCLS_type
+        self.adapterCLS_conv_weight_type = args.adapterCLS_conv_weight_type
 
 
         if self.eval_proposal or self.enable_classAgnostic:
@@ -640,6 +642,38 @@ class SetCriterion(nn.Module):
 
         return losses
 
+    def loss_adapterCLS_weight(self, outputs, targets, indices, num_boxes):
+        """
+        align loss
+        """
+        assert 'roi_feat_weight' in outputs
+        assert 'roi_feat_logits' in outputs
+        roi_feat_logits = outputs['roi_feat_logits'] # [bs, num_queries, roi_size, num_classes]
+        roi_feat_weight = outputs['roi_feat_weight'] # [b,q,l,1]
+
+        roi_feat_logits = roi_feat_logits.permute(0,1,3,2) # [b,q,c,l]
+        roi_feat_weight = roi_feat_weight.squeeze(dim=3) # [b,q,l]
+
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        target_classes_idx = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        merged_idx = (*idx, target_classes_idx)
+
+        matched_roi_feat_logits = roi_feat_logits[merged_idx] # [batch_matched, roi_size]
+        matched_roi_feat_weight = roi_feat_weight[idx] # [batch_mathed,roi_size]
+
+
+        if self.adapterCLS_conv_weight_type == "kl":
+            loss = F.kl_div(torch.log_softmax(matched_roi_feat_weight + 1e-4 ,dim=1),
+                            torch.softmax(matched_roi_feat_logits + 1e-4,dim=1),
+                            reduction="batchmean")
+        elif self.adapterCLS_conv_weight_type == "l1":
+            loss = F.l1_loss((matched_roi_feat_weight+1e-4).sigmoid(),(matched_roi_feat_logits+1e-4).sigmoid(),reduction="mean")
+        else:
+            raise ValueError
+        losses = {'loss_adapterCLS': loss}
+
+        return losses
+
 
 
     def _get_src_permutation_idx(self, indices):
@@ -653,6 +687,7 @@ class SetCriterion(nn.Module):
         batch_idx = torch.cat([torch.full_like(tgt, i) for i, (_, tgt) in enumerate(indices)])
         tgt_idx = torch.cat([tgt for (_, tgt) in indices])
         return batch_idx, tgt_idx
+
 
     def get_loss(self, loss, outputs, targets, indices, num_boxes, **kwargs):
         loss_map = {
@@ -732,7 +767,10 @@ class SetCriterion(nn.Module):
             losses.update(salient_loss)
 
         if self.adapterCLS_loss:
-            adpterCLS_loss = self.loss_adapterCLS(outputs, targets, indices, num_boxes)
+            if self.adapterCLS_type == "conv_weight":
+                adpterCLS_loss = self.loss_adapterCLS_weight(outputs, targets, indices, num_boxes)
+            else:
+                adpterCLS_loss = self.loss_adapterCLS(outputs, targets, indices, num_boxes)
             losses.update(adpterCLS_loss)
 
         return losses
