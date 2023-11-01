@@ -659,12 +659,12 @@ class ConditionalDETR(nn.Module):
                             snippet_logits = self._compute_similarity(visual_feats,fixed_text_feats) # [b,T,num_classes]
                             ROIalign_logits = self._get_roi_prediction_v2(snippet_logits,mask,out['pred_boxes'],self.ROIalign_size) # this operation must cooperate with segmenatation_loss, [b,num_queries,num_classes]
                     elif self.pooling_type == "max" and not self.adapterCLS_loss:
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                         roi_feat = roi_feat.max(dim=2)[0] # [bs,num_queries,dim]
 
                         ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
                     elif self.pooling_type == "center1" and not self.adapterCLS_loss:
-                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                         center_idx = int(roi_feat.shape[2] / 2)
                         roi_feat = roi_feat[:,:,center_idx,:] 
                         ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
@@ -675,11 +675,30 @@ class ConditionalDETR(nn.Module):
                         truely_length = t-torch.sum(mask,dim=1) # [B]
                         truely_length = truely_length.reshape(-1,1,1) # [B,1,1]
                         center_idx = (rois_center*truely_length).long() # [b,n,1]
-                        roi_feat = torch.gather(clip_feat, dim=1, index=center_idx.expand(-1, -1, clip_feat.shape[-1]))
+                        roi_feat = torch.gather(clip_feat + 1e-4, dim=1, index=center_idx.expand(-1, -1, clip_feat.shape[-1]))
                         ROIalign_logits = self._compute_similarity(roi_feat,fixed_text_feats)
+                    elif self.pooling_type == "self_attention" and not self.adapterCLS_loss:
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        attention_weights = F.softmax(torch.matmul(roi_feat, roi_feat.transpose(-2, -1)), dim=-1)
+                        roi_feat_sa = torch.matmul(attention_weights, roi_feat)
+                        roi_feat_sa = roi_feat_sa.mean(2)
+                        ROIalign_logits = self._compute_similarity(roi_feat_sa,fixed_text_feats)
+                    elif self.pooling_type == "slow_fast" and not self.adapterCLS_loss:
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        fast_feat = roi_feat.mean(dim=2) # [b,q,d]
+                        step = int(self.ROIalign_size // 4)
+                        slow_feat = roi_feat[:,:,::step,:].mean(dim=2) # [b,q,d]
+                        roi_feat_final = (fast_feat + slow_feat)/2
+                        ROIalign_logits = self._compute_similarity(roi_feat_final,fixed_text_feats)
+                    elif self.pooling_type == "sparse" and not self.adapterCLS_loss:
+                        roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                        step = int(self.ROIalign_size // 4)
+                        slow_feat = roi_feat[:,:,::step,:].mean(dim=2) # [b,q,d]
+                        ROIalign_logits = self._compute_similarity(slow_feat,fixed_text_feats)
                     elif self.adapterCLS_loss:
                         ROIalign_logits = out['adapted_roi_feat_logits']
-                    
+                    else:
+                        raise ValueError
                     out['class_logits'] = ROIalign_logits 
 
 
