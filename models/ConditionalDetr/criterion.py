@@ -57,7 +57,7 @@ class SetCriterion(nn.Module):
         self.actionness_loss = args.actionness_loss 
         self.eval_proposal = args.eval_proposal
         self.enable_classAgnostic = args.enable_classAgnostic
-
+        self.enable_baseline = args.enable_baseline
 
         self.salient_loss = args.salient_loss
         self.salient_loss_impl = args.salient_loss_impl
@@ -68,6 +68,8 @@ class SetCriterion(nn.Module):
 
         if self.eval_proposal or self.enable_classAgnostic:
             self.base_losses = ['boxes','actionness']
+        elif self.enable_baseline:
+            self.base_losses = ['boxes']
         elif self.actionness_loss:
             self.base_losses = ['labels','actionness','boxes']
         else:
@@ -717,6 +719,17 @@ class SetCriterion(nn.Module):
             tgt_ids = torch.cat([v["labels"] for v in targets]) # [gt_instance_num]
             tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
             sizes = [len(v["segments"]) for v in targets]
+            
+            indices = self.matcher(logits, outputs_without_aux["pred_boxes"], tgt_ids, tgt_bbox, sizes)
+
+        elif self.enable_baseline:
+            # Also concat the target labels and boxes
+            tgt_ids = torch.cat([v["labels"] for v in targets]) # [gt_instance_num]
+            tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
+            sizes = [len(v["segments"]) for v in targets]
+            
+            indices = self.matcher(None, outputs_without_aux["pred_boxes"], tgt_ids, tgt_bbox, sizes, drop_cls=True)
+
         else:
             assert "class_logits" in outputs_without_aux
             # We flatten to compute the cost matrices in a batch
@@ -727,7 +740,7 @@ class SetCriterion(nn.Module):
             tgt_bbox = torch.cat([v["segments"] for v in targets]) # [gt_instance_num, 2]
             sizes = [len(v["segments"]) for v in targets]
 
-        indices = self.matcher(logits, outputs_without_aux["pred_boxes"], tgt_ids, tgt_bbox, sizes)
+            indices = self.matcher(logits, outputs_without_aux["pred_boxes"], tgt_ids, tgt_bbox, sizes)
 
         # Compute the average number of target boxes accross all nodes, for normalization purposes
         num_boxes = sum(len(t["labels"]) for t in targets)

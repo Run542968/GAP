@@ -463,17 +463,17 @@
   - [x] 删掉enable_relaxGT
   - [x] 删掉rank_loss
 - [x] 增加内容
-  - [x] 增加一个只有pipeline的实验, --enable_pipeline
+  - [x] 增加一个只有pipeline的实验, --enable_baseline
     - 这里就是只有Box loss，然后搭配一个adapter训练一个pooling的权重，用class name执行分类监督
     - 不要actionness score对proposal的加权
-    - 突然发现不用单独加，直接设置推理的时候不要actionness score加权就行
+    - 在匈牙利匹配的时候记得把分类有关的去掉
   - [x] 把所有的parameters-free的pooling都放到了一个函数里self._temporal_pooling()
     - 在这个函数里去掉了self.ROIalign_strategy == "after_pred"
 - [ ] 代码设置总结
   - [x] 什么都没有，就是最基础的DETR
   - [x] 多了--actionness_loss，表明给DETR多了一个actionness_loss, 多了一个head
+  - [x] 开启了--enable_baseline，就是在训练的时候只有回归loss
   - [x] 开启了--enable_classAgnostic，--actionness_loss就失效了，这时候只训练一个class-agnostic的检测器。可以根据self.prob_type == "none_mul"关闭actionness score对proposal的rank
-  - [x] 开启了--enable_classAgnostic，但是--prob_type "none_mul"，可以认为是仅仅用这个pipeline完成检测
   - [x] 在--enable_classAgnostic的基础上，加--enable_refine就是多了refine module
   - [x] 在--enable_classAgnostic的基础上，加--salient_loss就是多了masking loss
   - [x] --adapterCLS_loss是可以训练的后处理方案

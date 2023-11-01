@@ -93,6 +93,7 @@ class ConditionalDETR(nn.Module):
         self.pooling_type = args.pooling_type
 
         self.eval_proposal = args.eval_proposal 
+        self.enable_baseline = args.enable_baseline
 
         self.actionness_loss = args.actionness_loss
         self.enable_classAgnostic = args.enable_classAgnostic
@@ -630,7 +631,7 @@ class ConditionalDETR(nn.Module):
                 out['roi_feat_logits'] = self._compute_similarity(adapter_roi_feat,text_feats) # [b,q,l,c]
 
 
-        if not self.eval_proposal and not self.enable_classAgnostic:
+        if not self.eval_proposal and not self.enable_classAgnostic and not self.enable_baseline:
             class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
             class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes]
             out['class_logits'] = class_logits
@@ -639,7 +640,7 @@ class ConditionalDETR(nn.Module):
         # obtain the ROIalign logits
         if not self.training: # only in inference stage
 
-            if self.enable_classAgnostic:
+            if self.enable_classAgnostic or self.enable_baseline:
                 fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
                 if self.adapterCLS_loss:
@@ -648,7 +649,6 @@ class ConditionalDETR(nn.Module):
                     ROIalign_logits = self._temporal_pooling(self.pooling_type, out['pred_boxes'], clip_feat, mask, self.ROIalign_size, fixed_text_feats)
                 
                 out['class_logits'] = ROIalign_logits 
-            
             else:
                 assert "class_logits" in out, "please check the code of self.class_embed"
             

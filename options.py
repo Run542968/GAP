@@ -72,6 +72,7 @@ parser.add_argument('--refine_drop_saResidual', action='store_true', default=Fal
 parser.add_argument('--refine_drop_sa', action='store_true', default=False)
 
 parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
+parser.add_argument('--enable_baseline', action='store_true', default=False)
 
 parser.add_argument('--enable_posPrior', action='store_true', default=False)
 
