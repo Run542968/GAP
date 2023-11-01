@@ -336,7 +336,7 @@ class ConditionalDETR(nn.Module):
                     logit_scale = self.logit_scale.exp()
                 else:
                     logit_scale = self.logit_scale
-                logits = torch.einsum("bd,cd->bc",logit_scale*visual_feats,text_feats)
+                logits = torch.einsum("bd,cd->bc",visual_feats,text_feats)*logit_scale
             else:
                 logits = torch.einsum("bd,cd->bc",visual_feats,text_feats)
             return logits
@@ -348,7 +348,7 @@ class ConditionalDETR(nn.Module):
                     logit_scale = self.logit_scale.exp()
                 else:
                     logit_scale = self.logit_scale
-                logits = torch.einsum("bqd,cd->bqc",logit_scale*visual_feats,text_feats)
+                logits = torch.einsum("bqd,cd->bqc",visual_feats,text_feats)*logit_scale
             else:
                 logits = torch.einsum("bqd,cd->bqc",visual_feats,text_feats)
             return logits
@@ -360,7 +360,7 @@ class ConditionalDETR(nn.Module):
                     logit_scale = self.logit_scale.exp()
                 else:
                     logit_scale = self.logit_scale
-                logits = torch.einsum("bqld,cd->bqlc",logit_scale*visual_feats,text_feats)
+                logits = torch.einsum("bqld,cd->bqlc",visual_feats,text_feats)*logit_scale
             else:
                 logits = torch.einsum("bqld,cd->bqlc",visual_feats,text_feats)
             return logits
