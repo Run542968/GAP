@@ -14,7 +14,6 @@ class PostProcess(nn.Module):
         self.proposals_weight_type = args.proposals_weight_type
         self.actionness_loss = args.actionness_loss
         self.enable_classAgnostic = args.enable_classAgnostic
-        self.enable_baseline = args.enable_baseline
         self.prob_type = args.prob_type
 
     @torch.no_grad()
@@ -32,10 +31,6 @@ class PostProcess(nn.Module):
                 actionness_logits = outputs['actionness_logits']
                 assert actionness_logits.shape[-1] == 1, f"please check the dimension of foreground_logits, shape:{actionness_logits.shape}"
                 prob = actionness_logits.sigmoid() # only evaluate the proposal
-            elif self.enable_baseline:
-                assert 'class_logits' in outputs
-                class_logits = outputs['class_logits'] #  [bs,num_queries,num_classes] 
-                prob = class_logits.softmax(-1) # [bs,num_queries,num_classes]
             else:
                 assert 'class_logits' in outputs
                 class_logits = outputs['class_logits'] #  [bs,num_queries,num_classes] 

@@ -41,7 +41,7 @@ class HungarianMatcher(nn.Module):
         assert cost_class != 0 or cost_bbox != 0 or cost_giou != 0, "all costs cant be 0"
 
     @torch.no_grad()
-    def forward(self, logits, pred_boxes, tgt_ids, tgt_bbox, sizes, drop_cls=False):
+    def forward(self, logits, pred_boxes, tgt_ids, tgt_bbox, sizes):
         """ Performs the matching
         Params:
             outputs: This is a dict that contains at least these entries:
@@ -61,25 +61,20 @@ class HungarianMatcher(nn.Module):
                 len(index_i) = len(index_j) = min(num_queries, num_target_boxes)
         """
 
-        if drop_cls:
-            bs, num_queries = pred_boxes.shape[:2] 
-        else:
-            bs, num_queries = logits.shape[:2] 
-            out_prob = logits.flatten(0, 1).sigmoid()  # [batch_size * num_queries, 1]
+        bs, num_queries = logits.shape[:2] 
+        out_prob = logits.flatten(0, 1).sigmoid()  # [batch_size * num_queries, 1]
         out_bbox = pred_boxes.flatten(0, 1)  # [batch_size * num_queries, 2]
         tgt_ids = tgt_ids
         tgt_bbox = tgt_bbox
 
-        if drop_cls:
-            cost_class = 0
-        else:
-            # Compute the classification cost.
-            alpha = 0.25
-            gamma = 2.0
-            neg_cost_class = (1 - alpha) * (out_prob ** gamma) * (-(1 - out_prob + 1e-8).log())
-            pos_cost_class = alpha * ((1 - out_prob) ** gamma) * (-(out_prob + 1e-8).log())
+ 
+        # Compute the classification cost.
+        alpha = 0.25
+        gamma = 2.0
+        neg_cost_class = (1 - alpha) * (out_prob ** gamma) * (-(1 - out_prob + 1e-8).log())
+        pos_cost_class = alpha * ((1 - out_prob) ** gamma) * (-(out_prob + 1e-8).log())
 
-            cost_class = pos_cost_class[:, tgt_ids] - neg_cost_class[:, tgt_ids] # [b*num_queries, gt_instance_num]
+        cost_class = pos_cost_class[:, tgt_ids] - neg_cost_class[:, tgt_ids] # [b*num_queries, gt_instance_num]
 
         # Compute the L1 cost between boxes
         cost_bbox = torch.cdist(out_bbox, tgt_bbox, p=1) # [b*num_queries, gt_instance_num]
