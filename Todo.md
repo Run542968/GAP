@@ -469,7 +469,7 @@
     - 在匈牙利匹配的时候记得把分类有关的去掉
   - [x] 把所有的parameters-free的pooling都放到了一个函数里self._temporal_pooling()
     - 在这个函数里去掉了self.ROIalign_strategy == "after_pred"
-- [ ] 代码设置总结
+- [x] 代码设置总结
   - [x] 什么都没有，就是最基础的DETR
   - [x] 多了--actionness_loss，表明给DETR多了一个actionness_loss, 多了一个head
   - [x] 开启了--enable_baseline，就是在训练的时候只有回归loss
@@ -477,3 +477,6 @@
   - [x] 在--enable_classAgnostic的基础上，加--enable_refine就是多了refine module
   - [x] 在--enable_classAgnostic的基础上，加--salient_loss就是多了masking loss
   - [x] --adapterCLS_loss是可以训练的后处理方案
+- [ ] 改变actionness_loss的位置, 开一个actionness的branch测试这个实验 20231104
+  - [ ] 目前的actionness_loss的位置是在refine之后，但是我们claim的是refine的作用是提高动作提案完整性，这时候actionness_loss这种捕捉时序的loss是没什么用的，是否有负面影响？
+  - [ ] 尝试一下，不用refined_query计算actionness_loss，而是用refine前的query计算actionness_loss
