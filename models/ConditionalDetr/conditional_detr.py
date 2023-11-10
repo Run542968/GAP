@@ -417,7 +417,7 @@ class ConditionalDETR(nn.Module):
         return adapted_roi_feat, roi_feat_weight
        
     def _temporal_pooling(self,pooling_type,coordinate,clip_feat,mask,ROIalign_size,text_feats):
-        
+        b,t,_ = coordinate.shape
         if pooling_type == "average":
             roi_feat = self._roi_align(rois=coordinate,origin_feat=clip_feat+1e-4,mask=mask,ROIalign_size=ROIalign_size).mean(-2) # [B,Q,dim]
 
@@ -516,7 +516,31 @@ class ConditionalDETR(nn.Module):
         out['memory'] = memory
         out['hs'] = hs
 
-        
+        # #  For computing ACC use ###
+        # # compute the classification accuate of CLIP
+        # # prepare instance coordination
+        # gt_roi_feat = [] 
+        # gt_labels = []
+        # for i, t in enumerate(targets):
+        #     if len(t['segments']) > 0 :
+        #         gt_coordinations = t['segments'].unsqueeze(0) # [1,num_instance,2]->"center,width"
+        #         visual_feat_i = clip_feat[i].unsqueeze(0) # [1,T,dim]
+        #         mask_i = mask[i].unsqueeze(0) # [1,T]
+        #         roi_feat = self._roi_align(gt_coordinations,visual_feat_i,mask_i,self.ROIalign_size).squeeze(dim=0) # [1,num_instance,ROIalign_size,dim]->[num_instance,ROIalign_size,dim]
+        #         gt_roi_feat.append(roi_feat)
+        #         gt_lbl = t['semantic_labels'] # [num]
+        #         gt_labels.append(gt_lbl)
+        # if len(gt_labels) > 0:
+        #     gt_roi_feat = torch.cat(gt_roi_feat,dim=0) # [batch_instance_num,ROIalign_size,dim]
+        #     gt_roi_feat = gt_roi_feat.mean(dim=1) # [batch_instance_num,dim]
+        #     gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num]
+
+        #     gt_logits = self._compute_similarity(gt_roi_feat,text_feats) # [batch_instance_num,num_classes]
+            
+        #     out['gt_labels'] = gt_labels
+        #     out['gt_logits'] = gt_logits
+        # #  For computing ACC use ###
+
         # generate the salient gt
         if self.salient_loss:
             if self.training: # only generate gt in training phase
@@ -572,6 +596,7 @@ class ConditionalDETR(nn.Module):
             salient_logits = self.salient_head(memory[-1].permute(0,2,1)).permute(0,2,1) # [b,t,1]
             out['salient_logits'] = salient_logits
         
+
 
         # refine encoder
         if self.enable_refine:

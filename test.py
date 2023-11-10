@@ -33,32 +33,32 @@ def test(model,
                                     filter_threshold=args.filter_threshold
                                     )
 
-    ##  For computing ACC use ###
+    # #  For computing ACC use ###
     # gt_labels_list = []
     # gt_pred_list = []
     # epoch_loss_dict = {}
-    ##  For computing ACC use ###
+    # #  For computing ACC use ###
     count = 0
     # res_dict = {}
     for samples, targets in data_loader:
         samples = samples.to(device)
 
-        ##  For computing ACC use ###
+        # #  For computing ACC use ###
         # targets = [{k: v.to(device) if k in ['segments', 'labels'] and len(t[k])>0 else v for k, v in t.items()} for t in targets] # Not Required in inferene stage
-        ##  For computing ACC use ###
+        # #  For computing ACC use ###
 
         classes = data_loader.dataset.classes
         description_dict = data_loader.dataset.description_dict
 
         outputs = model(samples, classes, description_dict,targets,epoch)
         
-        ##  For computing ACC use ###
+        # #  For computing ACC use ###
         # if 'gt_logits' in outputs:
         #     gt_logits = outputs['gt_logits']
         #     gt_labels = outputs['gt_labels']
         #     gt_labels_list.append(gt_labels)
         #     gt_pred_list.append(torch.argmax(gt_logits.softmax(-1),dim=-1))
-        ##  For computing ACC use ###
+        # #  For computing ACC use ###
 
         # loss_dict = criterion(outputs, targets)
         # weight_dict = criterion.weight_dict
@@ -87,12 +87,12 @@ def test(model,
         if action_evaluator is not None:
             action_evaluator.update(res)
 
-    ##  For computing ACC use ###
+    # #  For computing ACC use ###
     # gt_labels_list = torch.cat(gt_labels_list,dim=0).cpu().detach().numpy()
     # gt_pred_list = torch.cat(gt_pred_list,dim=0).cpu().detach().numpy()
     # acc = accuracy_score(gt_labels_list,gt_pred_list)
     # print(f"The val acc is: {acc}")
-    ##  For computing ACC use ###
+    # #  For computing ACC use ###
 
     # epoch_loss_dict.update({k: v/count for k, v in epoch_loss_dict.items()})
     # logger.info(f"Inference Epoch: {epoch}, epoch_loss_dict:{epoch_loss_dict}")

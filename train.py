@@ -22,10 +22,10 @@ def train(model: torch.nn.Module,
     epoch_loss_dict_unscaled = {}
     count = 0
 
-    ##  For computing ACC use ###
+    # #  For computing ACC use ###
     # gt_labels_list = []
     # gt_pred_list = []
-    ##  For computing ACC use ###
+    # #  For computing ACC use ###
 
     for samples, targets in data_loader:
         samples = samples.to(device)
@@ -34,12 +34,12 @@ def train(model: torch.nn.Module,
         description_dict = data_loader.dataset.description_dict
 
         outputs = model(samples, classes, description_dict, targets, epoch)
-        ##  For computing ACC use ###
+        # #  For computing ACC use ###
         # gt_logits = outputs['gt_logits']
         # gt_labels = outputs['gt_labels']
         # gt_labels_list.append(gt_labels)
         # gt_pred_list.append(torch.argmax(gt_logits.softmax(-1),dim=-1))
-        ##  For computing ACC use ###
+        # #  For computing ACC use ###
 
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict
@@ -67,12 +67,12 @@ def train(model: torch.nn.Module,
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)
         optimizer.step()
 
-    # ##  For computing ACC use ###
+    # #  For computing ACC use ###
     # gt_labels_list = torch.cat(gt_labels_list,dim=0).cpu().detach().numpy()
     # gt_pred_list = torch.cat(gt_pred_list,dim=0).cpu().detach().numpy()
     # acc = accuracy_score(gt_labels_list,gt_pred_list)
     # print(f"The train acc is: {acc}")
-    # ##  For computing ACC use ###
+    # #  For computing ACC use ###
 
     epoch_loss_dict_scaled.update({k: v/count for k, v in epoch_loss_dict_scaled.items()})
     epoch_loss_dict_unscaled.update({k: v/count for k, v in epoch_loss_dict_unscaled.items()})
