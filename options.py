@@ -111,8 +111,6 @@ parser.add_argument('--set_cost_giou', type=float, default=2, help="giou box coe
 # Optimizer
 parser.add_argument('--epochs', type=int, default=100)
 parser.add_argument('--lr_backbone', type=float, default=1e-5)
-parser.add_argument('--lr_semantic_head', type=float, default=1e-4)
-parser.add_argument('--lr_temporal_head', type=float, default=1e-4)
 parser.add_argument('--lr', type=float, default=1e-4)
 parser.add_argument('--weight_decay', type=float, default=1e-4)
 parser.add_argument('--lr_drop', type=int, default=40, help="the step begin to drop lr")

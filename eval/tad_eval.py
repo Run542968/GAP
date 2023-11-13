@@ -156,23 +156,34 @@ class TADEvaluator(object):
         #     'AR@500': f(500)
         # }
 
+        if self.dataset_name == "Thumos14":
+            tiou_thresholds = np.linspace(0.5, 1, 11)
+        elif self.dataset_name == "ActivityNet13":
+            tiou_thresholds = np.linspace(0.5, 0.95, 10)
+        else:
+            raise NotImplementedError
+        
         recall, avg_recall, proposals_per_video = average_recall_vs_avg_nr_proposals(
             self.all_pred[nms_mode], self.all_gt,
             max_avg_nr_proposals=100,
-            tiou_thresholds=np.linspace(0.5, 0.95, 10))
+            tiou_thresholds=tiou_thresholds
+            )
         
         area_under_curve = np.trapz(avg_recall, proposals_per_video)
 
 
-        logger.info('[RESULTS] Performance on ActivityNet proposal task.')
+        logger.info(f'[RESULTS] Performance on {self.dataset_name} proposal task.')
         logger.info('\tArea Under the AR vs AN curve: {}%'.format(100.*float(area_under_curve)/proposals_per_video[-1]))
 
         return {
             'AR@1': np.mean(recall[:,0]),
             'AR@5': np.mean(recall[:,4]),
             'AR@10': np.mean(recall[:,9]),
+            'AR@25': np.mean(recall[:,24]),
+            'AR@40': np.mean(recall[:,39]),
             'AR@50': np.mean(recall[:,49]),
-            'AR@100': np.mean(recall[:,-1])
+            'AR@100': np.mean(recall[:,-1]),
+            'AUC': float(area_under_curve)/proposals_per_video[-1]
         }
 
 

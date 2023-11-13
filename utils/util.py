@@ -63,8 +63,11 @@ def write_to_csv(dname, test_stats, epoch):
     data_row.append(np.round(test_stats['AR@1_raw']*100,6))
     data_row.append(np.round(test_stats['AR@5_raw']*100,6))
     data_row.append(np.round(test_stats['AR@10_raw']*100,6))
+    data_row.append(np.round(test_stats['AR@25_raw']*100,6))
+    data_row.append(np.round(test_stats['AR@40_raw']*100,6))
     data_row.append(np.round(test_stats['AR@50_raw']*100,6))
     data_row.append(np.round(test_stats['AR@100_raw']*100,6))
+    data_row.append(np.round(test_stats['AUC_raw']*100,6))
 
     with open(path,'a+',newline="") as f:
         csv_write = csv.writer(f)

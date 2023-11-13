@@ -673,6 +673,8 @@ class ConditionalDETR(nn.Module):
                     ROIalign_logits = self._temporal_pooling(self.pooling_type, out['pred_boxes'], clip_feat, mask, self.ROIalign_size, fixed_text_feats)
                 
                 out['class_logits'] = ROIalign_logits 
+            elif self.eval_proposal:
+                pass
             else:
                 assert "class_logits" in out, "please check the code of self.class_embed"
             

@@ -118,31 +118,12 @@ if __name__ == '__main__':
     param_dicts = [
         # the parameters in transformaer
         {
-            "params": [p for n, p in model.named_parameters() if "backbone" not in n and \
-                                                                "sematnic_visual_head" not in n and \
-                                                                "sematnic_text_head" not in n and \
-                                                                "temporal_head" not in n and \
-                                                                p.requires_grad]
+            "params": [p for n, p in model.named_parameters() if "backbone" not in n and p.requires_grad]
          },
         # the parameters in backbone
         {
             "params": [p for n, p in model.named_parameters() if "backbone" in n and p.requires_grad],
             "lr": args.lr_backbone,
-        },
-        # the parameters in semantic head: instance_visual_head
-        {
-            "params": [p for n, p in model.named_parameters() if "sematnic_visual_head" in n and p.requires_grad],
-            "lr": args.lr_semantic_head,
-        },
-        # the parameters in semantic head: instance_text_head
-        {
-            "params": [p for n, p in model.named_parameters() if "sematnic_text_head" in n and p.requires_grad],
-            "lr": args.lr_semantic_head,
-        },
-        # the parameters in temporal_modeling: temporal_head
-        {
-            "params": [p for n, p in model.named_parameters() if "temporal_head" in n and p.requires_grad],
-            "lr": args.lr_temporal_head,
         }
     ]
     optimizer = torch.optim.AdamW(param_dicts, lr=args.lr, weight_decay=args.weight_decay)
@@ -162,7 +143,7 @@ if __name__ == '__main__':
                 train_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=train_val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
                 logger.info('||'.join(['Train map @ {} = {:.3f} '.format(train_stats['iou_range'][i],train_stats['per_iou_ap_raw'][i]*100) for i in range(len(train_stats['iou_range']))]))
                 logger.info('Intermediate Train mAP Avg ALL: {}'.format(train_stats['mAP_raw']*100))
-                logger.info('Intermediate Train AR@1: {}, AR@5: {}, AR@10: {}, AR@50:{}, AR@100:{}'.format(train_stats['AR@1_raw']*100, train_stats['AR@5_raw']*100,train_stats['AR@10_raw']*100,train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100))
+                logger.info('Intermediate Train AR@1: {}, AR@5: {}, AR@10: {}, AR@50:{}, AR@100:{}, AUC@100:{}'.format(train_stats['AR@1_raw']*100, train_stats['AR@5_raw']*100,train_stats['AR@10_raw']*100,train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100,train_stats['AUC_raw']*100))
 
                 if args.use_mlflow: # for mlflow
                         res_dict = {'train_IoU_'+str(k):v*100 for k,v in zip(train_stats['iou_range'],train_stats['per_iou_ap_raw'])}
@@ -170,7 +151,8 @@ if __name__ == '__main__':
                         res_dict.update({
                                     "train_AR-1":train_stats['AR@1_raw']*100,
                                     "train_AR-50":train_stats['AR@50_raw']*100,
-                                    "train_AR-100":train_stats['AR@50_raw']*100})
+                                    "train_AR-100":train_stats['AR@50_raw']*100,
+                                    "train_AUC":train_stats['AUC_raw']*100})
                         log_metrics(res_dict,step=epoch)
 
             
@@ -178,7 +160,7 @@ if __name__ == '__main__':
                 test_stats = test(model=model,criterion=criterion,postprocessor=postprocessor,data_loader=val_loader,dataset_name=args.dataset_name,epoch=epoch,device=device,args=args)
                 logger.info('||'.join(['Intermediate map @ {} = {:.3f} '.format(test_stats['iou_range'][i],test_stats['per_iou_ap_raw'][i]*100) for i in range(len(test_stats['iou_range']))]))
                 logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
-                logger.info('Intermediate AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@5_raw']*100, test_stats['AR@10_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100))
+                logger.info('Intermediate AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}, AUC: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@5_raw']*100, test_stats['AR@10_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100,test_stats['AUC_raw']*100))
                 write_to_csv(os.path.join('./results/excel',args.dataset_name,args.model_name), test_stats, epoch)
 
                 if args.use_mlflow: # for mlflow
@@ -187,7 +169,8 @@ if __name__ == '__main__':
                     res_dict.update({
                                     "AR-1":test_stats['AR@1_raw']*100,
                                     "AR-50":test_stats['AR@50_raw']*100,
-                                    "AR-100":test_stats['AR@50_raw']*100})
+                                    "AR-100":test_stats['AR@50_raw']*100,
+                                    "AUC":test_stats['AUC_raw']*100})
                     log_metrics(res_dict,step=epoch)
 
                 # update best
@@ -205,7 +188,9 @@ if __name__ == '__main__':
     best_epoch = best_stats['epoch']
     logger.info('||'.join(['MAX map @ {} = {:.3f} '.format(iou[i],max_map[i]*100) for i in range(len(iou))]))
     logger.info('MAX mAP Avg ALL: {} in Epoch: {}'.format(max_Avg*100,best_epoch))
-    
+    # logger.info('MAX AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}, AUC: {}'.format(best_stats['AR@1_raw']*100, best_stats['AR@5_raw']*100, best_stats['AR@10_raw']*100, best_stats['AR@50_raw']*100,best_stats['AR@100_raw']*100,best_stats['AUC_raw']*100))
+    logger.info('MAX AR@10: {}, AR@25: {}, AR@40: {}, AUC: {}'.format(best_stats['AR@10_raw']*100, best_stats['AR@25_raw']*100, best_stats['AR@40_raw']*100, best_stats['AUC_raw']*100))
+                
     if args.use_mlflow:     # for mlflow
         best_res_dict = {'best_IoU_'+str(k):v*100 for k,v in zip(best_stats['iou_range'],best_stats['per_iou_ap_raw'])}
         best_res_dict.update({"best_mAP":best_stats['mAP_raw']*100})
