@@ -13,7 +13,7 @@ parser.add_argument('--task', type=str, default="zero_shot", choices=('zero_shot
 # parser.add_argument('--use_mlflow', action='store_true', default=False, help="whether to use mlflow")
 parser.add_argument('--target_type', type=str, default="prompt", choices=('none', 'prompt', 'description', 'name'), help="[none,prompt,description,name]") # NOTE: 'none' means use one-hot target that just for close_set
 parser.add_argument('--eval_proposal', action='store_true', default=False, help="Only evaluate the proposal quality, compute the class-agnostic foreground mAP in Tad_eal.py") 
-parser.add_argument('--prefix', type=str, default="", help="the prefix to distinguish different experiments in mlflow") # NOTE: 'none' means use one-hot target that just for close_set
+# parser.add_argument('--prefix', type=str, default="", help="the prefix to distinguish different experiments in mlflow") # NOTE: 'none' means use one-hot target that just for close_set
 
 
 # dataset
@@ -88,8 +88,6 @@ parser.add_argument('--actionness_loss_coef', type=float, default=2)
 parser.add_argument('--salient_loss', action='store_true', default=False)
 parser.add_argument('--salient_loss_coef', type=float, default=2)
 parser.add_argument('--salient_loss_impl', type=str, default="BCE", choices=('BCE','CE'))
-parser.add_argument('--salient_loss_type', type=str, default="top", choices=('top','point','all','oic'),help="top denotes only salient point is 1, all other (foreground and background) 0; point denotes the salient is 1, and background frames are 0, relax other foreground frame; all denotes all foreground frames are 1, background frames are 0; oic denotes background just suppress outer point")
-parser.add_argument('--salient_oic_delta', type=float, default=0.25)
 
 parser.add_argument('--adapterCLS_loss', action='store_true', default=False)
 parser.add_argument('--adapterCLS_type', type=str, default='conv_avg', choices=('conv_avg', 'conv_add', 'sa', 'conv_weight'))

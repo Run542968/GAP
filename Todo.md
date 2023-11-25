@@ -480,3 +480,9 @@
 - [ ] 改变actionness_loss的位置, 开一个actionness的branch测试这个实验 20231104
   - [ ] 目前的actionness_loss的位置是在refine之后，但是我们claim的是refine的作用是提高动作提案完整性，这时候actionness_loss这种捕捉时序的loss是没什么用的，是否有负面影响？
   - [ ] 尝试一下，不用refined_query计算actionness_loss，而是用refine前的query计算actionness_loss
+
+- [x] ✨20231125 删除了很多无用的代码，特别注意的是，清理了salient_loss的一些不同的实现，所以按照原来的命令跑会有部分args失效
+  - [x] 删除了mlflow
+  - [x] 删除了salient_loss的其他几个实现，例如“ioc”,"top"
+  - [x] 删除了无用的augment_prompt配置
+  - [ ] 详见两次commit "clean code", "clean code1" 

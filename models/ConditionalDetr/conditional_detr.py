@@ -29,6 +29,7 @@ from .refine_decoder import build_refine_decoder
 from models.clip import clip as clip_pkg
 import torchvision.ops.roi_align as ROIalign
 import numpy as np
+import os
 
 logger = logging.getLogger()
 
@@ -102,8 +103,6 @@ class ConditionalDETR(nn.Module):
         self.enable_posPrior = args.enable_posPrior
 
         self.salient_loss = args.salient_loss
-        self.salient_loss_type = args.salient_loss_type
-        self.salient_oic_delta = args.salient_oic_delta
 
         self.adapterCLS_loss = args.adapterCLS_loss
         self.adapterCLS_type = args.adapterCLS_type
@@ -428,7 +427,12 @@ class ConditionalDETR(nn.Module):
         # prepare text target
         if self.target_type != "none":
             with torch.no_grad():
-                text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+                if self.args.feature_type == "ViFi-CLIP":
+                    text_feats = torch.from_numpy(np.load(os.path.join(self.args.feature_path,'text_features_split75_splitID1.npy'))).to(self.device)
+                elif self.args.feature_type == "CLIP":
+                    text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+                else:
+                    raise NotImplementedError
 
                 
         # feed into model
@@ -472,50 +476,19 @@ class ConditionalDETR(nn.Module):
         if self.salient_loss:
             if self.training: # only generate gt in training phase
                 salient_gt = torch.zeros((bs,t),device=self.device) # [bs,t]
-                if self.salient_loss_type == "oic":
-                    salient_loss_mask = torch.ones_like(mask) # [bs,t]
-                else:
-                    salient_loss_mask = mask.clone() # [bs,t]
-                cam = self._compute_similarity(clip_feat,text_feats) # [b,t,num_classes]
-                cam_softmax = cam.softmax(dim=-1)
-                
-                for i, tgt in enumerate(targets):
-                    cam_i = cam_softmax[i] # [t,num_classes]
-                    semantic_labels = tgt['semantic_labels'] # [num_tgt]
-                    salient_mask = tgt['salient_mask'] # [num_tgt,T]
+                salient_loss_mask = mask.clone() # [bs,t]
 
+                for i, tgt in enumerate(targets):
+                    salient_mask = tgt['salient_mask'] # [num_tgt,T]
                     # padding the salient mask
                     num_to_pad = t - salient_mask.shape[1]
                     if num_to_pad > 0:
                         padding = torch.ones((salient_mask.shape[0], num_to_pad), dtype=torch.bool, device=salient_mask.device)
                         salient_mask = torch.cat((salient_mask, padding), dim=1)
 
-                    for salient_mask_j,semantic_label in zip(salient_mask,semantic_labels):
-                        un_salient_mask = ~salient_mask_j.unsqueeze(dim=1) # [T,1]
-                        masked_cam = cam_i*un_salient_mask # [t,num_classes]
-                        masked_cam_class = masked_cam[:,semantic_label] # [T]
-                        masked_cam_class_Tsoftmax = masked_cam_class.softmax(dim=0)
-                        max_idx = masked_cam_class_Tsoftmax.max(dim=0)[1]
-                        if self.salient_loss_type == "all" or self.salient_loss_type == "oic":
-                            salient_gt[i,:] = (salient_gt[i,:] + (~salient_mask_j).float()).clamp(0,1)
-                        else:
-                            salient_gt[i,max_idx] = 1
+                    for salient_mask_j in salient_mask:
+                        salient_gt[i,:] = (salient_gt[i,:] + (~salient_mask_j).float()).clamp(0,1)
 
-                        if self.salient_loss_type == "point":
-                            salient_loss_mask[i,:] = salient_loss_mask[i,:] | (~salient_mask_j)
-                            salient_loss_mask[i,max_idx] = False
-                        elif self.salient_loss_type == "oic":
-                            false_indices = torch.where(salient_mask_j == False)[0]
-                            start_index = false_indices[0]
-                            end_index = false_indices[-1]
-                            false_len = end_index - start_index + 1
-                            expansion = int((end_index - start_index + 1) * self.salient_oic_delta)
-                            inflated_start = max(0,start_index - expansion)
-                            inflated_end = min(len(salient_mask_j)-1, end_index + expansion)
-
-                            expanded_tensor = torch.clone(salient_mask_j)
-                            expanded_tensor[inflated_start:inflated_end + 1] = False
-                            salient_loss_mask[i,:] = salient_loss_mask[i,:] & expanded_tensor
 
                 out['salient_gt'] = salient_gt
                 out['salient_loss_mask'] = salient_loss_mask
@@ -592,12 +565,12 @@ class ConditionalDETR(nn.Module):
         if not self.training: # only in inference stage
 
             if self.enable_classAgnostic:
-                fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+                # fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
                 if self.adapterCLS_loss:
                     ROIalign_logits = out['adapted_roi_feat_logits']
                 else:
-                    ROIalign_logits = self._temporal_pooling(self.pooling_type, out['pred_boxes'], clip_feat, mask, self.ROIalign_size, fixed_text_feats)
+                    ROIalign_logits = self._temporal_pooling(self.pooling_type, out['pred_boxes'], clip_feat, mask, self.ROIalign_size, text_feats)
                 
                 out['class_logits'] = ROIalign_logits 
             elif self.eval_proposal:
@@ -625,7 +598,12 @@ def build(args, device):
     else:
         num_classes = args.num_classes
 
-    text_encoder, logit_scale = build_text_encoder(args,device)
+    if args.feature_type == "ViFi-CLIP":
+        text_encoder,logit_scale = None, torch.from_numpy(np.load(os.path.join(args.feature_path,'logit_scale.npy')))
+    elif args.feature_type == "CLIP":
+        text_encoder, logit_scale = build_text_encoder(args,device)
+    else:
+        raise NotImplementedError
     backbone = build_backbone(args)
     transformer = build_transformer(args)
     # semantic_vhead,semantic_thead = build_semantic_head(args)
