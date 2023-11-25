@@ -340,6 +340,7 @@ class RefineDecoderV2(nn.Module):
         self.self_attn = nn.MultiheadAttention(d_model,nheads)
         self.refine_drop_saResidual = args.refine_drop_saResidual
         self.refine_drop_sa = args.refine_drop_sa
+        self.refine_fusion_type = args.refine_fusion_type
 
 
     def forward(self, query_feat, video_feat, roi_segment_feat,
@@ -354,17 +355,30 @@ class RefineDecoderV2(nn.Module):
             video_pos: [b,t,c]
             roi_pos: [b,n,l,c]
         '''
-        # cross-attetion in query_embed and sement feat
-        query_feat = query_feat.permute(1,0,2) # [num_queries,b,dim]
-        segment_feat = roi_segment_feat.permute(2,1,0,3) # [l,num_queries,b,dim]
-        l,n,b,dim = segment_feat.shape
-        segment_feat = segment_feat.reshape(l,n*b,dim) # [l,n*b,dim]
-        query_feat_seg = query_feat.reshape(1,n*b,dim) # [1,n*b,dim]
+        if self.refine_fusion_type == "ca":
+            # cross-attetion in query_embed and sement feat
+            query_feat = query_feat.permute(1,0,2) # [num_queries,b,dim]
+            segment_feat = roi_segment_feat.permute(2,1,0,3) # [l,num_queries,b,dim]
+            l,n,b,dim = segment_feat.shape
+            segment_feat = segment_feat.reshape(l,n*b,dim) # [l,n*b,dim]
+            query_feat_seg = query_feat.reshape(1,n*b,dim) # [1,n*b,dim]
 
-        tgt1 = self.cross_attn_local(query=query_feat_seg,
-                                     key=segment_feat,
-                                     value=segment_feat)[0] # [1,n*b,dim]
-        tgt1 = tgt1.reshape(n,b,dim)
+            tgt1 = self.cross_attn_local(query=query_feat_seg,
+                                        key=segment_feat,
+                                        value=segment_feat)[0] # [1,n*b,dim]
+            tgt1 = tgt1.reshape(n,b,dim)
+        elif self.refine_fusion_type == "mean":
+            query_feat = query_feat.permute(1,0,2) # [num_queries,b,dim]
+            segment_feat = roi_segment_feat.permute(2,1,0,3) # [l,num_queries,b,dim]
+            tgt1 = segment_feat.mean(0) # [n,b,dim]
+        elif self.refine_fusion_type == "max":
+            query_feat = query_feat.permute(1,0,2) # [num_queries,b,dim]
+            segment_feat = roi_segment_feat.permute(2,1,0,3) # [l,num_queries,b,dim]
+            tgt1 = segment_feat.max(0)[0] # [n,b,dim]
+        else:
+            raise NotImplementedError
+
+
 
         if self.refine_drop_sa:
             query_feat = tgt1

@@ -10,7 +10,7 @@ parser.add_argument('--model_name', type=str, help="the model name to save loggi
 parser.add_argument('--seed', type=int, default=3552, help='random seed (default: 1)')
 parser.add_argument('--device', type=str, default="cuda")
 parser.add_argument('--task', type=str, default="zero_shot", choices=('zero_shot', 'close_set'), help='[zero_shot,close_set]')
-parser.add_argument('--use_mlflow', action='store_true', default=False, help="whether to use mlflow")
+# parser.add_argument('--use_mlflow', action='store_true', default=False, help="whether to use mlflow")
 parser.add_argument('--target_type', type=str, default="prompt", choices=('none', 'prompt', 'description', 'name'), help="[none,prompt,description,name]") # NOTE: 'none' means use one-hot target that just for close_set
 parser.add_argument('--eval_proposal', action='store_true', default=False, help="Only evaluate the proposal quality, compute the class-agnostic foreground mAP in Tad_eal.py") 
 parser.add_argument('--prefix', type=str, default="", help="the prefix to distinguish different experiments in mlflow") # NOTE: 'none' means use one-hot target that just for close_set
@@ -30,7 +30,7 @@ parser.add_argument('--feature_info_path', type=str, default="./data/Thumos14/CL
 parser.add_argument('--description_file_path', type=str, default="./data/Thumos14/Thumos14_description.json")
 parser.add_argument('--feature_path', type=str, default="/mnt/Datasets/Thumos14/CLIP_feature")
 ## feature info
-parser.add_argument('--feature_type', default="CLIP", choices=('CLIP', 'I3D'), help='[CLIP,I3D]') 
+parser.add_argument('--feature_type', default="CLIP", choices=('CLIP', 'ViFi-CLIP'), help='[CLIP,ViFi-CLIP]') 
 parser.add_argument('--feature_stride', type=int, default=16, help="16 consecutive frames to form a snippet")
 ## for ActivityNet13
 parser.add_argument('--rescale_length', type=int, default=0, help="300 for ActivityNet13, 0 denotes using origin length")
@@ -63,13 +63,10 @@ parser.add_argument('--exp_logit_scale', action='store_true', default=False, hel
 parser.add_argument('--ROIalign_size', type=int, default=16, help="The length of ROIalign ouput size")
 
 
-parser.add_argument('--augment_prompt_type', type=str, default='single', choices=('single', 'average', 'attention'), help="single: prompt or description; average: fuse prompt and description; attention: self-attention then obtain first position embedding")
-parser.add_argument('--subaction_version', type=str, default='v3', choices=('v1', 'v2', 'v3'), help="The function name of get_subaction_feat")
-
-
 parser.add_argument('--enable_refine', action='store_true', default=False)
 parser.add_argument('--refine_drop_saResidual', action='store_true', default=False)
 parser.add_argument('--refine_drop_sa', action='store_true', default=False)
+parser.add_argument('--refine_fusion_type',type=str, default='ca', choices=('ca', 'mean', 'max'))
 
 parser.add_argument('--enable_classAgnostic', action='store_true', default=False)
 
@@ -87,9 +84,6 @@ parser.add_argument('--gamma', type=float, default=2)
 
 parser.add_argument('--actionness_loss', action='store_true', default=False)
 parser.add_argument('--actionness_loss_coef', type=float, default=2)
-
-parser.add_argument('--rank_loss', action='store_true', default=False)
-parser.add_argument('--rank_loss_coef', type=float, default=2)
 
 parser.add_argument('--salient_loss', action='store_true', default=False)
 parser.add_argument('--salient_loss_coef', type=float, default=2)
@@ -125,9 +119,6 @@ parser.add_argument('--save_result', action='store_true', default=False, help="W
 parser.add_argument('--test_interval', type=int, default=1, help="The interval to inference, -1 denotes not using this")
 parser.add_argument('--ROIalign_strategy', default="before_pred", choices=("before_pred","after_pred"), help="when to perform ROIalign, pred means compute visual-text similarity")
 parser.add_argument('--train_interval', type=int, default=-1, help="The interval to inference on train set, -1 denotes not using this")
-parser.add_argument('--results_ensemble', action='store_true', default=False, help="Whether to ensemble the result of semantic head and CLIP capability")
-parser.add_argument('--ensemble_rate', type=float, default=0.5, help="the balance coefficient between semantic head and CLIP capability")
-parser.add_argument('--ensemble_strategy', type=str, default="arithmetic", choices=("arithmetic","geomethric"), help="the strategy to ensemble")
 
 parser.add_argument('--filter_threshold', type=float, default=0, help="the threshold to filter some proposals that may be negative ")
 parser.add_argument('--proposals_weight_type', default="before_softmax", choices=("before_softmax","after_softmax"), help="the way to perform multiple between detector scores and ROIalign proposals")

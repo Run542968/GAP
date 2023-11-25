@@ -97,9 +97,6 @@ class ConditionalDETR(nn.Module):
         self.actionness_loss = args.actionness_loss
         self.enable_classAgnostic = args.enable_classAgnostic
 
-        self.augment_prompt_type = args.augment_prompt_type
-        self.subaction_version = args.subaction_version
-
 
         self.enable_refine = args.enable_refine
         self.enable_posPrior = args.enable_posPrior
@@ -205,53 +202,6 @@ class ConditionalDETR(nn.Module):
         text_feats = self.text_encoder(tokens).float()
 
         return text_feats
-    
-    def augment_text_feats(self,cl_names, description_dict, device, augment_type, subaction_version):
-        '''
-        v1: only adopt the sub-action 
-        v2: class_name + sub-action 
-        v3: class_name prompt + sub-action 
-        '''
-        text_feats = []
-        for c in cl_names:
-            if subaction_version == "v1":
-                subaction_list = []
-            elif subaction_version == "v2":
-                subaction_list = [c]
-            elif subaction_version == "v3":
-                subaction_list = ["a video of a person doing"+" "+c]
-            else: 
-                raise ValueError(f"Don't have this version: {subaction_version}")
-            subaction_list = subaction_list + description_dict[c]['Elaboration']['Description'] # [sub-action num, length]
-            subaction_tokens = clip_pkg.tokenize(subaction_list).long().to(device)
-            subaction_feats = self.text_encoder(subaction_tokens).float() # [sub-action num, dim]
-            if augment_type == "average":
-                pooled_feats = subaction_feats.mean(dim=0,keepdim=True) # [1,dim]
-                text_feats.append(pooled_feats)
-            elif augment_type == "attention": 
-                text_feats.append(subaction_feats) # [sub-action num, dim]
-            else:
-                raise NotImplementedError
-        
-        if augment_type == "average":
-            text_feats = torch.cat(text_feats,dim=0) # [num_classes,dim]
-            return text_feats
-        elif augment_type == "attention":
-            nested_text_feats = nested_tensor_from_tensor_list(text_feats) # tensors: [num_classes,unify length,dim] mask: [num_classes,unify length]
-            return nested_text_feats
-        else:
-            raise NotImplementedError
-
-    def _text_feats(self,text_feats, augment_prompt_type, semantic_text_head):
-        if augment_prompt_type == "attention":
-            text_feats_tensors, text_feats_mask = text_feats.decompose()
-            text_feats = semantic_text_head(text_feats_tensors,src_key_padding_mask=text_feats_mask)[-1] # [layers, num_classes,padding length,dim]->[num_classes,padding length,dim]
-            # text_feats = text_feats.sum(dim=1)/torch.sum(~text_feats_mask,dim=1,keepdim=True) # [num_classes,dim]
-            text_feats = text_feats[:,0,:] # [num_classes,dim] get the firt position token, i.e., class_name token
-        else:
-            text_feats = text_feats # [num_classes,dim]
-
-        return text_feats
 
     def _to_roi_align_format(self, rois, truely_length, scale_factor=1):
         '''Convert RoIs to RoIAlign format.
@@ -293,31 +243,6 @@ class ConditionalDETR(nn.Module):
         roi_feat = roi_feat.permute(0,1,3,2) # [B,Q,output_width,dim]
         return roi_feat
 
-    def _get_roi_prediction_v1(self,samples,coord,text_feats,ROIalign_size):
-        '''
-        _get_roi_prediction_v1: ROIalign before compute similarity, this strategy is easy to avoid the padded zero value
-
-        samples: NestedTensor
-        coord: [B,Q,2]
-        '''
-        origin_feat, mask = samples.decompose() # [B,T,dim] [B,T]
-        roi_feat = self._roi_align(rois=coord,origin_feat=origin_feat,mask=mask,ROIalign_size=ROIalign_size).mean(-2) # [B,Q,dim]
-
-        roi_logits = self._compute_similarity(roi_feat,text_feats) # [b,Q,num_classes]
-        return roi_logits
-    
-    def _get_roi_prediction_v2(self,snippet_logits,mask,coord,ROIalign_size):
-        '''
-        _get_roi_prediction_v2: ROIalign before compute similarity, this strategy is more reasonable to utilize the CLIP semantic
-
-        snippet_logits: [B,T,num_classes]
-        coord: [B,Q,2]
-        '''
-
-        roi_logits = self._roi_align(rois=coord,origin_feat=snippet_logits,ROIalign_size=ROIalign_size,mask=mask).mean(-2) # [B,Q,num_classes]
-
-        return roi_logits
-    
     @torch.no_grad()
     def _compute_similarity(self, visual_feats, text_feats):
         '''
@@ -419,9 +344,17 @@ class ConditionalDETR(nn.Module):
     def _temporal_pooling(self,pooling_type,coordinate,clip_feat,mask,ROIalign_size,text_feats):
         b,t,_ = coordinate.shape
         if pooling_type == "average":
-            roi_feat = self._roi_align(rois=coordinate,origin_feat=clip_feat+1e-4,mask=mask,ROIalign_size=ROIalign_size).mean(-2) # [B,Q,dim]
-
-            ROIalign_logits = self._compute_similarity(roi_feat,text_feats) # [b,Q,num_classes]
+            roi_feat = self._roi_align(rois=coordinate,origin_feat=clip_feat+1e-4,mask=mask,ROIalign_size=ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+            # roi_feat = roi_feat.mean(-2) # [B,Q,dim]
+            if self.ROIalign_strategy == "before_pred":
+                roi_feat = roi_feat.mean(-2) # [B,Q,dim]
+                ROIalign_logits = self._compute_similarity(roi_feat,text_feats) # [b,Q,num_classes]
+            elif self.ROIalign_strategy == "after_pred":
+                roi_feat = roi_feat # [B,Q,L,dim]
+                ROIalign_logits = self._compute_similarity(roi_feat,text_feats) # [b,Q,L,num_classes]
+                ROIalign_logits = ROIalign_logits.mean(-2) # [B,Q,num_classes]
+            else:
+                raise NotImplementedError
         elif pooling_type == "max":
             roi_feat = self._roi_align(coordinate,clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
             roi_feat = roi_feat.max(dim=2)[0] # [bs,num_queries,dim]
@@ -495,14 +428,8 @@ class ConditionalDETR(nn.Module):
         # prepare text target
         if self.target_type != "none":
             with torch.no_grad():
-                if self.augment_prompt_type == "single":
-                    text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
-                elif self.augment_prompt_type == "average":
-                    text_feats = self.augment_text_feats(classes_name, description_dict, self.device, "average", self.subaction_version) # [N classes,dim]
-                elif self.augment_prompt_type == "attention":
-                    text_feats = self.augment_text_feats(classes_name, description_dict, self.device, "attention", self.subaction_version) # nested_text_feats, tensors: [num_classes,unify length,dim] mask: [num_classes,unify length]
-                else:
-                    raise NotImplementedError
+                text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
+
                 
         # feed into model
         src, mask = feature_list[-1].decompose()

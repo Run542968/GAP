@@ -125,7 +125,7 @@ class BaseDataset(Dataset):
         
         if feature_type == "CLIP":
             feat_path = os.path.join(feature_path, video_name+".npy")
-        elif feature_type == "I3D":
+        elif feature_type == "ViFi-CLIP":
             raise NotImplementedError
         
         if os.path.exists(feat_path):
@@ -448,8 +448,8 @@ class Thumos14Dataset(BaseDataset):
         if self.inference_entire:
             if feature_type == "CLIP":
                 feat_path = os.path.join(feature_path, video_name+".npy")
-            elif feature_type == "I3D":
-                raise NotImplementedError
+            elif feature_type == "ViFi-CLIP":
+                feat_path = os.path.join(feature_path, video_name+".npy")
             
             if os.path.exists(feat_path):
                 video_feat = np.load(feat_path, allow_pickle=True) # T,dim
@@ -463,8 +463,8 @@ class Thumos14Dataset(BaseDataset):
             src_video_name = self.valid_anno_dict[video_name]['src_video_name']
             if feature_type == "CLIP":
                 feat_path = os.path.join(feature_path, src_video_name+".npy")
-            elif feature_type == "I3D":
-                raise NotImplementedError
+            elif feature_type == "ViFi-CLIP":
+                feat_path = os.path.join(feature_path, src_video_name+".npy")
             
             if os.path.exists(feat_path):
                 video_feat = np.load(feat_path, allow_pickle=True) # T,dim

@@ -29,9 +29,6 @@ from test import test
 from tqdm import tqdm
 import shutil
 
-import mlflow
-from mlflow import log_metric, log_param, log_params, log_artifacts, log_metrics
-
 
 # torch.set_default_tensor_type('torch.cuda.FloatTensor')
 def check_directory(args):
@@ -71,34 +68,6 @@ if __name__ == '__main__':
     logger.info('=============seed: {}, pid: {}============='.format(seed,os.getpid()))
     logger.info(args)
 
-    if args.use_mlflow:
-        #### mlflow ####
-        if args.task == 'zero_shot':
-            if args.eval_proposal: 
-                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.task,str(args.split),"binary"])
-            else:
-                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.target_type,args.task,str(args.split)])
-        elif args.task == 'close_set':
-            if args.eval_proposal: 
-                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.task,"binary"])
-            else:
-                experiment_name = "_".join([args.prefix,args.dataset_name,args.feature_type,args.target_type,args.task])
-        else:
-            raise ValueError("don't define this setting.")
-        if mlflow.get_experiment_by_name(experiment_name) == None: 
-            experiment_id = mlflow.create_experiment(experiment_name)
-            print(f"Create experiment id by name, id:{experiment_id}")
-        else:
-            experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id # if the experiment of per-set name exist, get its id
-            print(f"Get experiment id by name, id:{experiment_id}")
-            
-        run_name = args.model_name
-        mlflow.start_run(
-            run_name=run_name,
-            experiment_id=experiment_id
-        )
-        log_params(vars(args)) # NameSpace -> dict
-        #### mlflow ####
 
     
     # load dataset
@@ -134,8 +103,6 @@ if __name__ == '__main__':
     with torch.autograd.set_detect_anomaly(True):
         for epoch in tqdm(range(args.epochs)):
             epoch_loss_dict_scaled = train(model=model, criterion=criterion, data_loader=train_loader, optimizer=optimizer, device=device, epoch=epoch, max_norm=args.clip_max_norm)
-            if args.use_mlflow: # for mlflow
-                log_metrics(epoch_loss_dict_scaled,step=epoch)
             lr_scheduler.step()
             torch.save(model.state_dict(), os.path.join('./ckpt/',args.dataset_name,'last_' + args.model_name + '.pkl'))
 
@@ -144,16 +111,7 @@ if __name__ == '__main__':
                 logger.info('||'.join(['Train map @ {} = {:.3f} '.format(train_stats['iou_range'][i],train_stats['per_iou_ap_raw'][i]*100) for i in range(len(train_stats['iou_range']))]))
                 logger.info('Intermediate Train mAP Avg ALL: {}'.format(train_stats['mAP_raw']*100))
                 logger.info('Intermediate Train AR@1: {}, AR@5: {}, AR@10: {}, AR@50:{}, AR@100:{}, AUC@100:{}'.format(train_stats['AR@1_raw']*100, train_stats['AR@5_raw']*100,train_stats['AR@10_raw']*100,train_stats['AR@50_raw']*100,train_stats['AR@100_raw']*100,train_stats['AUC_raw']*100))
-
-                if args.use_mlflow: # for mlflow
-                        res_dict = {'train_IoU_'+str(k):v*100 for k,v in zip(train_stats['iou_range'],train_stats['per_iou_ap_raw'])}
-                        res_dict.update({"train_mAP":train_stats['mAP_raw']*100})
-                        res_dict.update({
-                                    "train_AR-1":train_stats['AR@1_raw']*100,
-                                    "train_AR-50":train_stats['AR@50_raw']*100,
-                                    "train_AR-100":train_stats['AR@50_raw']*100,
-                                    "train_AUC":train_stats['AUC_raw']*100})
-                        log_metrics(res_dict,step=epoch)
+                write_to_csv(os.path.join('./results/excel',args.dataset_name,args.model_name), train_stats, epoch)
 
             
             if epoch % args.test_interval == 0 and args.test_interval != -1:
@@ -162,16 +120,6 @@ if __name__ == '__main__':
                 logger.info('Intermediate mAP Avg ALL: {}'.format(test_stats['mAP_raw']*100))
                 logger.info('Intermediate AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}, AUC: {}'.format(test_stats['AR@1_raw']*100, test_stats['AR@5_raw']*100, test_stats['AR@10_raw']*100, test_stats['AR@50_raw']*100,test_stats['AR@100_raw']*100,test_stats['AUC_raw']*100))
                 write_to_csv(os.path.join('./results/excel',args.dataset_name,args.model_name), test_stats, epoch)
-
-                if args.use_mlflow: # for mlflow
-                    res_dict = {'IoU_'+str(k):v*100 for k,v in zip(test_stats['iou_range'],test_stats['per_iou_ap_raw'])}
-                    res_dict.update({"mAP":test_stats['mAP_raw']*100})
-                    res_dict.update({
-                                    "AR-1":test_stats['AR@1_raw']*100,
-                                    "AR-50":test_stats['AR@50_raw']*100,
-                                    "AR-100":test_stats['AR@50_raw']*100,
-                                    "AUC":test_stats['AUC_raw']*100})
-                    log_metrics(res_dict,step=epoch)
 
                 # update best
                 if test_stats['mAP_raw'] > best_stats.get('mAP_raw',0.0):
@@ -191,11 +139,4 @@ if __name__ == '__main__':
     # logger.info('MAX AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}, AUC: {}'.format(best_stats['AR@1_raw']*100, best_stats['AR@5_raw']*100, best_stats['AR@10_raw']*100, best_stats['AR@50_raw']*100,best_stats['AR@100_raw']*100,best_stats['AUC_raw']*100))
     logger.info('MAX AR@10: {}, AR@25: {}, AR@40: {}, AUC: {}'.format(best_stats['AR@10_raw']*100, best_stats['AR@25_raw']*100, best_stats['AR@40_raw']*100, best_stats['AUC_raw']*100))
                 
-    if args.use_mlflow:     # for mlflow
-        best_res_dict = {'best_IoU_'+str(k):v*100 for k,v in zip(best_stats['iou_range'],best_stats['per_iou_ap_raw'])}
-        best_res_dict.update({"best_mAP":best_stats['mAP_raw']*100})
-        best_res_dict.update({"best_epoch":best_stats['epoch']})
-        log_metrics(best_res_dict)
-        mlflow.end_run()
-
 
