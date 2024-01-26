@@ -1,5 +1,6 @@
 # basic
 task: "close_set"
+target_type: "none"
 
 # dataset
 dataset_name: Thumos14

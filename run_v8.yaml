@@ -93,8 +93,8 @@ Binary Classification in CLIP feature:
 
 
                     ################# ViFI-CLIP feature ###############
-                    #【same-4】:: 49.034 e47
-                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_ViFi-CLIP_prompt_zs_8frame_binary_v8_1" --cfg_path "./config/Thumos14_ViFi-CLIP_zs_75_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --eval_proposal --actionness_loss_coef 3 --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_type "all" --salient_loss_coef 3
+                    #【same-4】:: 46.17 e48
+                    CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_ViFi-CLIP_prompt_zs_8frame_binary_v8_1" --cfg_path "./config/Thumos14_ViFi-CLIP_zs_75_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --eval_proposal --actionness_loss_coef 3 --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_coef 3
                     
         split_50:
             clip: 
@@ -846,6 +846,11 @@ Zero-Shot:
                     CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v8_4_SpatialInjection_mean" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --prefix "v8" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_type "all" --salient_loss_coef 3 --refine_fusion_type 'mean'
                     #【base-4】--refine_fusion_type 'max'
                     CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_zs_8frame_v8_4_SpatialInjection_max" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --use_mlflow --save_result --batch_size 16 --prefix "v8" --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_type "all" --salient_loss_coef 3 --refine_fusion_type 'max'
+                    
+
+                    ################# ViFI-CLIP feature ###############
+                    #【same-4】:: 36.10 e44
+                    CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_ViFi-CLIP_prompt_zs_8frame_v8_1" --cfg_path "./config/Thumos14_ViFi-CLIP_zs_75_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_coef 3
                     
 
 

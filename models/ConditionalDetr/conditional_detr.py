@@ -131,6 +131,11 @@ class ConditionalDETR(nn.Module):
         
         if self.target_type != "none":
             self.class_embed = nn.Linear(hidden_dim, hidden_dim)
+            # init prior_prob setting for focal loss
+            prior_prob = 0.01
+            bias_value = -math.log((1 - prior_prob) / prior_prob)
+            self.class_embed.bias.data = torch.ones(hidden_dim) * bias_value
+
         else:
             if not self.enable_classAgnostic or not self.eval_proposal:
                 self.class_embed = nn.Linear(hidden_dim, num_classes)
@@ -242,7 +247,7 @@ class ConditionalDETR(nn.Module):
         roi_feat = roi_feat.permute(0,1,3,2) # [B,Q,output_width,dim]
         return roi_feat
 
-    @torch.no_grad()
+    # @torch.no_grad()
     def _compute_similarity(self, visual_feats, text_feats):
         '''
         text_feats: [num_classes,dim]
@@ -428,7 +433,7 @@ class ConditionalDETR(nn.Module):
         if self.target_type != "none":
             with torch.no_grad():
                 if self.args.feature_type == "ViFi-CLIP":
-                    text_feats = torch.from_numpy(np.load(os.path.join(self.args.feature_path,'text_features_split75_splitID1.npy'))).to(self.device)
+                    text_feats = torch.from_numpy(np.load(os.path.join(self.args.feature_path,'text_features_split75_splitID1.npy'))).float().to(self.device)
                 elif self.args.feature_type == "CLIP":
                     text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
                 else:
@@ -556,14 +561,17 @@ class ConditionalDETR(nn.Module):
 
 
         if not self.eval_proposal and not self.enable_classAgnostic:
-            class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
-            class_logits = self._compute_similarity(class_emb,text_feats) # [b,num_queries,num_classes]
+            if self.target_type != "none":
+                class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
+                class_logits = self._compute_similarity(class_emb, text_feats) # [b,num_queries,num_classes]
+            else:
+                class_logits = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,num_classes]
             out['class_logits'] = class_logits
 
 
         # obtain the ROIalign logits
         if not self.training: # only in inference stage
-
+            
             if self.enable_classAgnostic:
                 # fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
@@ -599,7 +607,7 @@ def build(args, device):
         num_classes = args.num_classes
 
     if args.feature_type == "ViFi-CLIP":
-        text_encoder,logit_scale = None, torch.from_numpy(np.load(os.path.join(args.feature_path,'logit_scale.npy')))
+        text_encoder,logit_scale = None, torch.from_numpy(np.load(os.path.join(args.feature_path,'logit_scale.npy'))).float()
     elif args.feature_type == "CLIP":
         text_encoder, logit_scale = build_text_encoder(args,device)
     else:

@@ -194,8 +194,9 @@ class BaseDataset(Dataset):
         target = {
             'segments': [], 
             'labels': [], # the category labels for detector
-            'semantic_labels':[],
             'label_names': [],
+            'semantic_labels':[],
+            'semantic_label_names':[],
             'video_name': video_name,
             'video_duration': feature_duration,   # only used in inference
             'salient_mask': [], # the mask to get action instance 
@@ -228,7 +229,7 @@ class BaseDataset(Dataset):
 
             semantic_label = classes.index(seg_anno['label']) # the category labels for semantic classification
             target['semantic_labels'].append(semantic_label)
-            
+            target['semantic_label_names'].append(seg_anno['label'])
 
             # add salient mask
             start_float, end_float = np.array(segment)/feature_duration*feat_length
@@ -634,5 +635,6 @@ if __name__ == "__main__":
     print(f"target[0]['labels']:{target[0]['labels']}")
     print(f"target[0]['label_names']:{target[0]['label_names']}")
     print(f"target[0]['salient_mask']:{target[0]['salient_mask']}")
+    print(f"self.classes:{data_loader.dataset.classes}")
 
-# CUDA_VISIBLE_DEVICES=4 python dataset.py --cfg_path "./config/Thumos14_CLIP_zs_50_8frame.yaml"
+# CUDA_VISIBLE_DEVICES=4 python dataset.py --cfg_path "./config/Thumos14_CLIP_8frame.yaml"

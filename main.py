@@ -69,7 +69,6 @@ if __name__ == '__main__':
     logger.info(args)
 
 
-    
     # load dataset
     train_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='train', mode='train', args=args)
     val_dataset = getattr(dataset,args.dataset_name+"Dataset")(subset='inference', mode='inference', args=args)

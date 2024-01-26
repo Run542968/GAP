@@ -1,0 +1,62 @@
+env: tadtr
+model: ZeroShotTAL
+
+
+Thumos14:
+  close_set仍然作为一个proposal generator下测试组件的有效性:
+    baseline:
+      # mAP: 28.0 AUC: 27.227 AR@10: 15.54
+      CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--lr 1e-5 :: mAP: 17.339 AUC: 24.806 AR@10 11.62
+      CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_1" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--lr 3e-4 :: mAP: 5.039 AUC: 13.215 AR@10 2.571
+      CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_2" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 3e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--lr 3e-5 :: mAP: 28.859 AUC: 27.789 AR@10: 16.318
+      CUDA_VISIBLE_DEVICES=5 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_3" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 3e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--num_queries 20 :: mAP: 27.127 AUC: 25.753 AR@10: 15.58
+      CUDA_VISIBLE_DEVICES=6 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_4" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 20 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--num_queries 15 :: mAP: 26.359 AUC: 25.689 AR@10: 15.737
+      CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_5" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 15 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--actionness_loss_coef 5 :: mAP: 27.19 AUC: 26.04 AR@10: 16.29
+      CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_6" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 5 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--lr 2e-5 
+      CUDA_VISIBLE_DEVICES=1 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_7" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 2e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--lr 5e-5 
+      CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_8" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 5e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--lr 7e-5 
+      CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_9" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 7e-5 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--num_queries 50 
+      CUDA_VISIBLE_DEVICES=4 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_10" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 50 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--num_queries 60 
+      CUDA_VISIBLE_DEVICES=5 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_11" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 60 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--actionness_loss_coef 1
+      CUDA_VISIBLE_DEVICES=6 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_12" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 1 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      #【base-0】--actionness_loss_coef 2 
+      CUDA_VISIBLE_DEVICES=7 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_1_13" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 2 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic
+      
+      
+      
+
+
+
+
+
+
+
+    baseline + actonness_discriminating loss:
+      # mAP: 27.157 AUC: 26.722 AR@10: 15.858
+      CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_2" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --salient_loss --salient_loss_coef 4
+    
+    baseline + actonness_discriminating loss + spatial-temporal coupling:
+      # mAP: 27.763 AUC: 27.8 AR@10: 16.792 
+      CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_3" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_coef 3
+
+
+
+  close_set作为一个完整的TAL模型, 测试组件的有效性:
+    baseline:
+      # 
+      CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_tal_1" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed --exp_logit_scale
+
+    baseline + spatial-temporal coupling:
+      CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_8frame_rb_tal_2" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --norm_embed --exp_logit_scale --enable_refine --refine_drop_saResidual 

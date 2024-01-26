@@ -58,8 +58,16 @@ class PostProcess(nn.Module):
                     else:
                         raise NotImplementedError
         else:
-            raise ValueError("Don't have this case.")
-    
+            assert 'class_logits' in outputs
+            class_logits = outputs['class_logits'] #  [bs,num_queries,num_classes] 
+            
+            if self.prob_type == "softmax":
+                prob = class_logits.softmax(-1)
+            elif self.prob_type == "sigmoid":
+                prob = class_logits.sigmoid()
+            else:
+                raise NotImplementedError
+
 
         B,Q,num_classes = prob.shape
         assert len(prob) == len(target_sizes)
