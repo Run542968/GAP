@@ -1,6 +1,6 @@
 # basic
 task: "close_set"
-target_type: "none"
+target_type: "prompt"
 
 # dataset
 dataset_name: Thumos14
@@ -12,5 +12,5 @@ feature_stride: 8
 feature_type: "CLIP"
 num_classes: 20
 slice_size: 128
-slice_overlap: 0.75
-inference_slice_overlap: 0.25
+# slice_overlap: 0.75
+# inference_slice_overlap: 0.25

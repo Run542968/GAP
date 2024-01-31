@@ -150,7 +150,7 @@ Close-Set:
                 CUDA_VISIBLE_DEVICES=0 python main.py --model_name "ActivityNet13_CLIP_prompt_3" --cfg_path "./config/ActivityNet13_CLIP.yaml" --use_mlflow --save_result --rescale_length 300 --batch_size 16 --target_type "prompt" --lr 3e-4 --epochs 100 --num_queries 5 --postprocess_type "class_agnostic" --postprocess_topk 100 --enc_layers 4 --dec_layers 4 --norm_embed
 
             thumos14:
-                # lr 1e-4 :: val: 36.63
+                # lr 1e-4 :: val: 34.63
                 CUDA_VISIBLE_DEVICES=2 python main.py --model_name "Thumos14_CLIP_prompt_8frame_1" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4
                 # lr 1e-4 --norm_embed :: val: 31.66
                 CUDA_VISIBLE_DEVICES=3 python main.py --model_name "Thumos14_CLIP_prompt_8frame_2" --cfg_path "./config/Thumos14_CLIP_8frame.yaml" --use_mlflow --save_result --batch_size 16 --target_type "prompt" --lr 1e-4 --epochs 200 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 4 --dec_layers 4 --norm_embed

@@ -3,6 +3,8 @@ import torch
 import logging
 from eval import tad_eval
 from sklearn.metrics import accuracy_score
+import time
+
 
 logger = logging.getLogger()
 
@@ -38,6 +40,7 @@ def test(model,
     # gt_pred_list = []
     # epoch_loss_dict = {}
     # #  For computing ACC use ###
+
     count = 0
     # res_dict = {}
     for samples, targets in data_loader:
@@ -51,7 +54,35 @@ def test(model,
         description_dict = data_loader.dataset.description_dict
 
         outputs = model(samples, classes, description_dict,targets,epoch)
-        
+
+        # #  For computing inference time use ###
+        # # 如果使用的是 CUDA，进行预热和同步，确保更准确的时间测量
+        # if device == 'cuda':
+        #     with torch.no_grad():
+        #         for _ in range(10):
+        #             outputs = model(samples, classes, description_dict,targets,epoch)
+        #     torch.cuda.synchronize()
+
+        # start_time = time.time()
+
+        # # 推理多次并测量平均时间
+        # num_tests = 10
+        # with torch.no_grad():
+        #     for _ in range(num_tests):
+        #         outputs = model(samples, classes, description_dict,targets,epoch)
+        #         if device == 'cuda':
+        #             torch.cuda.synchronize()
+
+        # end_time = time.time()
+
+        # # 计算平均推理时间
+        # avg_time = (end_time - start_time) / num_tests
+        # print(f"avg_time: {avg_time} seconds.")
+        # raise
+        # #  For computing inference time use ###
+
+
+
         # #  For computing ACC use ###
         # if 'gt_logits' in outputs:
         #     gt_logits = outputs['gt_logits']
@@ -92,6 +123,27 @@ def test(model,
     # gt_pred_list = torch.cat(gt_pred_list,dim=0).cpu().detach().numpy()
     # acc = accuracy_score(gt_labels_list,gt_pred_list)
     # print(f"The val acc is: {acc}")
+
+
+    # # 计算类别总数
+    # num_classes = 5
+
+    # # 初始化每个类别的正确预测数和总预测数的字典
+    # class_correct = {i: 0 for i in range(num_classes)}
+    # class_total = {i: 0 for i in range(num_classes)}
+
+    # # 遍历真实标签和预测标签，统计每个类别的正确预测数和总预测数
+    # for gt, pred in zip(gt_pred_list, gt_labels_list):
+    #     class_total[gt] += 1
+    #     if gt == pred:
+    #         class_correct[gt] += 1
+
+    # # 计算每个类别的准确度
+    # class_accuracy = {i: class_correct[i] / class_total[i] if class_total[i] > 0 else 0 for i in range(num_classes)}
+
+    # # 打印每个类别的准确度
+    # for i in range(num_classes):
+    #     print(f"Class {i} Accuracy: {class_accuracy[i]:.4f}")
     # #  For computing ACC use ###
 
     # epoch_loss_dict.update({k: v/count for k, v in epoch_loss_dict.items()})

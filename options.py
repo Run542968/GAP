@@ -95,6 +95,9 @@ parser.add_argument('--adapterCLS_loss_coef', type=float, default=1)
 parser.add_argument('--adapterCLS_conv_weight_type', type=str, default='l1', choices=('l1', 'kl'))
 
 
+parser.add_argument('--refine_actionness_loss', action='store_true', default=False)
+parser.add_argument('--refine_actionness_loss_coef', type=float, default=2)
+
 # Matcher
 parser.add_argument('--set_cost_class', type=float, default=2, help="Class coefficient in the matching cost")
 parser.add_argument('--set_cost_bbox', type=float, default=5, help="L1 box coefficient in the matching cost")

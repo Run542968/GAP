@@ -108,8 +108,25 @@ class ConditionalDETR(nn.Module):
         self.adapterCLS_type = args.adapterCLS_type
         self.adapterCLS_conv_weight_type = args.adapterCLS_conv_weight_type
 
-
         hidden_dim = transformer.d_model
+
+        self.refine_actionness_loss = args.refine_actionness_loss
+        # if self.refine_actionness_loss:
+        #     self.bbox_embed_refine = MLP(hidden_dim, hidden_dim, 2, 3)
+        #     # init bbox_mebed
+        #     nn.init.constant_(self.bbox_embed_refine.layers[-1].weight.data, 0)
+        #     nn.init.constant_(self.bbox_embed_refine.layers[-1].bias.data, 0)
+            
+        #     self.actionness_embed_refine = nn.Linear(hidden_dim,1)
+        #     # init prior_prob setting for focal loss
+        #     prior_prob = 0.01
+        #     bias_value = -math.log((1 - prior_prob) / prior_prob)
+        #     self.actionness_embed_refine.bias.data = torch.ones(1) * bias_value
+
+
+
+
+
         self.bbox_embed = MLP(hidden_dim, hidden_dim, 2, 3)
         # init bbox_mebed
         nn.init.constant_(self.bbox_embed.layers[-1].weight.data, 0)
@@ -505,31 +522,67 @@ class ConditionalDETR(nn.Module):
 
         # refine encoder
         if self.enable_refine:
-            with torch.no_grad():
+            if self.refine_actionness_loss:
                 reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
-                tmp = self.bbox_embed(hs[-1]) # [b,num_queries,2], tmp is the predicted offset value.
+                # tmp = self.bbox_embed_refine(hs[-1]) # [b,num_queries,2], tmp is the predicted offset value.
+                tmp = self.bbox_embed(hs[-1]) # for shared propsoal generation head
                 tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
                 outputs_coord = tmp.sigmoid() # [b,num_queries,2]
+                out['pred_boxes_refine'] = outputs_coord
                 roi_pos = self._roi_align(outputs_coord,pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
                 roi_feat = self._roi_align(outputs_coord,clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
     
-            b,q,l,d = roi_feat.shape
-            refine_hs = self.refine_decoder(hs[-1],clip_feat,roi_feat,
-                                    video_feat_key_padding_mask=mask,
-                                    video_pos=pos[-1],
-                                    roi_pos=roi_pos)
+                if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
+                    # compute the class-agnostic foreground score
+                    # actionness_logits = self.actionness_embed_refine(hs[-1]) # [b,num_queries,2]
+                    actionness_logits = self.actionness_embed(hs[-1]) # for shared propsoal generation head
+                    out['actionness_logits_refine'] = actionness_logits
 
-            refine_hs = hs[-1] + refine_hs
-            reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
-            tmp = self.bbox_embed(refine_hs) # [b,num_queries,2], tmp is the predicted offset value.
-            tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
-            outputs_coord = tmp.sigmoid() # [b,num_queries,2]
-            out['pred_boxes'] = outputs_coord
+                b,q,l,d = roi_feat.shape
+                refine_hs = self.refine_decoder(hs[-1],clip_feat,roi_feat,
+                                        video_feat_key_padding_mask=mask,
+                                        video_pos=pos[-1],
+                                        roi_pos=roi_pos)
 
-            if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
-                # compute the class-agnostic foreground score
-                actionness_logits = self.actionness_embed(refine_hs) # [b,num_queries,2]
-                out['actionness_logits'] = actionness_logits
+                refine_hs = hs[-1] + refine_hs
+                reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
+                tmp = self.bbox_embed(refine_hs) # [b,num_queries,2], tmp is the predicted offset value.
+                tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
+                outputs_coord_refined = tmp.sigmoid() # [b,num_queries,2]
+                out['pred_boxes'] = outputs_coord_refined
+
+                if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
+                    # compute the class-agnostic foreground score
+                    actionness_logits = self.actionness_embed(refine_hs) # [b,num_queries,2]
+                    out['actionness_logits'] = actionness_logits
+            else:
+                with torch.no_grad():
+                    reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
+                    tmp = self.bbox_embed(hs[-1]) # [b,num_queries,2], tmp is the predicted offset value.
+                    tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
+                    outputs_coord = tmp.sigmoid() # [b,num_queries,2]
+                    roi_pos = self._roi_align(outputs_coord,pos[-1],mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+                    roi_feat = self._roi_align(outputs_coord,clip_feat,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
+
+                # out['pred_boxes_dynamic'] = outputs_coord
+
+                b,q,l,d = roi_feat.shape
+                refine_hs = self.refine_decoder(hs[-1],clip_feat,roi_feat,
+                                        video_feat_key_padding_mask=mask,
+                                        video_pos=pos[-1],
+                                        roi_pos=roi_pos)
+
+                refine_hs = hs[-1] + refine_hs
+                reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
+                tmp = self.bbox_embed(refine_hs) # [b,num_queries,2], tmp is the predicted offset value.
+                tmp[..., :1] += reference_before_sigmoid # [b,num_queries,2], only the center coordination add reference point
+                outputs_coord_refined = tmp.sigmoid() # [b,num_queries,2]
+                out['pred_boxes'] = outputs_coord_refined
+
+                if self.actionness_loss or self.eval_proposal or self.enable_classAgnostic:
+                    # compute the class-agnostic foreground score
+                    actionness_logits = self.actionness_embed(refine_hs) # [b,num_queries,2]
+                    out['actionness_logits'] = actionness_logits
         else:
             reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
             outputs_coords = []
@@ -572,6 +625,8 @@ class ConditionalDETR(nn.Module):
         # obtain the ROIalign logits
         if not self.training: # only in inference stage
             
+            # out['pred_boxes'] = out['pred_boxes_dynamic']
+
             if self.enable_classAgnostic:
                 # fixed_text_feats = self.get_text_feats(classes_name, description_dict, self.device, self.target_type) # [N classes,dim]
 
@@ -641,6 +696,9 @@ def build(args, device):
         weight_dict['loss_salient'] = args.salient_loss_coef
     if args.adapterCLS_loss:
         weight_dict['loss_adapterCLS'] = args.adapterCLS_loss_coef
+    if args.refine_actionness_loss:
+        weight_dict['loss_actionness_refine'] = args.refine_actionness_loss_coef
+        weight_dict['loss_bbox_refine'] = args.refine_actionness_loss_coef
 
 
     # TODO this is a hack

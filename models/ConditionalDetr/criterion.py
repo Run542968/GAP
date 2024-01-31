@@ -64,6 +64,9 @@ class SetCriterion(nn.Module):
         self.adapterCLS_type = args.adapterCLS_type
         self.adapterCLS_conv_weight_type = args.adapterCLS_conv_weight_type
 
+        self.refine_actionness_loss = args.refine_actionness_loss
+        if self.refine_actionness_loss:
+            self.refine_losses = ['boxes_refine','actionness_refine']
 
         if self.eval_proposal or self.enable_classAgnostic:
             self.base_losses = ['boxes','actionness']
@@ -144,6 +147,28 @@ class SetCriterion(nn.Module):
             segment_cw_to_t1t2(target_boxes))) # the clamp is to deal with the case "center"-"width/2" < 0 and "center"+"width/2" < 1
         losses['loss_giou'] = loss_giou.sum() / num_boxes
         return losses
+
+    def loss_boxes_refine(self, outputs, targets, indices, num_boxes):
+        """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
+           targets dicts must contain the key "segments" containing a tensor of dim [nb_target_boxes, 4]
+           The target boxes are expected in format (center_x, center_y, w, h), normalized by the image size.
+        """
+        assert 'pred_boxes' in outputs
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        src_boxes = outputs['pred_boxes'][idx] # [batch_matched_queries,2]
+        target_boxes = torch.cat([t['segments'][i] for t, (_, i) in zip(targets, indices)], dim=0) # [batch_target,2]
+
+        loss_bbox = F.l1_loss(src_boxes, target_boxes, reduction='none')
+
+        losses = {}
+        losses['loss_bbox_refine'] = loss_bbox.sum() / num_boxes
+
+        loss_giou = 1 - torch.diag(segment_iou(
+            segment_cw_to_t1t2(src_boxes).clamp(min=0,max=1), 
+            segment_cw_to_t1t2(target_boxes))) # the clamp is to deal with the case "center"-"width/2" < 0 and "center"+"width/2" < 1
+        losses['loss_giou'] = loss_giou.sum() / num_boxes
+        return losses
+
 
     def loss_exclusive(self, outputs, targets, indices, num_boxes):
         """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
@@ -395,6 +420,33 @@ class SetCriterion(nn.Module):
             # TODO this should probably be a separate loss, not hacked in this one here
             losses['class_error'] = 100 - accuracy(src_logits[idx], target_classes_o)[0] # [batch_matched_queries,num_classes]
         return losses
+
+    def loss_actionness_refine(self, outputs, targets, indices, num_boxes, log=True):
+        """Classification loss (Binary focal loss)
+        targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
+        """
+        assert 'actionness_logits' in outputs
+        src_logits = outputs['actionness_logits'] # [bs,num_queries,1]
+
+        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
+        target_classes_o = torch.cat([t["labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
+        target_classes = torch.full(src_logits.shape[:2], src_logits.shape[2],
+                                    dtype=torch.int64, device=src_logits.device) # [bs,num_queries]
+        target_classes[idx] = target_classes_o # [bs,num_queries]
+
+        target_classes_onehot = torch.zeros([src_logits.shape[0], src_logits.shape[1], src_logits.shape[2]+1],
+                                            dtype=src_logits.dtype, layout=src_logits.layout, device=src_logits.device) # [bs,num_queries,num_classes+1]
+        target_classes_onehot.scatter_(2, target_classes.unsqueeze(-1), 1)
+
+        target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
+        loss_ce = sigmoid_focal_loss(src_logits, target_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma) * src_logits.shape[1]
+        losses = {'loss_actionness_refine': loss_ce}
+
+        if log:
+            # TODO this should probably be a separate loss, not hacked in this one here
+            losses['class_error'] = 100 - accuracy(src_logits[idx], target_classes_o)[0] # [batch_matched_queries,num_classes]
+        return losses
+
 
     def loss_refine_actionness(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (Binary focal loss)
@@ -691,7 +743,9 @@ class SetCriterion(nn.Module):
         loss_map = {
             'labels': self.loss_labels,
             'boxes': self.loss_boxes,
-            'actionness': self.loss_actionness
+            'actionness': self.loss_actionness,
+            'actionness_refine': self.loss_actionness_refine,
+            'boxes_refine': self.loss_boxes_refine
         }
         assert loss in loss_map, f'do you really want to compute {loss} loss?'
         return loss_map[loss](outputs, targets, indices, num_boxes, **kwargs)
@@ -765,6 +819,12 @@ class SetCriterion(nn.Module):
             else:
                 adpterCLS_loss = self.loss_adapterCLS(outputs, targets, indices, num_boxes)
             losses.update(adpterCLS_loss)
+
+        if self.refine_actionness_loss:
+            indices_refine = self.matcher(outputs_without_aux["actionness_logits_refine"], outputs_without_aux["pred_boxes_refine"], tgt_ids, tgt_bbox, sizes)
+            for loss in self.refine_losses:
+                losses.update(self.get_loss(loss, outputs, targets, indices_refine, num_boxes))
+
 
         return losses
 

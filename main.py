@@ -30,6 +30,20 @@ from tqdm import tqdm
 import shutil
 
 
+# Computing the parameters of the model
+def count_parameters(model):
+    total_params = 0
+    trainable_params = 0
+
+    for param in model.parameters():
+        temp = param.numel()
+        total_params += temp
+
+        if param.requires_grad:
+            trainable_params += temp
+    print(f"Total parameters: {total_params/1000000} M, Trainable parameters: {trainable_params/1000000} M")
+    return total_params, trainable_params 
+
 # torch.set_default_tensor_type('torch.cuda.FloatTensor')
 def check_directory(args):
     # contruct ckpt directory
