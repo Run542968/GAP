@@ -353,7 +353,7 @@ class Thumos14Dataset(BaseDataset):
         video_set = set([x for x in anno_data if anno_data[x]['subset'] in subset]) # get the video name that belongs to 'subset'
         video_set = video_set.intersection(feature_info.keys()) # get the video name belongs both anno_dict and feature_info
         
-        exclude_videos = ['video_test_0000270', 'video_test_0001292', 'video_test_0001496', 'video_test_0000814'] # the annotation of 'video_test_0000814' is wrong, emm, segment second larger than video duration
+        exclude_videos = ['video_test_0000270', 'video_test_0001292', 'video_test_0001496', 'video_test_0000814', 'video_test_0000504'] # the annotation of 'video_test_0000814' is wrong, emm, segment second larger than video duration
         if exclude_videos is not None:
             assert isinstance(exclude_videos, (list, tuple))
             video_set = video_set.difference(exclude_videos)
