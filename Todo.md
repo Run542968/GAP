@@ -419,7 +419,7 @@
   - [x] 像是增加了一层CLIP到识别action的adapter
   - [x] 实现方面：
     - [x] 第一种，先过一层Conv1D，然后average pooling, --adapterCLS_type "conv_avg"
-    - [x] 第二种，过一层Conv1D，输出一个soft的attention加权weight，进行加权, --adapterCLS_type "conv_avg"
+    - [x] 第二种，过一层Conv1D，输出一个soft的attention加权weight，进行加权, --adapterCLS_type "conv_add"
     - [x] 第三种，过一层self-attention，然后average pooling, --adapterCLS_type "sa"
     - [ ] 第四种，过一层Conv1D，输出一个soft的加权weight，但是用文本和snippet的相似度得分计算监督loss，--adapterCLS_type "conv_weight"
       - 只给匹配到的query计算这个显著性分数，有两种实现
@@ -486,3 +486,12 @@
   - [x] 删除了salient_loss的其他几个实现，例如“ioc”,"top"
   - [x] 删除了无用的augment_prompt配置
   - [ ] 详见两次commit "clean code", "clean code1" 
+- [x] 20240228 发现在adaptered_roi_feat那里，改成一个分类loss, 并且对应的计算相似度的特征格式为[roi_feat_mean + 0.1*weighted_roi_feat] [text_feat + 0.1*learnable_verbs]，这样能在baseline上涨点
+- [ ] 尝试一下在现有的模型上，加一个新的head，它的loss是分类ce loss。计算相似度的特征格式如上所示。最后的分类结果采用ensemble的形式
+
+
+
+# 好词积累
+-  catastrophic forgetting of the general vision-language knowledge in pre-trained VLMs, in particular to novel categories
+-  online proposal mining
+-  The shared prompt templates lead to less discriminative text features since images are much more diverse [13] compared to highly-semantic and information-dense texts.

@@ -107,6 +107,16 @@ class ConditionalDETR(nn.Module):
         self.adapterCLS_loss = args.adapterCLS_loss
         self.adapterCLS_type = args.adapterCLS_type
         self.adapterCLS_conv_weight_type = args.adapterCLS_conv_weight_type
+        self.adapterCLS_conv_add_verbs_type = args.adapterCLS_conv_add_verbs_type
+        self.adapterCLS_conv_add_verbs_coef = args.adapterCLS_conv_add_verbs_coef
+
+
+        self.dynamic_element_catch = args.dynamic_element_catch
+        self.dynamic_element_num = args.dynamic_element_num
+        self.dynamic_coef = args.dynamic_coef
+
+
+        self.distillation_loss = args.distillation_loss
 
         hidden_dim = transformer.d_model
 
@@ -189,8 +199,15 @@ class ConditionalDETR(nn.Module):
                     # nn.LeakyReLU(0.2),
                     # nn.Conv1d(in_channels=hidden_dim,out_channels=1,kernel_size=3,padding=1)
                 )
+            elif self.adapterCLS_type == "conv_add_verbs":
+                self.adapter = nn.Conv1d(in_channels=hidden_dim,out_channels=1,kernel_size=3,padding=1)
+                self.learnable_verbs = nn.Embedding(1, hidden_dim)
             else:
                 raise ValueError
+
+        if self.dynamic_element_catch:
+            self.dynamic_elements = nn.Embedding(self.dynamic_element_num, hidden_dim)
+            self.dynamic_fusion = nn.MultiheadAttention(embed_dim=hidden_dim,num_heads=4)
 
         if self.target_type != "none":
             logger.info(f"The target_type is {self.target_type}, using text embedding as target, on task: {args.task}!")
@@ -340,7 +357,7 @@ class ConditionalDETR(nn.Module):
             adapted_roi_feat = adapted_roi_feat.mean(2) # [b,q,dim]
 
             roi_feat_weight= None
-        elif self.adapterCLS_type == "conv_add":
+        elif self.adapterCLS_type == "conv_add" or self.adapterCLS_type == "conv_add_verbs":
             roi_feat_re = roi_feat.reshape(b*q,l,d) # [b*q,l,d]
             roi_feat_weight = self.adapter(roi_feat_re.permute(0,2,1)).permute(0,2,1) # [b*q,l]
             roi_feat_weight = roi_feat_weight.reshape(b,q,l,1)
@@ -583,6 +600,24 @@ class ConditionalDETR(nn.Module):
                     # compute the class-agnostic foreground score
                     actionness_logits = self.actionness_embed(refine_hs) # [b,num_queries,2]
                     out['actionness_logits'] = actionness_logits
+
+                if not self.eval_proposal and not self.enable_classAgnostic:
+                    if self.target_type != "none":
+                        class_emb = self.class_embed(refine_hs) # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
+                        b,n,dim = class_emb.shape
+                        if self.dynamic_element_catch:
+                            dynamic_element_feat = self.dynamic_elements.weight.unsqueeze(1).expand(self.dynamic_element_num, b, dim) # [dynamic_element_nums,bs, dim]
+                            class_emb = class_emb.permute(1,0,2)
+                            region_dynamic = self.dynamic_fusion(query=class_emb, key=dynamic_element_feat, value=dynamic_element_feat)[0] # [num_queries, b, dim]
+                            region_dynamic = region_dynamic.permute(1,0,2) # [b,num_queries,dim]
+                            class_logits = self._compute_similarity(region_dynamic, text_feats) # [b,num_queries,num_classes]
+                        else:
+                            class_logits = self._compute_similarity(class_emb, text_feats) # [b,num_queries,num_classes]
+                    else:
+                        class_logits = self.class_embed(hs) # [dec_layers,b,num_queries,dim]->[b,num_queries,num_classes]
+                    out['class_logits'] = class_logits
+
+
         else:
             reference_before_sigmoid = inverse_sigmoid(reference) # [b,num_queries,1], Reference point is the predicted center point.
             outputs_coords = []
@@ -599,6 +634,23 @@ class ConditionalDETR(nn.Module):
                 actionness_logits = self.actionness_embed(hs)[-1] # [dec_layers,b,num_queries,1]->[b,num_queries,2]
                 out['actionness_logits'] = actionness_logits
         
+
+            if not self.eval_proposal and not self.enable_classAgnostic:
+                if self.target_type != "none":
+                    class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
+                    b,n,dim = class_emb.shape
+                    if self.dynamic_element_catch:
+                        dynamic_element_feat = self.dynamic_elements.weight.unsqueeze(1).expand(self.dynamic_element_num, b, dim) # [dynamic_element_nums,bs, dim]
+                        class_emb = class_emb.permute(1,0,2)
+                        region_dynamic = self.dynamic_fusion(query=class_emb, key=dynamic_element_feat, value=dynamic_element_feat)[0] # [num_queries, b, dim]
+                        region_dynamic = region_dynamic.permute(1,0,2) # [b,num_queries,dim]
+                        class_logits = self._compute_similarity(region_dynamic, text_feats) # [b,num_queries,num_classes]
+                    else:
+                        class_logits = self._compute_similarity(class_emb, text_feats) # [b,num_queries,num_classes]
+                else:
+                    class_logits = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,num_classes]
+                out['class_logits'] = class_logits
+
         # adopt adapterCLS_loss
         if self.adapterCLS_loss:
             with torch.no_grad():
@@ -606,20 +658,33 @@ class ConditionalDETR(nn.Module):
                 adapter_roi_feat = self._roi_align(out['pred_boxes'],clip_feat + 1e-4,mask,self.ROIalign_size) # [bs,num_queries,ROIalign_size,dim]
 
             adapted_roi_feat,roi_feat_weight = self._adapter_forward(adapter_roi_feat, adapter_roi_pos) # [b,q,dim], [b,q,l,1]
-            adapted_roi_feat_logits = self._compute_similarity(adapted_roi_feat,text_feats) # [b,q,c]
-            out['adapted_roi_feat_logits'] = adapted_roi_feat_logits
             if self.adapterCLS_type == "conv_weight":
                 out['roi_feat_weight'] = roi_feat_weight # [b,q,l,1]
                 out['roi_feat_logits'] = self._compute_similarity(adapter_roi_feat,text_feats) # [b,q,l,c]
+            if self.adapterCLS_type == "conv_add_verbs":
+                if self.adapterCLS_conv_add_verbs_type == "concat":
+                    adapted_roi_feat = torch.cat([adapter_roi_feat.mean(2), self.adapterCLS_conv_add_verbs_coef * adapted_roi_feat],dim=-1) # [b,q,2*dim]
+                    text_feats = torch.cat([text_feats, self.adapterCLS_conv_add_verbs_coef * self.learnable_verbs.weight.expand_as(text_feats)],dim=-1) # [n classes,2*dim]
+                elif self.adapterCLS_conv_add_verbs_type == "sum":
+                    adapted_roi_feat = adapter_roi_feat.mean(2) + self.adapterCLS_conv_add_verbs_coef * adapted_roi_feat # [b,q,dim]
+                    text_feats = text_feats + self.adapterCLS_conv_add_verbs_coef * self.learnable_verbs.weight.expand_as(text_feats) # [n classes,2*dim]
+                elif self.adapterCLS_conv_add_verbs_type == "sum1":
+                    adapted_roi_feat = adapter_roi_feat.mean(2) + self.adapterCLS_conv_add_verbs_coef * adapted_roi_feat # [b,q,dim]
+                    text_feats = text_feats # [n classes,2*dim]
+                else:
+                    raise ValueError
+            adapted_roi_feat_logits = self._compute_similarity(adapted_roi_feat,text_feats) # [b,q,c]
+            out['adapted_roi_feat_logits'] = adapted_roi_feat_logits
 
+        if self.training:
+            if self.distillation_loss:
+                out['student_emb'] = class_emb # [b,num_queries,num_classes]
 
-        if not self.eval_proposal and not self.enable_classAgnostic:
-            if self.target_type != "none":
-                class_emb = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,dim]
-                class_logits = self._compute_similarity(class_emb, text_feats) # [b,num_queries,num_classes]
-            else:
-                class_logits = self.class_embed(hs)[-1] # [dec_layers,b,num_queries,dim]->[b,num_queries,num_classes]
-            out['class_logits'] = class_logits
+                visual_feats = clip_feat
+                roi_feat = self._roi_align(out['pred_boxes'],visual_feats,mask,self.ROIalign_size).squeeze() # [bs,num_queries,ROIalign_size,dim]
+                b,q,l,d = roi_feat.shape
+                teacher_emb = roi_feat.mean(dim=2) # [b,q,d]
+                out['teacher_emb'] = teacher_emb
 
 
         # obtain the ROIalign logits
@@ -638,6 +703,12 @@ class ConditionalDETR(nn.Module):
                 out['class_logits'] = ROIalign_logits 
             elif self.eval_proposal:
                 pass
+            # elif self.actionness_loss:
+            #     if self.dynamic_element_catch:
+            #         ROIalign_logits = self.dynamic_coef*out['class_logits'] + self._temporal_pooling(self.pooling_type, out['pred_boxes'], clip_feat, mask, self.ROIalign_size, text_feats)
+            #     else:
+            #         ROIalign_logits = self._temporal_pooling(self.pooling_type, out['pred_boxes'], clip_feat, mask, self.ROIalign_size, text_feats)
+            #     out['class_logits'] = ROIalign_logits 
             else:
                 assert "class_logits" in out, "please check the code of self.class_embed"
             
@@ -699,7 +770,8 @@ def build(args, device):
     if args.refine_actionness_loss:
         weight_dict['loss_actionness_refine'] = args.refine_actionness_loss_coef
         weight_dict['loss_bbox_refine'] = args.refine_actionness_loss_coef
-
+    if args.distillation_loss:
+        weight_dict['loss_distillation'] = args.distillation_loss_coef
 
     # TODO this is a hack
     if args.aux_loss:

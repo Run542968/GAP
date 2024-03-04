@@ -332,15 +332,40 @@ class RefineDecoderLayer(nn.Module):
         return fusion_query_feat2
 
 
+
+
 class RefineDecoderV2(nn.Module):
+    def __init__(self, refine_layer, num_layers) -> None:
+        super().__init__()
+        self.layers = num_layers
+        self.layers = _get_clones(refine_layer, num_layers)
+
+    def forward(self, query_feat, video_feat, roi_segment_feat,
+                video_feat_key_padding_mask: Optional[Tensor] = None,
+                video_pos: Optional[Tensor] = None,
+                roi_pos: Optional[Tensor] = None):
+        
+        output = query_feat
+        for layer in self.layers:
+            output = layer(query_feat, video_feat, roi_segment_feat, video_feat_key_padding_mask, video_pos, roi_pos)
+        
+        return output
+
+class RefineDecoderV2_layer(nn.Module):
 
     def __init__(self, nheads=4, d_model=256, args=None):
         super().__init__()
+        self.d_model = d_model
         self.cross_attn_local = nn.MultiheadAttention(d_model,nheads)
-        self.self_attn = nn.MultiheadAttention(d_model,nheads)
         self.refine_drop_saResidual = args.refine_drop_saResidual
         self.refine_drop_sa = args.refine_drop_sa
         self.refine_fusion_type = args.refine_fusion_type
+        self.refine_cat_type = args.refine_cat_type
+        if "concat" in self.refine_cat_type:
+            self.proj_head = nn.Linear(2*d_model,d_model)
+            self.self_attn = nn.MultiheadAttention(2*d_model,nheads)
+        else:
+            self.self_attn = nn.MultiheadAttention(d_model,nheads)
 
 
     def forward(self, query_feat, video_feat, roi_segment_feat,
@@ -383,14 +408,25 @@ class RefineDecoderV2(nn.Module):
         if self.refine_drop_sa:
             query_feat = tgt1
         else:
-            query_feat = query_feat + tgt1
+            if "concat" in self.refine_cat_type:
+                query_feat = torch.cat([query_feat, tgt1], dim=-1) # [n,b,2*dim]
+            elif self.refine_cat_type == "sum":
+                query_feat = query_feat + tgt1
+            else:
+                raise ValueError
 
             # self-attetnion between different query
             tgt2 = self.self_attn(query=query_feat,
                                 key=query_feat,
                                 value=query_feat)[0]
             if self.refine_drop_saResidual:
-                query_feat = tgt2
+                if self.refine_cat_type == "concat1":
+                    n,b,dim = tgt2.shape
+                    query_feat = tgt2[:,:,0:self.d_model]
+                elif self.refine_cat_type == "concat2":
+                    query_feat = self.proj_head(query_feat) # [n,b,2*dim]->[n,b,dim]
+                elif self.refine_cat_type == "sum":
+                    query_feat = tgt2
             else:
                 query_feat = query_feat + tgt2
 
@@ -415,7 +451,8 @@ def build_refine_decoder(args):
     #     d_model=args.hidden_dim,
     #     args=args
     # )
-
-    return RefineDecoderV2(nheads=args.nheads,
+    refine_layer = RefineDecoderV2_layer(nheads=args.nheads,
                            d_model=args.hidden_dim,
                            args=args)
+    return RefineDecoderV2(refine_layer=refine_layer,
+                           num_layers=args.refine_layer_num)

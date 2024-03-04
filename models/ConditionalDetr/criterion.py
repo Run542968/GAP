@@ -65,6 +65,7 @@ class SetCriterion(nn.Module):
         self.adapterCLS_conv_weight_type = args.adapterCLS_conv_weight_type
 
         self.refine_actionness_loss = args.refine_actionness_loss
+        self.distillation_loss = args.distillation_loss
         if self.refine_actionness_loss:
             self.refine_losses = ['boxes_refine','actionness_refine']
 
@@ -825,6 +826,9 @@ class SetCriterion(nn.Module):
             for loss in self.refine_losses:
                 losses.update(self.get_loss(loss, outputs, targets, indices_refine, num_boxes))
 
+        if self.distillation_loss:
+            distillation_loss = self.loss_distillation(outputs, targets, indices, num_boxes)
+            losses.update(distillation_loss)
 
         return losses
 
