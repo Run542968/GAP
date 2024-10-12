@@ -90,25 +90,6 @@ parser.add_argument('--salient_loss', action='store_true', default=False)
 parser.add_argument('--salient_loss_coef', type=float, default=2)
 parser.add_argument('--salient_loss_impl', type=str, default="BCE", choices=('BCE','CE'))
 
-parser.add_argument('--adapterCLS_loss', action='store_true', default=False)
-parser.add_argument('--adapterCLS_type', type=str, default='conv_avg', choices=('conv_avg', 'conv_add', 'sa', 'conv_weight','conv_add_verbs'))
-parser.add_argument('--adapterCLS_loss_coef', type=float, default=1)
-parser.add_argument('--adapterCLS_conv_weight_type', type=str, default='l1', choices=('l1', 'kl'))
-parser.add_argument('--adapterCLS_conv_add_verbs_type', type=str, default='concat', choices=('concat', 'sum', 'sum1'))
-parser.add_argument('--adapterCLS_conv_add_verbs_coef', type=float, default=1)
-
-
-parser.add_argument('--refine_actionness_loss', action='store_true', default=False)
-parser.add_argument('--refine_actionness_loss_coef', type=float, default=2)
-
-
-parser.add_argument('--dynamic_element_catch', action='store_true', default=False)
-parser.add_argument('--dynamic_element_num', type=int, default=4)
-parser.add_argument('--dynamic_coef', type=float, default=1)
-
-
-parser.add_argument('--distillation_loss', action='store_true', default=False)
-parser.add_argument('--distillation_loss_coef', type=float, default=1)
 
 
 # Matcher

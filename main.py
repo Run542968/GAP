@@ -1,15 +1,5 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
-"""
-@File :  main.py
-@Time :  2023/09/12 15:37:33
-@Author :  Jia-Run Du
-@Version :  1.0
-@Contact :  dujr6@mail2.sysu.edu.cn
-@License :  Copyright (c) ISEE Lab
-@Desc :  main file
-"""
-
 
 from __future__ import print_function
 import os

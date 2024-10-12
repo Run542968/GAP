@@ -435,22 +435,7 @@ class RefineDecoderV2_layer(nn.Module):
 
 
 def build_refine_decoder(args):
-    # decoder_layer = RefineDecoderLayer(
-    #     d_model=args.hidden_dim,
-    #     nheads=args.nheads,
-    #     dim_feedforward=args.dim_feedforward,
-    #     dropout=args.dropout,
-    #     normalize_before=args.pre_norm
-    # )
-    # decoder_norm = nn.LayerNorm(args.hidden_dim)
-    # return RefineDecoder(
-    #     decoder_layer=decoder_layer,
-    #     num_layers=args.ref_dec_layers,
-    #     norm=decoder_norm,
-    #     return_intermediate=True,
-    #     d_model=args.hidden_dim,
-    #     args=args
-    # )
+
     refine_layer = RefineDecoderV2_layer(nheads=args.nheads,
                            d_model=args.hidden_dim,
                            args=args)

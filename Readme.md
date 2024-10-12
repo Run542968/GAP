@@ -2,9 +2,9 @@
 
 ### <p align="center">*Jia-Run Du, Kun-Yu Lin, Jingke Meng, and Wei-Shi Zheng*</p>
 
-#### <p align="center">[[Paper]](https://arxiv.org/abs/2206.11011) </p>
+#### <p align="center">[[Paper]](https://arxiv.org/abs/2408.13777) </p>
 
-Official repository of PRCV 2024 paper "Towards Completeness: A Generalizable Action Proposal Generator for Zero-Shot Temporal Action Localization".
+Official repository of ICPR 2024 paper "Towards Completeness: A Generalizable Action Proposal Generator for Zero-Shot Temporal Action Localization".
 
 <center>
     <img src="./assets/Framework.png" alt="example">
@@ -14,9 +14,9 @@ Official repository of PRCV 2024 paper "Towards Completeness: A Generalizable Ac
 
 
 ## 💬 News
-- [2024.10.10] 🎊 The training/test scripts, pre-trained ckpts and video features are available.
+- [2024.10.13] 🎊 The training/test scripts, pre-trained ckpts and video features are available.
 - [2024.08.21] 🥳 Code of GAP is initial released. 
-- [2024.07.06] 🎉 Our work is accepted by PRCV 2024. 
+- [2024.07.06] 🎉 Our work is accepted by ICPR 2024. 
 
 
 
@@ -31,47 +31,46 @@ pip install -r requirements.txt
 ```
 
 ## 📕 Prepare the data
-- The features for [`[Thumos14]`](https://pan.baidu.com/s/10HgDyo7eJqM-9E__0ev2YA?pwd=txk7) and [`[ActivityNet1.3]`](https://pan.baidu.com/s/1ocyQasxBlad1UKgLU-hgKg?pwd=pvwo) dataset can be downloaded. The annotations are included with this package.
-- After downloading, modify the config `--path-dataset` in your running script to your own path.
+- The features that extracted via CLIP for [`[Thumos14]`](https://pan.baidu.com/s/1tR25iyeKNOwMSU6RfyLFtA?pwd=8qr9) and [`[ActivityNet1.3]`](https://pan.baidu.com/s/1sLAfU4UCD-UiglC57veXaA?pwd=tkn4) dataset can be downloaded. 
+- After downloading, modify the `feature_path` in `config file` to your own path.
 
 ## 👀 Quick Start
-- Download the pre-trained [`[checkpoints]`](https://pan.baidu.com/s/1kFVQSM0op-wTPISd7f7VKg?pwd=qisw).
+- Download the pre-trained [`[checkpoints]`](https://pan.baidu.com/s/1BM2lAzfRfemw0ZwqhGacsw?pwd=dpq8).
 - Create the default folder **./ckpt** and put the downloaded pre-trained models into **./ckpt**.
 - Run the test scripts:
 ```shell
 # Thumos14
-CUDA_VISIBLE_DEVICES=2 python test.py --use-model Model_Thumos --dataset-name Thumos14reduced --path-dataset /mnt/Datasets/TAL_dataset/Thumos14 --model-name Train_Thumos14 --seed 355 --delta 0.2 --max_seqlen_list 560 1120 280 --att_thresh_params 0.1 0.925 0.025 --test_proposal_method 'multiple_threshold_hamnet_v3' --test_proposal_mode 'att' --PLG_logits_mode 'norm' --PLG_thres 0.69
+CUDA_VISIBLE_DEVICES=0 python test.py --model_name "Train_Thumos14" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_coef 3 --refine_cat_type 'concat1'
 
 # ActivityNet1.3
-CUDA_VISIBLE_DEVICES=2 python test.py --use-model Model_Ant --dataset-name ActivityNet1.3 --path-dataset /mnt/Datasets/TAL_dataset/ActivityNet1.3/  --dataset Ant13_SampleDataset --model-name Train_ActivityNet13 --num-class 200 --seed 3552 --delta 0.3 --t 10 --max_seqlen_list 90 180 50 --test_proposal_method 'multiple_threshold_hamnet_ant' --PLG_logits_mode 'norm' --PLG_thres 0.685
+CUDA_VISIBLE_DEVICES=0 python test.py --model_name "Train_ActivityNet13" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --save_result --batch_size 16 --target_type "prompt" --lr 5e-5 --epochs 100 --num_queries 30 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-2 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --actionness_loss_coef 3 --enable_refine --refine_drop_saResidual --salient_loss
 ```
 
 ## 🏷️ Train Your Own Model
 - Thumos14
 ```shell
-CUDA_VISIBLE_DEVICES=2 python main.py --use-model Model_Thumos --dataset-name Thumos14reduced --path-dataset /mnt/Datasets/TAL_dataset/Thumos14 --model-name Train_Thumos14 --seed 355 --delta 0.2 --max_seqlen_list 560 1120 280 --use_ms --k 7 --max-iter 20000 --att_thresh_params 0.1 0.925 0.025 --test_proposal_method 'multiple_threshold_hamnet_v3' --test_proposal_mode 'att' --lambda_cll 1 --lambda_lpl 1 --PLG_logits_mode 'norm' --PLG_thres 0.69 --rescale_mode 'nearest' --ensemble_weight 0.33 0.33 0.33 --lpl_norm 'none' --alpha 0 --multi_back --lambda_mscl 1 --SCL_alpha 1 --pseudo_iter -1 --interval 50
+CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Train_Thumos14" --cfg_path "./config/Thumos14_CLIP_zs_75_8frame.yaml" --save_result --batch_size 16 --lr 1e-4 --epochs 100 --postprocess_type "class_agnostic" --postprocess_topk 100 --num_queries 40 --enc_layers 2 --dec_layers 5 --actionness_loss_coef 3 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --enable_refine --refine_drop_saResidual --salient_loss --salient_loss_coef 3 --refine_cat_type 'concat1'
 ```
 
 - ActivityNet1.3
 ```shell
-CUDA_VISIBLE_DEVICES=2 python main.py --use-model Model_Ant --path-dataset /mnt/Datasets/TAL_dataset/ActivityNet1.3/ --dataset-name ActivityNet1.3 --dataset Ant13_SampleDataset --model-name Train_ActivityNet13 --num-class 200 --seed 3552 --delta 0.3 --t 10 --max_seqlen_list 90 180 50 --use_ms --k 10 --lr 1e-5 --max-iter 30000 --test_proposal_method 'multiple_threshold_hamnet_ant' --lambda_cll 1 --lambda_lpl 1 --PLG_logits_mode 'norm' --PLG_thres 0.685 --rescale_mode 'nearest' --ensemble_weight 0.33 0.33 0.33 --lpl_norm 'none' --alpha 1 --multi_back --pseudo_iter 20000
+CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Train_ActivityNet13" --cfg_path "./config/ActivityNet13_CLIP_zs_75.yaml" --save_result --batch_size 16 --target_type "prompt" --lr 5e-5 --epochs 100 --num_queries 30 --postprocess_type "class_agnostic" --postprocess_topk 100 --rescale_length 300 --enc_layers 2 --dec_layers 2 --enable_backbone --lr_backbone 1e-2 --norm_embed --exp_logit_scale --proposals_weight_type "after_softmax" --enable_classAgnostic --actionness_loss_coef 3 --enable_refine --refine_drop_saResidual --salient_loss
 ```
 
 
 ## Acknowledgement
-We would like to thank the contributors to the [CO2-Net](https://github.com/harlanhong/MM2021-CO2-Net), [ASM-Loc](https://github.com/boheumd/ASM-Loc) for their open research and exploration.
+We would like to thank the contributors to the [Conditional DETR](https://github.com/Atten4Vis/ConditionalDETR) for their open research and exploration.
 
 
 ## 📝 Citation
 
-If you find ProCL useful for your research and applications, please cite using this BibTeX:
+If you find GAP useful for your research and applications, please cite using this BibTeX:
 
 ```bibtex
-@article{du2024weakly,
-  title={Weakly-supervised temporal action localization by progressive complementary learning},
-  author={Du, Jia-Run and Feng, Jia-Chang and Lin, Kun-Yu and Hong, Fa-Ting and Qi, Zhongang and Shan, Ying and Hu, Jian-Fang and Zheng, Wei-Shi},
-  journal={IEEE Transactions on Circuits and Systems for Video Technology},
-  year={2024},
-  publisher={IEEE}
+@article{du2024towards,
+  title={Towards Completeness: A Generalizable Action Proposal Generator for Zero-Shot Temporal Action Localization},
+  author={Du, Jia-Run and Lin, Kun-Yu and Meng, Jingke and Zheng, Wei-Shi},
+  journal={arXiv preprint arXiv:2408.13777},
+  year={2024}
 }
 ```

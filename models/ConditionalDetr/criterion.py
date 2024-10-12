@@ -60,14 +60,7 @@ class SetCriterion(nn.Module):
 
         self.salient_loss = args.salient_loss
         self.salient_loss_impl = args.salient_loss_impl
-        self.adapterCLS_loss = args.adapterCLS_loss
-        self.adapterCLS_type = args.adapterCLS_type
-        self.adapterCLS_conv_weight_type = args.adapterCLS_conv_weight_type
 
-        self.refine_actionness_loss = args.refine_actionness_loss
-        self.distillation_loss = args.distillation_loss
-        if self.refine_actionness_loss:
-            self.refine_losses = ['boxes_refine','actionness_refine']
 
         if self.eval_proposal or self.enable_classAgnostic:
             self.base_losses = ['boxes','actionness']
@@ -379,22 +372,6 @@ class SetCriterion(nn.Module):
         losses['loss_mask'] = ce_loss.sum() / B
         return losses
     
-    def loss_distillation(self,outputs, targets, indices, num_boxes):
-        '''
-        for distillation the CLIP feat to DETR detector
-        '''
-        assert 'student_emb' in outputs
-        assert 'teacher_emb' in outputs
-
-        # obtain logits
-        student_emb = outputs['student_emb']
-        teacher_emb = outputs['teacher_emb'] # [B,Q,dim]
-
-        loss = torch.abs(teacher_emb-student_emb).sum(-1)
-
-        losses = {}
-        losses['loss_distillation'] = loss.mean()
-        return losses
 
     def loss_actionness(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (Binary focal loss)
@@ -449,28 +426,6 @@ class SetCriterion(nn.Module):
         return losses
 
 
-    def loss_refine_actionness(self, outputs, targets, indices, num_boxes, log=True):
-        """Classification loss (Binary focal loss)
-        targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
-        """
-        assert 'actionness_logits' in outputs
-        src_logits = outputs['actionness_logits'] # [bs,num_queries,1]
-
-        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
-        target_classes_o = torch.cat([t["labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
-        target_classes = torch.full(src_logits.shape[:2], src_logits.shape[2],
-                                    dtype=torch.int64, device=src_logits.device) # [bs,num_queries]
-        target_classes[idx] = target_classes_o # [bs,num_queries]
-
-        target_classes_onehot = torch.zeros([src_logits.shape[0], src_logits.shape[1], src_logits.shape[2]+1],
-                                            dtype=src_logits.dtype, layout=src_logits.layout, device=src_logits.device) # [bs,num_queries,num_classes+1]
-        target_classes_onehot.scatter_(2, target_classes.unsqueeze(-1), 1)
-
-        target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
-        loss_ce = sigmoid_focal_loss(src_logits, target_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma) * src_logits.shape[1]
-        losses = {'loss_refine_actionness': loss_ce}
-
-        return losses
 
     def loss_refine_boxes(self, outputs, targets, indices, num_boxes):
         """Compute the losses related to the bounding boxes, the L1 regression loss and the GIoU loss
@@ -522,35 +477,6 @@ class SetCriterion(nn.Module):
 
         return losses
 
-    def loss_text_distillation(self, outputs, targets, indices, num_boxes, log=True):
-        """Classification loss (Binary focal loss)
-        targets dicts must contain the key "labels" containing a tensor of dim [nb_target_boxes]
-        """
-        assert 'query_feats' in outputs
-        query_feats = outputs['query_feats'] # [bs,num_queries,num_classes]
-        assert 'text_feats' in outputs
-        text_feats = outputs['text_feats'] # [num_classes,dim]
-
-        text_feats = text_feats / text_feats.norm(dim=-1,keepdim=True)
-        query_feats = query_feats / query_feats.norm(dim=-1,keepdim=True)
-
-        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
-        target_classes_o = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
-        matched_text_feats = text_feats[target_classes_o,:] # [batch_target_class_id,dim]
-        matched_query_feats = query_feats[idx] # [batch_target_class_id,dim]
-
-        text_relation_matrix = torch.einsum("bd,nd->bn",matched_text_feats,text_feats)
-        query_text_relation_matrix = torch.einsum("bd,nd->bn",matched_query_feats,text_feats)
-
-        distill_loss = F.kl_div(torch.log_softmax(query_text_relation_matrix / 0.07, dim=1),
-                                torch.softmax(text_relation_matrix / 0.07, dim=1),
-                                reduction="batchmean")
-
-
-        losses = {'loss_text_distillation': distill_loss}
-
-
-        return losses
 
     def loss_queryRelation(self, outputs, targets, indices, num_boxes, log=True):
         """Classification loss (Binary focal loss)
@@ -661,69 +587,6 @@ class SetCriterion(nn.Module):
 
         return losses
 
-    def loss_adapterCLS(self, outputs, targets, indices, num_boxes, log=True):
-        """
-        align loss
-        """
-        assert 'adapted_roi_feat_logits' in outputs
-        adapted_roi_feat_logits = outputs['adapted_roi_feat_logits'] # [bs,num_queries,num_classes]
-
-        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
-        target_classes_o = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
-        target_classes = torch.full(adapted_roi_feat_logits.shape[:2], adapted_roi_feat_logits.shape[2],
-                                    dtype=torch.int64, device=adapted_roi_feat_logits.device) # [bs,num_queries]
-        target_classes[idx] = target_classes_o # [bs,num_queries]
-
-        target_classes_onehot = torch.zeros([adapted_roi_feat_logits.shape[0], adapted_roi_feat_logits.shape[1], adapted_roi_feat_logits.shape[2]+1],
-                                            dtype=adapted_roi_feat_logits.dtype, layout=adapted_roi_feat_logits.layout, device=adapted_roi_feat_logits.device) # [bs,num_queries,num_classes+1]
-        target_classes_onehot.scatter_(2, target_classes.unsqueeze(-1), 1)
-
-        target_classes_onehot = target_classes_onehot[:,:,:-1] # [bs,num_queries,num_classes]
-        
-        # adapted_roi_feat_logits = adapted_roi_feat_logits.sigmoid()
-        # loss_adapterCLS = (-target_classes_onehot*torch.log(adapted_roi_feat_logits)).sum()
-        # loss_adapterCLS = loss_adapterCLS/num_boxes
-
-        matched_classes_onehot = target_classes_onehot[idx] # [batch_matched_queries,num_classes]
-        matched_adapted_roi_feat_logits = adapted_roi_feat_logits[idx] # [batch_matched_queries,num_classes]
-
-        loss_adapterCLS = sigmoid_focal_loss(matched_adapted_roi_feat_logits, matched_classes_onehot, num_boxes, alpha=self.focal_alpha, gamma=self.gamma)
-
-        losses = {'loss_adapterCLS': loss_adapterCLS}
-
-        return losses
-
-    def loss_adapterCLS_weight(self, outputs, targets, indices, num_boxes):
-        """
-        align loss
-        """
-        assert 'roi_feat_weight' in outputs
-        assert 'roi_feat_logits' in outputs
-        roi_feat_logits = outputs['roi_feat_logits'] # [bs, num_queries, roi_size, num_classes]
-        roi_feat_weight = outputs['roi_feat_weight'] # [b,q,l,1]
-
-        roi_feat_logits = roi_feat_logits.permute(0,1,3,2) # [b,q,c,l]
-        roi_feat_weight = roi_feat_weight.squeeze(dim=3) # [b,q,l]
-
-        idx = self._get_src_permutation_idx(indices) # (batch_idx,src_idx)
-        target_classes_idx = torch.cat([t["semantic_labels"][J] for t, (_, J) in zip(targets, indices)]) # [batch_target_class_id]
-        merged_idx = (*idx, target_classes_idx)
-
-        matched_roi_feat_logits = roi_feat_logits[merged_idx] # [batch_matched, roi_size]
-        matched_roi_feat_weight = roi_feat_weight[idx] # [batch_mathed,roi_size]
-
-
-        if self.adapterCLS_conv_weight_type == "kl":
-            loss = F.kl_div(torch.log_softmax(matched_roi_feat_weight + 1e-4 ,dim=1),
-                            torch.softmax(matched_roi_feat_logits + 1e-4,dim=1),
-                            reduction="batchmean")
-        elif self.adapterCLS_conv_weight_type == "l1":
-            loss = F.l1_loss((matched_roi_feat_weight+1e-4).sigmoid(),(matched_roi_feat_logits+1e-4).sigmoid(),reduction="mean")
-        else:
-            raise ValueError
-        losses = {'loss_adapterCLS': loss}
-
-        return losses
 
 
 
@@ -814,21 +677,7 @@ class SetCriterion(nn.Module):
             salient_loss = self.loss_salient(outputs, targets, indices, num_boxes)
             losses.update(salient_loss)
 
-        if self.adapterCLS_loss:
-            if self.adapterCLS_type == "conv_weight":
-                adpterCLS_loss = self.loss_adapterCLS_weight(outputs, targets, indices, num_boxes)
-            else:
-                adpterCLS_loss = self.loss_adapterCLS(outputs, targets, indices, num_boxes)
-            losses.update(adpterCLS_loss)
 
-        if self.refine_actionness_loss:
-            indices_refine = self.matcher(outputs_without_aux["actionness_logits_refine"], outputs_without_aux["pred_boxes_refine"], tgt_ids, tgt_bbox, sizes)
-            for loss in self.refine_losses:
-                losses.update(self.get_loss(loss, outputs, targets, indices_refine, num_boxes))
-
-        if self.distillation_loss:
-            distillation_loss = self.loss_distillation(outputs, targets, indices, num_boxes)
-            losses.update(distillation_loss)
 
         return losses
 

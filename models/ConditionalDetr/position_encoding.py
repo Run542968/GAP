@@ -1,15 +1,5 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
-"""
-@File :  position_encoding.py
-@Time :  2023/09/13 21:57:13
-@Author :  Jia-Run Du
-@Version :  1.0
-@Contact :  dujr6@mail2.sysu.edu.cn
-@License :  Copyright (c) ISEE Lab
-@Desc :  modify the positional encoding into temporal format
-"""
-
 
 """
 Various positional encodings for the transformer.
