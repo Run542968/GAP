@@ -61,8 +61,7 @@ def check_directory(args):
     return logger
 
 if __name__ == '__main__':
-    import pdb
-    pdb.set_trace()
+
     args = options.parser.parse_args()
     if args.cfg_path is not None:
         args = merge_cfg_from_file(args,args.cfg_path) # NOTE that the config comes from yaml file is the latest one.
