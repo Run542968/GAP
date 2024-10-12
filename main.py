@@ -71,6 +71,8 @@ def check_directory(args):
     return logger
 
 if __name__ == '__main__':
+    import pdb
+    pdb.set_trace()
     args = options.parser.parse_args()
     if args.cfg_path is not None:
         args = merge_cfg_from_file(args,args.cfg_path) # NOTE that the config comes from yaml file is the latest one.
@@ -149,7 +151,6 @@ if __name__ == '__main__':
     best_epoch = best_stats['epoch']
     logger.info('||'.join(['MAX map @ {} = {:.3f} '.format(iou[i],max_map[i]*100) for i in range(len(iou))]))
     logger.info('MAX mAP Avg ALL: {} in Epoch: {}'.format(max_Avg*100,best_epoch))
-    # logger.info('MAX AR@1: {}, AR@5: {}, AR@10: {}, AR@50: {}, AR@100: {}, AUC: {}'.format(best_stats['AR@1_raw']*100, best_stats['AR@5_raw']*100, best_stats['AR@10_raw']*100, best_stats['AR@50_raw']*100,best_stats['AR@100_raw']*100,best_stats['AUC_raw']*100))
     logger.info('MAX AR@10: {}, AR@25: {}, AR@40: {}, AUC: {}'.format(best_stats['AR@10_raw']*100, best_stats['AR@25_raw']*100, best_stats['AR@40_raw']*100, best_stats['AUC_raw']*100))
                 
 

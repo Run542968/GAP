@@ -72,9 +72,6 @@ class BaseDataset(Dataset):
         self.classes, self.valid_anno_dict, self.valid_video_list, self.anno_dict, self.feature_info, self.src_valid_anno_dict = self._prepare_gt()
         self.description_dict = self._get_description(self.description_file_path)
         
-        # if self.binary:
-        #     logger.info(f"The num of valid videos is {len(self.valid_anno_dict)} in subset {subset}, there are {sum([len(v['annotations']) for k,v in self.valid_anno_dict.items()])} instances of {1} classes.")
-        # else:
         logger.info(f"The num of valid videos is {len(self.valid_anno_dict)} in subset {subset}, there are {sum([len(v['annotations']) for k,v in self.valid_anno_dict.items()])} instances of {len(self.classes)} classes.")
 
     def _get_description(self, description_file_path):
@@ -144,13 +141,10 @@ class BaseDataset(Dataset):
     def generate_inner_segment_with_eps(self, origin_seg, eps, start_bound, end_bound):
         origin_length = origin_seg[1] - origin_seg[0]
         
-        # 计算允许的交集范围
         allowed_intersection_length = origin_length * eps
         
-        # 随机生成新段的长度
         new_segment_length = random.uniform(origin_length*0.5, allowed_intersection_length)
         
-        # 随机生成新段的起始位置
         new_segment_start = random.uniform(origin_seg[0], origin_seg[1] - new_segment_length)
         new_segment_end = new_segment_start + new_segment_length
         
@@ -162,18 +156,15 @@ class BaseDataset(Dataset):
         return new_segment
 
     def generate_outer_segment_with_random_shifted(self, origin_seg, eps, start_bound, end_bound):
-        # 计算允许的最大偏移量，以便新的段与原始段的交集占据比例为 eps
+
         origin_length = origin_seg[1] - origin_seg[0]
         max_offset = origin_length * (1 - eps)
         
-        # 随机生成一个允许的偏移量
         offset = random.uniform(-max_offset, max_offset)
         
-        # 计算新段的位置
         new_segment_start = origin_seg[0] + offset
         new_segment_end = origin_seg[1] + offset
         
-        # 确保新段不超出指定的边界
         new_segment_start = max(new_segment_start, start_bound)
         new_segment_end = min(new_segment_end, end_bound)
         
@@ -479,15 +470,6 @@ class Thumos14Dataset(BaseDataset):
             assert slice_start < feature_data.shape[0]
             feature_data = feature_data[slice_start:slice_end+1,:] # Txdim
 
-            # if feature_data.shape[0] < self.slice_size: # only appearing in inference stage and feature_length < slice_size
-            #     diff = self.slice_size - feature_data.shape[0]
-            #     feature_data = np.pad(
-            #         feature_data, ((0, diff), (0, 0)), mode='constant') # padding zero in tail
-
-            #     # IMPORATANT: if padded is done, the length info must be modified
-            #     self.valid_anno_dict[video_name]['feature_length'] = self.slice_size
-            #     self.valid_anno_dict[video_name]['feature_duration'] = self.slice_size / self.valid_anno_dict[video_name]['feature_fps']
-            
             feature = torch.Tensor(feature_data).float().contiguous()
 
         return feature
@@ -597,44 +579,3 @@ class ActivityNet13Dataset(BaseDataset):
         return valid_anno_dict, valid_video_list, None
 
 
-
-
-if __name__ == "__main__":
-    from utils.util import get_logger, setup_seed
-    args = options.parser.parse_args()
-    if args.cfg_path is not None:
-        args = merge_cfg_from_file(args,args.cfg_path) # NOTE that the config comes from yaml file is the latest one.
-    seed=args.seed
-    setup_seed(seed)
-    print(args)
-    train_dataset = Thumos14Dataset(subset='train', mode='train', args=args)
-    # print(f"dataset.description:{train_dataset.description_dict}")
-    # print(f"dataset.classes:{train_dataset.classes}")
-    
-    data_loader = DataLoader(train_dataset, batch_size=2, collate_fn=collate_fn, num_workers=2, pin_memory=True, shuffle=True)
-    iters = iter(data_loader)
-    feat, target = next(iters)
-    # print(f"feat.tensors:{feat.tensors.shape}")
-    # print(f"feat.mask:{feat.mask}")
-    # print(f"target:{target}")
-    # print(f"target[0]['segmentation_onehot_labels']: {target[0]['segmentation_onehot_labels']}")
-    # print(f"target[0]['segmentation_onehot_labels'].shape:{target[0]['segmentation_onehot_labels'].shape}")
-    # print(f"target[0]['segmentation_onehot_labels'].dtype:{target[0]['segmentation_onehot_labels'].dtype}")
-    # print(f"target[0]['segmentation_labels'].dtype:{target[0]['segmentation_labels']}")
-    # gt_coordinations = [t['segments'] for t in target]
-    # print(f"gt_coordinations:{gt_coordinations}")
-    # gt_coordinations = torch.cat(gt_coordinations,dim=0) # [batch_instance_num,2]->"center,width"
-    # print(f"gt_coordinations.shape:{gt_coordinations.shape}")
-    # gt_labels = [t['labels'] for t in target]
-    # print(f"gt_labels:{gt_labels}")
-    # gt_labels = torch.cat(gt_labels,dim=0) # [batch_instance_num,1]->"class id"
-    # print(f"gt_labels.shape:{gt_labels.shape}")
-    # print(f"target[0]['mask_labels']:{target[0]['mask_labels']}")
-    print(f"target[0]['semantic_labels']:{target[0]['semantic_labels']}")
-    print(f"target[0]['segments']:{target[0]['segments']}")
-    print(f"target[0]['labels']:{target[0]['labels']}")
-    print(f"target[0]['label_names']:{target[0]['label_names']}")
-    print(f"target[0]['salient_mask']:{target[0]['salient_mask']}")
-    print(f"self.classes:{data_loader.dataset.classes}")
-
-# CUDA_VISIBLE_DEVICES=4 python dataset.py --cfg_path "./config/Thumos14_CLIP_8frame.yaml"
