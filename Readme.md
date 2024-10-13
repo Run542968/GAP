@@ -59,7 +59,7 @@ CUDA_VISIBLE_DEVICES=0 python main.py --model_name "Train_ActivityNet13" --cfg_p
 
 
 ## Acknowledgement
-We would like to thank the contributors to the [Conditional DETR](https://github.com/Atten4Vis/ConditionalDETR) for their open research and exploration.
+We would like to thank the contributors to the [Conditional DETR](https://github.com/Atten4Vis/ConditionalDETR) and [video_features](https://github.com/v-iashin/video_features) for their open research and exploration.
 
 
 ## 📝 Citation
